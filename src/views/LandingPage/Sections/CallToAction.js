@@ -26,7 +26,7 @@ export default function CallToAction() {
           <div className={classes.form}>
             <GridContainer justify="center">              
               <GridItem xs={12} sm={12} md={4}>
-                <Button color="primary">Registrarse</Button>
+                <Button color="primary" href="/registro">Registrarse</Button>
               </GridItem>
             </GridContainer>
           </div>

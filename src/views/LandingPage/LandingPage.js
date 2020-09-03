@@ -56,8 +56,7 @@ export default function LandingPage(props) {
               <Button
                 color="success"
                 size="lg"
-                href=""
-                target="_blank"
+                href="/registro"                
                 rel="noopener noreferrer"
               >
                <i className="fas  fa-hand-point-right"></i> Usar Servicio  
