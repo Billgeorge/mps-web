@@ -7,6 +7,8 @@ import Icon from "@material-ui/core/Icon";
 import Email from "@material-ui/icons/Email";
 import Storefront from "@material-ui/icons/Storefront";
 import PermIdentity from "@material-ui/icons/PermIdentity";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Alert from '@material-ui/lab/Alert';
 
 // core components
 import Header from "components/Header/Header.js";
@@ -23,19 +25,71 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
-import image from "assets/img/bg7.jpg";
-import { Smartphone } from "@material-ui/icons";
+import { Smartphone} from "@material-ui/icons";
+import consumerService from '../../service/ConsumeService'
 
 const useStyles = makeStyles(styles);
 
 export default function RegisterPage(props) {
-  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");  
+
+  const [errorMessage, setErrorMessage] = React.useState({});
+
+  const [isPassWordHidden, setHiddenPassword] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isMerchantCreated, setIsMerchantCreated] = React.useState(false);    
+
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
+
+  React.useEffect(() => changeMessageValidation(), []);
+  const changeMessageValidation = () =>{
+    document.registerForm.onsubmit = function(event){
+      setIsMerchantCreated(false)
+      const callBack = (error) => {
+        setErrorMessage(error)
+        setIsLoading(false)
+      }
+      const callBackSucess = () =>{
+        document.getElementById("registerForm").reset();
+        setIsLoading(false)
+        setIsMerchantCreated(true)
+      }
+      setIsLoading(true)
+      console.log("submitting")
+      event.preventDefault()
+      setErrorMessage({})
+      const form = event.currentTarget;      
+      consumerService({    
+        nit: document.getElementById("id").value,
+        name: document.getElementById("merchantName").value,
+        email:document.getElementById("email").value,
+        contactNumber: document.getElementById("contactNumber").value,
+        password: document.getElementById("pass").value
+      },callBack,callBackSucess)
+    }
+    let htmlInputs = document.forms["registerForm"].getElementsByTagName("input");
+    console.log(htmlInputs)
+    for(let input of htmlInputs){
+      console.log(input.item)
+     input.oninvalid = function(e) {
+        e.target.setCustomValidity("Este campo es obligatorio o invalido");
+    }
+    input.oninput = function(e) {
+      e.target.setCustomValidity("");
+  };
+    }    
+  }
+
+  const showPassword = event =>{
+    event.preventDefault()   
+    setHiddenPassword(!isPassWordHidden)
+  }
   return (
+    
     <div>
       <Header
         absolute
@@ -57,19 +111,24 @@ export default function RegisterPage(props) {
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={4}>
               <Card className={classes[cardAnimaton]}>
-                <form className={classes.form}>
+                <form className={classes.form} validated="true" name="registerForm" id="registerForm">
                   <CardHeader color="primary" className={classes.cardHeader}>
                     <h4>Registro</h4>                    
                   </CardHeader>                  
                   <CardBody>
-                    <CustomInput
+                  {isLoading
+                                ? <CircularProgress/>
+                                : <span></span>
+                  }
+                    <CustomInput                    
                       labelText="Nombre Comercio..."
-                      id="first"
+                      id="merchantName"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
                         type: "text",
+                        required: true,
                         endAdornment: (
                           <InputAdornment position="end">
                             <Storefront className={classes.inputIconsColor} />
@@ -79,12 +138,13 @@ export default function RegisterPage(props) {
                     />
                     <CustomInput
                       labelText="Correo Electrónico..."
-                      id="email"
+                      id="email"                      
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
                         type: "email",
+                        required: true,                        
                         endAdornment: (
                           <InputAdornment position="end">
                             <Email className={classes.inputIconsColor} />
@@ -100,6 +160,7 @@ export default function RegisterPage(props) {
                       }}
                       inputProps={{
                         type: "number",
+                        required: true,
                         endAdornment: (
                           <InputAdornment position="end">
                             <PermIdentity className={classes.inputIconsColor} />
@@ -115,6 +176,7 @@ export default function RegisterPage(props) {
                       }}
                       inputProps={{
                         type: "number",
+                        required: true,
                         endAdornment: (
                           <InputAdornment position="end">
                             <Smartphone className={classes.inputIconsColor} />
@@ -123,13 +185,15 @@ export default function RegisterPage(props) {
                       }}
                     />
                     <CustomInput
+                    
                       labelText="Password"
                       id="pass"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
-                        type: "password",
+                        type: isPassWordHidden ? "password" : "text",
+                        required: true,
                         endAdornment: (
                           <InputAdornment position="end">
                             <Icon className={classes.inputIconsColor}>
@@ -140,9 +204,22 @@ export default function RegisterPage(props) {
                         autoComplete: "off"
                       }}
                     />
+                    <a onClick={showPassword}>
+                   {isPassWordHidden
+                                ? <span>Ver contraseña</span>
+                                : <span>Ocultar contraseña</span>
+                                }</a>
+                   
+                {Object.keys(errorMessage).map((keyName, i) => (
+                  <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>    
+                ))}
+                {isMerchantCreated
+                                ? <Alert severity="success">Usuario creado, Confirma tu cuenta mediante el email que te hemos enviado a tu correo electrónico </Alert>    
+                                : <span></span>
+                                }
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
-                    <Button simple color="primary" size="lg">
+                    <Button simple color="primary" size="lg" type="submit">
                       Registrarse
                     </Button>
                   </CardFooter>
