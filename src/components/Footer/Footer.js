@@ -33,18 +33,16 @@ export default function Footer(props) {
           <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
               <a
-                href="https://www.creative-tim.com/presentation?ref=mkr-footer"
-                className={classes.block}
-                target="_blank"
+                href="/login"
+                className={classes.block}                
               >
                 Iniciar Sesión
               </a>             
             </ListItem>
             <ListItem className={classes.inlineBlock}>
               <a
-                href="https://www.creative-tim.com/presentation?ref=mkr-footer"
-                className={classes.block}
-                target="_blank"
+                href="/registro"
+                className={classes.block}                
               >
                 Registrarse
               </a>

@@ -22,6 +22,15 @@ const profilePageStyle = {
   name: {
     marginTop: "-80px"
   },
+  avatar:{
+    width: "100%",
+    backgroundColor: "#044fd6",
+    height: "100px",
+    fontSize:"4em",
+    margin: "0 auto",
+    maxWidth: "160px",
+    transform: "translate3d(0, -50%, 0)"
+  },
   ...imagesStyle,
   main: {
     background: "#FFFFFF",

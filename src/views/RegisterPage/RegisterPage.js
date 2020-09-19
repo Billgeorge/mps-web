@@ -9,6 +9,7 @@ import Storefront from "@material-ui/icons/Storefront";
 import PermIdentity from "@material-ui/icons/PermIdentity";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
+import {CORE_BASEURL} from '../../constant/index'
 
 // core components
 import Header from "components/Header/Header.js";
@@ -26,7 +27,7 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
 import { Smartphone} from "@material-ui/icons";
-import consumerService from '../../service/ConsumeService'
+import consumeServicePost from '../../service/ConsumeService'
 
 const useStyles = makeStyles(styles);
 
@@ -50,7 +51,11 @@ export default function RegisterPage(props) {
     document.registerForm.onsubmit = function(event){
       setIsMerchantCreated(false)
       const callBack = (error) => {
-        setErrorMessage(error)
+        let errorObjects = {"Error":"Error creando Merchant por favor contactar el administrador"}
+        if(error !== null){
+          errorObjects = error
+        }
+        setErrorMessage(errorObjects)
         setIsLoading(false)
       }
       const callBackSucess = () =>{
@@ -59,17 +64,18 @@ export default function RegisterPage(props) {
         setIsMerchantCreated(true)
       }
       setIsLoading(true)
-      console.log("submitting")
+      console.log("creating merchant")
       event.preventDefault()
       setErrorMessage({})
       const form = event.currentTarget;      
-      consumerService({    
+      consumeServicePost({    
         nit: document.getElementById("id").value,
         name: document.getElementById("merchantName").value,
         email:document.getElementById("email").value,
         contactNumber: document.getElementById("contactNumber").value,
         password: document.getElementById("pass").value
-      },callBack,callBackSucess)
+      },callBack,callBackSucess,
+      CORE_BASEURL+"/merchant")
     }
     let htmlInputs = document.forms["registerForm"].getElementsByTagName("input");
     console.log(htmlInputs)

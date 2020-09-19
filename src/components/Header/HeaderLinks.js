@@ -1,9 +1,6 @@
 /*eslint-disable*/
 import React from "react";
-import DeleteIcon from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
-// react components for routing our app without refresh
-import { Link } from "react-router-dom";
+
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -28,40 +25,13 @@ export default function HeaderLinks(props) {
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
       <Button
-          href=""
-          color="transparent"
-          target="_blank"
+          href="/registro"
+          color="transparent"          
           className={classes.navLink}
         >
           <SentimentVerySatisfied className={classes.icons} /> Registrarse
         </Button>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <Button
-          href="#howWork"
-          color="transparent"          
-          className={classes.navLink}
-        >
-          <ContactSupport className={classes.icons} /> Cómo funciona
-        </Button>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <Tooltip
-          id="instagram-twitter"
-          title="Siguenos en twitter"
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            href=""
-            target="_blank"
-            color="transparent"
-            className={classes.navLink}
-          >
-            <i className={classes.socialIcons + " fab fa-twitter"} />
-          </Button>
-        </Tooltip>
-      </ListItem>
+      </ListItem>      
       <ListItem className={classes.listItem}>
         <Tooltip
           id="instagram-facebook"
@@ -71,7 +41,7 @@ export default function HeaderLinks(props) {
         >
           <Button
             color="transparent"
-            href=""
+            href="https://www.facebook.com/Mipagoseguro-100633465045107/?ref=py_c"
             target="_blank"
             className={classes.navLink}
           >
@@ -88,7 +58,7 @@ export default function HeaderLinks(props) {
         >
           <Button
             color="transparent"
-            href=""
+            href="https://www.instagram.com/mipagoseguro.col/?hl=es-la"
             target="_blank"
             className={classes.navLink}
           >
