@@ -64,7 +64,9 @@ export const consumeServiceGet = async (callBack,callBackSuccess,url) => {
                 callBack(error.response.data)
             } if(403 == error.response.status){
                 useHistory.push("/login")
-            }else{
+            } if(404 == error.response.status){
+                callBack(404)
+            } else{
                 callBack(null)
             }
         }else{

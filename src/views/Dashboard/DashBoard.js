@@ -60,8 +60,12 @@ const useStyles = makeStyles(styles);
       setNumberPaymentPaid(paidPayments)
 
     }
-    const callBack = () => {
-      setErrorMessage("Error Cargando Transacciones")
+    const callBack = (msg) => {
+      if(msg==404){
+        setErrorMessage("No hay transacciones paara mostrar")
+      }else{
+        setErrorMessage("Error Cargando Transacciones")
+      }      
     }
 
     const getPaymentsForMerchant = () => {
