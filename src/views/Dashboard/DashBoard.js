@@ -62,7 +62,7 @@ const useStyles = makeStyles(styles);
     }
     const callBack = (msg) => {
       if(msg==404){
-        setErrorMessage("No hay transacciones paara mostrar")
+        setErrorMessage("No hay transacciones para mostrar")
       }else{
         setErrorMessage("Error Cargando Transacciones")
       }      
