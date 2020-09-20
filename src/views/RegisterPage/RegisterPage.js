@@ -3,6 +3,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
+import { Link } from "@material-ui/core";
+
 // @material-ui/icons
 import Email from "@material-ui/icons/Email";
 import Storefront from "@material-ui/icons/Storefront";
@@ -25,6 +27,7 @@ import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
 import image from "assets/img/bg7.jpg";
 import { Smartphone } from "@material-ui/icons";
+
 
 const useStyles = makeStyles(styles);
 
@@ -146,6 +149,11 @@ export default function RegisterPage(props) {
                       Registrarse
                     </Button>
                   </CardFooter>
+                  <Card className={classes[cardAnimaton]}>
+                    <CardBody>
+                      <Button simple color="primary" href="/terms">Al registrarte, aceptas nuestros términos y condiciones</Button>
+                    </CardBody>
+                  </Card>
                 </form>
               </Card>
             </GridItem>
