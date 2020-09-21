@@ -144,7 +144,7 @@ export default function AgreePayment(props) {
                                 ? <CircularProgress/>
                                 : <span></span>
                     }
-                    <span>Has recibido una solicitud de pago por el valor de {payment.amount} de {merchant.name}</span>
+                    <span>Has recibido una solicitud de pago por el valor de <b>{payment.amount}</b> de <b>{merchant.name}</b></span>
                     <FormControl style={{width:"100%",paddingBottom:"10px"}}>
                     <InputLabel htmlFor="id">Cédula</InputLabel>
                         <OutlinedInput
