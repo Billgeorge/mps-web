@@ -223,15 +223,19 @@ export default function RegisterPage(props) {
                                 ? <Alert severity="success">Usuario creado, Confirma tu cuenta mediante el email que te hemos enviado a tu correo electrónico </Alert>    
                                 : <span></span>
                                 }
+                 <br/>
+                 <GridItem md={12}>
+                      <span>Al registrarte estas aceptando los <a href="/terms" target="_blank">términos y condiciones</a></span>
+                    </GridItem> 
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
                     <Button simple color="primary" size="lg" type="submit">
                       Registrarse
-                    </Button>
-                  </CardFooter>
+                    </Button>                                      
+                  </CardFooter>                  
                 </form>
               </Card>
-            </GridItem>
+            </GridItem>            
           </GridContainer>
         </div>
         <Footer whiteFont />

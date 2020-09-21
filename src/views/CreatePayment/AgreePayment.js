@@ -196,7 +196,10 @@ export default function AgreePayment(props) {
                    
                 {Object.keys(errorMessage).map((keyName, i) => (
                   <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>    
-                ))}                
+                ))}
+                  <GridItem md={12}>
+                        <span>Al realizar el pago estas aceptando los <a href="/terms" target="_blank">términos y condiciones</a></span>
+                  </GridItem>                 
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
                     <Button color="primary" size="lg" type="submit">
