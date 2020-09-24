@@ -1,3 +1,4 @@
+require('dotenv').config()
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -45,7 +46,7 @@ const useStyles = makeStyles(styles);
       calculateTotal(payments)
     }
     const copyUrl = (id) => {
-      navigator.clipboard.writeText("https://mps-web-qa.herokuapp.com/agree-payment/"+id);
+      navigator.clipboard.writeText(process.env.BASE_URL+"agree-payment/"+id);
     }
     const calculateTotal = (payments) => {
       let pendingPayments = 0
