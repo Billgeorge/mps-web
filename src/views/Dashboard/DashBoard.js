@@ -1,4 +1,3 @@
-require('dotenv').config()
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -28,6 +27,7 @@ import { getMerchantId } from 'service/AuthenticationService';
 import {consumeServiceGet} from 'service/ConsumeService'
 import {CORE_BASEURL, getPaymentState} from 'constant/index'
 
+require('dotenv').config()
 const useStyles = makeStyles(styles);
 
   
@@ -46,7 +46,7 @@ const useStyles = makeStyles(styles);
       calculateTotal(payments)
     }
     const copyUrl = (id) => {
-      navigator.clipboard.writeText(process.env.BASE_URL+"agree-payment/"+id);
+      navigator.clipboard.writeText(process.env.BASE_FE_URL+"agree-payment/"+id);
     }
     const calculateTotal = (payments) => {
       let pendingPayments = 0
