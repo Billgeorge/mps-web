@@ -10,6 +10,7 @@ import Link from "assets/img/link-button.png";
 
 import HeaderLinksSession from "components/Header/HeaderLinksSession.js";
 import Header from "components/Header/Header.js";
+import Button from "components/CustomButtons/Button.js";
 
 import Alert from '@material-ui/lab/Alert';
 
@@ -42,6 +43,11 @@ const useStyles = makeStyles(styles);
     const callBackSuccess = (payments) =>{
       setPayments(payments)
       calculateTotal(payments)
+    }
+    const copyUrl = (id) => {
+      var getUrl = window.location;
+      var baseUrl = getUrl .protocol + "//" + getUrl.host + "/";
+      navigator.clipboard.writeText(baseUrl+"agree-payment/"+id);
     }
     const calculateTotal = (payments) => {
       let pendingPayments = 0
@@ -146,6 +152,7 @@ const useStyles = makeStyles(styles);
                           <TableCell>Id </TableCell>
                           <TableCell align="right">Nombre Cliente </TableCell>
                           <TableCell align="right">Valor</TableCell>
+                          <TableCell align="center">Enlace</TableCell>
                           <TableCell align="right">Estado</TableCell>
                           <TableCell align="right">Fecha de creación</TableCell>
                         </TableRow>
@@ -158,6 +165,7 @@ const useStyles = makeStyles(styles);
                             </TableCell>
                             <TableCell align="right">{row.customerName}</TableCell>
                             <TableCell align="right">{row.amount}</TableCell>
+                            <TableCell align="right"><Button onClick={() => copyUrl(row.id)} color="primary">Copiar Enlace</Button></TableCell>
                             <TableCell align="right">{getPaymentState(row.idState)}</TableCell>
                             <TableCell align="right">{row.creationDate}</TableCell>
                           </TableRow>

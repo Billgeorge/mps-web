@@ -37,7 +37,8 @@ export default function RegisterPage(props) {
   const [errorMessage, setErrorMessage] = React.useState({});
 
   const [isLoading, setIsLoading] = React.useState(false);
-  const [isPaymentCreated, setIsPaymentCreated] = React.useState(false);    
+  
+  const [url, setUrl] = React.useState("");    
 
   setTimeout(function() {
     setCardAnimation("");
@@ -45,18 +46,22 @@ export default function RegisterPage(props) {
   const classes = useStyles();
   const { ...rest } = props;
 
+
+  const copyUrl = event => {
+    navigator.clipboard.writeText(url);
+  }
+
   React.useEffect(() => changeMessageValidation(), []);
   const changeMessageValidation = () =>{
-    document.createPayment.onsubmit = function(event){
-      setIsPaymentCreated(false)
+    document.createPayment.onsubmit = function(event){      
       const callBack = (error) => {
         setErrorMessage(error)
         setIsLoading(false)
       }
-      const callBackSucess = () =>{
+      const callBackSucess = (response) =>{
+        setUrl("http://localhost:3000/agree-payment/"+response.id)
         document.getElementById("createPayment").reset();
-        setIsLoading(false)
-        setIsPaymentCreated(true)
+        setIsLoading(false)        
       }
       setIsLoading(true)
       console.log("submitting")
@@ -103,51 +108,56 @@ export default function RegisterPage(props) {
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={6}>
               <Card className={classes[cardAnimaton]}>
-                <form className={classes.form} validated="true" name="createPayment" id="createPayment">
-                    <CardHeader className={classes.cardHeader}>
-                        <h3 style={{fontWeight:"600"}}><a href="/dashboard"><ArrowBackIcon /></a> Crear enlace de pago</h3>
-                    </CardHeader>                 
-                    <CardBody>
-                    {isLoading
-                                ? <CircularProgress/>
-                                : <span></span>
-                    }
-                    <FormControl style={{width:"100%",paddingBottom:"10px"}}>
-                    <InputLabel htmlFor="description">Descripción</InputLabel>
-                        <OutlinedInput
-                            id="descriptioon"
-                            placeholder="Describe el producto/servicio"                            
-                            labelWidth={60}
-                            required
-                        />
-                    </FormControl>
-                    <FormControl style={{width:"100%",paddingBottom:"10px"}}>
-                        <InputLabel htmlFor="valor">Valor</InputLabel>
-                        <OutlinedInput
-                            id="valor"
-                            placeholder="Recuerda tener en cuenta nuestra comisión"
-                            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                            labelWidth={60}
-                            required
-                            type="number"
-                        />
-                    </FormControl>
+                  { url == "" 
+                   ?<form className={classes.form} validated="true" name="createPayment" id="createPayment">
+                        <CardHeader className={classes.cardHeader}>
+                            <h3 style={{fontWeight:"600"}}><a href="/dashboard"><ArrowBackIcon /></a> Crear enlace de pago</h3>
+                        </CardHeader>                 
+                        <CardBody>
+                        {isLoading
+                                    ? <CircularProgress/>
+                                    : <span></span>
+                        }
+                        <FormControl style={{width:"100%",paddingBottom:"10px"}}>
+                        <InputLabel htmlFor="description">Descripción</InputLabel>
+                            <OutlinedInput
+                                id="descriptioon"
+                                placeholder="Describe el producto/servicio"                            
+                                labelWidth={60}
+                                required
+                            />
+                        </FormControl>
+                        <FormControl style={{width:"100%",paddingBottom:"10px"}}>
+                            <InputLabel htmlFor="valor">Valor</InputLabel>
+                            <OutlinedInput
+                                id="valor"
+                                placeholder="Recuerda tener en cuenta nuestra comisión"
+                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                labelWidth={60}
+                                required
+                                type="number"
+                            />
+                        </FormControl>
+                        
+                      
+                    {Object.keys(errorMessage).map((keyName, i) => (
+                      <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>    
+                    ))}
                     
-                   
-                {Object.keys(errorMessage).map((keyName, i) => (
-                  <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>    
-                ))}
-                {isPaymentCreated
-                                ? <Alert severity="success">Pago creado, a tu correo llegará el enlace para que lo compartas con tu comprador</Alert>    
-                                : <span></span>
-                                }
-                  </CardBody>
-                  <CardFooter className={classes.cardFooter}>
-                    <Button color="primary" size="lg" type="submit">
-                      Crear Enlace
-                    </Button>
-                  </CardFooter>
-                </form>
+                      </CardBody>
+                      <CardFooter className={classes.cardFooter}>
+                        <Button color="primary" size="lg" type="submit">
+                          Crear Enlace
+                        </Button>
+                      </CardFooter>
+                    </form>
+                  : <div><CardHeader className={classes.cardHeader}>
+                      <h3 style={{fontWeight:"600"}}><a href="/dashboard"><ArrowBackIcon /></a> Enlace creado</h3>
+                    </CardHeader> 
+                    <CardBody> <label id="finalLink">{url}</label>
+                      </CardBody>
+                      <CardFooter className={classes.cardFooter}> <Button onClick={copyUrl} color="primary">Copiar Enlace</Button></CardFooter></div>
+                  }
               </Card>
             </GridItem>
           </GridContainer>
