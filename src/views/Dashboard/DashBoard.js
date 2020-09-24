@@ -45,7 +45,7 @@ const useStyles = makeStyles(styles);
       calculateTotal(payments)
     }
     const copyUrl = (id) => {
-      navigator.clipboard.writeText("http://localhost:3000/agree-payment/"+id);
+      navigator.clipboard.writeText("https://mps-web-qa.herokuapp.com/agree-payment/"+id);
     }
     const calculateTotal = (payments) => {
       let pendingPayments = 0
