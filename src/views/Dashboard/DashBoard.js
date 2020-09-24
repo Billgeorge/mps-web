@@ -27,7 +27,6 @@ import { getMerchantId } from 'service/AuthenticationService';
 import {consumeServiceGet} from 'service/ConsumeService'
 import {CORE_BASEURL, getPaymentState} from 'constant/index'
 
-require('dotenv').config()
 const useStyles = makeStyles(styles);
 
   
@@ -46,7 +45,9 @@ const useStyles = makeStyles(styles);
       calculateTotal(payments)
     }
     const copyUrl = (id) => {
-      navigator.clipboard.writeText(process.env.BASE_FE_URL+"agree-payment/"+id);
+      var getUrl = window.location;
+      var baseUrl = getUrl .protocol + "//" + getUrl.host + "/";
+      navigator.clipboard.writeText(baseUrl+"agree-payment/"+id);
     }
     const calculateTotal = (payments) => {
       let pendingPayments = 0
