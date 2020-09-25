@@ -56,6 +56,9 @@ const signupPageStyle = {
     padding: "20px 0",
     marginBottom: "15px"
   },
+  infoWork:{
+    fontWeight:"500"
+  },
   textArea:{
     border: "1px solid #c5c5c8",
     color: "rgba(0, 0, 0, 0.54)",
@@ -87,6 +90,12 @@ const signupPageStyle = {
     border: "0",
     borderRadius: "6px",
     justifyContent: "center !important"
+  },
+  section: {
+    backgroundColor: "white",
+    borderRadius: "5px",
+    color: "black",
+    textAlign: "center"
   },
   socialLine: {
     marginTop: "1rem",
