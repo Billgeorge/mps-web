@@ -20,6 +20,10 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import {getIdFromUrl} from 'util/UrlUtil'
+import InfoArea from "components/InfoArea/InfoArea.js";
+import Lock from "@material-ui/icons/Lock";
+import TrackChanges from "@material-ui/icons/TrackChanges";
+import EmojiEmotions from "@material-ui/icons/EmojiEmotions";
 
 import {consumeServiceGet} from 'service/ConsumeService'
 import {CORE_BASEURL} from 'constant/index'
@@ -210,6 +214,50 @@ export default function AgreePayment(props) {
               </Card>
             </GridItem>
           </GridContainer>
+          <div className={classes.section} id="howWork">
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={12} md={8}>
+          <h2 className={classes.title}>¿Cómo Funciona?</h2>
+        </GridItem>
+      </GridContainer>
+      <div>
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={4}>
+            <InfoArea
+              title="Custodia de pago"
+              description="Realiza el pago en la página actual. El pago no llega a tu vendedor hasta que no recibas el producto a satisfacción. Tu pago esta en custodia."
+              icon={Lock}
+              iconColor="info"
+              vertical
+              className={classes.infoWork}
+              descriptionStyle={{color:"black"}}
+            />
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <InfoArea
+              title="Haz seguimiento a tu pedido"
+              description="Una vez el pago sea realizado, el vendedor procede a despachar el pedido. Puedes ver el estado de tu pedido en el enlace que llegará a tu correo"
+              icon={TrackChanges}
+              iconColor="info"
+              vertical
+              descriptionStyle={{color:"black"}}
+              
+            />
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <InfoArea
+              title="Notifica la recepción de tu pedido a satisfacción"
+              description="Al llegar el pedido debes ingresar al enlace que te llega mediante correo y dar clic en el botón recibí a satisfacción."
+              icon={EmojiEmotions}
+              iconColor="info"
+              vertical
+              className={classes.infoWork}
+              descriptionStyle={{color:"black"}}
+            />
+          </GridItem>
+        </GridContainer>
+      </div>
+    </div>
         </div>
         <Footer whiteFont />
       </div>
