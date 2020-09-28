@@ -20,6 +20,7 @@ import styles from "assets/jss/material-kit-react/views/landingPage.js";
 // Sections for this page
 import ProductSection from "./Sections/ProductSection.js";
 import CallToAction from "./Sections/CallToAction.js";
+import Video from "./Sections/Video.js";
 import HowWork from "./Sections/HowWork.js";
 
 const dashboardRoutes = [];
@@ -67,9 +68,10 @@ export default function LandingPage(props) {
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}>
+          <Video />
           <ProductSection />
           <CallToAction />
-          <HowWork />          
+          <HowWork />               
         </div>
       </div>
       <Footer />

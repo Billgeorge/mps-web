@@ -27,6 +27,17 @@ const callToActionStyle = {
   },
   form:{
     textAlign: "center"
+  },
+  reactPLayer:{
+    position: "absolute",
+    top: "0",
+    left: "0",
+    
+  },
+  reactPlayerWrap:{
+    position: "relative",
+    paddingTop: "5%",
+    minHeight:"500px"
   }
 };
 
