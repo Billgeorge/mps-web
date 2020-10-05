@@ -2,8 +2,7 @@ import { title } from "assets/jss/material-kit-react.js";
 
 const callToActionStyle = {
   section: {
-    backgroundColor: "#fffff1",
-    boxShadow: "0 0 10px #f7c78bbd",
+    backgroundColor: "#f5f7fa",    
     padding: "30px 0"
   },
   title: {
