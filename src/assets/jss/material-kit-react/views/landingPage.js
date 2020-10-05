@@ -22,7 +22,7 @@ const landingPageStyle = {
     background: "linear-gradient(90deg, rgba(0,52,97,1) 0%, rgba(3,137,251,1) 25%, rgba(133,195,247,1) 100%)" 
   },
   imgHeader:{
-    width:"100%"
+    width:"390px"
   },
   title: {
     ...title,
@@ -56,6 +56,9 @@ const landingPageStyle = {
     borderRadius: "6px",
     boxShadow:
       "0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)"
+  },
+  headerText:{
+    paddingLeft:"8%"
   },
   whatsapp:{
     position:"fixed",
@@ -104,13 +107,16 @@ const landingPageStyle = {
       maxHeight : "55vh"
     }
   },
-  '@media(min-width: 900px)':{
+  '@media(min-width: 1025px)':{
     styleHeader:{
       maxHeight:"90vh"
     },
     headerContainer : {
-      height: "90h",
+      height: "90vh",
       maxHeight : "90vh"
+    },
+    headerText:{
+      paddingLeft:"20%"
     }
   }
 };

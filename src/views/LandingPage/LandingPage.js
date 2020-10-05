@@ -50,7 +50,7 @@ export default function LandingPage(props) {
       />
       <GridContainer className ={classes.headerContainer}>
         <div className={classes.containerH}>
-          <GridContainer style={{paddingLeft:"8%"}}>
+          <GridContainer className ={classes.headerText}>
             <GridItem xs={12} sm={12} md={6}>
               <h1 className={classes.title}>La forma segura y confiable de recibir tus pagos en internet</h1>
               <h4>

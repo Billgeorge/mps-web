@@ -14,7 +14,7 @@ import Card from "components/Card/Card.js";
 import styles from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.js";
 
 import team1 from "assets/img/faces/avatar.jpg";
-import cto from "assets/img/CTO.jpeg";
+import cto from "assets/img/faces/cto.jpg";
 
 const useStyles = makeStyles(styles);
 
