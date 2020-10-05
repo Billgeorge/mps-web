@@ -9,7 +9,7 @@ import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "@material-ui/core/Tooltip";
 
 // @material-ui/icons
-import { SentimentVerySatisfied, ContactSupport } from "@material-ui/icons";
+import { SentimentVerySatisfied, Accessibility } from "@material-ui/icons";
 
 // core components
 
@@ -24,12 +24,19 @@ export default function HeaderLinks(props) {
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
-      <Button
-          href="/registro"
-          color="transparent"          
-          className={classes.navLink}
-        >
-          <SentimentVerySatisfied className={classes.icons} /> Registrarse
+        <Button
+            href="/registro"
+            color="transparent"          
+            className={classes.navLink}
+          >
+            <SentimentVerySatisfied className={classes.icons} /> Registrarse
+        </Button>
+        <Button
+            href="/login"
+            color="transparent"          
+            className={classes.navLink}
+          >
+            <Accessibility className={classes.icons} /> Iniciar Sesión
         </Button>
       </ListItem>      
       <ListItem className={classes.listItem}>

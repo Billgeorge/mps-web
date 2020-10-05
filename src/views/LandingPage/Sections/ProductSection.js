@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
 import Payment from "@material-ui/icons/Payment";
 import MoneyOff from "@material-ui/icons/MoneyOff";
-import Money from "@material-ui/icons/Money";
+import ThumbUp from "@material-ui/icons/ThumbUp";
 // core components
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -24,25 +24,28 @@ export default function ProductSection() {
           <h2 className={classes.title}>La confianza y seguridad</h2>
           <h5 className={classes.description}>
             Son algunos de los factores más importantes que influyen en la decisión de compra de los usuarios.
-            Por esta razón nuestro servicio te permitirá cerrar más ventas
+            Por esta razón, nuestro servicio te permitirá cerrar más ventas
           </h5>
         </GridItem>
       </GridContainer>
       <div>
         <GridContainer>
+        <GridItem xs={12} sm={12} md={12}>
+          <h2 className={classes.title}>Beneficios</h2>
+        </GridItem>
           <GridItem xs={12} sm={12} md={4}>
             <InfoArea
-              title="Medios de Pago"
+              title="Recibe cualquier medio de Pago"
               description="Recibe los pagos de tus pedidos con tarjeta de crédito, débito, efecty o PSE"
               icon={Payment}
-              iconColor="info"
+              iconColor="success"
               vertical
             />
           </GridItem>
           <GridItem xs={12} sm={12} md={4}>
             <InfoArea
-              title="Evita gastos logísticos adicionales"
-              description="Solo procedes a despachar el pedido una vez te confirmemmos el pago ha sido realizado. De esta manera no debes hacer esfuerzos adicionales logísticos para concretar la venta."
+              title="Somos una contraentrega digital"
+              description="Aunque el comprador paga antes de recibir el producto, dicho pago solo será entregado al vendedor cuando el comprador notifique la recepción a satisfacción del producto."
               icon={MoneyOff}
               iconColor="success"
               vertical
@@ -50,10 +53,10 @@ export default function ProductSection() {
           </GridItem>
           <GridItem xs={12} sm={12} md={4}>
             <InfoArea
-              title="Liquidez"
-              description="Una vez despaches el pedido y el cliente lo reciba, el dinero pasará a tu poder en un máximo de 2 días hábiles. La máxima duración del proceso será de 8 días hábiles. "
-              icon={Money}
-              iconColor="danger"
+              title="Incrementa tus ventas"
+              description="Al brindar confianza y seguridad a tus clientes mediante nuestros servicios, estarán más dispuestos a comprarte."
+              icon={ThumbUp}
+              iconColor="success"
               vertical
             />
           </GridItem>

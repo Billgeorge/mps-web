@@ -13,15 +13,18 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
-import Parallax from "components/Parallax/Parallax.js";
 
 import styles from "assets/jss/material-kit-react/views/landingPage.js";
 
 // Sections for this page
 import ProductSection from "./Sections/ProductSection.js";
 import CallToAction from "./Sections/CallToAction.js";
-import Video from "./Sections/Video.js";
+import Trust from '../../assets/img/trust.jpg';
 import HowWork from "./Sections/HowWork.js";
+import TeamSection from "./Sections/TeamSection.js";
+import Partners from "./Sections/Partners.js";
+
+import WhatsApp from "@material-ui/icons/WhatsApp";
 
 const dashboardRoutes = [];
 
@@ -32,6 +35,7 @@ export default function LandingPage(props) {
   const { ...rest } = props;
   return (
     <div>
+      <a href="https://api.whatsapp.com/send?phone=573014857108?text=Me%20gustaría%20conocer%20%20mas%20detalles%20del%20servicio" class={classes.whatsapp} target="_blank"> <WhatsApp class={classes.whatsappIcon}/></a>
       <Header
         color="transparent"
         routes={dashboardRoutes}
@@ -44,34 +48,39 @@ export default function LandingPage(props) {
         }}
         {...rest}
       />
-      <Parallax filter image={require("assets/img/landing-bg.jpg")}>
-        <div className={classes.container}>
-          <GridContainer>
+      <GridContainer className ={classes.headerContainer}>
+        <div className={classes.containerH}>
+          <GridContainer style={{paddingLeft:"8%"}}>
             <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title}>Genera Confianza y Seguridad a Tus Clientes Sin Usar ContraEntrega</h1>
+              <h1 className={classes.title}>La forma segura y confiable de recibir tus pagos en internet</h1>
               <h4>
-                Con nuestro servicio aseguras el pago de la compra por adelantado y 
-                puedes despachar con tranquilidad
+                Con nuestro servicio, aseguras el pago de la compra por adelantado y 
+                das confianza y seguridad a tu cliente
               </h4>
-              <br />
+              
               <Button
                 color="success"
                 size="lg"
                 href="/registro"                
                 rel="noopener noreferrer"
               >
-               <i className="fas  fa-hand-point-right"></i> Usar Servicio  
+               <i className="fas  fa-hand-point-right"></i> Regístrate gratis
               </Button>
             </GridItem>
-          </GridContainer>
+            <GridItem xs={12} sm={12} md={6}>
+              <img src={Trust} className={classes.imgHeader} alt="" />
+            </GridItem>
+          </GridContainer>          
         </div>
-      </Parallax>
+        <div className={classes.styleHeader}></div>
+      </GridContainer>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}>
-          <Video />
           <ProductSection />
           <CallToAction />
-          <HowWork />               
+          <HowWork />
+          <Partners />
+          <TeamSection />               
         </div>
       </div>
       <Footer />

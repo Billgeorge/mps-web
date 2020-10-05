@@ -25,7 +25,8 @@ function App() {
   
 //<Route path="/dashboard" component={dashboard} />
   return (
-    <Router history={hist}>
+    
+    <Router history={hist}>      
     <Switch>
         <ProtectRoute path='/profile-page' component={ProfilePage} />      
         <ProtectRoute path='/create-payment' component={CreatePayment}  />                
