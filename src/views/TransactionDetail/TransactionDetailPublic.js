@@ -51,7 +51,7 @@ const useStyles = makeStyles(styles);
       document.disputeForm.onsubmit = function(event){
         console.log(event.submitter.outerText)
         event.preventDefault()
-        if(event.submitter.outerText = "CREAR DISPUTA"){
+        if(event.submitter.outerText == "CREAR DISPUTA"){
           console.log("Creando disputa")
          updatePaymentState(5)
         }else{
