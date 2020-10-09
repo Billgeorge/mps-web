@@ -49,9 +49,15 @@ const useStyles = makeStyles(styles);
 
     const renderForm = () =>{
       document.disputeForm.onsubmit = function(event){
-        console.log("creating disputed process")
+        console.log(event.submitter.outerText)
         event.preventDefault()
-        updatePaymentState(5)   
+        if(event.submitter.outerText == "CREAR DISPUTA"){
+          console.log("Creando disputa")
+         updatePaymentState(5)
+        }else{
+          console.log("Notificando recibido")
+          updatePaymentState(7)
+        }
       }
       let htmlInputs = document.forms["disputeForm"].getElementsByTagName("input");
       console.log(htmlInputs)
@@ -135,7 +141,7 @@ const useStyles = makeStyles(styles);
             ?<Grid item >
                     <form validated="true" name="disputeForm" id="disputeForm">
                       <GridContainer>
-                        <GridItem xs={12} sm={12} md={6}>
+                        <GridItem xs={12} sm={4} md={4}>
                           
                         
                           <FormControl style={{width:"100%",paddingBottom:"10px"}}>
@@ -148,17 +154,16 @@ const useStyles = makeStyles(styles);
                               type="text"
                             />
                           </FormControl>
-                          
-                        
-                          
                         </GridItem>
-                        <GridItem xs={12} sm={12} md={6}  >
-                        
-                          <Button variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
+                        <GridItem xs={6} sm={4} md={4}>
+                          <Button value="dispute" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
                             Crear disputa
                           </Button>
-                          
-                        
+                        </GridItem>
+                        <GridItem xs={6} sm={4} md={4}>
+                          <Button value ="receive" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
+                            Ya Recibí
+                          </Button>
                         </GridItem>
                     </GridContainer>
                     </form>
