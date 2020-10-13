@@ -6,6 +6,7 @@ import { createBrowserHistory } from "history";
 
 // pages for this product
 import LandingPage from "views/LandingPage/LandingPage.js";
+import Checkout from "views/Checkout/Checkout.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import DashBoard  from "views/Dashboard/DashBoard.js";
 import LoginPage from "views/LoginPage/LoginPage.js";
@@ -37,6 +38,7 @@ function App() {
         <Route path="/registro" component={RegisterPage} />   
         <Route path="/login" component={LoginPage} /> 
         <Route path="/terms" component={TermsCondition} />
+        <Route path="/checkout" component={Checkout} />
         <Route path="/" component={LandingPage} />      
     </Switch>
   </Router>
