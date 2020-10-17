@@ -66,7 +66,7 @@ export default function AgreePayment(props) {
 
   React.useEffect(() => changeMessageValidation(), []);
   const getPaymentData = () => {
-    const idPayment = getIdFromUrl()
+    const idPayment = getIdFromUrl().split('#')[0]
     const url = `${CORE_BASEURL}/payment/${idPayment}`
     consumeServiceGet(callBackGet,callBackSuccessGet,url)
   }
@@ -94,7 +94,7 @@ export default function AgreePayment(props) {
       setErrorMessage({})
       const form = event.currentTarget;      
       consumerService({    
-        idPayment: getIdFromUrl(),
+        idPayment: getIdFromUrl().split('#')[0],
         customer: {
           numberId: document.getElementById("id").value,
          name: document.getElementById("name").value,
