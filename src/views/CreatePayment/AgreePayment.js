@@ -94,7 +94,7 @@ export default function AgreePayment(props) {
       setErrorMessage({})
       const form = event.currentTarget;      
       consumerService({    
-        idPayment: getIdFromUrl(),
+        idPayment: getIdFromUrl().split('#')[0],
         customer: {
           numberId: document.getElementById("id").value,
          name: document.getElementById("name").value,
