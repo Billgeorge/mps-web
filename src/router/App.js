@@ -36,7 +36,7 @@ function App() {
         <Route path='/agree-payment' component={AgreePayment} />  
         <Route path="/registro" component={RegisterPage} />   
         <Route path="/login" component={LoginPage} /> 
-        <Route path="/terms" component={TermsCondition} />
+        <Route path="/terms" component={TermsCondition} />        
         <Route path="/" component={LandingPage} />      
     </Switch>
   </Router>

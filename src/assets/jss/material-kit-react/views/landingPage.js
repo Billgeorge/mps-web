@@ -107,7 +107,7 @@ const landingPageStyle = {
       maxHeight : "55vh"
     }
   },
-  '@media(min-width: 1025px)':{
+  /*'@media(min-width: 1025px)':{
     styleHeader:{
       maxHeight:"90vh"
     },
@@ -117,6 +117,22 @@ const landingPageStyle = {
     },
     headerText:{
       paddingLeft:"20%"
+    }
+  },*/
+  '@media(min-width: 1025px)':{
+    styleHeader:{
+      maxHeight:"90vh"
+    },
+    headerContainer : {
+      height: "90vh",
+      maxHeight : "90vh"
+    },
+    containerH:{
+      maxWidth:"100%"
+    },
+    headerText:{
+      paddingLeft:"0",
+      marginLeft:"15%"
     }
   }
 };

@@ -35,7 +35,7 @@ export default function LandingPage(props) {
   const { ...rest } = props;
   return (
     <div>
-      <a href="https://api.whatsapp.com/send?phone=573014857108?text=Me%20gustaría%20conocer%20%20mas%20detalles%20del%20servicio" class={classes.whatsapp} target="_blank"> <WhatsApp class={classes.whatsappIcon}/></a>
+      <a href="https://api.whatsapp.com/send?phone=573107626875?text=Me%20gustaría%20conocer%20%20mas%20detalles%20del%20servicio" class={classes.whatsapp} target="_blank"> <WhatsApp class={classes.whatsappIcon}/></a>
       <Header
         color="transparent"
         routes={dashboardRoutes}
