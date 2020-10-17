@@ -1,0 +1,45 @@
+/* -------------------------------- 
+
+File#: _1_diagonal-section
+Title: Diagonal Section
+Descr: Section with diagonal edges
+Usage: codyhouse.co/license
+
+-------------------------------- */
+
+:root {
+    --diagonal-section-offset: 50px;
+  }
+
+  .h1-title{
+    letter-spacing: 0.2px;
+    font-weight: 700;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 48px;
+  }
+  
+  .diagonal-section {
+    position: relative;
+    //z-index: 1;
+    //background-size: cover;
+    //background-repeat: no-repeat;
+    //background-position: center;
+    background-color: #fff;    
+    width: 100%;
+    //min-width: 1000px;
+    height: 300px;
+  }
+  .title{
+    left: 20%;
+    top: 150px;
+    position:absolute;
+    z-index:2;
+    color:white
+  }
+  
+  @supports (clip-path: inset(50%)) {
+    .diagonal-section, .diagonal-section-top.diagonal-section-bottom {
+      padding:0;
+      clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 0% 100%);
+    }    
+  }
