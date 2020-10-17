@@ -19,7 +19,7 @@ import styles from "assets/jss/material-kit-react/views/landingPage.js";
 // Sections for this page
 import ProductSection from "./Sections/ProductSection.js";
 import CallToAction from "./Sections/CallToAction.js";
-import Trust from '../../assets/img/trust.jpg';
+import Trust from '../../assets/img/checkout2.png';
 import HowWork from "./Sections/HowWork.js";
 import TeamSection from "./Sections/TeamSection.js";
 import Partners from "./Sections/Partners.js";

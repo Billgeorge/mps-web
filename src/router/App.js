@@ -16,6 +16,7 @@ import TransactionDetailPublic from "views/TransactionDetail/TransactionDetailPu
 import CreatePayment from "views/CreatePayment/CreatePayment";
 import AgreePayment from "views/CreatePayment/AgreePayment";
 import TermsCondition from "views/TermsConditions/TermsConditions";
+import LandingCheckout from "views/LandingCheckout/LandingCheckout";
 
 
 
@@ -38,7 +39,7 @@ function App() {
         <Route path="/registro" component={RegisterPage} />   
         <Route path="/login" component={LoginPage} /> 
         <Route path="/terms" component={TermsCondition} />
-        <Route path="/checkout" component={Checkout} />
+        <Route path="/checkout" component={LandingCheckout} />
         <Route path="/" component={LandingPage} />      
     </Switch>
   </Router>
