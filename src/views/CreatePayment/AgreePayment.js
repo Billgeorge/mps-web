@@ -148,7 +148,7 @@ export default function AgreePayment(props) {
                                 ? <CircularProgress/>
                                 : <span></span>
                     }
-                    <span><b>Somos una contraentrega digítal. El vendedor no recibirá el pago hasta que no recibas tu pedido.</b> <a href="#howWork"> ->Ver como funciona</a></span><br/>
+                    <span><b>Somos una contraentrega digítal. El vendedor no recibirá el pago hasta que recibas tu pedido.</b> <a href="#howWork"> ->Ver como funciona</a></span><br/>
                     <span>Has recibido una solicitud de pago por el valor de <b>{payment.amount}</b> de <b>{merchant.name}</b></span>
                     <FormControl style={{width:"100%",paddingBottom:"10px"}}>
                     <InputLabel htmlFor="id">Cédula</InputLabel>
