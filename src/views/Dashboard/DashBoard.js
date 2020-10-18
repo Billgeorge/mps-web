@@ -76,7 +76,7 @@ const useStyles = makeStyles(styles);
 
     const getPaymentsForMerchant = () => {
       const merchantId = getMerchantId()
-      const url = `${CORE_BASEURL}/payment/merchant/${merchantId}`
+      const url = `${CORE_BASEURL}/payment/merchant?merchantId=${merchantId}`
       consumeServiceGet(callBack,callBackSuccess,url)   
 
     }
