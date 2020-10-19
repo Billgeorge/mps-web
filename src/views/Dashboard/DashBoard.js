@@ -22,10 +22,16 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Footer from "components/Footer/Footer.js";
-import { getMerchantId } from 'service/AuthenticationService';
+import { getMerchantId,getMerchantName } from 'service/AuthenticationService';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+import {getLegibleDate} from 'util/DateUtil'
 
 import {consumeServiceGet} from 'service/ConsumeService'
-import {CORE_BASEURL, getPaymentState} from 'constant/index'
+import {CORE_BASEURL, getPaymentState, getPaymentIdState} from 'constant/index'
 
 const useStyles = makeStyles(styles);
 
@@ -35,10 +41,32 @@ const useStyles = makeStyles(styles);
     const [payments, setPayments] = React.useState([]);
     const [numberPaymentPaid, setNumberPaymentPaid] = React.useState(0);
     const [amounPaymentPaid, setAmountPaymentPaid] = React.useState(0);
-    const [pendingPayments, setPendingPayments] = React.useState(0);
+    const [pendingPayments, setPendingPayments] = React.useState('$ 0');
     const [errorMessage, setErrorMessage] = React.useState("");    
 
     React.useEffect(() => getPaymentsForMerchant(), []);
+
+    const [duration, setDuration] = React.useState(15);
+
+    const [paymentState, setPaymentState] = React.useState(0);
+
+    const handleChangeDuration = (event) => {
+      setAmountPaymentPaid('$ 0')
+      setPendingPayments(0)
+      setNumberPaymentPaid(0)
+      setErrorMessage("")
+      setDuration(event.target.value);
+      getPaymentsForMerchant('duration', event.target.value)
+    };
+
+    const handleChangePaymentState = (event) => {
+      setAmountPaymentPaid('$ 0')
+      setPendingPayments(0)
+      setNumberPaymentPaid(0)
+      setErrorMessage("")
+      setPaymentState(event.target.value);
+      getPaymentsForMerchant('paymentState',event.target.value)
+    };
 
     const callBackSuccess = (payments) =>{
       setPayments(payments)
@@ -53,32 +81,58 @@ const useStyles = makeStyles(styles);
       let pendingPayments = 0
       let paidPayments = 0
       let valuePaidPayments = 0
+      let paymentStateToCompare = 3
+      let paymentStateInput = document.getElementById('estado')
+      if(paymentStateInput.textContent != 'Ninguno' && paymentStateInput.textContent != "​"){
+        paymentStateToCompare=getPaymentIdState(paymentStateInput.textContent)
+      }
       for (var i = 0; i < payments.length; i++) {
-        if(payments[i].idState == 3){
+        if(payments[i].idState == paymentStateToCompare){
           paidPayments = paidPayments +1
           valuePaidPayments = valuePaidPayments + payments[i].amount
         } else if (payments[i].idState < 3){
           pendingPayments = pendingPayments + 1
         }    
       }
-      setAmountPaymentPaid(valuePaidPayments)
+      setAmountPaymentPaid(formatter.format(valuePaidPayments))
       setPendingPayments(pendingPayments)
       setNumberPaymentPaid(paidPayments)
 
     }
+
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2
+    })
+
     const callBack = (msg) => {
+      setPayments([])
       if(msg==404){
-        setErrorMessage("No hay transacciones para mostrar")
+        setErrorMessage("No hay transacciones para mostrar")        
       }else{
         setErrorMessage("Error Cargando Transacciones")
       }      
     }
 
-    const getPaymentsForMerchant = () => {
+    const getPaymentsForMerchant = (filter,value) => {
       const merchantId = getMerchantId()
-      const url = `${CORE_BASEURL}/payment/merchant?merchantId=${merchantId}`
-      consumeServiceGet(callBack,callBackSuccess,url)   
+      console.log('filter '+filter)
+      console.log('value '+value)
+      let url=`${CORE_BASEURL}/payment/merchant?merchantId=${merchantId}`
+      if(filter =='duration'){
+        url=`${url}&durationInDays=${value}`
+        if(paymentState!=0){
+          url=`${url}&paymentState=${paymentState}`
+        }
+      }else{
+        url=`${url}&durationInDays=${duration}`
+      }
+      if(filter == 'paymentState' && value!=-1){
+        url=`${url}&paymentState=${value}`
+      }
 
+      consumeServiceGet(callBack,callBackSuccess,url)
     }
       
     const classes = useStyles();
@@ -91,6 +145,7 @@ const useStyles = makeStyles(styles);
           color="transparent"
           brand="MiPagoSeguro"
           rightLinks={<HeaderLinksSession />}
+          
           {...rest}
         />
         <div
@@ -108,7 +163,7 @@ const useStyles = makeStyles(styles);
         | <GridItem xs={12} sm={12} md={12} className={classes.grid}>        
             <Grid container className={classes.box}  spacing={3}>               
                 <Grid item xs={12} sm={12} md={6} >
-                    Hola Tienda de pruebas, Bienvenido a MiPagoSeguro
+                    Hola {getMerchantName()}, Bienvenido a MiPagoSeguro
                 </Grid>
                 <Grid container xs={12} sm={12} md={6} justify="center" alignItems="center"> 
                     
@@ -126,14 +181,62 @@ const useStyles = makeStyles(styles);
                 </Grid>                   
             </Grid>
          </GridItem>
-         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={12} className={classes.grid}>
                 <Grid container className={classes.box} spacing={3}>                   
-        <Grid item ><span>Dinero Transacciones pagadas:</span> <br/><span className={classes.valueText}>{amounPaymentPaid}</span></Grid>
+                <Grid item xs={12} sm={12} md={12}>Filtrar Transacciones:</Grid>
+                    <Grid item xs={12} sm={12} md={6} style={{textAlign:"center"}}>
+                      <FormControl variant="outlined" style ={{width:"180px"}}>
+                        <InputLabel id="demo-simple-select-outlined-label">Estado</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-outlined-label"
+                          id="estado"
+                          value={paymentState}
+                          onChange={handleChangePaymentState}
+                          label="Estado"
+                        >
+                          <MenuItem value={-1}>
+                            <em>Ninguno</em>
+                          </MenuItem>
+                          <MenuItem value={1}>Creado</MenuItem>
+                          <MenuItem value={2}>Acordado</MenuItem>
+                          <MenuItem value={3}>Pagado</MenuItem>
+                          <MenuItem value={4}>Despachado</MenuItem>
+                          <MenuItem value={5}>Disputa</MenuItem>
+                          <MenuItem value={6}>Cerrado</MenuItem>
+                          <MenuItem value={7}>Recibido</MenuItem>                          
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={6} style={{textAlign:"center"}} >
+                      <FormControl variant="outlined" style={{width:"180px"}}>
+                          <InputLabel id="demo-simple-select-outlined-label">Tiempo</InputLabel>
+                          <Select
+                            labelId="demo-simple-select-outlined-label"
+                            id="demo-simple-select-outlined"
+                            value={duration}
+                            onChange={handleChangeDuration}
+                            label="Tiempo"
+                          >
+                            <MenuItem value={0}>
+                              <em>Ninguno</em>
+                            </MenuItem>
+                            <MenuItem value={10}>últimos 10 días</MenuItem>
+                            <MenuItem value={20}>últimos 20 días</MenuItem>
+                            <MenuItem value={30}>últimos 30 días</MenuItem>
+                            <MenuItem value={60}>últimos 60 días</MenuItem>
+                          </Select>
+                      </FormControl>
+                    </Grid>
                 </Grid>   
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
                 <Grid container className={classes.box} spacing={3}>                   
-        <Grid item ><span>Transacciones pagadas:</span> <br/><span className={classes.valueText}>{numberPaymentPaid}</span></Grid>
+        <Grid item ><span>Dinero Transacciones {paymentState!=0 && paymentState!=-1?getPaymentState(paymentState)+'s':'pagadas'}:</span> <br/><span className={classes.valueText}>{amounPaymentPaid}</span></Grid>
+                </Grid>   
+         </GridItem>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
+                <Grid container className={classes.box} spacing={3}>                   
+        <Grid item ><span>Transacciones {paymentState!=0 && paymentState!=-1?getPaymentState(paymentState)+'s':'pagadas'}:</span> <br/><span className={classes.valueText}>{numberPaymentPaid}</span></Grid>
                 </Grid>   
          </GridItem>   
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
@@ -167,7 +270,9 @@ const useStyles = makeStyles(styles);
                             <TableCell align="right">{row.amount}</TableCell>
                             <TableCell align="right"><Button onClick={() => copyUrl(row.id)} color="primary">Copiar Enlace</Button></TableCell>
                             <TableCell align="right">{getPaymentState(row.idState)}</TableCell>
-                            <TableCell align="right">{row.creationDate}</TableCell>
+                            <TableCell align="right">{
+                              getLegibleDate(row.creationDate)
+                            }</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
