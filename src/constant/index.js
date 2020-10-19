@@ -19,3 +19,22 @@ export const getPaymentState = (idState) => {
             return "Recibido"
     }
 }
+
+export const getPaymentIdState = (state) => {
+    switch(state){
+        case "Creado" :
+            return  1      
+        case "Acordado":
+            return 2
+        case "Pagado":
+            return 3
+        case "Despachado":
+            return 4
+        case "Disputa":
+            return 5
+        case "Cerrado":
+            return 6
+        case "Recibido":
+            return 7
+    }
+}
