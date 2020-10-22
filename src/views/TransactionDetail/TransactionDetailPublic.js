@@ -40,35 +40,39 @@ const useStyles = makeStyles(styles);
 
     const callBackSuccessGet = (payment) =>{
       setPayment(payment)      
-      renderForm()     
+      renderForm(payment)     
     }
 
     const callBackError = () => {
+      console.log("error error")
       setIsSuccess(false)
     }
 
-    const renderForm = () =>{
-      document.disputeForm.onsubmit = function(event){
-        console.log(event.submitter.outerText)
-        event.preventDefault()
-        if(event.submitter.outerText == "CREAR DISPUTA"){
-          console.log("Creando disputa")
-         updatePaymentState(5)
-        }else{
-          console.log("Notificando recibido")
-          updatePaymentState(7)
+    const renderForm = (paymentIn) =>{      
+      if(paymentIn.idState >2 && paymentIn.idState<5){
+        console.log('render form')
+        document.disputeForm.onsubmit = function(event){
+          console.log(event.submitter.outerText)
+          event.preventDefault()
+          if(event.submitter.outerText == "CREAR DISPUTA"){
+            console.log("Creando disputa")
+          updatePaymentState(5)
+          }else{
+            console.log("Notificando recibido")
+            updatePaymentState(7)
+          }
         }
-      }
-      let htmlInputs = document.forms["disputeForm"].getElementsByTagName("input");
-      console.log(htmlInputs)
-      for(let input of htmlInputs){
-        console.log(input.item)
-       input.oninvalid = function(e) {
-          e.target.setCustomValidity("Este campo es obligatorio o invalido");
-      }
-      input.oninput = function(e) {
-        e.target.setCustomValidity("");
-      };
+        let htmlInputs = document.forms["disputeForm"].getElementsByTagName("input");
+        console.log(htmlInputs)
+        for(let input of htmlInputs){
+          console.log(input.item)
+          input.oninvalid = function(e) {
+              e.target.setCustomValidity("Este campo es obligatorio o invalido");
+          }
+          input.oninput = function(e) {
+            e.target.setCustomValidity("");
+          };
+        }
       }
     }
 
@@ -136,7 +140,7 @@ const useStyles = makeStyles(styles);
                 </Grid>   
          </GridItem>         
          <GridItem xs={12} sm={12} md={8} className={classes.grid}>
-            <Grid container className={classes.boxDetail} spacing={3} justify="center">                   
+            <Grid container className={classes.boxDetail, classes.deliveryForm} spacing={3} justify="center">                   
             { payment.idState >2 && payment.idState<5
             ?<Grid item >
                     <form validated="true" name="disputeForm" id="disputeForm">
@@ -174,7 +178,11 @@ const useStyles = makeStyles(styles);
             </GridItem>
             {isSuccess == true
                                   ? <Alert severity="success">Tu solicitud ha sido procesada correctamente, si deseas ver el nuevo estado actualiza la pantalla </Alert>    
-                                  : <span></span>            }                                  
+                                  : <span></span>            }
+            {isSuccess == false
+                                ? <Alert severity="error">Hubo un problema procesando tu solicitud, por favor contacta al administrador </Alert>    
+                                : <span></span>
+            }                                  
             
         </GridContainer>
         </div>

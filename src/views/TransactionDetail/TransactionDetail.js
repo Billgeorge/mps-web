@@ -16,6 +16,10 @@ import Alert from '@material-ui/lab/Alert';
 import HeaderLinksSession from "components/Header/HeaderLinksSession.js";
 import Header from "components/Header/Header.js";
 
+import FormControl from '@material-ui/core/FormControl';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+
 
 const useStyles = makeStyles(styles);
   
@@ -29,39 +33,61 @@ const useStyles = makeStyles(styles);
     const { ...rest } = props;
 
     const callBackSuccessGet = (payment) =>{
-      setPayment(payment)     
+      console.log('Success get')
+      setPayment(payment)
+      renderForm(payment)     
     }
 
     const callBackSuccessPatch = () =>{
+      console.log('Success path')
       setIsSuccess(true)     
+    }
+
+    const callBackError = () => {
+      console.log('error error')
+      setIsSuccess(false)
     }
 
     
     React.useEffect(() => getPaymentData(), []);
+
     const getPaymentData = () => {
+      setIsSuccess(null)
       const idPayment = getIdFromUrl()
       const url = `${CORE_BASEURL}/payment/${idPayment}`
       consumeServiceGet(callBackError,callBackSuccessGet,url)
-    }
-
-    const callBackError = () => {
-      setIsSuccess(false)
-    }
+    }    
     
     const updatePaymentState = (state) =>{
       const url = `${CORE_BASEURL}/payment/updateState`
       consumeServicePatch({
         paymentId:getIdFromUrl(),
-        state:state
+        state:state,
+        guideNumber: document.getElementById("guideNumber").value,
+        transportCompany: document.getElementById("transporter").value
       },callBackError,callBackSuccessPatch,url)
     }
-
-    const markAsShipped = () => {
-      updatePaymentState(4)
-    }
-
-    const markAsDisputed = () => {
-      updatePaymentState(5)
+    const renderForm = (paymentIn) =>{
+      if(paymentIn.idState === 3){
+        document.deliveryForm.onsubmit = function(event){
+          console.log(event.submitter.outerText)
+          event.preventDefault()        
+          console.log("Despachado")
+          updatePaymentState(4)
+        
+        }
+        let htmlInputs = document.forms["deliveryForm"].getElementsByTagName("input");
+        
+        for(let input of htmlInputs){
+          console.log(input.item)
+          input.oninvalid = function(e) {
+              e.target.setCustomValidity("Este campo es obligatorio o invalido");
+          }
+          input.oninput = function(e) {
+            e.target.setCustomValidity("");
+          };
+        }
+      }
     }
   
     return (
@@ -111,23 +137,48 @@ const useStyles = makeStyles(styles);
         <Grid item ><span>Estado:</span> <br/><span className={classes.valueTextDetail}>{getPaymentState(payment.idState)}</span></Grid>
                 </Grid>   
          </GridItem>
-         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
-         <Grid container className={classes.boxDetail} spacing={3} justify="center">                   
-                   <Grid item >
+         <GridItem xs={12} sm={12} md={8} className={classes.grid}>
+         <Grid container className={classes.boxDetail, classes.deliveryForm} spacing={3}  justify="center" >                   
+                   
                    { payment.idState === 3
-                  ?<Button variant="contained" style={{padding:"20px"}} color="primary" size="large" onClick={markAsShipped}>Marcar como despachado</Button>
+                  ?<GridItem>
+                    <form validated="true" name="deliveryForm" id="deliveryForm">
+                     
+                      <GridContainer>
+                        <GridItem xs={6} sm={4} md={4}>
+                          <FormControl style={{width:"100%",paddingBottom:"10px"}}>
+                            <InputLabel htmlFor="guideNumber">Número de Guía</InputLabel>
+                            <OutlinedInput
+                              id="guideNumber"
+                              required
+                              placeholder="Ingresa número de guia"                                 
+                              labelWidth={60}
+                              type="number"
+                            />
+                          </FormControl>
+                        </GridItem>
+                        <GridItem xs={6} sm={4} md={4}>
+                        <FormControl style={{width:"100%",paddingBottom:"10px"}}>
+                            <InputLabel htmlFor="transporter">Transportadora</InputLabel>
+                            <OutlinedInput
+                              id="transporter"
+                              required
+                              placeholder="Ingresa la transportadora"                                 
+                              labelWidth={60}
+                              type="text"
+                            />
+                          </FormControl>
+                        </GridItem>
+                        <GridItem xs={12} sm={4} md={4}>
+                          <Button value ="receive" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
+                            Despachado
+                          </Button>
+                        </GridItem>
+                    </GridContainer>
+                    </form>
+                    </GridItem>
                   :<span></span>
                   }
-            </Grid></Grid>   
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
-            <Grid container className={classes.boxDetail} spacing={3} justify="center">                   
-                <Grid item >
-                  { payment.idState >2 && payment.idState<5
-                  ?<Button variant="contained" style={{padding:"20px"}} color="primary" size="large" onClick={markAsDisputed} >Crear disputa sobre venta</Button>
-                  :<span></span>
-                  }                    
-                </Grid>
             </Grid>   
           </GridItem>
           <GridItem xs={12} sm={12} md={12} className={classes.grid}>
