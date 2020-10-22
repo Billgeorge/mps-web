@@ -40,35 +40,39 @@ const useStyles = makeStyles(styles);
 
     const callBackSuccessGet = (payment) =>{
       setPayment(payment)      
-      renderForm()     
+      renderForm(payment)     
     }
 
     const callBackError = () => {
+      console.log("error error")
       setIsSuccess(false)
     }
 
-    const renderForm = () =>{
-      document.disputeForm.onsubmit = function(event){
-        console.log(event.submitter.outerText)
-        event.preventDefault()
-        if(event.submitter.outerText == "CREAR DISPUTA"){
-          console.log("Creando disputa")
-         updatePaymentState(5)
-        }else{
-          console.log("Notificando recibido")
-          updatePaymentState(7)
+    const renderForm = (paymentIn) =>{      
+      if(paymentIn.idState >2 && paymentIn.idState<5){
+        console.log('render form')
+        document.disputeForm.onsubmit = function(event){
+          console.log(event.submitter.outerText)
+          event.preventDefault()
+          if(event.submitter.outerText == "CREAR DISPUTA"){
+            console.log("Creando disputa")
+          updatePaymentState(5)
+          }else{
+            console.log("Notificando recibido")
+            updatePaymentState(7)
+          }
         }
-      }
-      let htmlInputs = document.forms["disputeForm"].getElementsByTagName("input");
-      console.log(htmlInputs)
-      for(let input of htmlInputs){
-        console.log(input.item)
-       input.oninvalid = function(e) {
-          e.target.setCustomValidity("Este campo es obligatorio o invalido");
-      }
-      input.oninput = function(e) {
-        e.target.setCustomValidity("");
-      };
+        let htmlInputs = document.forms["disputeForm"].getElementsByTagName("input");
+        console.log(htmlInputs)
+        for(let input of htmlInputs){
+          console.log(input.item)
+          input.oninvalid = function(e) {
+              e.target.setCustomValidity("Este campo es obligatorio o invalido");
+          }
+          input.oninput = function(e) {
+            e.target.setCustomValidity("");
+          };
+        }
       }
     }
 

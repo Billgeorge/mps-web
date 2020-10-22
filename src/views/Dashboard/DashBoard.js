@@ -257,6 +257,8 @@ const useStyles = makeStyles(styles);
                           <TableCell align="right">Valor</TableCell>
                           <TableCell align="center">Enlace</TableCell>
                           <TableCell align="right">Estado</TableCell>
+                          <TableCell align="right">Guía</TableCell>
+                          <TableCell align="right">Transportador</TableCell>
                           <TableCell align="right">Fecha de creación</TableCell>
                         </TableRow>
                       </TableHead>
@@ -267,9 +269,11 @@ const useStyles = makeStyles(styles);
                               <a target="_blank" href={`/transaction-detail/${row.id}`} style={{cursor:"pointer"}}>{row.id}</a>
                             </TableCell>
                             <TableCell align="right">{row.customerName}</TableCell>
-                            <TableCell align="right">{row.amount}</TableCell>
+                            <TableCell align="right">{formatter.format(row.amount)}</TableCell>
                             <TableCell align="right"><Button onClick={() => copyUrl(row.id)} color="primary">Copiar Enlace</Button></TableCell>
                             <TableCell align="right">{getPaymentState(row.idState)}</TableCell>
+                            <TableCell align="right">{row.guideNumber}</TableCell>
+                            <TableCell align="right">{row.transportCompany}</TableCell>
                             <TableCell align="right">{
                               getLegibleDate(row.creationDate)
                             }</TableCell>

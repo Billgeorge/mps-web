@@ -35,7 +35,7 @@ const useStyles = makeStyles(styles);
     const callBackSuccessGet = (payment) =>{
       console.log('Success get')
       setPayment(payment)
-      renderForm()     
+      renderForm(payment)     
     }
 
     const callBackSuccessPatch = () =>{
@@ -67,8 +67,8 @@ const useStyles = makeStyles(styles);
         transportCompany: document.getElementById("transporter").value
       },callBackError,callBackSuccessPatch,url)
     }
-    const renderForm = () =>{
-      if(payment.idState === 3){
+    const renderForm = (paymentIn) =>{
+      if(paymentIn.idState === 3){
         document.deliveryForm.onsubmit = function(event){
           console.log(event.submitter.outerText)
           event.preventDefault()        
