@@ -136,7 +136,7 @@ const useStyles = makeStyles(styles);
                 </Grid>   
          </GridItem>         
          <GridItem xs={12} sm={12} md={8} className={classes.grid}>
-            <Grid container className={classes.boxDetail} spacing={3} justify="center">                   
+            <Grid container className={classes.boxDetail, classes.deliveryForm} spacing={3} justify="center">                   
             { payment.idState >2 && payment.idState<5
             ?<Grid item >
                     <form validated="true" name="disputeForm" id="disputeForm">
@@ -174,7 +174,11 @@ const useStyles = makeStyles(styles);
             </GridItem>
             {isSuccess == true
                                   ? <Alert severity="success">Tu solicitud ha sido procesada correctamente, si deseas ver el nuevo estado actualiza la pantalla </Alert>    
-                                  : <span></span>            }                                  
+                                  : <span></span>            }
+            {isSuccess == false
+                                ? <Alert severity="error">Hubo un problema procesando tu solicitud, por favor contacta al administrador </Alert>    
+                                : <span></span>
+            }                                  
             
         </GridContainer>
         </div>

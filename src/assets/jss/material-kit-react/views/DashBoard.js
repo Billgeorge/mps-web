@@ -40,7 +40,7 @@ const signupPageStyle = {
     color:"black"    
   },
   boxDetail: {
-    backgroundColor:"white",
+    backgroundColor:"white !important",
     color:"black",
     height:"100px"    
   },
@@ -56,6 +56,12 @@ const signupPageStyle = {
     fontSize: "16px",
     color: "#000",
     fontWeight: "600"
+  },
+  deliveryForm:{
+    backgroundColor:"white",
+    color:"black",
+    height:"100px"
+    
   },
   pageHeader: {
     minHeight: "100vh",
@@ -87,7 +93,13 @@ const signupPageStyle = {
       bottom: "0",
       width: "100%"
     }
-  }
+  },
+  '@media(max-width: 600px)':{
+    deliveryForm:{
+      height:"150px !important",
+      textAlign:"center"
+    }
+  }  
 };
 
 export default signupPageStyle;

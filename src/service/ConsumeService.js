@@ -13,13 +13,12 @@ const consumeServicePost = async (payload,callBack,callBackSuccess,url) => {
         const responseU = await Axios.post(url, payload);
         
 
-        console.log("Respuesta usuario" + responseU);
+        console.log("Respuesta usuario", responseU);
         
 
         if (responseU.status === 200) {
             callBackSuccess(responseU.data)
         } else {
-            console.log(responseU.body)
             callBack(null)
         }
 
@@ -48,13 +47,13 @@ export const consumeServiceGet = async (callBack,callBackSuccess,url) => {
         const responseU = await Axios.get(url);
         
 
-        console.log("Respuesta usuario" + responseU);
+        console.log("Respuesta usuario",responseU);
         
 
         if (responseU.status === 200) {
             callBackSuccess(responseU.data)
         } else {
-            console.log(responseU.body)
+            console.log("error",responseU.body)
             callBack(null)
         }
 
@@ -85,7 +84,7 @@ export const consumeServicePatch = async (payload,callBack,callBackSuccess,url) 
         const responseU = await Axios.patch(url,payload);
         
 
-        console.log("Respuesta usuario" + responseU);
+        console.log("Respuesta usuario", responseU);
         
 
         if (responseU.status === 200) {
