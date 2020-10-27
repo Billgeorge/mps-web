@@ -72,6 +72,7 @@ export default function RegisterPage(props) {
       const form = event.currentTarget;      
       consumeServicePost({    
         amount: document.getElementById("valor").value,
+        description: document.getElementById("valor").value,
         idMerchant: getMerchantId()
       },callBack,callBackSucess,`${CORE_BASEURL}/payment`)
     }
