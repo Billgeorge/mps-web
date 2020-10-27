@@ -252,7 +252,7 @@ const useStyles = makeStyles(styles);
                     <Table className={classes.table} aria-label="simple table">
                       <TableHead>
                         <TableRow>
-                          <TableCell>Id </TableCell>
+                          <TableCell>Descripción </TableCell>
                           <TableCell align="right">Nombre Cliente </TableCell>
                           <TableCell align="right">Valor</TableCell>
                           <TableCell align="center">Enlace</TableCell>
@@ -266,7 +266,7 @@ const useStyles = makeStyles(styles);
                         {payments.map((row) => (
                           <TableRow key={row.name}>
                             <TableCell component="th" scope="row">
-                              <a target="_blank" href={`/transaction-detail/${row.id}`} style={{cursor:"pointer"}}>{row.id}</a>
+                              <a target="_blank" href={`/transaction-detail/${row.id}`} style={{cursor:"pointer"}}>{row.description==null?'descrioción vacía':row.description}</a>
                             </TableCell>
                             <TableCell align="right">{row.customerName}</TableCell>
                             <TableCell align="right">{formatter.format(row.amount)}</TableCell>

@@ -19,13 +19,21 @@ import Header from "components/Header/Header.js";
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
+import {getLegibleDate} from 'util/DateUtil'
 
 
 const useStyles = makeStyles(styles);
+
+const formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2
+})
   
   export default function DashBoard(props) {
 
     const [payment, setPayment] = React.useState({});
+    const [customer, setCustomer] = React.useState({});
     const [isSuccess, setIsSuccess] = React.useState(null);
     
       
@@ -34,8 +42,16 @@ const useStyles = makeStyles(styles);
 
     const callBackSuccessGet = (payment) =>{
       console.log('Success get')
+      payment.creationDate = getLegibleDate(payment.creationDate)
       setPayment(payment)
+      if(payment.idCustomer!==null){
+      const url = `${CORE_BASEURL}/payment/customer/${payment.idCustomer}`
+      consumeServiceGet(callBackError,callBackSuccessGetCustomer,url)
+      }
       renderForm(payment)     
+    }
+    const callBackSuccessGetCustomer  = (customer) =>{
+      setCustomer(customer)
     }
 
     const callBackSuccessPatch = () =>{
@@ -44,7 +60,7 @@ const useStyles = makeStyles(styles);
     }
 
     const callBackError = () => {
-      console.log('error error')
+      console.log('error error in get')
       setIsSuccess(false)
     }
 
@@ -119,12 +135,12 @@ const useStyles = makeStyles(styles);
           </GridItem>
           <GridItem xs={12} sm={12} md={4} className={classes.grid}>
                 <Grid container className={classes.boxDetail} spacing={3}>                   
-        <Grid item ><span>Id:</span> <br/><span className={classes.valueTextDetail}>{payment.id}</span></Grid>
+        <Grid item ><span>Descripción:</span> <br/><span className={classes.valueTextDetail}>{payment.description==null?'Descripción vacía':payment.description}</span></Grid>
                 </Grid>   
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
                 <Grid container className={classes.boxDetail} spacing={3}>                   
-        <Grid item ><span>Valor :</span> <br/><span className={classes.valueTextDetail}>{payment.amount}</span></Grid>
+        <Grid item ><span>Valor :</span> <br/><span className={classes.valueTextDetail}>{formatter.format(payment.amount)}</span></Grid>
                 </Grid>   
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
@@ -133,9 +149,24 @@ const useStyles = makeStyles(styles);
                 </Grid>   
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
-                <Grid container className={classes.boxDetail} spacing={3}>                   
-        <Grid item ><span>Estado:</span> <br/><span className={classes.valueTextDetail}>{getPaymentState(payment.idState)}</span></Grid>
-                </Grid>   
+              <Grid container className={classes.boxDetail} spacing={3}>                   
+                <Grid item ><span>Nombre del cliente:</span> <br/><span className={classes.valueTextDetail}>{typeof (customer.name)=='undefined'?'Nombre vacio':`${customer.name} ${customer.lastName}`}</span></Grid>
+              </Grid>   
+         </GridItem>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
+              <Grid container className={classes.boxDetail} spacing={3}>                   
+                <Grid item ><span>Celular del cliente:</span> <br/><span className={classes.valueTextDetail}>{customer.contactNumber}</span></Grid>
+              </Grid>   
+         </GridItem>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
+              <Grid container className={classes.boxDetail} spacing={3}>                   
+                <Grid item ><span>Id:</span> <br/><span className={classes.valueTextDetail}>{payment.id}</span></Grid>
+              </Grid>   
+         </GridItem>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
+              <Grid container className={classes.boxDetail} spacing={3}>                   
+                <Grid item ><span>Estado:</span> <br/><span className={classes.valueTextDetail}>{getPaymentState(payment.idState)}</span></Grid>
+              </Grid>   
          </GridItem>
          <GridItem xs={12} sm={12} md={8} className={classes.grid}>
          <Grid container className={classes.boxDetail, classes.deliveryForm} spacing={3}  justify="center" >                   
