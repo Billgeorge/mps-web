@@ -72,7 +72,7 @@ export default function RegisterPage(props) {
       const form = event.currentTarget;      
       consumeServicePost({    
         amount: document.getElementById("valor").value,
-        description: document.getElementById("valor").value,
+        description: document.getElementById("description").value,
         idMerchant: getMerchantId()
       },callBack,callBackSucess,`${CORE_BASEURL}/payment`)
     }
@@ -124,7 +124,7 @@ export default function RegisterPage(props) {
                         <FormControl style={{width:"100%",paddingBottom:"10px"}}>
                         <InputLabel htmlFor="description">Descripción</InputLabel>
                             <OutlinedInput
-                                id="descriptioon"
+                                id="description"
                                 placeholder="Describe el producto/servicio"                            
                                 labelWidth={60}
                                 required
