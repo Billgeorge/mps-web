@@ -55,7 +55,11 @@ export default function RegisterPage(props) {
   const changeMessageValidation = () =>{
     document.createPayment.onsubmit = function(event){      
       const callBack = (error) => {
+        if(error!=null){
         setErrorMessage(error)
+        }else{
+          setErrorMessage({'Error':'Ha ocurrido un error inesperado por favor contactar al administrador'})
+        }
         setIsLoading(false)
       }
       const callBackSucess = (response) =>{

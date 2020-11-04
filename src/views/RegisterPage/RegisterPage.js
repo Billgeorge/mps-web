@@ -220,7 +220,7 @@ export default function RegisterPage(props) {
                   <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>    
                 ))}
                 {isMerchantCreated
-                                ? <Alert severity="success">Usuario creado, Confirma tu cuenta mediante el email que te hemos enviado a tu correo electrónico </Alert>    
+                                ? <Alert severity="success">Usuario creado, Confirma tu cuenta mediante el email que te hemos enviado a tu correo electrónico. Uno de nuestros asesores se contactará contigo. </Alert>    
                                 : <span></span>
                                 }
                  <br/>
