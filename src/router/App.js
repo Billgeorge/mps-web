@@ -9,7 +9,7 @@ import LandingPage from "views/LandingPage/LandingPage.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import DashBoard  from "views/Dashboard/DashBoard.js";
 import LoginPage from "views/LoginPage/LoginPage.js";
-import RegisterPage from "views/RegisterPage/RegisterPage";
+import RegisterLanding from "views/RegisterPage/RegisterLanding";
 import TransactionDetail from "views/TransactionDetail/TransactionDetail";
 import TransactionDetailPublic from "views/TransactionDetail/TransactionDetailPublic";
 import CreatePayment from "views/CreatePayment/CreatePayment";
@@ -34,7 +34,7 @@ function App() {
         <ProtectRoute path='/dashboard' component={DashBoard} />
         <Route path="/detail" component={TransactionDetailPublic} />
         <Route path='/agree-payment' component={AgreePayment} />  
-        <Route path="/registro" component={RegisterPage} />   
+        <Route path="/registro" component={RegisterLanding} />   
         <Route path="/login" component={LoginPage} /> 
         <Route path="/terms" component={TermsCondition} />        
         <Route path="/" component={LandingPage} />      

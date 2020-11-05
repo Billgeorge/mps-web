@@ -52,11 +52,14 @@ export default function LandingPage(props) {
         <div className={classes.containerH}>
           <GridContainer className ={classes.headerText}>
             <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title}>La forma segura y confiable de recibir tus pagos en internet</h1>
-              <h4>
-                Con nuestro servicio, aseguras el pago de la compra por adelantado y 
-                das confianza y seguridad a tu cliente
-              </h4>
+              
+              <h1 className={classes.title}>Recibe pagos por internet y brinda confianza a tus clientes</h1>
+              <h5>
+                Digitalizamos el pago contraentrega. Cierra más ventas, brindando tranquilidad a tus clientes.
+              </h5>
+              <h6>
+                Reserva tu cupo ya! y vende sin comisiones por 5 días
+              </h6>
               
               <Button
                 color="success"
@@ -64,7 +67,7 @@ export default function LandingPage(props) {
                 href="/registro"                
                 rel="noopener noreferrer"
               >
-               <i className="fas  fa-hand-point-right"></i> Regístrate gratis
+               <i className="fas  fa-hand-point-right"></i> Reserva tu cupo
               </Button>
             </GridItem>
             <GridItem xs={12} sm={12} md={6}>

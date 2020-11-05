@@ -19,14 +19,14 @@ export default function CallToAction() {
     <div className={classes.section}>
       <GridContainer justify="center">
         <GridItem cs={12} sm={12} md={8}>
-          <h2 className={classes.title}>Regístrate y usa el servicio gratis</h2>
+          <h2 className={classes.title}>Vende sin comisiones, ¡Separa tu cupo ahora!</h2>
           <h4 className={classes.description}>
-            Una vez te registres, puedes usar el servicio sin comisión por 5 días o hasta $2.000.000 (aplican términos y condiciones)
+            Cuando nuestro servicio este activo puedes vender sin comisión durante tus primeros 5 días o hasta $2.000.000
           </h4>
           <div className={classes.form}>
             <GridContainer justify="center">              
               <GridItem xs={12} sm={12} md={4}>
-                <Button style={{backgroundColor:"#003461"}} href="/registro">Aumentar mis ventas ya!</Button>
+                <Button size="lg" style={{backgroundColor:"rgb(14 95 220)"}} href="/registro"><i className="fas  fa-hand-point-right"></i>Separa tu cupo</Button>
               </GridItem>
             </GridContainer>
           </div>

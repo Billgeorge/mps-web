@@ -19,7 +19,7 @@ const landingPageStyle = {
     maxHeight:"70vh",
     width: "100%",
     background: "rgb(0,52,97)",
-    background: "linear-gradient(90deg, rgba(0,52,97,1) 0%, rgba(3,137,251,1) 25%, rgba(133,195,247,1) 100%)" 
+    background: "linear-gradient(90deg, rgba(0,52,97,1) 0%, rgba(3,137,251,1) 25%, rgba(66 162 243) 100%)" 
   },
   imgHeader:{
     width:"390px"
@@ -78,7 +78,7 @@ const landingPageStyle = {
   },
   '@media(max-width: 600px)':{
     title:{
-      fontSize:[['2rem'], '!important']
+      fontSize:[['1.8rem'], '!important']
     },
     h4:{
       fontSize:'1rem'
