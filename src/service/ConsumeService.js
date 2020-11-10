@@ -37,6 +37,44 @@ const consumeServicePost = async (payload,callBack,callBackSuccess,url) => {
     }
 }
 
+
+export const consumeServicePut = async (payload,callBack,callBackSuccess,url) => {
+    consumeServiceWithPayload(payload,callBack,callBackSuccess,url,executePut)
+}
+const executePut = async (payload,url) => {await Axios.put(url, payload);}
+const executePost = async (payload,url) => {await Axios.post(url, payload);}
+
+const consumeServiceWithPayload = (payload,callBack,callBackSuccess,url,fun) =>{
+    try {
+        console.log('Enviando ...')
+        putTokenHeader()
+        const responseU = fun(url, payload);
+        
+
+        console.log("Respuesta usuario", responseU);
+        
+
+        if (responseU.status === 200) {
+            callBackSuccess(responseU.data)
+        } else {
+            callBack(null)
+        }
+
+    } catch (error) {
+        if(error.response){
+            if(400 == error.response.status){
+                callBack(error.response.data)
+            } else if(403 == error.response.status){
+                useHistory.push("/login")
+            }else{
+                callBack(null)
+            }
+        }else{
+            callBack(null)
+        }        
+    }
+}
+
 export const consumeServiceGet = async (callBack,callBackSuccess,url) => {
 
     //React.setActionState({ sending: true, error: null, });

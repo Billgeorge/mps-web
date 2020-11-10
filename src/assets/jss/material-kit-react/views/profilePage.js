@@ -19,6 +19,11 @@ const profilePageStyle = {
     color: "#999",
     textAlign: "center !important"
   },
+  navPill: {
+    '& button':{
+          backgroundColor:'blue'
+        }
+  },
   name: {
     marginTop: "-80px"
   },

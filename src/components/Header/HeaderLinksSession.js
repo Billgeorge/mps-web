@@ -18,6 +18,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import {getEmail, getMerchantName} from 'service/AuthenticationService'
 
+import {getFirstLetters} from 'util/NameUtils'
+
 // core components
 
 import Button from "components/CustomButtons/Button.js";
@@ -58,15 +60,7 @@ const StyledMenu = withStyles({
       },
     },
   }))(MenuItem);
-
-  const getFirstLetters = (name) =>{
-    const splittedName = name.split(' ')
-    let finalString = ""
-    for (var i = 0; i < splittedName.length; i++) {
-      finalString = finalString + splittedName[i].charAt(0).toUpperCase()    
-    }
-    return finalString
-  }
+ 
 
 export default function HeaderLinksSession(props) {
 
