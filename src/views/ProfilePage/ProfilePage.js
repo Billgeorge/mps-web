@@ -39,6 +39,7 @@ import styles from "assets/jss/material-kit-react/views/profilePage.js";
 import {consumeServiceGet,consumeServicePut} from 'service/ConsumeService'
 import { getMerchantId,getMerchantName } from 'service/AuthenticationService';
 import {getFirstLetters} from 'util/NameUtils'
+import {getBankNumber} from 'constant/index'
 
 
 
@@ -66,7 +67,7 @@ export default function ProfilePage(props) {
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [isModificationDone, setIsModificationDone] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState({});    
+  const [errorMessage, setErrorMessage] = React.useState("");    
 
   const [isEditEnabled, setIsEditEnabled] = React.useState(false);
 
@@ -82,9 +83,9 @@ export default function ProfilePage(props) {
   const callBack = (msg) => {
     setProfile({})
     if(msg==404){
-      setErrorMessage({"Error":"No existe tu perfil"})        
+      setErrorMessage("No existe tu perfil")        
     }else{
-      setErrorMessage({"Error":"Error Cargando perfil"})
+      setErrorMessage("Error Cargando perfil")
     }      
   }
 
@@ -115,9 +116,10 @@ export default function ProfilePage(props) {
   }
   const changeMessageValidation = () =>{
     document.profileForm.onsubmit = function(event){
+      setErrorMessage("")
       setIsModificationDone(false)
       const callBack = (error) => {
-        let errorObjects = {"Error":"Error Modificando Información de perfil"}
+        let errorObjects = "Error Modificando Información de perfil"
         if(error !== null){
           errorObjects = error
         }
@@ -128,19 +130,26 @@ export default function ProfilePage(props) {
         document.getElementById("profileForm").reset();
         setIsLoading(false)
         setIsModificationDone(true)
-      }
-      setIsLoading(true)
+      }      
       console.log("Editing Profile")
       event.preventDefault()
-      setErrorMessage({})
-      const form = event.currentTarget;      
-      consumeServicePut({    
-        nit: document.getElementById("id").value,
-        name: document.getElementById("merchantName").value,
-        email:document.getElementById("email").value,
+      if(document.getElementById('bankAccount').value=='0'){
+        let errorObjects = "Debes seleccionar un banco"
+        setErrorMessage(errorObjects)
+        return
+      }
+      setErrorMessage("")
+      const form = event.currentTarget;
+      setIsLoading(true)
+      let profileToSend =  {    
+        id: getMerchantId(),
+        accountBank: document.getElementById("bankAccount").value,
+        accountNumber:document.getElementById("accountNumber").value,
         contactNumber: document.getElementById("contactNumber").value,
-        password: document.getElementById("pass").value
-      },callBack,callBackSucess,
+        nit: document.getElementById("nit").value
+      }
+      console.log("profile tto send", profileToSend) 
+      consumeServicePut(profileToSend,callBack,callBackSucess,
       CORE_BASEURL+"/merchant")
     }
     let htmlInputs = document.forms["profileForm"].getElementsByTagName("input");
@@ -223,27 +232,28 @@ export default function ProfilePage(props) {
                           <GridItem xs={12} sm={12} md={12}>
                             <Button style={{backgroundColor:'#041492'}} onClick={editEnable}>
                               <Edit className={classes.inputIconsColor} />  Editar información                                  
-                            </Button>
-                            {isLoading
-                                ? <CircularProgress/>
-                                : <span></span>
-                            }    
+                            </Button>                                
                           </GridItem>
+                          {isLoading
+                                ? <GridItem xs={12} sm={12} md={12}><CircularProgress/></GridItem>
+                                : <span></span>
+                            }
                           
                           <GridItem xs={12} sm={12} md={4}>
                             <CustomInput                    
                                 labelText="Nit o Cédula"
-                                id="nit"
-                                name="nit"
+                                id="nit"                                
                                 formControlProps={{
                                   fullWidth: true
                                 }}
                                                                                            
                                 inputProps={{
                                   type: "number",
+                                  name:"nit",
                                   required: true,
                                   readOnly:true,
                                   value: profile.nit || "",                                  
+                                  onChange:handleChange,
                                   endAdornment: (
                                     <InputAdornment position="end">
                                       <Fingerprint className={classes.inputIconsColor} />
@@ -254,16 +264,17 @@ export default function ProfilePage(props) {
                             <CustomInput                    
                                 labelText="Número Cuenta Bancaria"
                                 id="accountNumber"
-                                name="accountNumber"
                                 formControlProps={{
                                   fullWidth: true
                                 }}
-                                onChange={handleChange}                                
+                                                                
                                 inputProps={{
                                   type: "number",
                                   required: true,
+                                  name:"accountNumber",
                                   readOnly:true,
-                                  value:profile.accountNumber,
+                                  value:profile.accountNumber || "",
+                                  onChange:handleChange,
                                   endAdornment: (
                                     <InputAdornment position="end">
                                       <AccountBalance className={classes.inputIconsColor} />
@@ -274,10 +285,10 @@ export default function ProfilePage(props) {
                           </GridItem>
                           <GridItem xs={12} sm={12} md={4} style={{paddingTop:'11px'}}>
                             <FormControl style={{margin: '0 0 17px 0', width: '100%'}}>
-                                <InputLabel htmlFor="age-native-simple">Banco</InputLabel>
+                                <InputLabel htmlFor="accountBank">Banco</InputLabel>
                                 <Select
                                   native
-                                  value={profile.accountBank}
+                                  value={getBankNumber(profile.accountBank)}
                                   disabled = {!isEditEnabled}
                                   onChange={handleChange}
                                   inputProps={{
@@ -319,9 +330,11 @@ export default function ProfilePage(props) {
                                   }}
                               />
                           </GridItem>
-                          {Object.keys(errorMessage).map((keyName, i) => (
-                            <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>    
-                          ))}
+                          {errorMessage != ""
+                            ?
+                            <Alert severity="error">{errorMessage}</Alert>
+                            : <span>	&nbsp;</span>   
+                          }
                           {isModificationDone
                                           ? <Alert severity="success">Información de perfil modificada. </Alert>    
                                           : <span></span>

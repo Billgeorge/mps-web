@@ -39,20 +39,12 @@ const consumeServicePost = async (payload,callBack,callBackSuccess,url) => {
 
 
 export const consumeServicePut = async (payload,callBack,callBackSuccess,url) => {
-    consumeServiceWithPayload(payload,callBack,callBackSuccess,url,executePut)
-}
-const executePut = async (payload,url) => {await Axios.put(url, payload);}
-const executePost = async (payload,url) => {await Axios.post(url, payload);}
-
-const consumeServiceWithPayload = (payload,callBack,callBackSuccess,url,fun) =>{
     try {
         console.log('Enviando ...')
         putTokenHeader()
-        const responseU = fun(url, payload);
-        
+        const responseU = await Axios.put(url, payload);        
 
-        console.log("Respuesta usuario", responseU);
-        
+        console.log("Respuesta usuario", responseU);        
 
         if (responseU.status === 200) {
             callBackSuccess(responseU.data)
