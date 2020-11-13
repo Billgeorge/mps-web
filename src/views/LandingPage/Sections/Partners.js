@@ -11,6 +11,7 @@ import GridItem from "components/Grid/GridItem.js";
 import Cube from "assets/img/cube.png"
 import Estarter from "assets/img/estarter.png"
 import FinalFeliz from "assets/img/finalfeliz.png"
+import PagoEntrega from "assets/img/pagoEntrega.png"
 
 const useStyles = makeStyles(styles);
 
@@ -20,19 +21,22 @@ export default function Partner() {
         <div className={classes.section} id="howWork">
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={8}>
-            <h2 className={classes.title}>Nuestros Aliados</h2>
+            <h2 className={classes.title}>Nuestros Aliados y Clientes</h2>
           </GridItem>
         </GridContainer>
 
         <GridContainer justify="center">
-          <GridItem xs={12} sm={12} md={4} style={{marginBottom:"20px"}}>
+          <GridItem xs={12} style={{paddingTop:"40px"}} sm={12} md={3} style={{marginBottom:"20px"}}>
             <img src={Cube} style={{width:"100px"}} />
           </GridItem>
-          <GridItem xs={12} sm={12} md={4} style={{marginBottom:"20px"}}> 
-            <img src={Estarter} style={{width:"100px"}} />
+          <GridItem xs={12} style={{paddingTop:"40px"}} sm={12} md={3} > 
+            <img src={Estarter} style={{width:"150px"}} />
           </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
+          <GridItem xs={12} style={{paddingTop:"40px"}} sm={12} md={3}>
             <img src={FinalFeliz} style={{width:"100px"}} />
+          </GridItem>
+          <GridItem xs={12} style={{paddingTop:"40px"}} sm={12} md={3}>
+            <img src={PagoEntrega} style={{width:"200px"}} />
           </GridItem>
         </GridContainer>
         </div>
