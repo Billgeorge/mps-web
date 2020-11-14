@@ -18,6 +18,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import {getEmail, getMerchantName} from 'service/AuthenticationService'
 
+import {getFirstLetters} from 'util/NameUtils'
+
 // core components
 
 import Button from "components/CustomButtons/Button.js";
@@ -58,15 +60,7 @@ const StyledMenu = withStyles({
       },
     },
   }))(MenuItem);
-
-  const getFirstLetters = (name) =>{
-    const splittedName = name.split(' ')
-    let finalString = ""
-    for (var i = 0; i < splittedName.length; i++) {
-      finalString = finalString + splittedName[i].charAt(0).toUpperCase()    
-    }
-    return finalString
-  }
+ 
 
 export default function HeaderLinksSession(props) {
 
@@ -89,40 +83,14 @@ export default function HeaderLinksSession(props) {
 
   return (
     <List className={classes.list}>            
-      
       <ListItem className={classes.listItem}>
-        <Tooltip
-          id="instagram-facebook"
-          title="Siguenos en facebook"
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
+        <Button
             color="transparent"
-            href="https://www.facebook.com/Mipagoseguro-100633465045107/?ref=py_c"
-            target="_blank"
+            href="dashboard"
             className={classes.navLink}
           >
-            <i className={classes.socialIcons + " fab fa-facebook"} />
-          </Button>
-        </Tooltip>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <Tooltip
-          id="instagram-tooltip"
-          title="Siguenos en instagram"
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            color="transparent"
-            href="https://www.instagram.com/mipagoseguro.col/?hl=es-la"
-            target="_blank"
-            className={classes.navLink}
-          >
-            <i className={classes.socialIcons + " fab fa-instagram"} />
-          </Button>
-        </Tooltip>
+            Dashboard
+        </Button>
       </ListItem>
       <ListItem className={classes.listItem}>
       <Button
@@ -145,17 +113,21 @@ export default function HeaderLinksSession(props) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+        <StyledMenuItem>          
+          <ListItemText primary={getMerchantName()} />
+        </StyledMenuItem>
         <StyledMenuItem>
-          <ListItemIcon>
+        
+        <ListItemIcon>
+          
             <Avatar style={{backgroundColor: "rgb(29 143 210)"}}aria-label="recipe">
                             {}
             </Avatar>  
           </ListItemIcon>
-          <ListItemText primary={getMerchantName()} />
-        </StyledMenuItem>
-        <StyledMenuItem>
-         <ListItemText primary={getEmail()} />
-        </StyledMenuItem>
+          <a href="profile">
+          < ListItemText primary="Mi Perfil" />
+          </a>
+        </StyledMenuItem>        
         <StyledMenuItem onClick={logout}>
           
           <ListItemIcon>

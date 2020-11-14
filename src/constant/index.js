@@ -1,5 +1,7 @@
+//'http://localhost:8083/mps'
 
 export const CORE_BASEURL = 'https://mpscore-prod.herokuapp.com/mps';
+
 
 export const getPaymentState = (idState) => {
     switch(idState){
@@ -17,6 +19,31 @@ export const getPaymentState = (idState) => {
             return "Cerrado"
         case 7:
             return "Recibido"
+    }
+}
+
+export const getBankNumber = (bank) => {
+    switch(bank){
+        case "BANCO_AV_VILLAS":
+            return 1        
+        case "BANCO_BBVA_COLOMBIA":
+            return 2
+        case "BANCO_CAJA_SOCIAL":
+            return 3
+        case "BANCO_DAVIVIENDA":
+            return 4
+        case "BANCO_DE_BOGOTA":
+            return 5
+        case "BANCO_DE_OCCIDENTE":
+            return 6
+        case "BANCO_ITAU":
+            return 7
+        case "BANCOLOMBIA":
+            return 8
+        case "SCOTIABANK_COLPATRIA":
+            return 9
+        default:
+            return 0
     }
 }
 
