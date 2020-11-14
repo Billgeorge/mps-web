@@ -2,11 +2,10 @@ import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Icon from "@material-ui/core/Icon";
+
 // @material-ui/icons
 import Email from "@material-ui/icons/Email";
 import Storefront from "@material-ui/icons/Storefront";
-import PermIdentity from "@material-ui/icons/PermIdentity";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import {CORE_BASEURL} from '../../constant/index'
