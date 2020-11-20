@@ -171,7 +171,7 @@ export default function RegisterLanding(props) {
                   <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>    
                 ))}
                 {isMerchantCreated
-                                ? <Alert severity="success">!Felicidades¡, haz separado tu cupo. Uno de nuestros asesores se contactará contigo. </Alert>    
+                                ? <Alert severity="success">¡Bienvenido a MiPagoSeguro!, Revisa tu correo y crea tu contraseña lo antes posible. </Alert>    
                                 : <span></span>
                                 }
                  <br/>
