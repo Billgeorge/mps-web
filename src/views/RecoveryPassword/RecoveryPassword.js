@@ -104,9 +104,10 @@ export default function LoginPage(props) {
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form} validated="true" name="loginForm" id="loginForm">
                   <CardHeader color="primary" className={classes.cardHeader}>
-                    <h4>Inicio Sesión</h4>                    
+                    <h4>Recuperar Contraseña</h4>                    
                   </CardHeader>                  
                   <CardBody>
+                  <span>Por favor ingresa tu correo electrónico:</span>
                   {isLoading
                                 ? <CircularProgress/>
                                 : <span></span>
@@ -126,40 +127,11 @@ export default function LoginPage(props) {
                         )
                       }}
                     />
-                    <CustomInput
-                      labelText="Password"
-                      id="pass"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        type: isPassWordHidden ? "password" : "text",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Icon className={classes.inputIconsColor}>
-                              lock_outline
-                            </Icon>
-                          </InputAdornment>
-                        ),
-                        autoComplete: "off"
-                      }}
-                    />
-                     <a onClick={showPassword} style={{cursor:'pointer'}}>
-                  {isPassWordHidden
-                                ? <span>Ver contraseña</span>
-                                : <span>Ocultar contraseña</span>
-                                }</a>
-                  {errorMessage != ""
-                  ?
-                  <Alert severity="error">{errorMessage}</Alert>
-                  : <span>	&nbsp;</span>   
-                              }
-                  <br/><br/>
-                  <span>¿Olvidaste tu contraseña? <a href="/recovery-pass" style={{cursor:'pointer'}}>Recupera tu contraseña</a></span>                  
+                                   
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
                     <Button type = "submit" simple color="primary" size="lg">
-                      Iniciar Sesión
+                      RECUPERAR CONTRASEÑA
                     </Button>
                   </CardFooter>
                 </form>
