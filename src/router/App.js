@@ -16,6 +16,7 @@ import TransactionDetailPublic from "views/TransactionDetail/TransactionDetailPu
 import CreatePayment from "views/CreatePayment/CreatePayment";
 import AgreePayment from "views/CreatePayment/AgreePayment";
 import TermsCondition from "views/TermsConditions/TermsConditions";
+import RecoveryPassword from "views/RecoveryPassword/RecoveryPassword";
 
 
 
@@ -29,11 +30,12 @@ function App() {
     
     <Router history={hist}>      
     <Switch>
-        <ProtectRoute path='/profile' component={ProfilePage} />      
+        <ProtectRoute path='/profile' component={ProfilePage} />
         <ProtectRoute path='/create-payment' component={CreatePayment}  />                
         <ProtectRoute path='/transaction-detail' component={TransactionDetail} />           
         <ProtectRoute path='/dashboard' component={DashBoard} />
         <Route path="/detail" component={TransactionDetailPublic} />
+        <Route path="/recovery-pass" component={RecoveryPassword} />
         <Route path="/user/password" component={CreatePassword} />
         <Route path='/agree-payment' component={AgreePayment} />  
         <Route path="/registro" component={RegisterLanding} />   
