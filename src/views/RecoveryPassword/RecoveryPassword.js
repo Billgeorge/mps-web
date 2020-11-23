@@ -20,12 +20,14 @@ import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import {login} from '../../service/AuthenticationService'
+import {CORE_BASEURL} from '../../constant/index'
+
 import Alert from '@material-ui/lab/Alert';
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
 import image from "assets/img/bg7.jpg";
+import consumeServicePost from 'service/ConsumeService'
 
 const useStyles = makeStyles(styles);
 
@@ -36,6 +38,7 @@ export default function LoginPage(props) {
   }, 700);
 
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [isRequestSuccess, setIsRequestSuccess] = React.useState(false);
 
   const history = useHistory();
 
@@ -44,26 +47,26 @@ export default function LoginPage(props) {
 
   React.useEffect(() => changeMessageValidation(), []);
   const changeMessageValidation = () =>{
-    document.loginForm.onsubmit = function(event){
-      console.log("signing in")
+    document.recoveryForm.onsubmit = function(event){
+      console.log("recovering pass")
       event.preventDefault()
+      setIsRequestSuccess(false);
       setErrorMessage("")
       const callBackSucess = () =>{
-        history.push("/dashboard")
         setIsLoading(false);
+        setIsRequestSuccess(true);
       }
       const callBackError = (message) =>{
-        setErrorMessage(message)
+        setErrorMessage("Ha ocurrido un error, por favor contacte al administrador")
         setIsLoading(false);
       }
       const form = event.currentTarget;
       setIsLoading(true);      
-      login({    
-        username: document.getElementById("email").value,
-        password: document.getElementById("pass").value
-      },callBackSucess,callBackError)      
+      consumeServicePost(    
+        document.getElementById("email").value,callBackError,
+        callBackSucess,CORE_BASEURL+"/user/recovery-password")      
     }
-    let htmlInputs = document.forms["loginForm"].getElementsByTagName("input");
+    let htmlInputs = document.forms["recoveryForm"].getElementsByTagName("input");
     console.log(htmlInputs)
     for(let input of htmlInputs){
       console.log(input.item)
@@ -75,11 +78,7 @@ export default function LoginPage(props) {
   };
     }    
   }
-  const showPassword = event =>{
-    event.preventDefault()   
-    setHiddenPassword(!isPassWordHidden)
-  }
-  const [isPassWordHidden, setHiddenPassword] = React.useState(true);
+ 
   const { ...rest } = props;
   return (
     <div>
@@ -102,11 +101,12 @@ export default function LoginPage(props) {
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={4}>
               <Card className={classes[cardAnimaton]}>
-                <form className={classes.form} validated="true" name="loginForm" id="loginForm">
+                <form className={classes.form} validated="true" name="recoveryForm" id="recoveryForm">
                   <CardHeader color="primary" className={classes.cardHeader}>
-                    <h4>Inicio Sesión</h4>                    
+                    <h4>Recuperar Contraseña</h4>                    
                   </CardHeader>                  
                   <CardBody>
+                  <span>Por favor ingresa tu correo electrónico:</span>
                   {isLoading
                                 ? <CircularProgress/>
                                 : <span></span>
@@ -119,6 +119,7 @@ export default function LoginPage(props) {
                       }}
                       inputProps={{
                         type: "email",
+                        required: true,
                         endAdornment: (
                           <InputAdornment position="end">
                             <Email className={classes.inputIconsColor} />
@@ -126,40 +127,20 @@ export default function LoginPage(props) {
                         )
                       }}
                     />
-                    <CustomInput
-                      labelText="Password"
-                      id="pass"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        type: isPassWordHidden ? "password" : "text",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Icon className={classes.inputIconsColor}>
-                              lock_outline
-                            </Icon>
-                          </InputAdornment>
-                        ),
-                        autoComplete: "off"
-                      }}
-                    />
-                     <a onClick={showPassword} style={{cursor:'pointer'}}>
-                  {isPassWordHidden
-                                ? <span>Ver contraseña</span>
-                                : <span>Ocultar contraseña</span>
-                                }</a>
                   {errorMessage != ""
                   ?
                   <Alert severity="error">{errorMessage}</Alert>
                   : <span>	&nbsp;</span>   
                               }
-                  <br/><br/>
-                  <span>¿Olvidaste tu contraseña? <a href="/recovery-pass" style={{cursor:'pointer'}}>Recupera tu contraseña</a></span>                  
+                  {isRequestSuccess
+                                ? <Alert severity="success">Hemos enviado un correo para que crees una nueva contraseña. 
+                                Por favor asegurate de revisar la carpeta de no deseados o spam, en caso de no verlo en la bandeja de entrada.</Alert>    
+                                : <span></span>
+                                }                 
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
                     <Button type = "submit" simple color="primary" size="lg">
-                      Iniciar Sesión
+                      RECUPERAR CONTRASEÑA
                     </Button>
                   </CardFooter>
                 </form>
