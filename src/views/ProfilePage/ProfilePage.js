@@ -90,6 +90,7 @@ export default function ProfilePage(props) {
   }
 
   const callBackSuccess = (profile) =>{
+    profile.accountBank = getBankNumber(profile.accountBank)
     setProfile(profile)    
   }
 
@@ -288,7 +289,7 @@ export default function ProfilePage(props) {
                                 <InputLabel htmlFor="accountBank">Banco</InputLabel>
                                 <Select
                                   native
-                                  value={getBankNumber(profile.accountBank)}
+                                  value={profile.accountBank || '0'}
                                   disabled = {!isEditEnabled}
                                   onChange={handleChange}
                                   inputProps={{
