@@ -24,9 +24,9 @@ const consumeServicePost = async (payload,callBack,callBackSuccess,url) => {
 
     } catch (error) {
         if(error.response){
-            if(400 == error.response.status){
+            if(400 === error.response.status){
                 callBack(error.response.data)
-            } else if(403 == error.response.status){
+            } else if(403 === error.response.status){
                 useHistory.push("/login")
             }else{
                 callBack(null)
@@ -54,9 +54,9 @@ export const consumeServicePut = async (payload,callBack,callBackSuccess,url) =>
 
     } catch (error) {
         if(error.response){
-            if(400 == error.response.status){
+            if(400 === error.response.status){
                 callBack(error.response.data)
-            } else if(403 == error.response.status){
+            } else if(403 === error.response.status){
                 useHistory.push("/login")
             }else{
                 callBack(null)
