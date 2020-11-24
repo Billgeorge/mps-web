@@ -112,6 +112,7 @@ export default function ProfilePage(props) {
 
   const getInformationProfile = () => {
     const merchantId = getMerchantId()
+    console.log("getting information")
     let url=`${CORE_BASEURL}/merchant/${merchantId}`
     consumeServiceGet(callBack,callBackSuccess,url)
   }
