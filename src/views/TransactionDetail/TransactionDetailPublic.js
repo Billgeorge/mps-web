@@ -31,6 +31,7 @@ const useStyles = makeStyles(styles);
     const { ...rest } = props;
     const [payment, setPayment] = React.useState({});
     const [isSuccess, setIsSuccess] = React.useState(null);
+    const [aboutToClose, setAboutToClose] = React.useState(null);
     
     const getPaymentData = () => {
       const idPayment = getIdFromUrl()
@@ -39,6 +40,9 @@ const useStyles = makeStyles(styles);
     }
 
     const callBackSuccessGet = (payment) =>{
+      if(payment.isAboutToClose){
+        setAboutToClose(true)
+      }
       setPayment(payment)      
       renderForm(payment)     
     }
@@ -57,6 +61,9 @@ const useStyles = makeStyles(styles);
           if(event.submitter.outerText == "CREAR DISPUTA"){
             console.log("Creando disputa")
           updatePaymentState(5)
+          }else if(event.submitter.outerText == "NO HA LLEGADO"){
+            console.log("Postergando cierre")
+            delayPayment()
           }else{
             console.log("Notificando recibido")
             updatePaymentState(7)
@@ -82,6 +89,14 @@ const useStyles = makeStyles(styles);
         paymentId:getIdFromUrl(),
         state:state,
         numberId:document.getElementById("numberId").value
+      },callBackError,callBackSuccessPatch,url)
+    }
+
+    const delayPayment = () =>{
+      const url = `${CORE_BASEURL}/payment/delayClose`
+      consumeServicePatch({
+        id:getIdFromUrl(),
+        identificationCustomer:document.getElementById("numberId").value
       },callBackError,callBackSuccessPatch,url)
     }
 
@@ -115,6 +130,11 @@ const useStyles = makeStyles(styles);
         | <GridItem xs={12} sm={12} md={12} className={classes.grid}>        
             <Grid container className={classes.box}  spacing={3}>               
                 <Grid item >
+                    <b><h6>CREAR DISPUTA:</h6></b><p>Puedes crear disputa si han pasado 15 días y no ha llegado tu producto o si te llego pero esta en mal estado.</p>
+                    
+                    <b><h6>YA RECIBÍ:</h6></b><p>Si tu producto ya llegó y se encuentra en buen estado, por favor clic en YA RECIBÍ.</p>
+                    
+                    <b><h6>NO HA LLEGADO:</h6></b><p>Si ves el botón de no ha llegado es porque el dinero saldrá de custodia mañana y pagaremos al vendedor. Si tu producto no ha llegado y han pasado menos de 15 días, clic en no ha llegado para aplazar el pago al vendedor 3 días.</p>
                     <h3>Detalle de transacción :  </h3>
                 </Grid>
             </Grid>
@@ -134,18 +154,18 @@ const useStyles = makeStyles(styles);
                    <Grid item ><span>Fecha Creación:</span> <br/><span className={classes.valueTextDetail}>{payment.creationDate}</span></Grid>
                 </Grid>   
          </GridItem>
-         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={2} className={classes.grid}>
                 <Grid container className={classes.boxDetail} spacing={3}>                   
                    <Grid item ><span>Estado:</span> <br/><span className={classes.valueTextDetail}>{getPaymentState(payment.idState)}</span></Grid>
                 </Grid>   
          </GridItem>         
-         <GridItem xs={12} sm={12} md={8} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={10} className={classes.grid}>
             <Grid container className={classes.boxDetail, classes.deliveryForm} spacing={3} justify="center">                   
             { payment.idState >2 && payment.idState<5
             ?<Grid item >
                     <form validated="true" name="disputeForm" id="disputeForm">
                       <GridContainer>
-                        <GridItem xs={12} sm={4} md={4}>
+                        <GridItem xs={12} sm={3} md={3}>
                           
                         
                           <FormControl style={{width:"100%",paddingBottom:"10px"}}>
@@ -159,15 +179,22 @@ const useStyles = makeStyles(styles);
                             />
                           </FormControl>
                         </GridItem>
-                        <GridItem xs={6} sm={4} md={4}>
-                          <Button value="dispute" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
+                        <GridItem xs={4} sm={3} md={3}>
+                          <Button size="small" value="dispute" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
                             Crear disputa
                           </Button>
                         </GridItem>
-                        <GridItem xs={6} sm={4} md={4}>
-                          <Button value ="receive" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
+                        <GridItem xs={4} sm={3} md={3}>
+                          <Button size="small"  value ="receive" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
                             Ya Recibí
                           </Button>
+                        </GridItem>
+                        <GridItem xs={4} sm={3} md={3}>
+                        {aboutToClose == true                          
+                         ? <Button size="small"  value ="receive" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
+                            No Ha llegado
+                          </Button>
+                          :<span></span>}
                         </GridItem>
                     </GridContainer>
                     </form>
