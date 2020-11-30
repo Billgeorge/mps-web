@@ -58,7 +58,7 @@ export default function LandingPage(props) {
                 Digitalizamos el pago contraentrega. Cierra más ventas, brindando tranquilidad a tus clientes.
               </h5>
               <h6>
-                Reserva tu cupo ya! y vende sin comisiones por 5 días
+                Solo 20 cupos nuevos para el 10 de Diciembre
               </h6>
               
               <Button
