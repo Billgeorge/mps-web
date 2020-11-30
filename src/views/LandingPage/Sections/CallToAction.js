@@ -19,10 +19,7 @@ export default function CallToAction() {
     <div className={classes.section}>
       <GridContainer justify="center">
         <GridItem cs={12} sm={12} md={8}>
-          <h2 className={classes.title}>Vende sin comisiones, ¡Separa tu cupo ahora!</h2>
-          <h4 className={classes.description}>
-            Cuando nuestro servicio este activo puedes vender sin comisión durante tus primeros 5 días o hasta $2.000.000
-          </h4>
+          <h2 className={classes.title}>Vende más mediante la confianza</h2>        
           <div className={classes.form}>
             <GridContainer justify="center">              
               <GridItem xs={12} sm={12} md={4}>
