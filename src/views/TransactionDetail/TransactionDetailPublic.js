@@ -20,6 +20,7 @@ import Button from '@material-ui/core/Button';
 
 import HeaderLinks from "components/Header/HeaderLinks";
 import Header from "components/Header/Header.js";
+import {getLegibleDate} from 'util/DateUtil'
 
 
 
@@ -43,6 +44,7 @@ const useStyles = makeStyles(styles);
       if(payment.isAboutToClose){
         setAboutToClose(true)
       }
+      payment.creationDate = getLegibleDate(payment.creationDate)
       setPayment(payment)      
       renderForm(payment)     
     }
@@ -152,6 +154,16 @@ const useStyles = makeStyles(styles);
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
                 <Grid container className={classes.boxDetail} spacing={3}>                   
                    <Grid item ><span>Fecha Creación:</span> <br/><span className={classes.valueTextDetail}>{payment.creationDate}</span></Grid>
+                </Grid>   
+         </GridItem>
+         <GridItem xs={12} sm={12} md={6} className={classes.grid}>
+                <Grid container className={classes.boxDetail} spacing={3}>                   
+                   <Grid item ><span>Número de guía:</span> <br/><span className={classes.valueTextDetail}>{payment.guideNumber==null?'Guía vacía':payment.guideNumber }</span></Grid>
+                </Grid>   
+         </GridItem>
+         <GridItem xs={12} sm={12} md={6} className={classes.grid}>
+                <Grid container className={classes.boxDetail} spacing={3}>                   
+                   <Grid item ><span>Transportadora :</span> <br/><span className={classes.valueTextDetail}>{payment.transportCompany==null?'Transportadora vacía':payment.transportCompany}</span></Grid>
                 </Grid>   
          </GridItem>
          <GridItem xs={12} sm={12} md={2} className={classes.grid}>
