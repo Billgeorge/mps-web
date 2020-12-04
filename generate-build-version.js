@@ -1,3 +1,4 @@
+console.log('executing prebuild')
 const fs = require('fs');
 const packageJson = require('./package.json');
 

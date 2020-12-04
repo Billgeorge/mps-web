@@ -41,6 +41,8 @@
     "typescript": "3.9.3"
   },
   "scripts": {
+    "generate-build-version": "node generate-build-version", 
+    "prebuild": "npm run generate-build-version",
     "start": "react-scripts start",
     "build": "react-scripts build && gulp licenses",
     "test": "react-scripts test --env=jsdom",
