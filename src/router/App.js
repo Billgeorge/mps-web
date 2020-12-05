@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import ProtectRoute  from "../components/ProtectRouter/ProtectRouter"
 import { createBrowserHistory } from "history";
 
+import CacheBuster from 'CacheBuster'
+
 
 // pages for this product
 import LandingPage from "views/LandingPage/LandingPage.js";
@@ -26,26 +28,40 @@ function App() {
    
   
 //<Route path="/dashboard" component={dashboard} />
-  return (
-    
-    <Router history={hist}>      
-    <Switch>
-        <ProtectRoute path='/profile' component={ProfilePage} />
-        <ProtectRoute path='/create-payment' component={CreatePayment}  />                
-        <ProtectRoute path='/transaction-detail' component={TransactionDetail} />           
-        <ProtectRoute path='/dashboard' component={DashBoard} />
-        <Route path="/detail" component={TransactionDetailPublic} />
-        <Route path="/recovery-pass" component={RecoveryPassword} />
-        <Route path="/user/password" component={CreatePassword} />
-        <Route path='/agree-payment' component={AgreePayment} />  
-        <Route path="/registro" component={RegisterLanding} />   
-        <Route path="/login" component={LoginPage} /> 
-        <Route path="/terms" component={TermsCondition} />        
-        <Route path="/" component={LandingPage} />      
-    </Switch>
-  </Router>
+return (
+  <CacheBuster>
+    {({ loading, isLatestVersion, refreshCacheAndReload }) => {
+      if (loading) return null;
+      if (!loading && !isLatestVersion) {
+        // You can decide how and when you want to force reload
+        refreshCacheAndReload();
+      }      
+     
+        return (
+            
+            <Router history={hist}>      
+            <Switch>
+                <ProtectRoute path='/profile' component={ProfilePage} />
+                <ProtectRoute path='/create-payment' component={CreatePayment}  />                
+                <ProtectRoute path='/transaction-detail' component={TransactionDetail} />           
+                <ProtectRoute path='/dashboard' component={DashBoard} />
+                <Route path="/detail" component={TransactionDetailPublic} />
+                <Route path="/recovery-pass" component={RecoveryPassword} />
+                <Route path="/user/password" component={CreatePassword} />
+                <Route path='/agree-payment' component={AgreePayment} />  
+                <Route path="/registro" component={RegisterLanding} />   
+                <Route path="/login" component={LoginPage} /> 
+                <Route path="/terms" component={TermsCondition} />        
+                <Route path="/" component={LandingPage} />      
+            </Switch>
+          </Router>
 
-  );
+          );
+
+        }}
+        </CacheBuster>
+      );
 }
+  
 
 export default App;
