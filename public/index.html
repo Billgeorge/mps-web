@@ -33,8 +33,9 @@
       rel="stylesheet"
     />
     <script>
-      var host = "www.mipagoseguro.co" || "mipagoseguro.co";
-      if ((host == window.location.host) && (window.location.protocol != "https:")){
+      var wwwHost = "www.mipagoseguro.co";
+      var host = "mipagoseguro.co";
+      if ((wwwHost == window.location.host || host == window.location.host)) && (window.location.protocol != "https:")){
       window.location.protocol = "https";
       }
       </script>
