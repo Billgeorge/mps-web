@@ -6,12 +6,12 @@ import { makeStyles,withStyles } from "@material-ui/core/styles";
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
 // core components
-import Header from "components/Header/Header.js";
+
 import Footer from "components/Footer/Footer.js";
 import Button from "components/CustomButtons/Button.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import HeaderLinksSession from "components/Header/HeaderLinksSession.js";
+
 import NavPills from "components/NavPills/NavPills.js";
 import Parallax from "components/Parallax/Parallax.js";
 import Avatar from '@material-ui/core/Avatar';
@@ -40,6 +40,7 @@ import {consumeServiceGet,consumeServicePut} from 'service/ConsumeService'
 import { getMerchantId,getMerchantName } from 'service/AuthenticationService';
 import {getFirstLetters} from 'util/NameUtils'
 import {getBankNumber} from 'constant/index'
+import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 
 
 
@@ -168,18 +169,8 @@ export default function ProfilePage(props) {
   }
   return (
     <div>
-      <Header
-        color="transparent"
-        brand="MiPagoSeguro"
-        rightLinks={<HeaderLinksSession />}
-        fixed
-        changeColorOnScroll={{
-          height: 200,
-          color: "white"
-        }}
-        {...rest}
-      />
-      <Parallax small filter image={require("assets/img/profile-bg.jpg")} />
+      <ResponsiveDrawe /> 
+      <Parallax style={{paddingLeft:'100px'}} small filter image={require("assets/img/profile-bg.jpg")} />
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div>
           <div className={classes.container}>
