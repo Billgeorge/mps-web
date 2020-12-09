@@ -7,9 +7,6 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
 import Link from "assets/img/link-button.png";
-
-import HeaderLinksSession from "components/Header/HeaderLinksSession.js";
-import Header from "components/Header/Header.js";
 import Button from "components/CustomButtons/Button.js";
 
 import Alert from '@material-ui/lab/Alert';
@@ -32,8 +29,13 @@ import {getLegibleDate} from 'util/DateUtil'
 
 import {consumeServiceGet} from 'service/ConsumeService'
 import {CORE_BASEURL, getPaymentState, getPaymentIdState} from 'constant/index'
+import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
+
+
+
 
 const useStyles = makeStyles(styles);
+
 
   
   export default function DashBoard(props) {
@@ -44,7 +46,7 @@ const useStyles = makeStyles(styles);
     const [pendingPayments, setPendingPayments] = React.useState('$ 0');
     const [errorMessage, setErrorMessage] = React.useState("");    
 
-    React.useEffect(() => getPaymentsForMerchant(), []);
+    React.useEffect(() => getPaymentsForMerchant(), []);    
 
     const [duration, setDuration] = React.useState(15);
 
@@ -139,27 +141,11 @@ const useStyles = makeStyles(styles);
     const { ...rest } = props;    
   
     return (
-        <div>
-        <Header
-          absolute
-          color="transparent"
-          brand="MiPagoSeguro"
-          rightLinks={<HeaderLinksSession />}
-          
-          {...rest}
-        />
-        <div
-          className={classes.pageHeader}
-          style={{
-              backgroundColor:"#03a9f4",
-              padding:"20px"
-            /*backgroundImage: "url(" + image + ")",
-            backgroundSize: "cover",
-            backgroundPosition: "top center"*/
-          }}
-        >
+        <div>       
+       
+        <ResponsiveDrawe />       
         <div className={classes.container}>
-        <GridContainer className={classes.subContainer} justify="center">
+        <GridContainer className={classes.subContainer} justify="center" >
         | <GridItem xs={12} sm={12} md={12} className={classes.grid}>        
             <Grid container className={classes.box}  spacing={3}>               
                 <Grid item xs={12} sm={12} md={6} >
@@ -203,7 +189,8 @@ const useStyles = makeStyles(styles);
                           <MenuItem value={4}>Despachado</MenuItem>
                           <MenuItem value={5}>Disputa</MenuItem>
                           <MenuItem value={6}>Cerrado</MenuItem>
-                          <MenuItem value={7}>Recibido</MenuItem>                          
+                          <MenuItem value={7}>Recibido</MenuItem>
+                          <MenuItem value={8}>Transferido</MenuItem>                          
                         </Select>
                       </FormControl>
                     </Grid>
@@ -292,9 +279,9 @@ const useStyles = makeStyles(styles);
           }      
         </GridContainer>
         </div>
-        <Footer whiteFont />
+        <Footer />
       </div>
-      </div>
+      
       
       
     );
