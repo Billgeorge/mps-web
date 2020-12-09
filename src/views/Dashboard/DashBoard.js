@@ -189,7 +189,8 @@ const useStyles = makeStyles(styles);
                           <MenuItem value={4}>Despachado</MenuItem>
                           <MenuItem value={5}>Disputa</MenuItem>
                           <MenuItem value={6}>Cerrado</MenuItem>
-                          <MenuItem value={7}>Recibido</MenuItem>                          
+                          <MenuItem value={7}>Recibido</MenuItem>
+                          <MenuItem value={8}>Transferido</MenuItem>                          
                         </Select>
                       </FormControl>
                     </Grid>
