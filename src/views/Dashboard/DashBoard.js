@@ -253,7 +253,7 @@ const useStyles = makeStyles(styles);
                         {payments.map((row) => (
                           <TableRow key={row.name}>
                             <TableCell component="th" scope="row">
-                              <a target="_blank" href={`/transaction-detail/${row.id}`} style={{cursor:"pointer"}}>{row.description==null?'descrioción vacía':row.description}</a>
+                              <a target="_blank" href={`/transaction-detail/${row.id}`} style={{cursor:"pointer"}}>{row.description==null?'descripción vacía':row.description}</a>
                             </TableCell>
                             <TableCell align="right">{row.customerName}</TableCell>
                             <TableCell align="right">{formatter.format(row.amount)}</TableCell>

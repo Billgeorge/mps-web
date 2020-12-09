@@ -122,7 +122,7 @@ const useStyles = makeStyles(styles);
                       <TableBody>
                         {withdrawal.map((row) => (
                           <TableRow key={row.name}>
-                            <TableCell align="right">{formatter.format(row.amount)}</TableCell>
+                            <TableCell align="right"><a target="_blank" href={`/withdrawal-detail/${row.id}`} style={{cursor:"pointer"}}>{formatter.format(row.amount)}</a></TableCell>
                             <TableCell align="right">{
                               getLegibleDate(row.applicationDate)
                             }</TableCell>
