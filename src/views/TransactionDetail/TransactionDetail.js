@@ -13,8 +13,7 @@ import {consumeServiceGet,consumeServicePatch} from 'service/ConsumeService'
 import {getIdFromUrl} from 'util/UrlUtil'
 import Alert from '@material-ui/lab/Alert';
 
-import HeaderLinksSession from "components/Header/HeaderLinksSession.js";
-import Header from "components/Header/Header.js";
+import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -108,22 +107,7 @@ const formatter = new Intl.NumberFormat('en-US', {
   
     return (
         <div>
-        <Header
-          absolute
-          color="transparent"
-          brand="MiPagoSeguro"
-          rightLinks={<HeaderLinksSession />}
-          {...rest}
-        />
-        <div
-          className={classes.pageHeader}
-          style={{
-              backgroundColor:"#03a9f4"
-            /*backgroundImage: "url(" + image + ")",
-            backgroundSize: "cover",
-            backgroundPosition: "top center"*/
-          }}
-        >
+        <ResponsiveDrawe />
         <div className={classes.container}>
         <GridContainer className={classes.subContainer} justify="center">
         | <GridItem xs={12} sm={12} md={12} className={classes.grid}>        
@@ -229,6 +213,6 @@ const formatter = new Intl.NumberFormat('en-US', {
         </GridContainer>
         </div>
         </div>
-        </div>  
+          
     );
 }

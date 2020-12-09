@@ -24,9 +24,7 @@ import {getLegibleDate} from 'util/DateUtil'
 import {consumeServiceGet} from 'service/ConsumeService'
 import {CORE_BASEURL} from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
-
-
-
+import consumeServicePost from '../../service/ConsumeService'
 
 const useStyles = makeStyles(styles);
 
@@ -35,17 +33,35 @@ const useStyles = makeStyles(styles);
   export default function WithDrawal(props) {
 
     const [withdrawal, setWithdrawal] = React.useState([]);
+    const [isEnabled, setIsEnabled] = React.useState(false);
     const [amount, setAmount] = React.useState([]);
-    const [errorMessage, setErrorMessage] = React.useState("");    
+    const [errorMessage, setErrorMessage] = React.useState("");
+    const [successMessage, setSuccessMessage] = React.useState("");    
 
     React.useEffect(() => getWithdrawalsForMerchant(), []);    
 
     const callBackSuccess = (withdrawals) =>{
         setWithdrawal(withdrawals)      
     }
+
+    const callBackSuccessCreate = (withdrawals) =>{
+        setSuccessMessage("Tu solicitud de retiro fue creada. En 2 días hábiles tus fondos serán transferidos a tu cuenta bancaria.")    
+    }
     
     const callBackSuccessAmount = (amount) =>{
-        setAmount(amount)      
+        setAmount(amount)
+        if(amount!=null && amount>6000){
+            setIsEnabled(true)
+        }      
+    }
+
+    const requestWithdrawal = () =>{
+        const merchantId = getMerchantId()
+        consumeServicePost({    
+            idMerchant: merchantId,
+            amount: amount
+          },callBack,callBackSuccessCreate,
+          CORE_BASEURL+"/withdrawal")
     }
 
     const formatter = new Intl.NumberFormat('en-US', {
@@ -57,9 +73,9 @@ const useStyles = makeStyles(styles);
     const callBack = (msg) => {
       setWithdrawal([])
       if(msg==404){
-        setErrorMessage("No hay transacciones para mostrar")        
+        setErrorMessage("No hay retiros para mostrar")        
       }else{
-        setErrorMessage("Error Cargando Transacciones")
+        setErrorMessage("Error Cargando retiros")
       }      
     }
 
@@ -85,7 +101,7 @@ const useStyles = makeStyles(styles);
                 <Grid item xs={12} sm={12} md={12} >
                     El siguiente valor representa el valor de las transacciones cerradas que puedes retirar, recuerda cada retiro tiene un costo de $6000:
                     <br/> <br/> <center><span className={classes.valueText}>{formatter.format(amount)}</span></center>
-                    <br/> <br/> <center><Button color="primary"> Solicitar retiro</Button></center>
+                    <br/> <br/> <center><Button color="primary" disabled={!isEnabled} onClick={requestWithdrawal}> Solicitar retiro</Button></center>
                 </Grid>                              
             </Grid>
          </GridItem>        
@@ -123,10 +139,15 @@ const useStyles = makeStyles(styles);
                   ?
                   <Alert severity="error">{errorMessage}</Alert>
                   : <span>	&nbsp;</span>   
+          }
+          {successMessage != ""
+                  ?
+                  <Alert severity="success">{successMessage}</Alert>
+                  : <span>	&nbsp;</span>   
           }      
         </GridContainer>
         </div>
-        <Footer whiteFont />
+        <Footer />
       </div>
       
       

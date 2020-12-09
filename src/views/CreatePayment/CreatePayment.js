@@ -26,6 +26,7 @@ import styles from "assets/jss/material-kit-react/views/createPayment.js";
 
 import InputAdornment from '@material-ui/core/InputAdornment';
 import consumeServicePost from '../../service/ConsumeService'
+import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 
 import {CORE_BASEURL} from 'constant/index'
 
@@ -95,23 +96,8 @@ export default function RegisterPage(props) {
   return (
     
     <div>
-      <Header
-        absolute
-        color="transparent"
-        brand="MiPagoSeguro"
-        rightLinks={<HeaderLinksSession />}
-        {...rest}
-      />
-      <div
-        className={classes.pageHeader}
-        style={{
-            backgroundColor:"#03a9f4"
-          /*backgroundImage: "url(" + image + ")",
-          backgroundSize: "cover",
-          backgroundPosition: "top center"*/
-        }}
-      >
-        <div className={classes.container}>
+      <ResponsiveDrawe />
+      <div className={classes.container}>
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={6}>
               <Card className={classes[cardAnimaton]}>
@@ -169,8 +155,8 @@ export default function RegisterPage(props) {
             </GridItem>
           </GridContainer>
         </div>
-        <Footer whiteFont />
+        <Footer />
       </div>
-    </div>
+    
   );
 }

@@ -278,7 +278,7 @@ const useStyles = makeStyles(styles);
           }      
         </GridContainer>
         </div>
-        <Footer whiteFont />
+        <Footer />
       </div>
       
       
