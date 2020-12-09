@@ -19,6 +19,8 @@ export const getPaymentState = (idState) => {
             return "Cerrado"
         case 7:
             return "Recibido"
+        case 8:
+            return "Transferido"
     }
 }
 

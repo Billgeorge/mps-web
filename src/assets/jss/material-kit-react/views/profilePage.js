@@ -29,7 +29,7 @@ const profilePageStyle = {
   },
   avatar:{
     width: "100%",
-    backgroundColor: "#044fd6",
+    backgroundColor: "#0475CD",
     height: "100px",
     fontSize:"4em",
     margin: "0 auto",

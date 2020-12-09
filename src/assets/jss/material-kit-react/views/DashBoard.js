@@ -18,7 +18,7 @@ const signupPageStyle = {
     textAlign: "center"
   },
   subContainer: {
-    backgroundColor:"gray"    
+    backgroundColor:"white"    
   },
   boxItem: {
     border:"1px solid #e4e4e4",
@@ -100,6 +100,7 @@ const signupPageStyle = {
       textAlign:"center"
     }
   }  
+  
 };
 
 export default signupPageStyle;
