@@ -20,6 +20,7 @@ import AgreePayment from "views/CreatePayment/AgreePayment";
 import TermsCondition from "views/TermsConditions/TermsConditions";
 import RecoveryPassword from "views/RecoveryPassword/RecoveryPassword";
 import WithDrawal from 'views/Withdrawal/Withdrawal';
+import WithdrawalDetail from 'views/Withdrawal/WithdrawalDetail';
 
 var hist = createBrowserHistory();
 
@@ -45,6 +46,7 @@ return (
                 <ProtectRoute path='/transaction-detail' component={TransactionDetail} />           
                 <ProtectRoute path='/dashboard' component={DashBoard} />
                 <ProtectRoute path='/withdrawal' component={WithDrawal} />
+                <ProtectRoute path='/withdrawal-detail' component={WithdrawalDetail} />
                 <Route path="/detail" component={TransactionDetailPublic} />
                 <Route path="/recovery-pass" component={RecoveryPassword} />
                 <Route path="/user/password" component={CreatePassword} />
