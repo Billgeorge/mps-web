@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     lineHeight: "30px",
-    fontSize: "18px",
+    fontSize: "1.5em",
+    fontFamily: 'Dosis, sans-serif',
     borderRadius: "3px",
     textTransform: "none",
     color: "inherit",
@@ -134,7 +135,7 @@ export function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const brandComponent =<div><img src={Logo} style={{width:"50px"}}/><Button className={classes.title}>Mipagoseguro</Button></div>;
+  const brandComponent =<div><img src={Logo} style={{width:"50px"}}/><Button className={classes.title}>mipagoseguro</Button></div>;
 
   const drawer = (
     <div>
