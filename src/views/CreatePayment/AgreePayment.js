@@ -29,6 +29,7 @@ import {consumeServiceGet} from 'service/ConsumeService'
 import {CORE_BASEURL} from 'constant/index'
 
 import styles from "assets/jss/material-kit-react/views/createPayment.js";
+import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 
 import consumerService from '../../service/ConsumeService'
 
@@ -122,14 +123,14 @@ export default function AgreePayment(props) {
       <Header
         absolute
         color="transparent"
-        brand="MiPagoSeguro"
+        brand="mipagoseguro"
         rightLinks={<HeaderLinks />}
         {...rest}
       />
       <div
         className={classes.pageHeader}
         style={{
-            backgroundColor:"#03a9f4"
+            backgroundColor:"#2097F3"
           /*backgroundImage: "url(" + image + ")",
           backgroundSize: "cover",
           backgroundPosition: "top center"*/
@@ -141,7 +142,8 @@ export default function AgreePayment(props) {
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form} validated="true" name="agreeForm" id="agreeForm">
                     <CardHeader className={classes.cardHeader}>
-                        <h3 style={{fontWeight:"600"}}>Aceptar Pago</h3>
+                        <h3 style={{fontWeight:"600",fontSize: "2.5em",fontFamily: 'Dosis, sans-serif'}}>Bienvenido a mipagoseguro </h3> <EmojiEmotionsIcon style={{fontSize:'2.5em',color:"#2097F3"}}/>
+                        <h5 style={{fontWeight:"600"}}>Con nuestro servicio tu dinero esta a salvo</h5>
                     </CardHeader>                 
                     <CardBody>
                     {isLoading

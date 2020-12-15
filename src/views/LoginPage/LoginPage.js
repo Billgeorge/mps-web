@@ -86,7 +86,7 @@ export default function LoginPage(props) {
       <Header
         absolute
         color="transparent"
-        brand="MiPagoSeguro"
+        brand="mipagoseguro"
         rightLinks={<HeaderLinks />}
         {...rest}
       />

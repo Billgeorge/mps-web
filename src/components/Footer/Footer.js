@@ -57,7 +57,7 @@ export default function Footer(props) {
             className={aClasses}
             target="_blank"
           >
-            MiPagoSeguro
+            mipagoseguro
           </a>{" "}
           por un mundo más seguro.
         </div>

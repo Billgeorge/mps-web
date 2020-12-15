@@ -52,9 +52,9 @@ const headerStyle = {
     flex: 1
   },
   title: {
-    ...defaultFont,    
+    fontFamily: 'Dosis, sans-serif',  
     lineHeight: "30px",
-    fontSize: "18px",
+    fontSize: "1.5em",
     borderRadius: "3px",
     textTransform: "none",
     color: "inherit",

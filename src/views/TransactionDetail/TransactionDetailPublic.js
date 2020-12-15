@@ -114,7 +114,7 @@ const useStyles = makeStyles(styles);
         <Header
           absolute
           color="transparent"
-          brand="MiPagoSeguro"
+          brand="mipagoseguro"
           rightLinks={<HeaderLinks />}
           {...rest}
         />
