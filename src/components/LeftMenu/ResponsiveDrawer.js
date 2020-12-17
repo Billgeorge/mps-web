@@ -187,7 +187,7 @@ export function ResponsiveDrawer(props) {
                                 {}
                 </Avatar>  
               </ListItemIcon>
-              <a href="profile">
+              <a href="/profile">
               < ListItemText primary="Mi Perfil" />
               </a>
             </StyledMenuItem>        
