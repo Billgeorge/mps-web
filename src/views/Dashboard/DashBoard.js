@@ -257,7 +257,7 @@ const useStyles = makeStyles(styles);
                             </TableCell>
                             <TableCell align="right">{row.customerName}</TableCell>
                             <TableCell align="right">{formatter.format(row.amount)}</TableCell>
-                            <TableCell align="right"><Button onClick={() => copyUrl(row.id)} color="primary">Copiar Enlace</Button></TableCell>
+                            <TableCell align="right"><Button onClick={() => copyUrl(row.publicId)} color="primary">Copiar Enlace</Button></TableCell>
                             <TableCell align="right">{getPaymentState(row.idState)}</TableCell>
                             <TableCell align="right">{row.guideNumber}</TableCell>
                             <TableCell align="right">{row.transportCompany}</TableCell>

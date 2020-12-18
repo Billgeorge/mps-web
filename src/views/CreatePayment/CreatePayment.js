@@ -66,7 +66,7 @@ export default function RegisterPage(props) {
       const callBackSucess = (response) =>{
         var getUrl = window.location;
         var baseUrl = getUrl .protocol + "//" + getUrl.host + "/";
-        setUrl(baseUrl+"agree-payment/"+response.id)
+        setUrl(baseUrl+"agree-payment/"+response.publicId)
         document.getElementById("createPayment").reset();
         setIsLoading(false)        
       }
