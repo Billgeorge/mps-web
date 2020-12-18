@@ -36,9 +36,15 @@ const useStyles = makeStyles(styles);
     
     const getPaymentData = () => {
       const idPayment = getIdFromUrl()
-      const url = `${CORE_BASEURL}/payment/${idPayment}`
+      const url = `${CORE_BASEURL}/payment/public/${idPayment}`
       consumeServiceGet(callBackError,callBackSuccessGet,url)
     }
+
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2
+    })
 
     const callBackSuccessGet = (payment) =>{
       if(payment.isAboutToClose){
@@ -121,7 +127,8 @@ const useStyles = makeStyles(styles);
         <div
           className={classes.pageHeader}
           style={{
-              backgroundColor:"#03a9f4"
+              backgroundColor:"#2097F3",
+              paddingTop:"20px"
             /*backgroundImage: "url(" + image + ")",
             backgroundSize: "cover",
             backgroundPosition: "top center"*/
@@ -141,17 +148,12 @@ const useStyles = makeStyles(styles);
                 </Grid>
             </Grid>
           </GridItem>
-          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={6} className={classes.grid}>
                 <Grid container className={classes.boxDetail} spacing={3}>                   
-                   <Grid item ><span>Id:</span> <br/><span className={classes.valueTextDetail}>{payment.id}</span></Grid>
+                   <Grid item ><span>Valor :</span> <br/><span className={classes.valueTextDetail}>{formatter.format(payment.amount)}</span></Grid>
                 </Grid>   
          </GridItem>
-         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
-                <Grid container className={classes.boxDetail} spacing={3}>                   
-                   <Grid item ><span>Valor :</span> <br/><span className={classes.valueTextDetail}>{payment.amount}</span></Grid>
-                </Grid>   
-         </GridItem>
-         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={6} className={classes.grid}>
                 <Grid container className={classes.boxDetail} spacing={3}>                   
                    <Grid item ><span>Fecha Creación:</span> <br/><span className={classes.valueTextDetail}>{payment.creationDate}</span></Grid>
                 </Grid>   
@@ -161,7 +163,7 @@ const useStyles = makeStyles(styles);
                    <Grid item ><span>Número de guía:</span> <br/><span className={classes.valueTextDetail}>{payment.guideNumber==null?'Guía vacía':payment.guideNumber }</span></Grid>
                 </Grid>   
          </GridItem>
-         <GridItem xs={12} sm={12} md={6} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
                 <Grid container className={classes.boxDetail} spacing={3}>                   
                    <Grid item ><span>Transportadora :</span> <br/><span className={classes.valueTextDetail}>{payment.transportCompany==null?'Transportadora vacía':payment.transportCompany}</span></Grid>
                 </Grid>   
@@ -171,7 +173,7 @@ const useStyles = makeStyles(styles);
                    <Grid item ><span>Estado:</span> <br/><span className={classes.valueTextDetail}>{getPaymentState(payment.idState)}</span></Grid>
                 </Grid>   
          </GridItem>         
-         <GridItem xs={12} sm={12} md={10} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.boxDetail, classes.deliveryForm} spacing={3} justify="center">                   
             { payment.idState >2 && payment.idState<5
             ?<Grid item >

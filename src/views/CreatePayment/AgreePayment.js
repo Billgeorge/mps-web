@@ -68,7 +68,7 @@ export default function AgreePayment(props) {
   React.useEffect(() => changeMessageValidation(), []);
   const getPaymentData = () => {
     const idPayment = getIdFromUrl().split('#')[0]
-    const url = `${CORE_BASEURL}/payment/${idPayment}`
+    const url = `${CORE_BASEURL}/payment/public/${idPayment}`
     consumeServiceGet(callBackGet,callBackSuccessGet,url)
   }
 
