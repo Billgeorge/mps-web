@@ -52,7 +52,7 @@ export const  login = async (payload,callback, callBackError) =>{
     })
     .catch(error => {
         console.log(error.response)
-        callBackError("Error realizando login")
+        callBackError(error.response.data.errorMessage)
     })    
 };
 
