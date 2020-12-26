@@ -119,6 +119,7 @@ export default function LoginPage(props) {
                       }}
                       inputProps={{
                         type: "email",
+                        required: true,
                         endAdornment: (
                           <InputAdornment position="end">
                             <Email className={classes.inputIconsColor} />
@@ -130,7 +131,8 @@ export default function LoginPage(props) {
                       labelText="Password"
                       id="pass"
                       formControlProps={{
-                        fullWidth: true
+                        fullWidth: true,
+                        required: true
                       }}
                       inputProps={{
                         type: isPassWordHidden ? "password" : "text",

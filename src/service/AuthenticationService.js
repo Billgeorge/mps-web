@@ -52,7 +52,7 @@ export const  login = async (payload,callback, callBackError) =>{
     })
     .catch(error => {
         console.log(error.response)
-        callBackError(error.response.data.errorMessage)
+        callBackError(typeof error.response!='undefined'?error.response.data.errorMessage:"Error realizando login")
     })    
 };
 
