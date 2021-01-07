@@ -53,8 +53,6 @@ return (
                 <Route path='/agree-payment' component={AgreePayment} />  
                 <Route path="/registro" component={RegisterLanding} />   
                 <Route path="/login" component={LoginPage} /> 
-                <Route path="/terms" component={TermsCondition} />        
-                <Route path="/" component={LandingPage} />      
             </Switch>
           </Router>
 
