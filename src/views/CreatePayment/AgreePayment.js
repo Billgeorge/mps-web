@@ -29,7 +29,8 @@ import TrackChanges from "@material-ui/icons/TrackChanges";
 import EmojiEmotions from "@material-ui/icons/EmojiEmotions";
 
 import {consumeServiceGet} from 'service/ConsumeService'
-import {CORE_BASEURL} from 'constant/index'
+import consumeServicePost from "service/ConsumeService";
+import {CORE_BASEURL,PULL_BASEURL} from 'constant/index'
 
 import styles from "assets/jss/material-kit-react/views/createPayment.js";
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
@@ -39,15 +40,34 @@ import ReactPixel from 'react-facebook-pixel';
 
 import {setFbPixel,setValue} from 'actions/setFbPixel'
 
+import CustomDialog from 'views/casshin/CustomizedDialogs';
+
+
 const useStyles = makeStyles(styles);
 
 
-function AgreePayment(props) {
-  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");  
+
+export default function AgreePayment(props) {
+  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  const [openDialog, setOpenDialog] = React.useState(false);  
 
   const [errorMessage, setErrorMessage] = React.useState({});
   const [payment, setPayment] = React.useState({});
   const [merchant, setMerchant] = React.useState("");
+
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [paymentInformation, setPayInformation] = React.useState({});
+  
+  const callBackSuccessGetPaymentInformation = (paymentInformation) => {   
+    setPayInformation(paymentInformation)
+    setOpenDialog(true)
+  }
+
+  const getExternalPayment = () => {
+    const idPayment = getIdFromUrl().split('#')[0]
+    const url = `${PULL_BASEURL}/cashin/redirect`
+    consumeServicePost({id:idPayment},callBackGet,callBackSuccessGetPaymentInformation,url)
+  }
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [isCheckout, setIsCheckout] = React.useState(false);     
@@ -57,6 +77,12 @@ function AgreePayment(props) {
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2
+  })
 
   const callBackSuccessGet = (payment) =>{
     setPayment(payment)
@@ -73,10 +99,12 @@ function AgreePayment(props) {
   }
   const callBackSuccessGetMerchant = (merchant) => {
     setMerchant(merchant)
+
     ReactPixel.init(merchant.fbId);
     ReactPixel.fbq('track', 'InitiateCheckout');
     props.setFbPixel(merchant.fbId);
   }
+
 
   const callBackGet = () => {
     let errorObjects = {"Error":"Error completando pago, por favor contactar a administrador"}
@@ -109,7 +137,7 @@ function AgreePayment(props) {
   })
 
   const changeMessageValidation = () =>{
-    getPaymentData()
+    getPaymentData()    
     document.agreeForm.onsubmit = function(event){
       
       const callBack = (error) => {
@@ -122,8 +150,8 @@ function AgreePayment(props) {
       }
       const callBackSucess = (url) =>{
         document.getElementById("agreeForm").reset();
-        setIsLoading(false)        
-        window.location.assign(url)
+        setIsLoading(false)
+        getExternalPayment() 
       }
       setIsLoading(true)
       console.log("submitting")
@@ -177,6 +205,10 @@ function AgreePayment(props) {
   return (
     
     <div>
+      {openDialog
+      ? <CustomDialog paymentPartnerId={paymentInformation.id} open={openDialog}></CustomDialog>      
+                : <span></span>}
+      
       <Header
         absolute
         color="transparent"
@@ -197,6 +229,7 @@ function AgreePayment(props) {
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={6}>
               <Card className={classes[cardAnimaton]}>
+                
                 <form className={classes.form} validated="true" name="agreeForm" id="agreeForm">
                     <CardHeader className={classes.cardHeader}>
                         <h3 style={{fontWeight:"600",fontSize: "2.5em",fontFamily: 'Dosis, sans-serif'}}>Bienvenido a mipagoseguro </h3> <EmojiEmotionsIcon style={{fontSize:'2.5em',color:"#2097F3"}}/>
@@ -209,6 +242,7 @@ function AgreePayment(props) {
                     }
                     <span><b>Somos una contraentrega digítal. El vendedor no recibirá el pago hasta que recibas tu pedido.</b> <a href="#howWork"> ->Ver como funciona</a></span><br/>
                     <span>Procede a realizar el pago de tu pedido por el valor de <b>{formatter.format(payment.amount)}</b> del comercio <b>{merchant.name}</b></span>
+
                     <FormControl style={{width:"100%",paddingBottom:"10px"}}>
                     <InputLabel htmlFor="id">Cédula</InputLabel>
                         <OutlinedInput
@@ -333,7 +367,8 @@ function AgreePayment(props) {
           <h2 className={classes.title}>¿Cómo Funciona?</h2>
           <a href="#agreeForm">Ir a Pagar</a>
         </GridItem>
-      </GridContainer>
+      </GridContainer>      
+      
       <div>
         <GridContainer>
           <GridItem xs={12} sm={12} md={4}>
