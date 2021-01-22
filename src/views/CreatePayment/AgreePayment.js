@@ -60,6 +60,8 @@ export default function AgreePayment(props) {
   
   const callBackSuccessGetPaymentInformation = (paymentInformation) => {   
     setPayInformation(paymentInformation)
+    document.getElementById("agreeForm").reset();
+    setIsLoading(false)
     setOpenDialog(true)
   }
 
@@ -148,9 +150,7 @@ export default function AgreePayment(props) {
         setErrorMessage(errorObjects)
         setIsLoading(false)
       }
-      const callBackSucess = (url) =>{
-        document.getElementById("agreeForm").reset();
-        setIsLoading(false)
+      const callBackSucess = (url) =>{        
         getExternalPayment() 
       }
       setIsLoading(true)
@@ -237,7 +237,7 @@ export default function AgreePayment(props) {
                     </CardHeader>                 
                     <CardBody>
                     {isLoading
-                                ? <CircularProgress/>
+                                ? <GridItem xs={12} sm={12} md={12}><center><CircularProgress/></center></GridItem>
                                 : <span></span>
                     }
                     <span><b>Somos una contraentrega digítal. El vendedor no recibirá el pago hasta que recibas tu pedido.</b> <a href="#howWork"> ->Ver como funciona</a></span><br/>
