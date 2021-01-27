@@ -1,5 +1,7 @@
 // 'http://localhost:8083/mps'
-export const CORE_BASEURL = 'http://localhost:8083/mps' //'https://mpscore.herokuapp.com/mps';
+
+export const CORE_BASEURL = 'https://mpscore-prod.herokuapp.com/mps';
+
 
 
 
@@ -44,6 +46,17 @@ export const getBankNumber = (bank) => {
             return 8
         case "SCOTIABANK_COLPATRIA":
             return 9
+        default:
+            return 0
+    }
+}
+
+export const getAccountType = (bank) => {
+    switch(bank){
+        case "AHORROS":
+            return 1        
+        case "CORRIENTE":
+            return 2
         default:
             return 0
     }

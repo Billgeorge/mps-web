@@ -39,7 +39,7 @@ import styles from "assets/jss/material-kit-react/views/profilePage.js";
 import {consumeServiceGet,consumeServicePut} from 'service/ConsumeService'
 import { getMerchantId,getMerchantName } from 'service/AuthenticationService';
 import {getFirstLetters} from 'util/NameUtils'
-import {getBankNumber} from 'constant/index'
+import {getBankNumber,getAccountType} from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 
 
@@ -92,6 +92,7 @@ export default function ProfilePage(props) {
 
   const callBackSuccess = (profile) =>{
     profile.accountBank = getBankNumber(profile.accountBank)
+    profile.accountType = getAccountType(profile.accountType)
     setProfile(profile)    
   }
 
@@ -149,7 +150,8 @@ export default function ProfilePage(props) {
         accountBank: document.getElementById("bankAccount").value,
         accountNumber:document.getElementById("accountNumber").value,
         contactNumber: document.getElementById("contactNumber").value,
-        nit: document.getElementById("nit").value
+        nit: document.getElementById("nit").value,
+        accountType: document.getElementById("accountType").value
       }
       console.log("profile tto send", profileToSend) 
       consumeServicePut(profileToSend,callBack,callBackSucess,
@@ -277,7 +279,7 @@ export default function ProfilePage(props) {
                             />
                           </GridItem>
                           <GridItem xs={12} sm={12} md={4} style={{paddingTop:'11px'}}>
-                            <FormControl style={{margin: '0 0 17px 0', width: '100%'}}>
+                            <FormControl style={{margin: '0 0 25px 0', width: '100%'}}>
                                 <InputLabel htmlFor="accountBank">Banco</InputLabel>
                                 <Select
                                   native
@@ -301,35 +303,55 @@ export default function ProfilePage(props) {
                                   <option value={9}>SCOTIABANK COLPATRIA</option>
                                 </Select>                               
                               </FormControl>
-                              <CustomInput                    
-                                  labelText="Número de contacto"
-                                  id="contactNumber"                                  
-                                  formControlProps={{
-                                    fullWidth: true
-                                  }}
-                                                                    
+
+                              <FormControl style={{margin: '0 0 0 0', width: '100%'}}>
+                                <InputLabel htmlFor="accountType">Tipo de cuenta</InputLabel>
+                                <Select
+                                  native
+                                  value={profile.accountType || '0'}
+                                  disabled = {!isEditEnabled}
+                                  onChange={handleChange}
                                   inputProps={{
-                                    type: "number",
-                                    name:"contactNumber",
-                                    required: true,
-                                    readOnly:true,
-                                    value:profile.contactNumber || "",
-                                    onChange:handleChange,
-                                    endAdornment: (
-                                      <InputAdornment position="end">
-                                        <ContactPhone className={classes.inputIconsColor} />
-                                      </InputAdornment>
-                                    )
+                                    name: 'accountType',
+                                    id:'accountType'
                                   }}
-                              />
+                                >
+                                  <option value={0}>Selecciona tipo de cuenta</option>
+                                  <option value={1}>Cuenta de ahorros</option>
+                                  <option value={2}>Cuenta corriente</option>                                 
+                                </Select>                               
+                              </FormControl>                              
+                          </GridItem>
+                          <GridItem xs={12} sm={12} md={6}>
+                            <CustomInput                    
+                                    labelText="Número de contacto"
+                                    id="contactNumber"                                  
+                                    formControlProps={{
+                                      fullWidth: true
+                                    }}
+                                                                      
+                                    inputProps={{
+                                      type: "number",
+                                      name:"contactNumber",
+                                      required: true,
+                                      readOnly:true,
+                                      value:profile.contactNumber || "",
+                                      onChange:handleChange,
+                                      endAdornment: (
+                                        <InputAdornment position="end">
+                                          <ContactPhone className={classes.inputIconsColor} />
+                                        </InputAdornment>
+                                      )
+                                    }}
+                                />
                           </GridItem>
                           {errorMessage != ""
                             ?
-                            <Alert severity="error">{errorMessage}</Alert>
+                            <GridItem xs={12} sm={12} md={12}><Alert severity="error">{errorMessage}</Alert></GridItem>
                             : <span>	&nbsp;</span>   
                           }
                           {isModificationDone
-                                          ? <Alert severity="success">Información de perfil modificada. </Alert>    
+                                          ?  <GridItem xs={12} sm={12} md={12}><Alert severity="success">Información de perfil modificada. </Alert></GridItem>    
                                           : <span></span>
                                           }
                           <br/>
