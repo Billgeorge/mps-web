@@ -1,5 +1,7 @@
 // 'http://localhost:8083/mps'
-export const CORE_BASEURL = 'https://mpscore.herokuapp.com/mps' //'https://mpscore.herokuapp.com/mps';
+
+export const CORE_BASEURL = 'https://mpscore-prod.herokuapp.com/mps';
+
 
 
 
