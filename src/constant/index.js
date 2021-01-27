@@ -49,6 +49,17 @@ export const getBankNumber = (bank) => {
     }
 }
 
+export const getAccountType = (bank) => {
+    switch(bank){
+        case "AHORROS":
+            return 1        
+        case "CORRIENTE":
+            return 2
+        default:
+            return 0
+    }
+}
+
 export const getPaymentIdState = (state) => {
     switch(state){
         case "Creado" :
