@@ -40,7 +40,7 @@ export default function AgreePayment(props) {
 
   const [errorMessage, setErrorMessage] = React.useState({});
   const [payment, setPayment] = React.useState({});
-  const [merchantName, setMerchant] = React.useState({});
+  const [merchantName, setMerchant] = React.useState("");
 
   const [isLoading, setIsLoading] = React.useState(false);      
 
