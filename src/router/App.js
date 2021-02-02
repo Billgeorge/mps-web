@@ -17,7 +17,7 @@ import TransactionDetail from "views/TransactionDetail/TransactionDetail";
 import TransactionDetailPublic from "views/TransactionDetail/TransactionDetailPublic";
 import CreatePayment from "views/CreatePayment/CreatePayment";
 import AgreePayment from "views/CreatePayment/AgreePayment";
-import TermsCondition from "views/TermsConditions/TermsConditions";
+import ProductBoard from "views/Product/ProductBoard";
 import RecoveryPassword from "views/RecoveryPassword/RecoveryPassword";
 import WithDrawal from 'views/Withdrawal/Withdrawal';
 import WithdrawalDetail from 'views/Withdrawal/WithdrawalDetail';
@@ -41,6 +41,7 @@ return (
             
             <Router history={hist}>      
             <Switch>
+                <ProtectRoute path='/product' component={ProductBoard} />
                 <ProtectRoute path='/profile' component={ProfilePage} />
                 <ProtectRoute path='/create-payment' component={CreatePayment}  />                
                 <ProtectRoute path='/transaction-detail' component={TransactionDetail} />           
