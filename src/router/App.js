@@ -16,6 +16,7 @@ import CreatePassword from "views/RegisterPage/CreatePassword";
 import TransactionDetail from "views/TransactionDetail/TransactionDetail";
 import TransactionDetailPublic from "views/TransactionDetail/TransactionDetailPublic";
 import CreatePayment from "views/CreatePayment/CreatePayment";
+import CreateProduct from "views/Product/CreateProduct";
 import AgreePayment from "views/CreatePayment/AgreePayment";
 import ProductBoard from "views/Product/ProductBoard";
 import RecoveryPassword from "views/RecoveryPassword/RecoveryPassword";
@@ -43,7 +44,8 @@ return (
             <Switch>
                 <ProtectRoute path='/product' component={ProductBoard} />
                 <ProtectRoute path='/profile' component={ProfilePage} />
-                <ProtectRoute path='/create-payment' component={CreatePayment}  />                
+                <ProtectRoute path='/create-payment' component={CreatePayment}  />
+                <ProtectRoute path='/create-product' component={CreateProduct}  />                
                 <ProtectRoute path='/transaction-detail' component={TransactionDetail} />           
                 <ProtectRoute path='/dashboard' component={DashBoard} />
                 <ProtectRoute path='/withdrawal' component={WithDrawal} />

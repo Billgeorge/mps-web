@@ -25,7 +25,8 @@ import {getLegibleDate} from 'util/DateUtil'
 import {consumeServiceGet} from 'service/ConsumeService'
 import {CORE_BASEURL} from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
-import consumeServicePost from '../../service/ConsumeService'
+
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(styles);
 
@@ -33,42 +34,28 @@ const useStyles = makeStyles(styles);
   
   export default function ProductBoard(props) {
 
-    const [withdrawal, setWithdrawal] = React.useState([]);
+    const [products, setProductsl] = React.useState([]);
     const [isEnabled, setIsEnabled] = React.useState(false);
     const [amount, setAmount] = React.useState([]);
     const [errorMessage, setErrorMessage] = React.useState("");
     const [successMessage, setSuccessMessage] = React.useState("");    
 
-    React.useEffect(() => getWithdrawalsForMerchant(), []);    
+    React.useEffect(() => getProductsForMerchant(), []);    
 
-    const callBackSuccess = (withdrawals) =>{
-        setWithdrawal(withdrawals)      
+    const callBackSuccess = (products) =>{
+      setProductsl(products)      
     }
+
+    const history = useHistory();
 
     const copyUrl = (id) => {
       var getUrl = window.location;
       var baseUrl = getUrl .protocol + "//" + getUrl.host + "/";
-      navigator.clipboard.writeText(baseUrl+"agree-payment/"+id);
+      navigator.clipboard.writeText(baseUrl+"agree-payment?idp="+id);
     }
 
-    const callBackSuccessCreate = (withdrawals) =>{
-        setSuccessMessage("Tu solicitud de retiro fue creada. En 2 días hábiles tus fondos serán transferidos a tu cuenta bancaria.")    
-    }
-    
-    const callBackSuccessAmount = (amount) =>{
-        setAmount(amount)
-        if(amount!=null && amount>6000){
-            setIsEnabled(true)
-        }      
-    }
-
-    const requestWithdrawal = () =>{
-        const merchantId = getMerchantId()
-        consumeServicePost({    
-            idMerchant: merchantId,
-            amount: amount
-          },callBack,callBackSuccessCreate,
-          CORE_BASEURL+"/withdrawal")
+    const createProduct = () =>{
+        history.push("create-product")
     }
 
     const formatter = new Intl.NumberFormat('en-US', {
@@ -78,20 +65,19 @@ const useStyles = makeStyles(styles);
     })
 
     const callBack = (msg) => {
-      setWithdrawal([])
+      setProductsl([])
       if(msg==404){
-        setErrorMessage("No hay retiros para mostrar")        
+        setErrorMessage("No hay productos para mostrar")        
       }else{
-        setErrorMessage("Error Cargando retiros")
+        setErrorMessage("Error Cargando productos")
       }      
     }
 
-    const getWithdrawalsForMerchant = (filter,value) => {
+    const getProductsForMerchant = (filter,value) => {
       const merchantId = getMerchantId()
       console.log('getting withdrawals ')
-      let url=`${CORE_BASEURL}/withdrawal/merchant/${merchantId}`
-      consumeServiceGet(callBack,callBackSuccess,url)
-      consumeServiceGet(callBack,callBackSuccessAmount,`${CORE_BASEURL}/payment/merchant/closed/${merchantId}`)
+      let url=`${CORE_BASEURL}/product/merchant/${merchantId}`
+      consumeServiceGet(callBack,callBackSuccess,url)      
     }
       
     const classes = useStyles();
@@ -113,7 +99,7 @@ const useStyles = makeStyles(styles);
                         </Grid>                              
                     </Grid>
                 </GridItem>   
-                   <Grid item xs={12}><Button style={{marginLeft:"10px"}} color="primary" disabled={!isEnabled} onClick={requestWithdrawal}> Crear Producto</Button><Button  style={{marginLeft:"10px"}} color="primary" disabled={!isEnabled} onClick={requestWithdrawal}> Eliminar seleccionados</Button></Grid>                   
+                   <Grid item xs={12}><Button style={{marginLeft:"10px"}} color="primary"  onClick={createProduct}> Crear Producto</Button><Button  style={{marginLeft:"10px"}} color="primary" disabled={!isEnabled} > Eliminar seleccionados</Button></Grid>                   
                    <Grid item xs={12} >
                    <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
@@ -126,21 +112,22 @@ const useStyles = makeStyles(styles);
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {withdrawal.map((row) => (
-                          <TableRow key={row.name}>
+                        {products.map((row) => (
+                          <TableRow>
                             <TableCell align="center">
                                 <center>
-                                    <Checkbox                                  
+                                    <Checkbox
+                                    value={row.shortId}                                  
                                     color="primary"
                                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                                   />
                                 </center>
                             </TableCell>
-                            <TableCell align="center"><a target="_blank" href={`/withdrawal-detail/${row.id}`} style={{cursor:"pointer"}}>{row.description}</a></TableCell>
+                            <TableCell align="center">{row.description}</TableCell>
                             <TableCell align="center">{
-                              getLegibleDate(row.amount)
+                              formatter.format(row.amount)
                             }</TableCell>
-                            <TableCell align="right"><center><Button onClick={() => copyUrl(row.publicId)} color="primary">Copiar Enlace</Button></center></TableCell>
+                            <TableCell align="right"><center><Button onClick={() => copyUrl(row.shortId)} color="primary">Copiar Enlace</Button></center></TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
