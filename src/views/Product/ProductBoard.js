@@ -5,7 +5,6 @@ import Grid from '@material-ui/core/Grid';
 import styles from "assets/jss/material-kit-react/views/DashBoard.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import Checkbox from '@material-ui/core/Checkbox';
 
 import Button from "components/CustomButtons/Button.js";
 
@@ -20,9 +19,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Footer from "components/Footer/Footer.js";
 import { getMerchantId } from 'service/AuthenticationService';
-import {getLegibleDate} from 'util/DateUtil'
 
-import {consumeServiceGet} from 'service/ConsumeService'
+import {consumeServiceGet,consumeServiceDelete} from 'service/ConsumeService'
 import {CORE_BASEURL} from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 
@@ -35,10 +33,11 @@ const useStyles = makeStyles(styles);
   export default function ProductBoard(props) {
 
     const [products, setProductsl] = React.useState([]);
+    const [isChecked, setIsCHecked] = React.useState(false);
     const [isEnabled, setIsEnabled] = React.useState(false);
-    const [amount, setAmount] = React.useState([]);
     const [errorMessage, setErrorMessage] = React.useState("");
-    const [successMessage, setSuccessMessage] = React.useState("");    
+    const [successMessage, setSuccessMessage] = React.useState("");
+    const [idsToDelete, setIdsToDelete] = React.useState([]);    
 
     React.useEffect(() => getProductsForMerchant(), []);    
 
@@ -56,6 +55,40 @@ const useStyles = makeStyles(styles);
 
     const createProduct = () =>{
         history.push("create-product")
+    }
+
+    const deleteProducts = () =>{
+      let url=`${CORE_BASEURL}/product`
+      consumeServiceDelete({    
+        ids:idsToDelete
+      },callBack,callBackSucess,url)   
+    }
+    const callBackSucess = () =>{
+      setSuccessMessage("Productos eliminados, por favor actualiza la página si deseas ver los productos actualizados.")    
+    }
+
+    const validatedChecked = (event) =>{      
+      var inputElements = document.getElementsByClassName('productCheck');
+      var cont = 0
+      for(var i=0; inputElements[i]; ++i){
+        console.log("array", inputElements[i].value)
+            if(inputElements[i].checked){      
+              cont++        
+              if(idsToDelete.indexOf(inputElements[i].value)=='-1'){
+                idsToDelete.push(inputElements[i].value)
+              }                
+            }else{
+              if(idsToDelete.indexOf(inputElements[i].value)!='-1'){
+                idsToDelete.splice(idsToDelete.indexOf(inputElements[i].value),1)
+              }              
+            }
+      }
+      if(cont>0){
+        setIsEnabled(true)
+      }else{
+        setIsEnabled(false)
+      }
+      console.log("array", idsToDelete)
     }
 
     const formatter = new Intl.NumberFormat('en-US', {
@@ -99,7 +132,7 @@ const useStyles = makeStyles(styles);
                         </Grid>                              
                     </Grid>
                 </GridItem>   
-                   <Grid item xs={12}><Button style={{marginLeft:"10px"}} color="primary"  onClick={createProduct}> Crear Producto</Button><Button  style={{marginLeft:"10px"}} color="primary" disabled={!isEnabled} > Eliminar seleccionados</Button></Grid>                   
+                   <Grid item xs={12}><Button style={{marginLeft:"10px"}} color="primary"  onClick={createProduct}> Crear Producto</Button><Button  style={{marginLeft:"10px"}} color="primary" disabled={!isEnabled} onClick={deleteProducts} > Eliminar seleccionados</Button></Grid>                   
                    <Grid item xs={12} >
                    <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
@@ -116,10 +149,13 @@ const useStyles = makeStyles(styles);
                           <TableRow>
                             <TableCell align="center">
                                 <center>
-                                    <Checkbox
-                                    value={row.shortId}                                  
+                                    <input
+                                    type="checkbox"
+                                    className="productCheck"
+                                    value={row.shortId}
+                                    defaultChecked={isChecked}                                  
                                     color="primary"
-                                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                    onChange={validatedChecked}                                    
                                   />
                                 </center>
                             </TableCell>

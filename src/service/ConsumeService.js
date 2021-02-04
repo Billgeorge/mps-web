@@ -37,6 +37,44 @@ const consumeServicePost = async (payload,callBack,callBackSuccess,url) => {
     }
 }
 
+export const consumeServiceDelete = async (payload,callBack,callBackSuccess,url) => {
+
+    //React.setActionState({ sending: true, error: null, });
+
+    try {
+        console.log('Enviando  delete...')
+        putTokenHeader()
+        const responseU = await Axios.delete(url, {
+            headers: {
+              Authorization: `Bearer ${getCurrentAppToken()}`
+            },
+            data: payload
+          });
+        
+
+        console.log("Respuesta usuario", responseU);
+        
+
+        if (responseU.status === 200) {
+            callBackSuccess(responseU.data)
+        } else {
+            callBack(null)
+        }
+
+    } catch (error) {
+        if(error.response){
+            if(400 === error.response.status){
+                callBack(error.response.data)
+            } else if(403 === error.response.status){
+                useHistory.push("/login")
+            }else{
+                callBack(null)
+            }
+        }else{
+            callBack(null)
+        }        
+    }
+}
 
 export const consumeServicePut = async (payload,callBack,callBackSuccess,url) => {
     try {

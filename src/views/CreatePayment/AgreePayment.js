@@ -19,7 +19,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import {getIdFromUrl} from 'util/UrlUtil'
+import {getIdFromUrl,getQueyParamFromUrl} from 'util/UrlUtil'
 import InfoArea from "components/InfoArea/InfoArea.js";
 import Lock from "@material-ui/icons/Lock";
 import TrackChanges from "@material-ui/icons/TrackChanges";
@@ -52,7 +52,13 @@ export default function AgreePayment(props) {
 
   const callBackSuccessGet = (payment) =>{
     setPayment(payment)
-    const url = `${CORE_BASEURL}/merchant/public/${payment.idMerchant}`
+    let merchantId = ""
+    if(getQueyParamFromUrl('idp')!=null){
+      merchantId = payment.merchantId
+    }else{
+      merchantId = payment.idMerchant
+    }
+    const url = `${CORE_BASEURL}/merchant/public/${merchantId}`
     consumeServiceGet(callBackGet,callBackSuccessGetMerchant,url)
   }
   const callBackSuccessGetMerchant = (merchant) => {
@@ -66,11 +72,24 @@ export default function AgreePayment(props) {
   }
 
   React.useEffect(() => changeMessageValidation(), []);
+
   const getPaymentData = () => {
-    const idPayment = getIdFromUrl().split('#')[0]
-    const url = `${CORE_BASEURL}/payment/public/${idPayment}`
+    const idp = getQueyParamFromUrl('idp')
+    let url = ""
+    if(idp!=null){
+      url = `${CORE_BASEURL}/product/public/${idp}`
+    }else{    
+      const idPayment = getIdFromUrl().split('#')[0]
+      url = `${CORE_BASEURL}/payment/public/${idPayment}`      
+    }
     consumeServiceGet(callBackGet,callBackSuccessGet,url)
   }
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0
+  })
 
   const changeMessageValidation = () =>{
     getPaymentData()
@@ -93,9 +112,19 @@ export default function AgreePayment(props) {
       console.log("submitting")
       event.preventDefault()
       setErrorMessage({})
-      const form = event.currentTarget;      
+      const form = event.currentTarget;
+      const idp = getQueyParamFromUrl('idp')
+      let idPayment = ""
+      let url = ""
+      if(idp!=null){
+        idPayment=idp
+        url= CORE_BASEURL+"/product/payment"
+      }else{
+        idPayment= getIdFromUrl().split('#')[0]
+        url= CORE_BASEURL+"/payment/agree"
+      }      
       consumerService({    
-        idPayment: getIdFromUrl().split('#')[0],
+        idPayment:idPayment,
         customer: {
           numberId: document.getElementById("id").value,
          name: document.getElementById("name").value,
@@ -103,7 +132,7 @@ export default function AgreePayment(props) {
         email: document.getElementById("email").value,
         contactNumber: document.getElementById("contactNumber").value
         }
-      },callBack,callBackSucess, CORE_BASEURL+"/payment/agree")
+      },callBack,callBackSucess, url)
     }
     let htmlInputs = document.forms["agreeForm"].getElementsByTagName("input");
     console.log(htmlInputs)
@@ -151,7 +180,7 @@ export default function AgreePayment(props) {
                                 : <span></span>
                     }
                     <span><b>Somos una contraentrega digítal. El vendedor no recibirá el pago hasta que recibas tu pedido.</b> <a href="#howWork"> ->Ver como funciona</a></span><br/>
-                    <span>Has recibido una solicitud de pago por el valor de <b>{payment.amount}</b> de <b>{merchantName}</b></span>
+                    <span>Procede a realizar el pago de tu pedido por el valor de <b>{formatter.format(payment.amount)}</b> del comercio <b>{merchantName}</b></span>
                     <FormControl style={{width:"100%",paddingBottom:"10px"}}>
                     <InputLabel htmlFor="id">Cédula</InputLabel>
                         <OutlinedInput
