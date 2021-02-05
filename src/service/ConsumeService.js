@@ -42,7 +42,7 @@ export const consumeServiceDelete = async (payload,callBack,callBackSuccess,url)
     //React.setActionState({ sending: true, error: null, });
 
     try {
-        console.log('Enviando  delete...')
+        console.log('Enviando  delete...',payload)
         putTokenHeader()
         const responseU = await Axios.delete(url, {
             headers: {
