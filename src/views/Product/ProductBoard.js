@@ -20,7 +20,8 @@ import Paper from '@material-ui/core/Paper';
 import Footer from "components/Footer/Footer.js";
 import { getMerchantId } from 'service/AuthenticationService';
 
-import {consumeServiceGet,consumeServiceDelete} from 'service/ConsumeService'
+import {consumeServiceGet} from 'service/ConsumeService'
+import consumeServicePost from 'service/ConsumeService'
 import {CORE_BASEURL} from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 
@@ -58,8 +59,8 @@ const useStyles = makeStyles(styles);
     }
 
     const deleteProducts = () =>{
-      let url=`${CORE_BASEURL}/product`
-      consumeServiceDelete({    
+      let url=`${CORE_BASEURL}/product/delete`
+      consumeServicePost({    
         ids:idsToDelete
       },callBack,callBackSucess,url)   
     }
