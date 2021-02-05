@@ -37,7 +37,6 @@ const consumeServicePost = async (payload,callBack,callBackSuccess,url) => {
     }
 }
 
-
 export const consumeServicePut = async (payload,callBack,callBackSuccess,url) => {
     try {
         console.log('Enviando ...')

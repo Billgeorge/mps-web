@@ -14,6 +14,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles, useTheme,withStyles } from '@material-ui/core/styles';
 
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import StoreIcon from '@material-ui/icons/Storefront';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 
 
@@ -152,6 +153,11 @@ export function ResponsiveDrawer(props) {
               <ListItemIcon> <AccountBalanceIcon style={{color:'#2097F3'}} /></ListItemIcon>
             </Button>                    
         </ListItem>
+        <ListItem>
+            <Button href="/product">
+              <ListItemIcon> <StoreIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            </Button>                    
+        </ListItem>        
       </List>
       <Divider />
       <List>
