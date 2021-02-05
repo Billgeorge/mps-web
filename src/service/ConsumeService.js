@@ -47,7 +47,7 @@ export const consumeServiceDelete = async (payload,callBack,callBackSuccess,url)
             headers: {
               Authorization: `Bearer ${getCurrentAppToken()}`
             },
-            data: payload
+            body: payload
         }
         console.log('Enviando  request...',request)
         const responseU = await Axios.delete(url, request);
