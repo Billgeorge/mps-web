@@ -134,7 +134,7 @@ const formatter = new Intl.NumberFormat('en-US', {
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
               <Grid container className={classes.boxDetail} spacing={3}>                   
-                <Grid item ><span>Nombre del cliente:</span> <br/><span className={classes.valueTextDetail}>{typeof (customer.name)=='undefined'?'Nombre vacio':`${customer.name} ${customer.lastName}`}</span></Grid>
+                <Grid item ><span>Nombre del cliente:</span> <br/><span className={classes.valueTextDetail}>{typeof (customer.name)=='undefined'?'Nombre vacio':`${customer.name} ${!(customer.lastName)?'':customer.lastName}`}</span></Grid>
               </Grid>   
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
@@ -145,6 +145,26 @@ const formatter = new Intl.NumberFormat('en-US', {
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
               <Grid container className={classes.boxDetail} spacing={3}>                   
                 <Grid item ><span>Id:</span> <br/><span className={classes.valueTextDetail}>{payment.id}</span></Grid>
+              </Grid>   
+         </GridItem>
+         <GridItem xs={12} sm={12} md={8} className={classes.grid}>
+              <Grid container className={classes.boxDetail} spacing={3}>                   
+                <Grid item ><span>Dirección del cliente:</span> <br/><span className={classes.valueTextDetail}>{!(customer.address)?'Dirección vacia':`${customer.address}`}</span></Grid>
+              </Grid>   
+         </GridItem>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
+              <Grid container className={classes.boxDetail} spacing={3}>                   
+                <Grid item ><span>Barrio del cliente:</span> <br/><span className={classes.valueTextDetail}>{!(customer.neighborhood)?'Barrio vacio':`${customer.neighborhood}`}</span></Grid>
+              </Grid>   
+         </GridItem>
+         <GridItem xs={12} sm={12} md={6} className={classes.grid}>
+              <Grid container className={classes.boxDetail} spacing={3}>                   
+                <Grid item ><span>Ciudad del cliente:</span> <br/><span className={classes.valueTextDetail}>{!(customer.city)?'Ciudad vacia':`${customer.city}`}</span></Grid>
+              </Grid>   
+         </GridItem>
+         <GridItem xs={12} sm={12} md={6} className={classes.grid}>
+              <Grid container className={classes.boxDetail} spacing={3}>                   
+                <Grid item ><span>Departamento del cliente:</span> <br/><span className={classes.valueTextDetail}>{!(customer.department)?'Departamento vacio':`${customer.department}`}</span></Grid>
               </Grid>   
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>

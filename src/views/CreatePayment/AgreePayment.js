@@ -42,7 +42,9 @@ export default function AgreePayment(props) {
   const [payment, setPayment] = React.useState({});
   const [merchantName, setMerchant] = React.useState("");
 
-  const [isLoading, setIsLoading] = React.useState(false);      
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isCheckout, setIsCheckout] = React.useState(false);     
+   
 
   setTimeout(function() {
     setCardAnimation("");
@@ -55,6 +57,7 @@ export default function AgreePayment(props) {
     let merchantId = ""
     if(getQueyParamFromUrl('idp')!=null){
       merchantId = payment.merchantId
+      setIsCheckout(true)
     }else{
       merchantId = payment.idMerchant
     }
@@ -116,22 +119,33 @@ export default function AgreePayment(props) {
       const idp = getQueyParamFromUrl('idp')
       let idPayment = ""
       let url = ""
+      let customer = {}
       if(idp!=null){
         idPayment=idp
         url= CORE_BASEURL+"/product/payment"
+        customer = {
+          numberId: document.getElementById("id").value,
+          name: document.getElementById("name").value,
+          address:document.getElementById("address").value,
+          neighborhood:document.getElementById("neighborhood").value,
+          city:document.getElementById("city").value,
+          department:document.getElementById("department").value,
+          email: document.getElementById("email").value,
+          contactNumber: document.getElementById("contactNumber").value
+        }
       }else{
         idPayment= getIdFromUrl().split('#')[0]
         url= CORE_BASEURL+"/payment/agree"
+        customer = {
+          numberId: document.getElementById("id").value,
+          name: document.getElementById("name").value,          
+          email: document.getElementById("email").value,
+          contactNumber: document.getElementById("contactNumber").value
+        }
       }      
       consumerService({    
         idPayment:idPayment,
-        customer: {
-          numberId: document.getElementById("id").value,
-         name: document.getElementById("name").value,
-        lastName:document.getElementById("lastName").value,
-        email: document.getElementById("email").value,
-        contactNumber: document.getElementById("contactNumber").value
-        }
+        customer: customer
       },callBack,callBackSucess, url)
     }
     let htmlInputs = document.forms["agreeForm"].getElementsByTagName("input");
@@ -192,29 +206,22 @@ export default function AgreePayment(props) {
                         />
                     </FormControl>
                     <FormControl style={{width:"100%",paddingBottom:"10px"}}>
-                    <InputLabel htmlFor="name">Nombres</InputLabel>
+                    <InputLabel htmlFor="name">Nombre Completo</InputLabel>
                         <OutlinedInput
                             id="name"
-                            placeholder="Nombre Completo"                            
+                            placeholder="Nombre y Apellidos"                            
                             labelWidth={60}
                             required
                         />
                     </FormControl>
-                    <FormControl style={{width:"100%",paddingBottom:"10px"}}>
-                        <InputLabel htmlFor="lastName">Apellidos</InputLabel>
-                        <OutlinedInput
-                            id="lastName"
-                            placeholder="Apellidos"                            
-                            labelWidth={60}
-                            required
-                        />
-                    </FormControl>
+                    
                     <FormControl style={{width:"100%",paddingBottom:"10px"}}>
                         <InputLabel htmlFor="email">Correo Electrónico</InputLabel>
                         <OutlinedInput
                             id="email"
                             placeholder="Ingresa correo electrónico"                            
                             labelWidth={60}
+                            type="email"
                             required
                         />
                     </FormControl>
@@ -228,6 +235,66 @@ export default function AgreePayment(props) {
                             required
                         />
                     </FormControl>
+
+                    {isCheckout?(
+                          <div>
+                            <GridContainer justify="center">
+                            <GridItem xs={12} sm={12} md={6}>
+                                <FormControl style={{width:"100%",paddingBottom:"10px"}}>
+                                  <InputLabel htmlFor="address">Dirección Completa</InputLabel>
+                                    <OutlinedInput
+                                        id="address"
+                                        placeholder="Dirección tan completa como sea posible"                            
+                                        labelWidth={100}
+                                        type="text"
+                                        required
+                                    />
+                                
+                                </FormControl>
+                                </GridItem>
+                                <GridItem xs={12} sm={12} md={6}>
+                                <FormControl style={{width:"100%",paddingBottom:"10px"}}>
+                                <InputLabel htmlFor="neighborhood">Barrio</InputLabel>
+                                  <OutlinedInput
+                                      id="neighborhood"
+                                      placeholder="Barrio"                            
+                                      labelWidth={60}
+                                      type="text"
+                                      required
+                                  />
+                              
+                              </FormControl>
+                              </GridItem>
+                              <GridItem xs={6} sm={6} md={6}>
+                              <FormControl style={{width:"100%",paddingBottom:"10px"}}>
+                                <InputLabel htmlFor="city">Ciudad</InputLabel>
+                                  <OutlinedInput
+                                      id="city"
+                                      placeholder="Ciudad"                            
+                                      labelWidth={60}
+                                      type="text"
+                                      required
+                                  />
+                              
+                              </FormControl>
+                              </GridItem>
+                              <GridItem xs={6} sm={6} md={6}>
+                              <FormControl style={{width:"100%",paddingBottom:"10px"}}>
+                                <InputLabel htmlFor="department">Departamento</InputLabel>
+                                  <OutlinedInput
+                                      id="department"
+                                      placeholder="Departamento"                            
+                                      labelWidth={60}
+                                      type="text"
+                                      required
+                                  />
+                              
+                              </FormControl>
+                              </GridItem>
+                              </GridContainer>
+                              </div>
+                                ): <span></span>
+                  }   
                     
                    
                 {Object.keys(errorMessage).map((keyName, i) => (
