@@ -176,7 +176,7 @@ export default function RegisterLanding(props) {
                                 }
                  <br/>
                  <GridItem md={12}>
-                      <span>Al registrarte estas aceptando los <a href="/terms" target="_blank">términos y condiciones</a></span>
+                      <span>Al registrarte estas aceptando los <a href="https://www.mipagoseguro.co/terminos-y-condiciones/" target="_blank">términos y condiciones</a></span>
                     </GridItem> 
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
