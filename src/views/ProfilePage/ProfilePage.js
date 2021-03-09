@@ -34,24 +34,17 @@ import {CORE_BASEURL} from '../../constant/index'
 
 import Alert from '@material-ui/lab/Alert';
 
+
+import ExtensionIcon from '@material-ui/icons/Extension';
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
 
 import {consumeServiceGet,consumeServicePut} from 'service/ConsumeService'
+import consumeServicePost from 'service/ConsumeService'
 import { getMerchantId,getMerchantName } from 'service/AuthenticationService';
 import {getFirstLetters} from 'util/NameUtils'
 import {getBankNumber,getAccountType} from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 
-
-
-/*const StyledRating = withStyles({
-  iconFilled: {
-    color: '#ff3d47',
-  },
-  iconHover: {
-    color: '#ff2d25',
-  },
-})(Rating);*/
 
 
 const useStyles = makeStyles(styles);
@@ -67,7 +60,9 @@ export default function ProfilePage(props) {
   const [profile, setProfile] = React.useState({});
 
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoadingSend, setIsLoadingSend] = React.useState(false);
   const [isModificationDone, setIsModificationDone] = React.useState(false);
+  const [isSendingDone, setIsSendingDone] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");    
 
   const [isEditEnabled, setIsEditEnabled] = React.useState(false);
@@ -117,6 +112,24 @@ export default function ProfilePage(props) {
     console.log("getting information")
     let url=`${CORE_BASEURL}/merchant/${merchantId}`
     consumeServiceGet(callBack,callBackSuccess,url)
+  }
+
+  const callBackSuccessSend = () => {
+    setIsLoadingSend(false)
+    setIsSendingDone(true)
+  }
+
+  const callBackSend = () => {
+    setIsLoadingSend(false)
+    setErrorMessage("Error enviando información")          
+  }
+
+  const sendIntegrationInformation = () => {
+    setIsLoadingSend(true)
+    const merchantId = getMerchantId()
+    console.log("requesting integration information")
+    let url=`${CORE_BASEURL}/user/integration/${merchantId}`
+    consumeServicePost(null,callBackSend,callBackSuccessSend,url)
   }
   const changeMessageValidation = () =>{
     document.profileForm.onsubmit = function(event){
@@ -364,7 +377,38 @@ export default function ProfilePage(props) {
                         </GridContainer>
                         </form>
                       )
-                    }/*,
+                    },
+                    {
+                      tabButton: "Integración",
+                      tabIcon: ExtensionIcon,
+                      tabContent: (<GridContainer justify="center">
+                        <GridItem xs={12} sm={12} md={12}>
+                        <div className={classes.description} style={{color:'black'}}>
+                          <p>
+                           Utiliza el siguiente botón para recibir al correo la información de integración. Esto te será útil si deseas usar Mipagoseguro con el plugin de woocommerce o mediante API.
+                          </p>
+                        </div>
+                        {isLoadingSend
+                                ? <GridItem xs={12} sm={12} md={12}><CircularProgress/></GridItem>
+                                : <span></span>
+                            }
+                        {errorMessage != ""
+                            ?
+                            <GridItem xs={12} sm={12} md={12}><Alert severity="error">{errorMessage}</Alert></GridItem>
+                            : <span>	&nbsp;</span>   
+                          }
+                          {isSendingDone
+                                          ?  <GridItem xs={12} sm={12} md={12}><Alert severity="success">Información enviada al correo Electrónico </Alert></GridItem>    
+                                          : <span></span>
+                                          }
+                        <Button onClick={sendIntegrationInformation} style={{backgroundColor:'#041492'}} size="lg">
+                              Solicitar llaves
+                        </Button>   
+                        </GridItem>
+                      </GridContainer>)
+                    }
+                        
+                        /*,
                     {
                       tabButton: "Redes Sociales",
                       tabIcon: Share,
