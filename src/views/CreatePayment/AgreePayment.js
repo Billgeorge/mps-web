@@ -32,6 +32,7 @@ import styles from "assets/jss/material-kit-react/views/createPayment.js";
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 
 import consumerService from '../../service/ConsumeService'
+import ReactPixel from 'react-facebook-pixel';
 
 const useStyles = makeStyles(styles);
 
@@ -45,6 +46,10 @@ export default function AgreePayment(props) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isCheckout, setIsCheckout] = React.useState(false);     
    
+
+  ReactPixel.init('1559739321009075');
+  ReactPixel.fbq('track', 'InitiateCheckout');
+
 
   setTimeout(function() {
     setCardAnimation("");

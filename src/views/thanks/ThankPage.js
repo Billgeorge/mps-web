@@ -17,7 +17,7 @@ const useStyles = makeStyles(styles);
 export default function ThankPage(props) {
 
     const classes = useStyles();
-    ReactPixel.init('571170283608543');
+    ReactPixel.init('1559739321009075');
     ReactPixel.fbq('track', 'Purchase', {currency: "COP", value: 10.000});
 
     return ( 
