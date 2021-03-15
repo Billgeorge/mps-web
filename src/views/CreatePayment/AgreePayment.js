@@ -1,6 +1,7 @@
 import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+
 // @material-ui/icons
 
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -49,7 +50,7 @@ export default function AgreePayment(props) {
 
   ReactPixel.init('1559739321009075');
   ReactPixel.fbq('track', 'InitiateCheckout');
-
+  localStorage.setItem('mps-id', '1559739321009075') 
 
   setTimeout(function() {
     setCardAnimation("");
