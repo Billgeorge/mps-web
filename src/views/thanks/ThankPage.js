@@ -1,4 +1,6 @@
 import React from 'react';
+
+import Cookies from 'universal-cookie';
 import { makeStyles } from '@material-ui/core/styles';
 import GridContainer from "components/Grid/GridContainer.js";
 import styles from "assets/jss/material-kit-react/views/thankPage.js";
@@ -19,7 +21,8 @@ export default function ThankPage(props) {
     const classes = useStyles();
     ReactPixel.init('1559739321009075');
     ReactPixel.fbq('track', 'Purchase', {currency: "COP", value: 10.000});
-
+    const cookies = new Cookies();
+    console.log(cookies.get('mps-id'));
     return ( 
     <GridContainer justify="center" className={classes.root}>
         <div className={classes.layer}></div>
