@@ -25,7 +25,7 @@ function ThankPage(props) {
   {
     ReactPixel.init(props.fbId);
     ReactPixel.fbq('track', 'Purchase', {currency: "COP", value: props.value,
-    test_event_code: TEST95399});
+    test_event_code: 'TEST95399'});
   })
                
 
