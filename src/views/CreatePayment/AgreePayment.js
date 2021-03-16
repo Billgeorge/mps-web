@@ -73,6 +73,9 @@ function AgreePayment(props) {
   }
   const callBackSuccessGetMerchant = (merchant) => {
     setMerchant(merchant)
+    ReactPixel.init(merchant.fbId);
+    ReactPixel.fbq('track', 'InitiateCheckout',{test_event_code: 'TEST95399'});
+    props.setFbPixel(merchant.fbId);
   }
 
   const callBackGet = () => {
@@ -83,10 +86,7 @@ function AgreePayment(props) {
 
   React.useEffect(() => 
   {
-    changeMessageValidation()
-    ReactPixel.init(merchant.fbId);
-    ReactPixel.fbq('track', 'InitiateCheckout',{test_event_code: 'TEST95399'});
-    props.setFbPixel(merchant.fbId);
+    changeMessageValidation()    
   }
   , []);
 
