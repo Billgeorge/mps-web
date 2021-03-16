@@ -85,7 +85,7 @@ function AgreePayment(props) {
   {
     changeMessageValidation()
     ReactPixel.init(merchant.fbId);
-    ReactPixel.fbq('track', 'InitiateCheckout');
+    ReactPixel.fbq('track', 'InitiateCheckout',{test_event_code: TEST95399});
     props.setFbPixel(merchant.fbId);
   }
   , []);
