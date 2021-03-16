@@ -47,7 +47,7 @@ function AgreePayment(props) {
 
   const [errorMessage, setErrorMessage] = React.useState({});
   const [payment, setPayment] = React.useState({});
-  const [merchantName, setMerchant] = React.useState("");
+  const [merchant, setMerchant] = React.useState("");
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [isCheckout, setIsCheckout] = React.useState(false);     
@@ -84,9 +84,9 @@ function AgreePayment(props) {
   React.useEffect(() => 
   {
     changeMessageValidation()
-    ReactPixel.init('380176906138534');
+    ReactPixel.init(merchant.fbId);
     ReactPixel.fbq('track', 'InitiateCheckout');
-    props.setFbPixel('380176906138534');
+    props.setFbPixel(merchant.fbId);
   }
   , []);
 
@@ -208,7 +208,7 @@ function AgreePayment(props) {
                                 : <span></span>
                     }
                     <span><b>Somos una contraentrega digítal. El vendedor no recibirá el pago hasta que recibas tu pedido.</b> <a href="#howWork"> ->Ver como funciona</a></span><br/>
-                    <span>Procede a realizar el pago de tu pedido por el valor de <b>{formatter.format(payment.amount)}</b> del comercio <b>{merchantName}</b></span>
+                    <span>Procede a realizar el pago de tu pedido por el valor de <b>{formatter.format(payment.amount)}</b> del comercio <b>{merchant.name}</b></span>
                     <FormControl style={{width:"100%",paddingBottom:"10px"}}>
                     <InputLabel htmlFor="id">Cédula</InputLabel>
                         <OutlinedInput

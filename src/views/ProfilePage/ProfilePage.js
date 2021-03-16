@@ -396,9 +396,9 @@ export default function ProfilePage(props) {
                             : <span>	&nbsp;</span>   
                           }
                           {isSendingDone
-                                          ?  <GridItem xs={12} sm={12} md={12}><Alert severity="success">Información enviada al correo Electrónico </Alert></GridItem>    
-                                          : <span></span>
-                                          }
+                            ?  <GridItem xs={12} sm={12} md={12}><Alert severity="success">Información enviada al correo Electrónico </Alert></GridItem>    
+                            : <span></span>
+                          }                                          
                         <Button onClick={sendIntegrationInformation} style={{backgroundColor:'#041492'}} size="lg">
                               Solicitar llaves
                         </Button>   
@@ -408,7 +408,15 @@ export default function ProfilePage(props) {
                     {
                       tabButton: "Sequimiento",
                       tabIcon: AssessmentIcon,
-                      tabContent: (<Metrics pixelId="1234" />)
+                      tabContent: (<div>
+                        
+                       <div className={classes.description} style={{color:'black'}}>
+                          <p>
+                           Tu actual pixel es {!(profile.fbPixel)?'Pixel vacio':`${profile.fbPixel}`}. Si deseas actualizarlo ingresa el nuevo valor y da clic en el botón guardar:
+                          </p>
+                        </div>
+                        <Metrics/>
+                      </div>)
                     }
                         
                       
