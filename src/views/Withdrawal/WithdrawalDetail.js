@@ -18,14 +18,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Footer from "components/Footer/Footer.js";
-import { getMerchantId } from 'service/AuthenticationService';
-import {getLegibleDate} from 'util/DateUtil'
 
 import {consumeServiceGet} from 'service/ConsumeService'
 import {CORE_BASEURL} from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
-import consumeServicePost from '../../service/ConsumeService'
-import WithDrawal from './Withdrawal';
+
 
 const useStyles = makeStyles(styles);
 
@@ -36,6 +33,13 @@ const useStyles = makeStyles(styles);
     const [payments, setPayments] = React.useState([]);
     const [errorMessage, setErrorMessage] = React.useState("");
 
+    const getPaymentsForWithdrawal = (filter,value) => {
+      const withDrawalId = getIdFromUrl()
+      console.log('getting payments per withdrawal ')
+      let url=`${CORE_BASEURL}/withdrawal/payment/${withDrawalId}`
+      consumeServiceGet(callBack,callBackSuccess,url)      
+    }
+    
     React.useEffect(() => getPaymentsForWithdrawal(), []);    
 
     const callBackSuccess = (payments) =>{
@@ -57,13 +61,6 @@ const useStyles = makeStyles(styles);
       }      
     }
 
-    const getPaymentsForWithdrawal = (filter,value) => {
-      const withDrawalId = getIdFromUrl()
-      console.log('getting payments per withdrawal ')
-      let url=`${CORE_BASEURL}/withdrawal/payment/${withDrawalId}`
-      consumeServiceGet(callBack,callBackSuccess,url)      
-    }
-      
     const classes = useStyles();
     const { ...rest } = props;    
   

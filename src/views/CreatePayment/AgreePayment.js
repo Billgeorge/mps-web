@@ -4,6 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 // @material-ui/icons
 
+import { connect } from 'react-redux'
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import FormControl from '@material-ui/core/FormControl';
@@ -35,9 +37,12 @@ import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 import consumerService from '../../service/ConsumeService'
 import ReactPixel from 'react-facebook-pixel';
 
+import {setFbPixel,setValue} from 'actions/setFbPixel'
+
 const useStyles = makeStyles(styles);
 
-export default function AgreePayment(props) {
+
+function AgreePayment(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");  
 
   const [errorMessage, setErrorMessage] = React.useState({});
@@ -47,11 +52,6 @@ export default function AgreePayment(props) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isCheckout, setIsCheckout] = React.useState(false);     
    
-
-  ReactPixel.init('1559739321009075');
-  ReactPixel.fbq('track', 'InitiateCheckout');
-  localStorage.setItem('mps-id', '1559739321009075') 
-
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
@@ -60,6 +60,7 @@ export default function AgreePayment(props) {
 
   const callBackSuccessGet = (payment) =>{
     setPayment(payment)
+    props.setValue(payment.amount)
     let merchantId = ""
     if(getQueyParamFromUrl('idp')!=null){
       merchantId = payment.merchantId
@@ -80,7 +81,14 @@ export default function AgreePayment(props) {
     setIsLoading(false)
   }
 
-  React.useEffect(() => changeMessageValidation(), []);
+  React.useEffect(() => 
+  {
+    changeMessageValidation()
+    ReactPixel.init('380176906138534');
+    ReactPixel.fbq('track', 'InitiateCheckout');
+    props.setFbPixel('380176906138534');
+  }
+  , []);
 
   const getPaymentData = () => {
     const idp = getQueyParamFromUrl('idp')
@@ -368,5 +376,12 @@ export default function AgreePayment(props) {
         <Footer whiteFont />
       </div>
     </div>
+    
   );
 }
+
+const mapDispatchToProps = {
+  setFbPixel,setValue
+}
+
+export default connect(null, mapDispatchToProps)(AgreePayment);

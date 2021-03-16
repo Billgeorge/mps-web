@@ -1,4 +1,3 @@
-import { container } from "assets/jss/material-kit-react.js";
 import Background from 'assets/img/thanks_bg.jpg'
 import BackgroundCel from 'assets/img/thanks_bg_cel.jpg'
 

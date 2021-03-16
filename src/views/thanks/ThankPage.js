@@ -1,5 +1,7 @@
 import React from 'react';
 
+
+import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 import GridContainer from "components/Grid/GridContainer.js";
 import styles from "assets/jss/material-kit-react/views/thankPage.js";
@@ -15,15 +17,17 @@ import ReactPixel from 'react-facebook-pixel';
 
 
 const useStyles = makeStyles(styles);
-export default function ThankPage(props) {
+function ThankPage(props) {
 
     const classes = useStyles();
-            
-    let mpsId = localStorage.getItem("mps-id")
-    console.log("mps-id"+mpsId);
-    ReactPixel.init(mpsId);
-    ReactPixel.fbq('track', 'Purchase', {currency: "COP", value: 10.000});
-    localStorage.removeItem("mps-id")
+
+    React.useEffect(() => 
+  {
+    ReactPixel.init(props.fbId);
+    ReactPixel.fbq('track', 'Purchase', {currency: "COP", value: props.value});
+  })
+               
+
     return ( 
     <GridContainer justify="center" className={classes.root}>
         <div className={classes.layer}></div>
@@ -44,3 +48,11 @@ export default function ThankPage(props) {
         </GridItem>
     </GridContainer>)
 }
+const mapStateToProps = (state) => {
+    return {
+        fbId: state.fbReducer.fbId,
+        value: state.fbReducer.value
+    }
+};
+  
+  export default connect(mapStateToProps,null)(ThankPage);
