@@ -157,12 +157,17 @@ const formatter = new Intl.NumberFormat('en-US', {
                 <Grid item ><span>Barrio del cliente:</span> <br/><span className={classes.valueTextDetail}>{!(customer.neighborhood)?'Barrio vacio':`${customer.neighborhood}`}</span></Grid>
               </Grid>   
          </GridItem>
-         <GridItem xs={12} sm={12} md={6} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
               <Grid container className={classes.boxDetail} spacing={3}>                   
                 <Grid item ><span>Ciudad del cliente:</span> <br/><span className={classes.valueTextDetail}>{!(customer.city)?'Ciudad vacia':`${customer.city}`}</span></Grid>
               </Grid>   
          </GridItem>
-         <GridItem xs={12} sm={12} md={6} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
+              <Grid container className={classes.boxDetail} spacing={3}>                   
+                <Grid item ><span>Email del cliente:</span> <br/><span className={classes.valueTextDetail}>{!(customer.email)?'Email vacio':`${customer.email}`}</span></Grid>
+              </Grid>   
+         </GridItem>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
               <Grid container className={classes.boxDetail} spacing={3}>                   
                 <Grid item ><span>Departamento del cliente:</span> <br/><span className={classes.valueTextDetail}>{!(customer.department)?'Departamento vacio':`${customer.department}`}</span></Grid>
               </Grid>   
