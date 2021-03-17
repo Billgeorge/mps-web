@@ -88,11 +88,11 @@ export const consumeServiceGet = async (callBack,callBackSuccess,url) => {
 
     } catch (error) {
         if(error.response){
-            if(400 == error.response.status){
+            if(400 === error.response.status){
                 callBack(error.response.data)
-            } if(403 == error.response.status){
+            } if(403 === error.response.status){
                 useHistory.push("/login")
-            } if(404 == error.response.status){
+            } if(404 === error.response.status){
                 callBack(404)
             } else{
                 callBack(null)
@@ -125,9 +125,9 @@ export const consumeServicePatch = async (payload,callBack,callBackSuccess,url) 
 
     } catch (error) {
         if(error.response){
-            if(400 == error.response.status){
+            if(400 === error.response.status){
                 callBack(error.response.data)
-            } if(403 == error.response.status){
+            } if(403 === error.response.status){
                 useHistory.push("/login")
             }else{
                 callBack(null)

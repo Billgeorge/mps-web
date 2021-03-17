@@ -1,9 +1,7 @@
 // 'http://localhost:8083/mps'
 
+
 export const CORE_BASEURL = 'https://mpscore-prod.herokuapp.com/mps';
-
-
-
 
 export const getPaymentState = (idState) => {
     switch(idState){

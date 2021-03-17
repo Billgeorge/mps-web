@@ -76,7 +76,7 @@ const useStyles = makeStyles(styles);
     }
     const copyUrl = (id) => {
       var getUrl = window.location;
-      var baseUrl = getUrl .protocol + "//" + getUrl.host + "/";
+      var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
       navigator.clipboard.writeText(baseUrl+"agree-payment/"+id);
     }
     const calculateTotal = (payments) => {
@@ -85,11 +85,11 @@ const useStyles = makeStyles(styles);
       let valuePaidPayments = 0
       let paymentStateToCompare = 3
       let paymentStateInput = document.getElementById('estado')
-      if(paymentStateInput.textContent != 'Ninguno' && paymentStateInput.textContent != "​"){
+      if(paymentStateInput.textContent !== 'Ninguno' && paymentStateInput.textContent !== "​"){
         paymentStateToCompare=getPaymentIdState(paymentStateInput.textContent)
       }
       for (var i = 0; i < payments.length; i++) {
-        if(payments[i].idState == paymentStateToCompare){
+        if(payments[i].idState === paymentStateToCompare){
           paidPayments = paidPayments +1
           valuePaidPayments = valuePaidPayments + payments[i].amount
         } else if (payments[i].idState < 3){
@@ -110,7 +110,7 @@ const useStyles = makeStyles(styles);
 
     const callBack = (msg) => {
       setPayments([])
-      if(msg==404){
+      if(msg===404){
         setErrorMessage("No hay transacciones para mostrar")        
       }else{
         setErrorMessage("Error Cargando Transacciones")
@@ -122,9 +122,9 @@ const useStyles = makeStyles(styles);
       console.log('filter '+filter)
       console.log('value '+value)
       let url=`${CORE_BASEURL}/payment/merchant?merchantId=${merchantId}`
-      if(filter =='duration'){
+      if(filter ==='duration'){
         url=`${url}&durationInDays=${value}`
-        if(paymentState!=0){
+        if(paymentState!==0){
           url=`${url}&paymentState=${paymentState}`
         }
       }else{

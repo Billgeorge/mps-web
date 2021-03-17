@@ -38,6 +38,14 @@ const useStyles = makeStyles(styles);
     const [errorMessage, setErrorMessage] = React.useState("");
     const [successMessage, setSuccessMessage] = React.useState("");    
 
+    const getWithdrawalsForMerchant = (filter,value) => {
+      const merchantId = getMerchantId()
+      console.log('getting withdrawals ')
+      let url=`${CORE_BASEURL}/withdrawal/merchant/${merchantId}`
+      consumeServiceGet(callBack,callBackSuccess,url)
+      consumeServiceGet(callBack,callBackSuccessAmount,`${CORE_BASEURL}/payment/merchant/closed/${merchantId}`)
+    }
+
     React.useEffect(() => getWithdrawalsForMerchant(), []);    
 
     const callBackSuccess = (withdrawals) =>{
@@ -79,14 +87,6 @@ const useStyles = makeStyles(styles);
       }      
     }
 
-    const getWithdrawalsForMerchant = (filter,value) => {
-      const merchantId = getMerchantId()
-      console.log('getting withdrawals ')
-      let url=`${CORE_BASEURL}/withdrawal/merchant/${merchantId}`
-      consumeServiceGet(callBack,callBackSuccess,url)
-      consumeServiceGet(callBack,callBackSuccessAmount,`${CORE_BASEURL}/payment/merchant/closed/${merchantId}`)
-    }
-      
     const classes = useStyles();
     const { ...rest } = props;    
   

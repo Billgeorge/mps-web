@@ -1,7 +1,10 @@
 import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+
 // @material-ui/icons
+
+import { connect } from 'react-redux'
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
@@ -32,20 +35,23 @@ import styles from "assets/jss/material-kit-react/views/createPayment.js";
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 
 import consumerService from '../../service/ConsumeService'
+import ReactPixel from 'react-facebook-pixel';
+
+import {setFbPixel,setValue} from 'actions/setFbPixel'
 
 const useStyles = makeStyles(styles);
 
-export default function AgreePayment(props) {
+
+function AgreePayment(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");  
 
   const [errorMessage, setErrorMessage] = React.useState({});
   const [payment, setPayment] = React.useState({});
-  const [merchantName, setMerchant] = React.useState("");
+  const [merchant, setMerchant] = React.useState("");
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [isCheckout, setIsCheckout] = React.useState(false);     
    
-
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
@@ -54,6 +60,7 @@ export default function AgreePayment(props) {
 
   const callBackSuccessGet = (payment) =>{
     setPayment(payment)
+    props.setValue(payment.amount)
     let merchantId = ""
     if(getQueyParamFromUrl('idp')!=null){
       merchantId = payment.merchantId
@@ -66,6 +73,9 @@ export default function AgreePayment(props) {
   }
   const callBackSuccessGetMerchant = (merchant) => {
     setMerchant(merchant)
+    ReactPixel.init(merchant.fbId);
+    ReactPixel.fbq('track', 'InitiateCheckout');
+    props.setFbPixel(merchant.fbId);
   }
 
   const callBackGet = () => {
@@ -74,7 +84,11 @@ export default function AgreePayment(props) {
     setIsLoading(false)
   }
 
-  React.useEffect(() => changeMessageValidation(), []);
+  React.useEffect(() => 
+  {
+    changeMessageValidation()    
+  }
+  , []);
 
   const getPaymentData = () => {
     const idp = getQueyParamFromUrl('idp')
@@ -194,7 +208,7 @@ export default function AgreePayment(props) {
                                 : <span></span>
                     }
                     <span><b>Somos una contraentrega digítal. El vendedor no recibirá el pago hasta que recibas tu pedido.</b> <a href="#howWork"> ->Ver como funciona</a></span><br/>
-                    <span>Procede a realizar el pago de tu pedido por el valor de <b>{formatter.format(payment.amount)}</b> del comercio <b>{merchantName}</b></span>
+                    <span>Procede a realizar el pago de tu pedido por el valor de <b>{formatter.format(payment.amount)}</b> del comercio <b>{merchant.name}</b></span>
                     <FormControl style={{width:"100%",paddingBottom:"10px"}}>
                     <InputLabel htmlFor="id">Cédula</InputLabel>
                         <OutlinedInput
@@ -362,5 +376,12 @@ export default function AgreePayment(props) {
         <Footer whiteFont />
       </div>
     </div>
+    
   );
 }
+
+const mapDispatchToProps = {
+  setFbPixel,setValue
+}
+
+export default connect(null, mapDispatchToProps)(AgreePayment);
