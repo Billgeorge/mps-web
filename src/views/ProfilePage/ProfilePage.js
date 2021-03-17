@@ -44,7 +44,8 @@ import { getMerchantId,getMerchantName } from 'service/AuthenticationService';
 import {getFirstLetters} from 'util/NameUtils'
 import {getBankNumber,getAccountType} from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
-
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import Metrics from 'views/ProfilePage/Metrics'
 
 
 const useStyles = makeStyles(styles);
@@ -63,13 +64,13 @@ export default function ProfilePage(props) {
   const [isLoadingSend, setIsLoadingSend] = React.useState(false);
   const [isModificationDone, setIsModificationDone] = React.useState(false);
   const [isSendingDone, setIsSendingDone] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState("");    
+  const [errorMessage, setErrorMessage] = React.useState("");
+  const [errorMessageIntegration, setErrorMessageIntegration] = React.useState("");    
 
   const [isEditEnabled, setIsEditEnabled] = React.useState(false);
 
   const handleChange = (event) => {
     const name = event.target.name;
-    console.log("changing "+name)
     setProfile({
       ...profile,
       [name]: event.target.value,
@@ -93,7 +94,6 @@ export default function ProfilePage(props) {
 
   const editEnable = (event) =>{
     let htmlInputs = document.forms["profileForm"].getElementsByTagName("input");
-    console.log(htmlInputs)
     for(let input of htmlInputs){
       input.readOnly=false;
     }    
@@ -109,7 +109,6 @@ export default function ProfilePage(props) {
 
   const getInformationProfile = () => {
     const merchantId = getMerchantId()
-    console.log("getting information")
     let url=`${CORE_BASEURL}/merchant/${merchantId}`
     consumeServiceGet(callBack,callBackSuccess,url)
   }
@@ -121,13 +120,14 @@ export default function ProfilePage(props) {
 
   const callBackSend = () => {
     setIsLoadingSend(false)
-    setErrorMessage("Error enviando información")          
+    setErrorMessageIntegration("Error enviando información")          
   }
 
   const sendIntegrationInformation = () => {
     setIsLoadingSend(true)
+    setIsSendingDone(false)
+    setErrorMessageIntegration("")
     const merchantId = getMerchantId()
-    console.log("requesting integration information")
     let url=`${CORE_BASEURL}/user/integration/${merchantId}`
     consumeServicePost(null,callBackSend,callBackSuccessSend,url)
   }
@@ -148,7 +148,7 @@ export default function ProfilePage(props) {
         setIsLoading(false)
         setIsModificationDone(true)
       }      
-      console.log("Editing Profile")
+      
       event.preventDefault()
       if(document.getElementById('bankAccount').value=='0'){
         let errorObjects = "Debes seleccionar un banco"
@@ -166,14 +166,12 @@ export default function ProfilePage(props) {
         nit: document.getElementById("nit").value,
         accountType: document.getElementById("accountType").value
       }
-      console.log("profile tto send", profileToSend) 
       consumeServicePut(profileToSend,callBack,callBackSucess,
       CORE_BASEURL+"/merchant")
     }
     let htmlInputs = document.forms["profileForm"].getElementsByTagName("input");
-    console.log(htmlInputs)
     for(let input of htmlInputs){
-      console.log(input.item)
+    
      input.oninvalid = function(e) {
         e.target.setCustomValidity("Este campo es obligatorio o invalido");
     }
@@ -392,139 +390,36 @@ export default function ProfilePage(props) {
                                 ? <GridItem xs={12} sm={12} md={12}><CircularProgress/></GridItem>
                                 : <span></span>
                             }
-                        {errorMessage != ""
+                        {errorMessageIntegration != ""
                             ?
-                            <GridItem xs={12} sm={12} md={12}><Alert severity="error">{errorMessage}</Alert></GridItem>
+                            <GridItem xs={12} sm={12} md={12}><Alert severity="error">{errorMessageIntegration}</Alert></GridItem>
                             : <span>	&nbsp;</span>   
                           }
                           {isSendingDone
-                                          ?  <GridItem xs={12} sm={12} md={12}><Alert severity="success">Información enviada al correo Electrónico </Alert></GridItem>    
-                                          : <span></span>
-                                          }
+                            ?  <GridItem xs={12} sm={12} md={12}><Alert severity="success">Información enviada al correo Electrónico </Alert></GridItem>    
+                            : <span></span>
+                          }                                          
                         <Button onClick={sendIntegrationInformation} style={{backgroundColor:'#041492'}} size="lg">
                               Solicitar llaves
                         </Button>   
                         </GridItem>
                       </GridContainer>)
-                    }
-                        
-                        /*,
-                    {
-                      tabButton: "Redes Sociales",
-                      tabIcon: Share,
-                      tabContent: (
-                        <GridContainer justify="center">
-                          <GridItem xs={12} sm={12} md={4}>
-                              <CustomInput                    
-                                    labelText="Perfil de Facebook"
-                                    id="fabebookProfile"
-                                    formControlProps={{
-                                      fullWidth: true
-                                    }}
-                                    inputProps={{
-                                      type: "text",
-                                      required: true,
-                                      endAdornment: (
-                                        <InputAdornment position="end">
-                                          <Facebook className={classes.inputIconsColor} />
-                                        </InputAdornment>
-                                      )
-                                    }}
-                                />
-                                <CustomInput                    
-                                  labelText="Perfil Twitter"
-                                  id="twitterProfile"
-                                  formControlProps={{
-                                    fullWidth: true
-                                  }}
-                                  inputProps={{
-                                    type: "text",
-                                    required: true,
-                                    endAdornment: (
-                                      <InputAdornment position="end">
-                                        <Twitter className={classes.inputIconsColor} />
-                                      </InputAdornment>
-                                    )
-                                  }}
-                                />
-                                <CustomInput                    
-                                    labelText="Perfil de instagram"
-                                    id="instagramProfile"
-                                    formControlProps={{
-                                      fullWidth: true
-                                    }}
-                                    inputProps={{
-                                      type: "text",
-                                      required: true,
-                                      endAdornment: (
-                                        <InputAdornment position="end">
-                                          <Instagram className={classes.inputIconsColor} />
-                                        </InputAdornment>
-                                      )
-                                    }}
-                                />
-                                <CustomInput                    
-                                    labelText="Canal de Youtube"
-                                    id="youtubeChannel"
-                                    formControlProps={{
-                                      fullWidth: true
-                                    }}
-                                    inputProps={{
-                                      type: "text",
-                                      required: true,
-                                      endAdornment: (
-                                        <InputAdornment position="end">
-                                          <YouTube className={classes.inputIconsColor} />
-                                        </InputAdornment>
-                                      )
-                                    }}
-                                />
-                          </GridItem>
-                          <GridItem xs={12} sm={12} md={12}>
-                            <Button color="primary" size="lg" type="submit" disabled>
-                              Guardar
-                            </Button>    
-                          </GridItem>                          
-                        </GridContainer>
-                      )
                     },
                     {
-                      tabButton: "Calificación",
-                      tabIcon: Favorite,
-                      tabContent: (
-                        <GridContainer justify="center">
-                          <GridItem xs={12} sm={12} md={12}>
-                            <Box component="fieldset" mb={3} borderColor="transparent">
-                              <Typography component="legend"><a>Jorge Leonardo Espinosa:</a> El Servicio es bueno</Typography>
-                              <StyledRating
-                                name="size-large"
-                                defaultValue={2}
-                                getLabelText={(value) => `${value} Heart${value !== 1 ? 's' : ''}`}
-                                precision={0.5}
-                                icon={<Favorite fontSize="inherit" />}
-                                size="large"
-                                readOnly
-                              />
-                            </Box>
-                            <Box component="fieldset" mb={3} borderColor="transparent">
-                              <Typography component="legend"><a>Jorge Leonardo Espinosa:</a> El Servicio es bueno</Typography>
-                              <StyledRating
-                                name="size-large"
-                                defaultValue={2}
-                                getLabelText={(value) => `${value} Heart${value !== 1 ? 's' : ''}`}
-                                precision={0.5}
-                                icon={<Favorite fontSize="inherit" />}
-                                size="large"
-                                readOnly
-                              />
-                            </Box>
-                          </GridItem>
-                          <GridItem xs={12} sm={12} md={12}>
-                           
-                          </GridItem>
-                        </GridContainer>
-                      )
-                    }*/
+                      tabButton: "Sequimiento",
+                      tabIcon: AssessmentIcon,
+                      tabContent: (<div>
+                        
+                       <div className={classes.description} style={{color:'black'}}>
+                          <p>
+                           Tu actual pixel es {!(profile.fbPixel)?'Pixel vacio':`${profile.fbPixel}`}. Si deseas actualizarlo ingresa el nuevo valor y da clic en el botón guardar:
+                          </p>
+                        </div>
+                        <Metrics/>
+                      </div>)
+                    }
+                        
+                      
                   ]}
                 />
               </GridItem>

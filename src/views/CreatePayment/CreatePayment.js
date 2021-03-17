@@ -9,8 +9,6 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 // core components
-import Header from "components/Header/Header.js";
-import HeaderLinksSession from "components/Header/HeaderLinksSession.js";
 import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -45,9 +43,7 @@ export default function RegisterPage(props) {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
-  const { ...rest } = props;
-
-
+  
   const copyUrl = event => {
     navigator.clipboard.writeText(url);
   }

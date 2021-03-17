@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ProtectRoute  from "../components/ProtectRouter/ProtectRouter"
 import { createBrowserHistory } from "history";
 
@@ -7,7 +7,6 @@ import CacheBuster from 'CacheBuster'
 
 
 // pages for this product
-import LandingPage from "views/LandingPage/LandingPage.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import DashBoard  from "views/Dashboard/DashBoard.js";
 import LoginPage from "views/LoginPage/LoginPage.js";
@@ -21,6 +20,7 @@ import AgreePayment from "views/CreatePayment/AgreePayment";
 import ProductBoard from "views/Product/ProductBoard";
 import RecoveryPassword from "views/RecoveryPassword/RecoveryPassword";
 import WithDrawal from 'views/Withdrawal/Withdrawal';
+import ThanksPage from 'views/thanks/ThankPage';
 import WithdrawalDetail from 'views/Withdrawal/WithdrawalDetail';
 
 var hist = createBrowserHistory();
@@ -54,7 +54,8 @@ return (
                 <Route path="/recovery-pass" component={RecoveryPassword} />
                 <Route path="/user/password" component={CreatePassword} />
                 <Route path='/agree-payment' component={AgreePayment} />  
-                <Route path="/registro" component={RegisterLanding} />   
+                <Route path="/registro" component={RegisterLanding} />
+                <Route path="/thanks-page" component={ThanksPage} />   
                 <Route path="/login" component={LoginPage} /> 
             </Switch>
           </Router>
