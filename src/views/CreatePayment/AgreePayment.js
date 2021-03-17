@@ -74,7 +74,7 @@ function AgreePayment(props) {
   const callBackSuccessGetMerchant = (merchant) => {
     setMerchant(merchant)
     ReactPixel.init(merchant.fbId);
-    ReactPixel.fbq('track', 'InitiateCheckout',{test_event_code: 'TEST95399'});
+    ReactPixel.fbq('track', 'InitiateCheckout');
     props.setFbPixel(merchant.fbId);
   }
 
