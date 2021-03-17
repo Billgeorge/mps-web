@@ -24,6 +24,7 @@ function ThankPage(props) {
     React.useEffect(() => 
   {
     ReactPixel.init(props.fbId);
+    console.log('fbId ',props.fbId);
     ReactPixel.fbq('track', 'Purchase', {currency: "COP", value: props.value});
   })
                
