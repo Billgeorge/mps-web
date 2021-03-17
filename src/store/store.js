@@ -1,18 +1,26 @@
-import { createStore,compose } from "redux";
+import { createStore } from "redux";
 import fbReducer from "reducers/reducer";
 import { combineReducers } from 'redux'
-import { persistentReducer,persistentStore } from 'redux-pouchdb'
 
-import PouchDB from 'pouchdb'
+import { persistReducer } from 'redux-persist'
 
-const db = new PouchDB('todomvc');
+import storage from 'redux-persist/lib/storage' 
+import hardSet from 'redux-persist/lib/stateReconciler/hardSet'
+
+export const persistConfig = {
+  key: 'root',
+  storage,
+  stateReconciler: hardSet
+}
+
 const reducer=combineReducers({
   fbReducer
 })
 
+const persistedReducer = persistReducer(persistConfig, reducer)
+
 const store = createStore(
-  persistentReducer(reducer),
-  compose(persistentStore(db))
-  );
+  persistedReducer
+);
 
 export default store;

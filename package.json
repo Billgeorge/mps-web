@@ -28,6 +28,7 @@
     "react-swipeable-views": "0.13.9",
     "react-whatsapp": "^0.2.0",
     "redux": "^4.0.5",
+    "redux-persist": "^6.0.0",
     "redux-pouchdb": "^0.1.4"
   },
   "devDependencies": {
