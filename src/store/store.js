@@ -1,22 +1,18 @@
-import { createStore,applyMiddleware } from "redux";
+import { createStore,compose } from "redux";
 import fbReducer from "reducers/reducer";
 import { combineReducers } from 'redux'
-import { createStateSyncMiddleware, withReduxStateSync } from 'redux-state-sync'
+import { persistentReducer,persistentStore } from 'redux-pouchdb'
 
+import PouchDB from 'pouchdb'
 
-const config = {}
-const middlewares = [
-  createStateSyncMiddleware(config),
-]
-
+const db = new PouchDB('todomvc');
 const reducer=combineReducers({
   fbReducer
 })
 
-/*const store = createStore(
-  reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  );*/
-const store = createStore(withReduxStateSync(reducer), {}, applyMiddleware(...middlewares))
+const store = createStore(
+  persistentReducer(reducer),
+  compose(persistentStore(db))
+  );
 
 export default store;

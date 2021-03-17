@@ -14,6 +14,7 @@
     "moment": "2.26.0",
     "node-sass": "4.14.1",
     "nouislider": "14.5.0",
+    "pouchdb": "^7.2.2",
     "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-datetime": "2.16.3",
@@ -27,7 +28,7 @@
     "react-swipeable-views": "0.13.9",
     "react-whatsapp": "^0.2.0",
     "redux": "^4.0.5",
-    "redux-state-sync": "^3.1.2"
+    "redux-pouchdb": "^0.1.4"
   },
   "devDependencies": {
     "@babel/cli": "7.10.1",
