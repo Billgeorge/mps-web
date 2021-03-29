@@ -47,7 +47,7 @@ const useStyles = makeStyles(styles);
 
 
 
-export default function AgreePayment(props) {
+function AgreePayment(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   const [openDialog, setOpenDialog] = React.useState(false);  
 
@@ -55,7 +55,6 @@ export default function AgreePayment(props) {
   const [payment, setPayment] = React.useState({});
   const [merchant, setMerchant] = React.useState("");
 
-  const [isLoading, setIsLoading] = React.useState(false);
   const [paymentInformation, setPayInformation] = React.useState({});
   
   const callBackSuccessGetPaymentInformation = (paymentInformation) => {   
@@ -82,7 +81,7 @@ export default function AgreePayment(props) {
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'COP',
     minimumFractionDigits: 2
   })
 
@@ -130,13 +129,7 @@ export default function AgreePayment(props) {
       url = `${CORE_BASEURL}/payment/public/${idPayment}`      
     }
     consumeServiceGet(callBackGet,callBackSuccessGet,url)
-  }
-
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0
-  })
+  }  
 
   const changeMessageValidation = () =>{
     getPaymentData()    
