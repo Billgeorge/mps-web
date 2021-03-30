@@ -60,6 +60,7 @@ export default function PaymentForm(props) {
     const redirect = (paymentMethod) => {
         const id = getIdFromUrl()
         const url = `${PULL_BASEURL}/cashin/redirect/paymentmethod`
+        console.log("redirect id"+id)
         consumeServicePatch({paymentPartnerId:id,paymentMethod:paymentMethod},callBackGet,callBackSuccessGetPaymentInformation,url)               
     }
 

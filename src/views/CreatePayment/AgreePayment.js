@@ -40,7 +40,7 @@ import ReactPixel from 'react-facebook-pixel';
 
 import {setFbPixel,setValue} from 'actions/setFbPixel'
 
-import CustomDialog from 'views/casshin/CustomizedDialogs';
+import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles(styles);
@@ -49,19 +49,19 @@ const useStyles = makeStyles(styles);
 
 function AgreePayment(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
-  const [openDialog, setOpenDialog] = React.useState(false);  
-
+  
   const [errorMessage, setErrorMessage] = React.useState({});
   const [payment, setPayment] = React.useState({});
   const [merchant, setMerchant] = React.useState("");
 
   const [paymentInformation, setPayInformation] = React.useState({});
+  const history = useHistory();
   
   const callBackSuccessGetPaymentInformation = (paymentInformation) => {   
     setPayInformation(paymentInformation)
     document.getElementById("agreeForm").reset();
     setIsLoading(false)
-    setOpenDialog(true)
+    history.push("/methods?id="+paymentInformation.id)
   }
 
   const getExternalPayment = () => {
@@ -71,7 +71,7 @@ function AgreePayment(props) {
   }
 
   const [isLoading, setIsLoading] = React.useState(false);
-  const [isCheckout, setIsCheckout] = React.useState(false);     
+  const [isCheckout, setIsCheckout] = React.useState(false);       
    
   setTimeout(function() {
     setCardAnimation("");
@@ -198,10 +198,6 @@ function AgreePayment(props) {
   return (
     
     <div>
-      {openDialog
-      ? <CustomDialog paymentPartnerId={paymentInformation.id} open={openDialog}></CustomDialog>      
-                : <span></span>}
-      
       <Header
         absolute
         color="transparent"
