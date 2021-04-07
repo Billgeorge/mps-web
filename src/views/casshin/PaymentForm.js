@@ -68,7 +68,7 @@ export default function PaymentForm(props) {
         setPayInformation(paymentInformation)
         setFormRedirectFlag(true)
         document.payzenForm.submit()
-      }
+    }
     
     return (    
         <div>
@@ -88,7 +88,8 @@ export default function PaymentForm(props) {
                 <input type="hidden" name="vads_version" value={paymentInformation.version || ''} />
                 <input type="hidden" name="signature" value={paymentInformation.signature || ''}/>
                 <input type="hidden" name="vads_payment_cards" value={paymentInformation.method || ''}/>
-                <input type="hidden" name="vads_order_id" value={paymentInformation.orderId || ''}/>                                                      
+                <input type="hidden" name="vads_order_id" value={paymentInformation.orderId || ''}/>
+                <input type="hidden" name="vads_url_success" value='https://app.mipagoseguro.co/thanks-page'/>                                                      
             </form>
               : <span></span>
             }
