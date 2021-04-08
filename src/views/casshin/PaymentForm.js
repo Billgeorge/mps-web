@@ -89,7 +89,10 @@ export default function PaymentForm(props) {
                 <input type="hidden" name="signature" value={paymentInformation.signature || ''}/>
                 <input type="hidden" name="vads_payment_cards" value={paymentInformation.method || ''}/>
                 <input type="hidden" name="vads_order_id" value={paymentInformation.orderId || ''}/>
-                <input type="hidden" name="vads_url_success" value='https://app.mipagoseguro.co/thanks-page'/>                                                      
+                <input type="hidden" name="vads_url_success" value='https://app.mipagoseguro.co/thanks-page'/>
+                <input type="hidden" name="vads_return_mode" value='GET'/>
+                <input type="hidden" name="vads_redirect_error_timeout" value="0" />
+                                                                      
             </form>
               : <span></span>
             }
