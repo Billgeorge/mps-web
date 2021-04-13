@@ -29,7 +29,8 @@ import TrackChanges from "@material-ui/icons/TrackChanges";
 import EmojiEmotions from "@material-ui/icons/EmojiEmotions";
 
 import {consumeServiceGet} from 'service/ConsumeService'
-import {CORE_BASEURL} from 'constant/index'
+import consumeServicePost from "service/ConsumeService";
+import {CORE_BASEURL,PULL_BASEURL} from 'constant/index'
 
 import styles from "assets/jss/material-kit-react/views/createPayment.js";
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
@@ -39,24 +40,55 @@ import ReactPixel from 'react-facebook-pixel';
 
 import {setFbPixel,setValue} from 'actions/setFbPixel'
 
+import { useHistory } from "react-router-dom";
+
+
 const useStyles = makeStyles(styles);
 
 
-function AgreePayment(props) {
-  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");  
 
+function AgreePayment(props) {
+  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  
   const [errorMessage, setErrorMessage] = React.useState({});
   const [payment, setPayment] = React.useState({});
   const [merchant, setMerchant] = React.useState("");
 
+  const [paymentInformation, setPayInformation] = React.useState({});
+  const history = useHistory();
+  
+  const callBackSuccessGetPaymentInformation = (paymentInformation) => {   
+    setPayInformation(paymentInformation)
+    document.getElementById("agreeForm").reset();
+    setIsLoading(false)
+    history.push("/methods?id="+paymentInformation.id)
+  }
+
+  const getExternalPayment = (id) => {
+    let idPayment = ""
+    if(!id){
+      idPayment = getIdFromUrl().split('#')[0]
+    }else{      
+      idPayment=id
+    }    
+    const url = `${PULL_BASEURL}/cashin/redirect`
+    consumeServicePost({id:idPayment},callBackGet,callBackSuccessGetPaymentInformation,url)
+  }
+
   const [isLoading, setIsLoading] = React.useState(false);
-  const [isCheckout, setIsCheckout] = React.useState(false);     
+  const [isCheckout, setIsCheckout] = React.useState(false);       
    
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 2
+  })
 
   const callBackSuccessGet = (payment) =>{
     setPayment(payment)
@@ -73,10 +105,12 @@ function AgreePayment(props) {
   }
   const callBackSuccessGetMerchant = (merchant) => {
     setMerchant(merchant)
+
     ReactPixel.init(merchant.fbId);
     ReactPixel.fbq('track', 'InitiateCheckout');
     props.setFbPixel(merchant.fbId);
   }
+
 
   const callBackGet = () => {
     let errorObjects = {"Error":"Error completando pago, por favor contactar a administrador"}
@@ -100,16 +134,10 @@ function AgreePayment(props) {
       url = `${CORE_BASEURL}/payment/public/${idPayment}`      
     }
     consumeServiceGet(callBackGet,callBackSuccessGet,url)
-  }
-
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0
-  })
+  }  
 
   const changeMessageValidation = () =>{
-    getPaymentData()
+    getPaymentData()    
     document.agreeForm.onsubmit = function(event){
       
       const callBack = (error) => {
@@ -120,10 +148,8 @@ function AgreePayment(props) {
         setErrorMessage(errorObjects)
         setIsLoading(false)
       }
-      const callBackSucess = (url) =>{
-        document.getElementById("agreeForm").reset();
-        setIsLoading(false)        
-        window.location.assign(url)
+      const callBackSucess = (id) =>{        
+        getExternalPayment(id) 
       }
       setIsLoading(true)
       console.log("submitting")
@@ -197,6 +223,7 @@ function AgreePayment(props) {
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={6}>
               <Card className={classes[cardAnimaton]}>
+                
                 <form className={classes.form} validated="true" name="agreeForm" id="agreeForm">
                     <CardHeader className={classes.cardHeader}>
                         <h3 style={{fontWeight:"600",fontSize: "2.5em",fontFamily: 'Dosis, sans-serif'}}>Bienvenido a mipagoseguro </h3> <EmojiEmotionsIcon style={{fontSize:'2.5em',color:"#2097F3"}}/>
@@ -204,11 +231,12 @@ function AgreePayment(props) {
                     </CardHeader>                 
                     <CardBody>
                     {isLoading
-                                ? <CircularProgress/>
+                                ? <GridItem xs={12} sm={12} md={12}><center><CircularProgress/></center></GridItem>
                                 : <span></span>
                     }
                     <span><b>Somos una contraentrega digítal. El vendedor no recibirá el pago hasta que recibas tu pedido.</b> <a href="#howWork"> ->Ver como funciona</a></span><br/>
                     <span>Procede a realizar el pago de tu pedido por el valor de <b>{formatter.format(payment.amount)}</b> del comercio <b>{merchant.name}</b></span>
+
                     <FormControl style={{width:"100%",paddingBottom:"10px"}}>
                     <InputLabel htmlFor="id">Cédula</InputLabel>
                         <OutlinedInput
@@ -333,7 +361,8 @@ function AgreePayment(props) {
           <h2 className={classes.title}>¿Cómo Funciona?</h2>
           <a href="#agreeForm">Ir a Pagar</a>
         </GridItem>
-      </GridContainer>
+      </GridContainer>      
+      
       <div>
         <GridContainer>
           <GridItem xs={12} sm={12} md={4}>

@@ -22,6 +22,8 @@ import RecoveryPassword from "views/RecoveryPassword/RecoveryPassword";
 import WithDrawal from 'views/Withdrawal/Withdrawal';
 import ThanksPage from 'views/thanks/ThankPage';
 import WithdrawalDetail from 'views/Withdrawal/WithdrawalDetail';
+import PaymentForm from 'views/casshin/PaymentForm';
+import CustomizedDialogs from 'views/casshin/CustomizedDialogs';
 
 var hist = createBrowserHistory();
 
@@ -42,7 +44,7 @@ return (
             
             <Router history={hist}>      
             <Switch>
-                <ProtectRoute path='/product' component={ProductBoard} />
+                <ProtectRoute path='/product' component={ProductBoard} />                
                 <ProtectRoute path='/profile' component={ProfilePage} />
                 <ProtectRoute path='/create-payment' component={CreatePayment}  />
                 <ProtectRoute path='/create-product' component={CreateProduct}  />                
@@ -51,12 +53,17 @@ return (
                 <ProtectRoute path='/withdrawal' component={WithDrawal} />
                 <ProtectRoute path='/withdrawal-detail' component={WithdrawalDetail} />
                 <Route path="/detail" component={TransactionDetailPublic} />
+                <Route path='/methods' component={CustomizedDialogs} />
                 <Route path="/recovery-pass" component={RecoveryPassword} />
                 <Route path="/user/password" component={CreatePassword} />
                 <Route path='/agree-payment' component={AgreePayment} />  
                 <Route path="/registro" component={RegisterLanding} />
                 <Route path="/thanks-page" component={ThanksPage} />   
                 <Route path="/login" component={LoginPage} /> 
+                <Route path="/registro" component={RegisterLanding} />   
+                <Route path="/login" component={LoginPage} />
+                <Route path="/thanks-page" component={ThanksPage} />
+                <Route path="/paymentForm" component={PaymentForm} /> 
             </Switch>
           </Router>
 
