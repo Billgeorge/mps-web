@@ -11,11 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import {getIdFromUrl} from 'util/UrlUtil'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Efecty from "assets/img/payments/efectysm.png"
 import Pse from "assets/img/payments/pse.png"
-import Visa from "assets/img/payments/visa.png"
-import Mastercard from "assets/img/payments/mastercard.png"
 import {consumeServicePatch} from "service/ConsumeService";
 import {PULL_BASEURL} from 'constant/index'
 
@@ -39,6 +37,7 @@ export default function PaymentForm(props) {
     const [errorMessage, setErrorMessage] = React.useState({});
     const [formRedirectFlag, setFormRedirectFlag] = React.useState(false);
     const [paymentInformation, setPayInformation] = React.useState({})
+    const [isLoading, setIsLoading] = React.useState(false);
     React.useEffect(() => 
          addingClicEvent()
     , []);
@@ -58,6 +57,7 @@ export default function PaymentForm(props) {
       }
 
     const redirect = (paymentMethod) => {
+        setIsLoading(true)
         const id = getIdFromUrl()
         const url = `${PULL_BASEURL}/cashin/redirect/paymentmethod`
         console.log("redirect id"+id)
@@ -97,29 +97,10 @@ export default function PaymentForm(props) {
               : <span></span>
             }
              <GridContainer className={classes.container}  justify="center">
-                <GridItem xs={12} sm={12} md={3}  className={classes.gridItemCard}>
-                <Card >
-                    <CardActionArea>
-                        <CardMedia
-                        className={classes.media}          
-                        image={Efecty}
-                        title="Pago en Efectivo"
-                        />
-                        <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            En efectivo
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            Acercate a cualquier punto Efecty y realiza el pago
-                        </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                    <a name="EFECTY" className="button" style={{display: 'block', margin: '0 auto', height: '50px', width: 'auto', background: 'blue', color: '#ffffff', textAlign: 'center', fontWeight: 'bold', fontSize: '100%', lineHeight: '30px', fontFamily: 'Arial', borderRadius: '10px', textDecoration: 'none', padding:'10px'}} href="http://eepurl.com/bUDMID">Pagar en Efecty</a>                 
-                    </CardActions>
-                </Card>
-                
-                </GridItem>
+             {isLoading
+                                ? <GridItem xs={12} sm={12} md={12}><center><CircularProgress/></center></GridItem>
+                                : <span></span>
+                    }
                 <GridItem xs={12} sm={12} md={3} className={classes.gridItemCard}>
                 <Card >
                     <CardActionArea>
@@ -142,50 +123,7 @@ export default function PaymentForm(props) {
                     </CardActions>
                 </Card>
                 </GridItem>    
-                <GridItem xs={12} sm={12} md={3} className={classes.gridItemCard}>
-                <Card >
-                    <CardActionArea>
-                        <CardMedia
-                        className={classes.media}          
-                        image={Visa}
-                        title="Visa"
-                        />
-                        <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            Tarjeta débito/crédito
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            Si tu tarjeta débito o crédito es visa, puedes pagar con esta.
-                        </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                    <a  name="VISA" className="button" style={{display: 'block', margin: '0 auto', height: '50px', width: 'auto', background: 'blue', color: '#ffffff', textAlign: 'center', fontWeight: 'bold', fontSize: '100%', lineHeight: '30px', fontFamily: 'Arial', borderRadius: '10px', textDecoration: 'none', padding:'10px'}} href="http://eepurl.com/bUDMID">Pagar con Visa</a>                 
-                    </CardActions>
-                </Card>
-                </GridItem>    
-                <GridItem xs={12} sm={12} md={3} className={classes.gridItemCard}>
-                <Card >
-                    <CardActionArea>
-                        <CardMedia
-                        className={classes.media}          
-                        image={Mastercard}
-                        title="mastercard"
-                        />
-                        <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            Tarjeta débito/crédito
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                        Si tu tarjeta débito o crédito es visa, puedes pagar con esta.
-                        </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                    <a name="MASTERCARD" className="button" style={{display: 'block', margin: '0 auto', height: '50px', width: 'auto', background: 'blue', color: '#ffffff', textAlign: 'center', fontWeight: 'bold', fontSize: '100%', lineHeight: '30px', fontFamily: 'Arial', borderRadius: '10px', textDecoration: 'none', padding:'10px'}} href="http://eepurl.com/bUDMID">Pagar con Mastercard</a>                 
-                    </CardActions>
-                </Card>
-                </GridItem>
+                
                 {Object.keys(errorMessage).map((keyName, i) => (
                   <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>    
                 ))}                    

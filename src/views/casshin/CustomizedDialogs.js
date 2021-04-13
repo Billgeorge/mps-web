@@ -36,7 +36,7 @@ export default function CustomizedDialogs(props) {
         <AppBar className={classes.appBar}>
           <Toolbar>            
             <Typography variant="h6" className={classes.title}>
-              Seleccione Medio de pago
+              Tu pago estará en custodia, hasta que recibas tu pedido
             </Typography>            
           </Toolbar>
         </AppBar>

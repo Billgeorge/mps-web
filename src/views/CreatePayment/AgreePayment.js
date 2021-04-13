@@ -64,8 +64,13 @@ function AgreePayment(props) {
     history.push("/methods?id="+paymentInformation.id)
   }
 
-  const getExternalPayment = () => {
-    const idPayment = getIdFromUrl().split('#')[0]
+  const getExternalPayment = (id) => {
+    let idPayment = ""
+    if(!id){
+      idPayment = getIdFromUrl().split('#')[0]
+    }else{      
+      idPayment=id
+    }    
     const url = `${PULL_BASEURL}/cashin/redirect`
     consumeServicePost({id:idPayment},callBackGet,callBackSuccessGetPaymentInformation,url)
   }
@@ -143,8 +148,8 @@ function AgreePayment(props) {
         setErrorMessage(errorObjects)
         setIsLoading(false)
       }
-      const callBackSucess = (url) =>{        
-        getExternalPayment() 
+      const callBackSucess = (id) =>{        
+        getExternalPayment(id) 
       }
       setIsLoading(true)
       console.log("submitting")
