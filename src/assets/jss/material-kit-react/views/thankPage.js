@@ -38,7 +38,7 @@ const thankPageStyle = {
         width:"50%"
     },
     text:{
-        fontSize:"24px !important",
+        fontSize:"20px !important",
         fontWeight:"400"
     },    
     '@media screen and (max-width: 600px)': {
@@ -52,7 +52,7 @@ const thankPageStyle = {
             width:"99%"
         },
         text:{
-            fontSize:"18px !important"
+            fontSize:"16px !important"
         }
     }
 }
