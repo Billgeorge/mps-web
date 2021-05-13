@@ -37,15 +37,7 @@ function ThankPage(props) {
             <h1  className={classes.title} >Gracias por tu compra!</h1>
         </GridItem>
         <GridItem xs={12} sm={12} md={12} className={classes.desc}>
-            <p className={classes.text}>Te hemos enviado un correo electrónico para que notifiques novedades con tu pedido. Tienes 8 días para hacerlo, si no recibimos novedades de tu parte, el dinero será transferido al vendedor.</p>
-            <p className={classes.text}>Comparte Mipagoseguro para que tu familia, amigos y conocidos lo usen y eviten ser estafados al comprar online.</p>
-            <Button className={classes.button} variant="outlined" color="primary" href="https://www.facebook.com/sharer/sharer.php?u=mipagoseguro.co">
-                <IconButton><FacebookIcon  style={{ color: "#2097F3" }}/></IconButton>Compartir en Facebook                
-            </Button>
-
-            <Button className={classes.button} variant="outlined" color="primary" href="https://www.instagram.com/mipagoseguro.col/">
-                <IconButton><InstagramIcon style={{ color: "#2097F3" }}/></IconButton>Únete a nuestra comunidad              
-            </Button>
+            <p className={classes.text}>Te hemos enviado un correo electrónico para que notifiques novedades con tu pedido. Tienes 8 días para hacerlo, si no recibimos novedades de tu parte, el dinero será transferido al vendedor.</p>                        
         </GridItem>
     </GridContainer>)
 }
