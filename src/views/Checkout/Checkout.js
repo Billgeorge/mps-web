@@ -10,7 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
-
+import Example from "assets/img/examples/product-1.png"
 
 const useStyles = makeStyles(styles);
 export default function Checkout() {
@@ -20,7 +20,7 @@ export default function Checkout() {
 
     return(
     <GridContainer className={classes.container} >
-        <GridItem className={classes.sideSection} xs={12} sm={12} md={6}>
+        <GridItem className={classes.sideSection} xs={12} sm={12} md={6} style={{backgroundColor: "rgb(60 60 60 / 22%)"}}>
             <GridItem xs={12} sm={12} md={12} style={{display: "flex"}} >
                 <Button
                 href=""
@@ -34,47 +34,21 @@ export default function Checkout() {
                     </Avatar>
                                         
                 </Button>
-                <h3 className={classes.shopName}>Tienda de prueba</h3>    
+                <h3 className={classes.shopName}>Tu Tienda</h3>    
+            </GridItem> 
+            <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
+            <h3 className={classes.shopName}>Zapatos Aquiles línea</h3> 
+            <div className={classes.totalPrice}><span>$35.000</span></div><br/>
+                <img src={Example} className={classes.imgProduct} />
+                                
             </GridItem>
-            <GridItem xs={12} sm={12} md={12}>
-                <div className={classes.detailTitle}><span>Detalle de compra</span></div>
-                <br/>
-                <div><span>Item 1 ...........................$25.000</span></div>
-                <div><span>Item 2 ...........................$25.000</span></div>
-                <div><span>Valor Transporte..........$5.000</span></div>
-                <br/>
-                <div className={classes.totalPrice}><span>$35.000</span></div><br/>
-            </GridItem >
-            <Divider/>
-            <GridContainer>
-            <h3 className={classes.shopName}>Información de contacto</h3>    
-            <br/>   
-                <GridContainer>
-                    <GridItem xs={12} sm={12} md={6}>
-                        <TextField id="outlined-basic" label="Correo Electrónico" variant="outlined" />
-                    </GridItem>
-                    <GridItem xs={12} sm={12} md={6}>
-                        <TextField id="outlined-basic" label="Nombre Completo" variant="outlined" />
-                    </GridItem>
+            <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
+                <div className={classes.productDescription}> descripcion de prueba para ver como se ve esta inscripcion a</div>
+                <GridContainer justify="center" style={{marginTop:"30px"}}>
+                    <GridItem xs={12} sm={12} md={6} className={classes.DetailText}> Cantidad </GridItem>                                        
+                    
                 </GridContainer>
-                <GridContainer style={{marginTop:"10px"}}>
-                <GridItem xs={12} sm={12} md={6}>
-                    <TextField id="outlined-basic" label="Dirección Completa" variant="outlined" />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                    <TextField id="outlined-basic" label="Número de contacto" variant="outlined" />
-                </GridItem>                
-                </GridContainer>
-                <GridContainer style={{marginTop:"10px"}}>
-                <GridItem xs={12} sm={12} md={6}>
-                    <TextField id="outlined-basic" label="Departamento" variant="outlined" />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                    <TextField id="outlined-basic" label="Municipío" variant="outlined" />
-                </GridItem>                
-                </GridContainer>
-
-            </GridContainer>
+            </GridItem>          
             
         </GridItem>
         <GridItem xs={12} sm={12} md={6} className= {classes.sideSection} style={{backgroundColor: "rgb(222 220 228 / 22%)"}}>
