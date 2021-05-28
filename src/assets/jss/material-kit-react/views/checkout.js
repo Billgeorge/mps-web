@@ -25,11 +25,17 @@ const checkoutStyle = {
         fontSize: "16px",
         margin: "2px",
         backgroundColor:"#000000",        
-      },
-    detailText:{        
+    },
+    rightSide:{
+        backgroundColor:"#fff",
+        marginTop: "10%"
+    },
+    detailText:{      
         fontSize: "20px",
-        fontWeight: "300",
-        color: "rgba(26,26,26,.6)"
+        fontWeight: "500",
+        textAlign:"center",
+        color: "rgba(26,26,26,.6)",
+        paddingTop:"5px"
     },
     totalPrice:{
         fontSize: "36px",
@@ -68,6 +74,17 @@ const checkoutStyle = {
       marginLeft:"5px",
       fontFamily: "'Fira Sans Extra Condensed', sans-serif"
            
+    },
+    buttonText:{
+        '&:hover': {
+            backgroundColor: "#0202ab",
+            color:"white"
+        },
+        backgroundColor:"#01015a",
+        fontWeight:"bold",
+        fontSize:"1.1em",
+        textTransform:"none",
+        width:"98%"
     }
 }
 
