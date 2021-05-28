@@ -16,6 +16,7 @@ import {consumeServiceGet} from 'service/ConsumeService'
 import consumeServicePost from 'service/ConsumeService'
 import {CORE_BASEURL,PULL_BASEURL} from 'constant/index'
 import { useHistory } from "react-router-dom";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(styles);
 export default function Checkout() {
@@ -25,6 +26,7 @@ export default function Checkout() {
     const [citiesResponse, SetCitiesResponse] = React.useState([]);
     const [cities, SetCities] = React.useState([]);
     const [paymentMethod, setPaymentMethod] = React.useState("");
+    const [isLoading, setIsLoading] = React.useState(false);
     const [states, SetStates] = React.useState([]);
     const [order, setOrder] = React.useState({
         state:"",
@@ -95,7 +97,7 @@ export default function Checkout() {
             setErrorMessage("Dirección es obligatorio")
             return
         }
-        
+        setIsLoading(true)
         const url = `${CORE_BASEURL}/checkout/order`            
         let request = {
             productId: order.productId,
@@ -126,8 +128,7 @@ export default function Checkout() {
     const callBackSuccess=(order)=>{
         if(order.paymentMethod=="COD"){
             history.push("/thanks-page")
-        }
-        if(order.paymentMethod=="MPS"){
+        }else{
             const url = `${PULL_BASEURL}/cashin/redirect`
             consumeServicePost({id:order},callBackErrorCreateOrder,callBackSuccessGetPaymentInformation,url)
         }
@@ -205,7 +206,7 @@ export default function Checkout() {
                 <h3 className={classes.shopName}>Tu Tienda</h3>    
             </GridItem> 
             <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
-            <h3 className={classes.shopName}>Zapatos Aquiles línea</h3> 
+            <h3 className={classes.shopName}>Zapatos Aquiles línea</h3>
             <div className={classes.totalPrice}><span>$35.000</span></div><br/>
                 <img src={Example} className={classes.imgProduct} />                                
             </GridItem>
@@ -223,6 +224,10 @@ export default function Checkout() {
                 ?<GridItem xs={12} sm={12} md={12} ><Alert severity="error">{errorMessage}</Alert></GridItem>:<span></span>   
             }            
             <br/>
+            {isLoading
+                                ? <GridItem xs={12} sm={12} md={12}><center><CircularProgress/></center></GridItem>
+                                : <span></span>
+                    }
             <GridContainer justify="center">
                 <GridItem xs={12} sm={12} md={12}>
                     <TextField onChange={handleChange} value={order.name} name="name" style={{width:"98%", backgroundColor:"white"}}  id="outlined-basic" label="Nombre completo" variant="outlined" />                    
