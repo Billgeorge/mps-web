@@ -3,10 +3,8 @@ import { container } from "assets/jss/material-kit-react.js";
 const signupPageStyle = {
   container: {
     ...container,
-    flexGrow: 1,
     zIndex: "2",
     position: "relative",
-    paddingLeft: "5vh",
     paddingTop: "10vh",
     color: "#FFFFFF",
     paddingBottom: "200px"
@@ -100,9 +98,6 @@ const signupPageStyle = {
     deliveryForm:{
       height:"150px !important",
       textAlign:"center"
-    },
-    container:{
-      paddingLeft:"10vh"
     }
   }  
   

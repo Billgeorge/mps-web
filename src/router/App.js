@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ProtectRoute  from "../components/ProtectRouter/ProtectRouter"
 import { createBrowserHistory } from "history";
 
-
 import CacheBuster from 'CacheBuster'
 
 
@@ -16,7 +15,6 @@ import CreatePassword from "views/RegisterPage/CreatePassword";
 import TransactionDetail from "views/TransactionDetail/TransactionDetail";
 import TransactionDetailPublic from "views/TransactionDetail/TransactionDetailPublic";
 import CreatePayment from "views/CreatePayment/CreatePayment";
-import checkout from "views/Checkout/Checkout";
 import CreateProduct from "views/Product/CreateProduct";
 import AgreePayment from "views/CreatePayment/AgreePayment";
 import ProductBoard from "views/Product/ProductBoard";
@@ -66,7 +64,6 @@ return (
                 <Route path="/login" component={LoginPage} />
                 <Route path="/thanks-page" component={ThanksPage} />
                 <Route path="/paymentForm" component={PaymentForm} /> 
-                <Route path="/checkout" component={checkout} /> 
             </Switch>
           </Router>
 
