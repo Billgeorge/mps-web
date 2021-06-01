@@ -1,5 +1,5 @@
 // 'http://localhost:8083/mps' 'http://localhost:8084/mps'
-export const CORE_BASEURL = 'https://mpscore.herokuapp.com/mps';
+export const CORE_BASEURL = 'https://mpscore.herokuapp.com/mps'//'http://localhost:8083/mps'
 export const PULL_BASEURL = 'https://mps-cashin.herokuapp.com/mps'//'http://localhost:8084/mps'
 
 export const getPaymentState = (idState) => {
