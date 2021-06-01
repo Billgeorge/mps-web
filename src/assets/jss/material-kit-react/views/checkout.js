@@ -14,51 +14,14 @@ const checkoutStyle = {
         color: "#000",
         ...container
     },
-    buttons: {   
-        border: "none",     
-        color: "#FFFFFF",
-        padding:"15px",
-        textAlign: "center",
-        position : "relative",
-        top: "-16px",
-        left: "-16px",              
-        fontSize: "16px",
-        margin: "2px",
-        backgroundColor:"#000000",        
-    },
-    rightSide:{
-        backgroundColor:"#fff",
-        marginTop: "10%"
-    },
-    detailText:{      
+    detailTitle:{
         fontSize: "20px",
-        fontWeight: "500",
-        textAlign:"center",
-        color: "rgba(26,26,26,.6)",
-        paddingTop:"5px"
+    fontWeight: "500",
+    color: "rgba(26,26,26,.6)"
     },
     totalPrice:{
-        fontSize: "36px",
-        fontWeight: "600"
-    },
-    gridItemCard: {
-        marginBottom: '20px',
-    },
-    media: {
-        height: 200,
-        backgroundSize: '100%'       
-    },
-    imgProduct:{
-        width: "100%",
-        maxWidth: "500px",
-        height: "auto",
-        margin:"0 auto"
-
-    },
-    productDescription:{
-        fontSize: "18px",
-        fontWeight: "400",
-        fontFamily: "Roboto, Helvetica, Arial, sans-serif"
+    fontSize: "36px",
+    fontWeight: "600"
     },
     midSize:{
         marginLeft:"0",
@@ -74,17 +37,6 @@ const checkoutStyle = {
       marginLeft:"5px",
       fontFamily: "'Fira Sans Extra Condensed', sans-serif"
            
-    },
-    buttonText:{
-        '&:hover': {
-            backgroundColor: "#0202ab",
-            color:"white"
-        },
-        backgroundColor:"#01015a",
-        fontWeight:"bold",
-        fontSize:"1.1em",
-        textTransform:"none",
-        width:"98%"
     }
 }
 

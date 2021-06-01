@@ -99,7 +99,7 @@ const useStyles = makeStyles(styles);
         | <GridItem xs={12} sm={12} md={12} className={classes.grid}>        
             <Grid container className={classes.box}  spacing={3}>               
                 <Grid item xs={12} sm={12} md={12} >
-                    El siguiente valor representa el valor de las transacciones cerradas (para los pagos recibidos por nuestro servicio de custodia) que puedes retirar, recuerda cada retiro tiene un costo de $6000:
+                    El siguiente valor representa el valor de las transacciones cerradas que puedes retirar, recuerda cada retiro tiene un costo de $6000:
                     <br/> <br/> <center><span className={classes.valueText}>{formatter.format(amount)}</span></center>
                     <br/> <br/> <center><Button color="primary" disabled={!isEnabled} onClick={requestWithdrawal}> Solicitar retiro</Button></center>
                 </Grid>                              
