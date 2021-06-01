@@ -20,6 +20,7 @@ import checkout from "views/Checkout/Checkout";
 import CreateProduct from "views/Product/CreateProduct";
 import AgreePayment from "views/CreatePayment/AgreePayment";
 import ProductBoard from "views/Product/ProductBoard";
+import SearchProduct from "views/Product/SearchProduct";
 import RecoveryPassword from "views/RecoveryPassword/RecoveryPassword";
 import WithDrawal from 'views/Withdrawal/Withdrawal';
 import ThanksPage from 'views/thanks/ThankPage';
@@ -54,6 +55,7 @@ return (
                 <ProtectRoute path='/dashboard' component={DashBoard} />
                 <ProtectRoute path='/withdrawal' component={WithDrawal} />
                 <ProtectRoute path='/withdrawal-detail' component={WithdrawalDetail} />
+                <ProtectRoute path="/search-product" component={SearchProduct} />
                 <Route path="/detail" component={TransactionDetailPublic} />
                 <Route path='/methods' component={CustomizedDialogs} />
                 <Route path="/recovery-pass" component={RecoveryPassword} />
@@ -61,12 +63,12 @@ return (
                 <Route path='/agree-payment' component={AgreePayment} />  
                 <Route path="/registro" component={RegisterLanding} />
                 <Route path="/thanks-page" component={ThanksPage} />   
-                <Route path="/login" component={LoginPage} /> 
                 <Route path="/registro" component={RegisterLanding} />   
                 <Route path="/login" component={LoginPage} />
                 <Route path="/thanks-page" component={ThanksPage} />
                 <Route path="/paymentForm" component={PaymentForm} /> 
-                <Route path="/checkout" component={checkout} /> 
+                <Route path="/checkout" component={checkout} />                  
+                
             </Switch>
           </Router>
 

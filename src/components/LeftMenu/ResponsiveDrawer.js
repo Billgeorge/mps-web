@@ -238,7 +238,7 @@ export function ResponsiveDrawer(props) {
             <ListItemIcon ><EditIcon style={{color:'#2097F3'}} /></ListItemIcon>
             <ListItemText style={{color:'#2097F3'}} primary="Productos propios" />
           </ListItem>
-          <ListItem button className={classes.menuItem}>
+          <ListItem button component="a" href="/search-product" className={classes.menuItem}>
             <ListItemIcon ><ImageSearchIcon style={{color:'#2097F3'}} /></ListItemIcon>
             <ListItemText style={{color:'#2097F3'}} primary="Buscar producto" />
           </ListItem>
