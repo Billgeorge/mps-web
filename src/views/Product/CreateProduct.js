@@ -110,6 +110,22 @@ export default function RegisterPage(props) {
                                     : <span></span>
                         }
                         <FormControl style={{width:"100%",paddingBottom:"10px"}}>
+                          <span >Imagen del producto (al menos 500x500)</span>
+                          <Button
+                           id="image"
+                           color="success"
+                            variant="contained"
+                            component="label"
+                          >
+                            Seleccionar imagen
+                            <input
+                              accept="image/*"
+                              type="file"
+                              hidden
+                            />
+                          </Button>
+                        </FormControl>
+                        <FormControl style={{width:"100%",paddingBottom:"10px"}}>
                         <InputLabel htmlFor="description">Descripción</InputLabel>
                             <OutlinedInput
                                 id="description"
