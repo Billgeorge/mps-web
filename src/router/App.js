@@ -20,6 +20,7 @@ import checkout from "views/Checkout/Checkout";
 import CreateProduct from "views/Product/CreateProduct";
 import AgreePayment from "views/CreatePayment/AgreePayment";
 import ProductBoard from "views/Product/ProductBoard";
+import ProductDetail from "views/Product/ProductDetail"
 import SearchProduct from "views/Product/SearchProduct";
 import RecoveryPassword from "views/RecoveryPassword/RecoveryPassword";
 import WithDrawal from 'views/Withdrawal/Withdrawal';
@@ -68,6 +69,7 @@ return (
                 <Route path="/thanks-page" component={ThanksPage} />
                 <Route path="/paymentForm" component={PaymentForm} /> 
                 <Route path="/checkout" component={checkout} />                  
+                <Route path="/productDetail" component={ProductDetail} /> 
                 
             </Switch>
           </Router>
