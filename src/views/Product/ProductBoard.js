@@ -142,7 +142,8 @@ const useStyles = makeStyles(styles);
                           <TableCell></TableCell>
                           <TableCell align="center">Descripción</TableCell>
                           <TableCell align="center">Valor</TableCell> 
-                          <TableCell align="center">Url</TableCell>                         
+                          <TableCell align="center">Url</TableCell>
+                          <TableCell align="center">Editar</TableCell>                         
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -165,6 +166,7 @@ const useStyles = makeStyles(styles);
                               formatter.format(row.amount)
                             }</TableCell>
                             <TableCell align="right"><center><Button onClick={() => copyUrl(row.shortId)} color="primary">Copiar Enlace</Button></center></TableCell>
+                            <TableCell align="right"><center><a href={"/edit-product?idp="+row.shortId}><Button color="primary">Editar producto</Button></a></center></TableCell>
                           </TableRow>
                         ))}
                       </TableBody>

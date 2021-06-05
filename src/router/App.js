@@ -22,6 +22,7 @@ import AgreePayment from "views/CreatePayment/AgreePayment";
 import ProductBoard from "views/Product/ProductBoard";
 import ProductDetail from "views/Product/ProductDetail"
 import SearchProduct from "views/Product/SearchProduct";
+import EditProduct from "views/Product/EditProduct";
 import RecoveryPassword from "views/RecoveryPassword/RecoveryPassword";
 import WithDrawal from 'views/Withdrawal/Withdrawal';
 import ThanksPage from 'views/thanks/ThankPage';
@@ -58,6 +59,7 @@ return (
                 <ProtectRoute path='/withdrawal' component={WithDrawal} />
                 <ProtectRoute path='/withdrawal-detail' component={WithdrawalDetail} />
                 <ProtectRoute path="/search-product" component={SearchProduct} />
+                <ProtectRoute path="/edit-product" component={EditProduct} />
                 <Route path="/detail" component={TransactionDetailPublic} />
                 <Route path='/methods' component={CustomizedDialogs} />
                 <Route path="/recovery-pass" component={RecoveryPassword} />
