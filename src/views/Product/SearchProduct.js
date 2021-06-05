@@ -12,6 +12,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
+import consumeServicePost from 'service/ConsumeService'
+import {CORE_BASEURL} from 'constant/index'
+import Alert from '@material-ui/lab/Alert';
 
 
 const useStylesJss = makeStyles(styles);
@@ -43,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchProduct(props) {
     const classes = useStyles();
     const jssclasses = useStylesJss();
+    const [errorMessage, setErrorMessage] = React.useState("");
+    
     const [products, setProducts] = React.useState([{
         name:'Linterna militar led',
         quantity:'200',
@@ -61,6 +66,36 @@ export default function SearchProduct(props) {
         description:'Con esta increible linterna podrás alumbrar lo que desees. Cargala mediante puerto usb y usala en la oscuridad'
     }]);
 
+    React.useEffect(() => {     
+        loadDropProducts()
+    }, []);
+
+    const loadDropProducts = () =>{
+        const criteriaRequest = [
+            {
+                key:"dropshipping",
+                value:true,
+                operation:"EQUAL"
+            }
+        ]
+        let url=`${CORE_BASEURL}/product/criteria`
+        consumeServicePost(criteriaRequest,callBack,callBackSucess,url)           
+    }
+
+    const callBack = (msg) => {
+        setProducts([])
+        if(msg==404){
+          setErrorMessage("No hay productos para mostrar")        
+        }else{
+          setErrorMessage("Error Cargando productos")
+        }      
+    }
+
+    const callBackSucess = (products) =>{
+        setProducts(products)
+    }
+  
+
     return (
     <div>       
        
@@ -75,21 +110,30 @@ export default function SearchProduct(props) {
                                 <Card className={classes.root}>
                                     <CardHeader                                                                       
                                         title={row.name}
-                                        subheader={row.quantity+" unidades disponibles"}
+                                        subheader={row.inventory+" unidades disponibles"}
                                     />                              
                                     <CardContent>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            {row.description}
+                                            {row.description.substring(0,20)} ...
                                         </Typography>
                                     </CardContent>
                                     <CardActions disableSpacing style={{textAlign:"center"}}>
+                                    <a
+                                        href={"/productDetail?idp="+row.shortId}
+                                    >
                                         <Button style={{left:"20%"}} color="primary" >
                                             Ver producto
-                                        </Button>                                    
+                                        </Button>
+                                    </a>                                    
                                     </CardActions>                                
                                 </Card>
                             </GridItem>                            
                         ))}
+                        {errorMessage != ""
+                                ?
+                                <Alert severity="error">{errorMessage}</Alert>
+                                : <span>	&nbsp;</span>   
+                        }                        
                     </GridContainer>
                 </GridItem>
             </GridContainer>

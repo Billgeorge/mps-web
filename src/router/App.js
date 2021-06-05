@@ -48,6 +48,7 @@ return (
             
             <Router history={hist}>      
             <Switch>
+                <ProtectRoute path="/productDetail" component={ProductDetail} />
                 <ProtectRoute path='/product' component={ProductBoard} />                
                 <ProtectRoute path='/profile' component={ProfilePage} />
                 <ProtectRoute path='/create-payment' component={CreatePayment}  />
@@ -68,9 +69,7 @@ return (
                 <Route path="/login" component={LoginPage} />
                 <Route path="/thanks-page" component={ThanksPage} />
                 <Route path="/paymentForm" component={PaymentForm} /> 
-                <Route path="/checkout" component={checkout} />                  
-                <Route path="/productDetail" component={ProductDetail} /> 
-                
+                <Route path="/checkout" component={checkout} /> 
             </Switch>
           </Router>
 

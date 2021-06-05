@@ -6,6 +6,7 @@ const signupPageStyle = {
     zIndex: "2",
     position: "relative",
     paddingTop: "20vh",
+    paddingLeft: "5vh",
     color: "#FFFFFF",
     paddingBottom: "200px"
   },
@@ -104,6 +105,11 @@ const signupPageStyle = {
   },
   inputIconsColor: {
     color: "#495057"
+  },
+  '@media(max-width: 600px)':{    
+    container:{
+      paddingLeft:"10vh"
+    }
   }
 };
 
