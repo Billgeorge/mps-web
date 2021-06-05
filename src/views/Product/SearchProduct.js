@@ -48,23 +48,7 @@ export default function SearchProduct(props) {
     const jssclasses = useStylesJss();
     const [errorMessage, setErrorMessage] = React.useState("");
     
-    const [products, setProducts] = React.useState([{
-        name:'Linterna militar led',
-        quantity:'200',
-        description:'Con esta increible linterna podrás alumbrar lo que desees. Cargala mediante puerto usb y usala en la oscuridad'
-    },{
-        name:'Linterna militar led',
-        quantity:'200',
-        description:'Con esta increible linterna podrás alumbrar lo que desees. Cargala mediante puerto usb y usala en la oscuridad'
-    },{
-        name:'Linterna militar led',
-        quantity:'200',
-        description:'Con esta increible linterna podrás alumbrar lo que desees. Cargala mediante puerto usb y usala en la oscuridad'
-    },{
-        name:'Linterna militar led',
-        quantity:'200',
-        description:'Con esta increible linterna podrás alumbrar lo que desees. Cargala mediante puerto usb y usala en la oscuridad'
-    }]);
+    const [products, setProducts] = React.useState([]);
 
     React.useEffect(() => {     
         loadDropProducts()
