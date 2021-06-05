@@ -50,7 +50,7 @@ export default function CreateProduct(props) {
   React.useEffect(() => {     
     changeMessageValidation()
   }, []);
-  const changeMessageValidation = (setFileState) =>{
+  const changeMessageValidation = () =>{
     let file = null
     const imageInput = document.getElementById("imageProfile");
 
