@@ -4,10 +4,12 @@ import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
 
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Select from '@material-ui/core/Select';
 import Alert from '@material-ui/lab/Alert';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import TextField from '@material-ui/core/TextField';
 // core components
 import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -30,29 +32,37 @@ import {CORE_BASEURL} from 'constant/index'
 
 const useStyles = makeStyles(styles);
 
-export default function RegisterPage(props) {
+export default function CreateProduct(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");  
 
   const [errorMessage, setErrorMessage] = React.useState({});
 
+  const [successMessage, setSuccessMessage] = React.useState(null);
+
   const [isLoading, setIsLoading] = React.useState(false);
   
-  const [url, setUrl] = React.useState("");    
-
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
 
+  React.useEffect(() => {     
+    changeMessageValidation()
+  }, []);
+  const changeMessageValidation = (setFileState) =>{
+    let file = null
+    const imageInput = document.getElementById("imageProfile");
 
-  const copyUrl = event => {
-    navigator.clipboard.writeText(url);
-  }
-
-  React.useEffect(() => changeMessageValidation(), []);
-  const changeMessageValidation = () =>{
-    document.createProduct.onsubmit = function(event){      
+    imageInput.addEventListener('change', (event) => {
+      console.log("previous",event.target.files[0])
+      file =event.target.files[0]
+      console.log("changing",file)
+          
+    });    
+    document.createProduct.onsubmit = function(event){
+      setErrorMessage({})
+      event.preventDefault()
       const callBack = (error) => {
         if(error!=null){
         setErrorMessage(error)
@@ -62,22 +72,44 @@ export default function RegisterPage(props) {
         setIsLoading(false)
       }
       const callBackSucess = (response) =>{
-        var getUrl = window.location;
-        var baseUrl = getUrl .protocol + "//" + getUrl.host + "/";
-        setUrl(baseUrl+"agree-payment?idp="+response.shortId)
-        document.getElementById("createProduct").reset();
+        setSuccessMessage("Producto creado satisfactoriamente.")
         setIsLoading(false)        
       }
-      setIsLoading(true)
-      console.log("submitting")
-      event.preventDefault()
-      setErrorMessage({})
-      const form = event.currentTarget;      
-      consumeServicePost({    
-        amount: document.getElementById("valor").value,
-        description: document.getElementById("description").value,
-        merchantId: getMerchantId()
-      },callBack,callBackSucess,`${CORE_BASEURL}/product`)
+      if(file == null || (file!=null && document.getElementById('name').value 
+        && document.getElementById('inventory').value
+        && document.getElementById('dropshipping').value!=""
+      )){
+        setSuccessMessage(null)
+        setIsLoading(true)
+        const imageForm = new FormData()      
+        event.preventDefault()
+        setErrorMessage({})      
+        const form = event.currentTarget;
+        let inventory="0"
+        if(document.getElementById('inventory').value!=""){
+          inventory = document.getElementById('inventory').value
+        }
+        let requestForm = {    
+          amount: document.getElementById("valor").value,
+          name: document.getElementById('name').value,
+          inventory: inventory,
+          dropshipping:document.getElementById('dropshipping').value,
+          description: document.getElementById("description").value,
+          merchantId: getMerchantId()
+        }
+        const json = JSON.stringify(requestForm);
+        const blob = new Blob([json], {
+        type: 'application/json'
+        });
+        const data = new FormData();
+        data.append("data", blob);
+        data.append("image", file);
+        consumeServicePost(data,callBack,callBackSucess,`${CORE_BASEURL}/product`)
+      }else{
+        setErrorMessage(
+          {'error':'Si seleccionas una imagen, es necesario llenar todas las entradas'}
+        )
+      }      
     }
     let htmlInputs = document.forms["createProduct"].getElementsByTagName("input");
     console.log(htmlInputs)
@@ -99,24 +131,75 @@ export default function RegisterPage(props) {
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={6}>
               <Card className={classes[cardAnimaton]}>
-                  { url == "" 
-                   ?<form className={classes.form} validated="true" name="createProduct" id="createProduct">
+                  <form className={classes.form} validated="true" name="createProduct" id="createProduct">
                         <CardHeader className={classes.cardHeader}>
                             <h3 style={{fontWeight:"600"}}><a href="/product"><ArrowBackIcon /></a> Crear producto nuevo</h3>
                         </CardHeader>                 
                         <CardBody>
                         {isLoading
-                                    ? <CircularProgress/>
+                                    ? <center> <CircularProgress/></center>
                                     : <span></span>
                         }
                         <FormControl style={{width:"100%",paddingBottom:"10px"}}>
-                        <InputLabel htmlFor="description">Descripción</InputLabel>
-                            <OutlinedInput
-                                id="description"
-                                placeholder="Describe el producto/servicio"                            
-                                labelWidth={60}
-                                required
+                          <span >Imagen del producto (al menos 500x500)</span>
+                          <Button
+                           id="image"
+                           color="success"
+                            variant="contained"
+                            component="label"
+                          >
+                            Seleccionar imagen
+                            <input
+                              accept="image/*"
+                              type="file"
+                              id="imageProfile"                                                            
+                              hidden
                             />
+                          </Button>
+                        </FormControl>
+                        <FormControl style={{width:"100%",paddingBottom:"10px"}}>
+                          <InputLabel htmlFor="name">Nombre del producto</InputLabel>
+                              <OutlinedInput
+                                  id="name"
+                                  placeholder="Nombre producto"                            
+                                  labelWidth={60}                                  
+                              />
+                        </FormControl>
+                        <FormControl style={{width:"100%",paddingBottom:"10px"}}>
+                          <TextField
+                            id="description"
+                            label="Descripción"
+                            multiline
+                            rows={4}
+                            placeholder="Características, beneficios y demás del producto"
+                            variant="outlined"
+                            inputProps={{ maxLength: 1000 }}
+                            required
+                          />
+                        </FormControl>
+                        <FormControl style={{width:"100%",paddingBottom:"10px"}}>
+                          <InputLabel htmlFor="inventory">Inventario del producto</InputLabel>
+                              <OutlinedInput
+                                  id="inventory"
+                                  placeholder="Número de unidades"                            
+                                  labelWidth={60}                                  
+                                  type="number"
+                                  min="0"                                 
+                              />
+                        </FormControl>
+                        <FormControl variant="outlined"  style={{width:"100%",paddingBottom:"10px"}}>
+                          <InputLabel htmlFor="dropshipping">¿Disponible para que otros lo vendan?</InputLabel>
+                          <Select
+                            native
+                            inputProps={{
+                              name: 'is-drop',
+                              id: 'dropshipping',
+                            }}                            
+                          >
+                            <option aria-label="None" value={null} />
+                            <option value={true}>Si</option>
+                            <option value={false}>No</option>                            
+                          </Select>
                         </FormControl>
                         <FormControl style={{width:"100%",paddingBottom:"10px"}}>
                             <InputLabel htmlFor="valor">Valor</InputLabel>
@@ -134,6 +217,10 @@ export default function RegisterPage(props) {
                     {Object.keys(errorMessage).map((keyName, i) => (
                       <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>    
                     ))}
+                    {successMessage
+                      ?<Alert severity="success">{successMessage}</Alert> 
+                      :<span></span>
+                    }
                     
                       </CardBody>
                       <CardFooter className={classes.cardFooter}>
@@ -141,14 +228,7 @@ export default function RegisterPage(props) {
                           Crear Producto
                         </Button>
                       </CardFooter>
-                    </form>
-                  : <div><CardHeader className={classes.cardHeader}>
-                      <h3 style={{fontWeight:"600"}}><a href="/product"><ArrowBackIcon /></a> Product creado</h3>
-                    </CardHeader> 
-                    <CardBody> <label id="finalLink">{url}</label>
-                      </CardBody>
-                      <CardFooter className={classes.cardFooter}> <Button onClick={copyUrl} color="primary">Copiar Enlace</Button></CardFooter></div>
-                  }
+                    </form>                  
               </Card>
             </GridItem>
           </GridContainer>
