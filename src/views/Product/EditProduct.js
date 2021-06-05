@@ -48,9 +48,10 @@ export default function EditProduct(props) {
       dropshipping:false,
       inventory: "",
       name:"",
-      description:""
+      description:"",
+      dropshippingPrice:0
   });
-  const handleChange = (event) => {
+  const handleChange = (event) => {    
     const name = event.target.name;
     setEditForm({
       ...editForm,
@@ -85,47 +86,61 @@ export default function EditProduct(props) {
     document.editProduct.onsubmit = function(event){
       setErrorMessage({})
       event.preventDefault()
+      setSuccessMessage(null)
       
       const callBackSucess = () =>{
         setSuccessMessage("Producto editado satisfactoriamente.")
         setIsLoading(false)        
       }
-      setSuccessMessage(null)
-      setIsLoading(true)           
+
       let inventory="0"
+      let dropshippingPrice=null
       if(document.getElementById('inventory').value!=""){
         inventory = document.getElementById('inventory').value
       }
+      if(document.getElementById('dropshipping').value=="true" && document.getElementById("dropshippingPrice").value<1){
+        setErrorMessage({'Error':'Para un producto dropshipping es obligatorio el precio a distribuidor'})
+        return
+      }
+      if(document.getElementById('dropshipping').value=="true"){
+        dropshippingPrice = document.getElementById('dropshippingPrice').value
+      }
+      
+      setIsLoading(true)
        
       consumeServicePatch({
         amount: document.getElementById('valor').value,
-        inventory: document.getElementById('inventory').value,
+        inventory: inventory,
         name: document.getElementById('name').value,
         description: document.getElementById('description').value,
         dropshipping: document.getElementById('dropshipping').value,
+        dropshippingPrice:dropshippingPrice,
         shortId: idp
       },callBack,callBackSucess,`${CORE_BASEURL}/product`)
          
     }
-    let htmlInputs = document.forms["editProduct"].getElementsByTagName("input");
-    let htmlTextArea = document.forms["editProduct"].getElementsByTagName("textarea");
-    console.log(htmlInputs)
+    const loadMessagesInput = () =>{
+        let htmlInputs = document.forms["editProduct"].getElementsByTagName("input");
+        let htmlTextArea = document.forms["editProduct"].getElementsByTagName("textarea");
+        console.log(htmlInputs)
 
-    for(let input of htmlTextArea){
-        console.log(input.item)
-       input.oninvalid = function(e) {
-          e.target.setCustomValidity("Este campo es obligatorio o invalido");
-       }
+        for(let input of htmlTextArea){
+            console.log(input.item)
+            input.oninvalid = function(e) {
+                e.target.setCustomValidity("Este campo es obligatorio o invalido");
+            }
+        }
+        for(let input of htmlInputs){
+            console.log(input.item)
+            input.oninvalid = function(e) {
+                e.target.setCustomValidity("Este campo es obligatorio o invalido");
+            }
+            input.oninput = function(e) {
+            e.target.setCustomValidity("");
+            };
+        }
     }
-    for(let input of htmlInputs){
-      console.log(input.item)
-     input.oninvalid = function(e) {
-        e.target.setCustomValidity("Este campo es obligatorio o invalido");
-    }
-    input.oninput = function(e) {
-      e.target.setCustomValidity("");
-  };
-    }    
+    loadMessagesInput()        
   }
   return (
     
@@ -194,13 +209,28 @@ export default function EditProduct(props) {
                               id: 'dropshipping'
                             }}                            
                           >
-                            <option value={0}>Selecciona</option>
-                            <option value={true}>Si</option>
-                            <option value={false}>No</option>                            
+                            <option value={"true"}>Si</option>
+                            <option value={"false"}>No</option>                             
                           </Select>
                         </FormControl>
+                        {editForm.dropshipping=="true" || editForm.dropshipping==true
+                          ? <FormControl style={{width:"100%",paddingBottom:"10px"}}>
+                          <InputLabel htmlFor="valor">Precio a distribuidor</InputLabel>
+                          <OutlinedInput
+                              id="dropshippingPrice"
+                              name="dropshippingPrice"
+                              placeholder="Precio para vendedor dropshipping"
+                              startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                              labelWidth={60}                                                          
+                              type="number"
+                              value={editForm.dropshippingPrice || ""}
+                              onChange={handleChange}
+                          />
+                          </FormControl>
+                          :<span></span>
+                        }
                         <FormControl style={{width:"100%",paddingBottom:"10px"}}>
-                            <InputLabel htmlFor="valor">Valor</InputLabel>
+                            <InputLabel htmlFor="valor">Precio a consumidor</InputLabel>
                             <OutlinedInput
                                 id="valor"
                                 name="amount"

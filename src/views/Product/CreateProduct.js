@@ -40,7 +40,13 @@ export default function CreateProduct(props) {
   const [successMessage, setSuccessMessage] = React.useState(null);
 
   const [isLoading, setIsLoading] = React.useState(false);
+
+  const [dropshipping, setDropshipping] = React.useState(false);
   
+  const handleChange = (event) => {
+    setDropshipping(event.target.value);
+  };
+
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
@@ -79,32 +85,40 @@ export default function CreateProduct(props) {
         && document.getElementById('inventory').value
         && document.getElementById('dropshipping').value!=""
       )){
-        setSuccessMessage(null)
-        setIsLoading(true)
-        const imageForm = new FormData()      
-        event.preventDefault()
-        setErrorMessage({})      
-        const form = event.currentTarget;
-        let inventory="0"
-        if(document.getElementById('inventory').value!=""){
-          inventory = document.getElementById('inventory').value
+        
+        if(document.getElementById('dropshipping').value !="true" || (document.getElementById('dropshipping').value=="true" && document.getElementById('dropshippingPrice').value>0)){
+          setSuccessMessage(null)
+          setIsLoading(true)
+          const imageForm = new FormData()      
+          event.preventDefault()
+          setErrorMessage({})      
+          const form = event.currentTarget;
+          let inventory="0"
+          if(document.getElementById('inventory').value!=""){
+            inventory = document.getElementById('inventory').value
+          }
+          let requestForm = {    
+            amount: document.getElementById("valor").value,
+            name: document.getElementById('name').value,
+            inventory: inventory,
+            dropshipping:document.getElementById('dropshipping').value,
+            description: document.getElementById("description").value,
+            merchantId: getMerchantId(),
+            dropshippingPrice: document.getElementById('dropshippingPrice').value
+          }
+          const json = JSON.stringify(requestForm);
+          const blob = new Blob([json], {
+          type: 'application/json'
+          });
+          const data = new FormData();
+          data.append("data", blob);
+          data.append("image", file);
+          consumeServicePost(data,callBack,callBackSucess,`${CORE_BASEURL}/product`)
+        }else{
+          setErrorMessage(
+            {'error':'Si es un producto dropshipping, es obligatorio colocar precio a distribuidor'}
+          )
         }
-        let requestForm = {    
-          amount: document.getElementById("valor").value,
-          name: document.getElementById('name').value,
-          inventory: inventory,
-          dropshipping:document.getElementById('dropshipping').value,
-          description: document.getElementById("description").value,
-          merchantId: getMerchantId()
-        }
-        const json = JSON.stringify(requestForm);
-        const blob = new Blob([json], {
-        type: 'application/json'
-        });
-        const data = new FormData();
-        data.append("data", blob);
-        data.append("image", file);
-        consumeServicePost(data,callBack,callBackSucess,`${CORE_BASEURL}/product`)
       }else{
         setErrorMessage(
           {'error':'Si seleccionas una imagen, es necesario llenar todas las entradas'}
@@ -191,18 +205,32 @@ export default function CreateProduct(props) {
                           <InputLabel htmlFor="dropshipping">¿Disponible para que otros lo vendan?</InputLabel>
                           <Select
                             native
+                            value= {dropshipping || false}
+                            onChange={handleChange}
                             inputProps={{
-                              name: 'is-drop',
-                              id: 'dropshipping',
+                              name: 'dropshipping',
+                              id: 'dropshipping'
                             }}                            
-                          >
-                            <option aria-label="None" value={null} />
+                          >                           
                             <option value={true}>Si</option>
                             <option value={false}>No</option>                            
                           </Select>
                         </FormControl>
+                        {dropshipping=="true"
+                          ? <FormControl style={{width:"100%",paddingBottom:"10px"}}>
+                          <InputLabel htmlFor="valor">Precio a distribuidor</InputLabel>
+                          <OutlinedInput
+                              id="dropshippingPrice"
+                              placeholder="Precio para vendedor dropshipping"
+                              startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                              labelWidth={60}                              
+                              type="number"
+                          />
+                          </FormControl>
+                          :<span></span>
+                        }
                         <FormControl style={{width:"100%",paddingBottom:"10px"}}>
-                            <InputLabel htmlFor="valor">Valor</InputLabel>
+                            <InputLabel htmlFor="valor">Precio a consumidor</InputLabel>
                             <OutlinedInput
                                 id="valor"
                                 placeholder="Recuerda tener en cuenta nuestra comisión"
