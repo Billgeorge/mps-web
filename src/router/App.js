@@ -20,6 +20,7 @@ import checkout from "views/Checkout/Checkout";
 import CreateProduct from "views/Product/CreateProduct";
 import AgreePayment from "views/CreatePayment/AgreePayment";
 import ProductBoard from "views/Product/ProductBoard";
+import ProductDropBoard from "views/Product/ProductDropBoard";
 import ProductDetail from "views/Product/ProductDetail"
 import SearchProduct from "views/Product/SearchProduct";
 import EditProduct from "views/Product/EditProduct";
@@ -50,6 +51,7 @@ return (
             <Router history={hist}>      
             <Switch>
                 <ProtectRoute path="/productDetail" component={ProductDetail} />
+                <ProtectRoute path="/product-drop" component={ProductDropBoard} />
                 <ProtectRoute path='/product' component={ProductBoard} />                
                 <ProtectRoute path='/profile' component={ProfilePage} />
                 <ProtectRoute path='/create-payment' component={CreatePayment}  />
