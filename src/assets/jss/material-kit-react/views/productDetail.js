@@ -2,17 +2,16 @@ import { container } from "assets/jss/material-kit-react.js";
 
 const productDetailStyle = {
     container: {
-        boxShadow: "0 16px 24px 2px rgba(0, 30, 100, 0.1), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)",
-        bordeRadius: "8px",
+        ...container,
+        position: 'relative',        
         backgroundColor: "#fff !important",
-        marginLeft:"1%",
+        marginLeft:"5%",
         marginRight:"1%",
-        marginTop:"20px",
-        paddingLeft:"1%",
-        padding:"1%",
-        zIndex: "12",
-        color: "#000",
-        ...container
+        marginTop:"60px",
+        paddingLeft:"2%",
+        paddingBottom: "200px",
+        paddingTop: "2%",
+        zIndex: "2"
     },
     buttons: {   
         border: "none",     
