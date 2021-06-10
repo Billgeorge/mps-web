@@ -60,6 +60,11 @@ export default function SearchProduct(props) {
                 key:"dropshipping",
                 value:true,
                 operation:"EQUAL"
+            },
+            {
+                key:"disabled",
+                value:true,
+                operation:"NOT_EQUAL"
             }
         ]
         let url=`${CORE_BASEURL}/product/criteria`

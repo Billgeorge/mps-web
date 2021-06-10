@@ -95,14 +95,14 @@ export default function EditProduct(props) {
 
       let inventory="0"
       let dropshippingPrice=null
-      if(document.getElementById('inventory').value!=""){
+      if(document.getElementById('inventory').value!==""){
         inventory = document.getElementById('inventory').value
       }
-      if(document.getElementById('dropshipping').value=="true" && document.getElementById("dropshippingPrice").value<1){
+      if(document.getElementById('dropshipping').value==="true" && document.getElementById("dropshippingPrice").value<1){
         setErrorMessage({'Error':'Para un producto dropshipping es obligatorio el precio a distribuidor'})
         return
       }
-      if(document.getElementById('dropshipping').value=="true"){
+      if(document.getElementById('dropshipping').value==="true"){
         dropshippingPrice = document.getElementById('dropshippingPrice').value
       }
       
@@ -213,7 +213,7 @@ export default function EditProduct(props) {
                             <option value={"false"}>No</option>                             
                           </Select>
                         </FormControl>
-                        {editForm.dropshipping=="true" || editForm.dropshipping==true
+                        {editForm.dropshipping==="true" || editForm.dropshipping===true
                           ? <FormControl style={{width:"100%",paddingBottom:"10px"}}>
                           <InputLabel htmlFor="valor">Precio a distribuidor</InputLabel>
                           <OutlinedInput

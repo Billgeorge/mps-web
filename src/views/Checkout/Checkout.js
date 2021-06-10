@@ -36,7 +36,7 @@ export default function Checkout() {
         email:"",
         contactNumber:"",
         quantity:1,        
-        productId:"fa37ef",
+        productId:"13ac0b07-d2a9-44ae-8655-8843827b52f1",
         amount:"50000",
         neighborhood:""
     });
@@ -112,12 +112,14 @@ export default function Checkout() {
                 city:order.city,
                 neighborhood: order.neighborhood,
                 department:order.state
-            }
+            },
+            isDrop: true
         }
         consumeServicePost(request,callBackErrorCreateOrder, callBackSuccess,url)
     }
 
     const callBackErrorCreateOrder = () => {
+        setIsLoading(false)
         setErrorMessage("Error creando orden")        
     }
 
