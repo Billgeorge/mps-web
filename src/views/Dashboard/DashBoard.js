@@ -130,7 +130,7 @@ const useStyles = makeStyles(styles);
       }else{
         url=`${url}&durationInDays=${duration}`
       }
-      if(filter == 'paymentState' && value!=-1){
+      if(filter === 'paymentState' && value!==-1){
         url=`${url}&paymentState=${value}`
       }
 
@@ -138,7 +138,7 @@ const useStyles = makeStyles(styles);
     }
       
     const classes = useStyles();
-    const { ...rest } = props;    
+      
   
     return (
         <div>       

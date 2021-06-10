@@ -1,9 +1,7 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
 import Email from "@material-ui/icons/Email";
 // core components
@@ -40,8 +38,6 @@ export default function LoginPage(props) {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [isRequestSuccess, setIsRequestSuccess] = React.useState(false);
 
-  const history = useHistory();
-
   const classes = useStyles();
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -60,7 +56,6 @@ export default function LoginPage(props) {
         setErrorMessage("Ha ocurrido un error, por favor contacte al administrador")
         setIsLoading(false);
       }
-      const form = event.currentTarget;
       setIsLoading(true);      
       consumeServicePost(    
         document.getElementById("email").value,callBackError,
@@ -127,7 +122,7 @@ export default function LoginPage(props) {
                         )
                       }}
                     />
-                  {errorMessage != ""
+                  {errorMessage !== ""
                   ?
                   <Alert severity="error">{errorMessage}</Alert>
                   : <span>	&nbsp;</span>   

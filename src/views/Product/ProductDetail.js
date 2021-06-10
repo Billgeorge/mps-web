@@ -5,7 +5,6 @@ import GridItem from "components/Grid/GridItem";
 import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-kit-react/views/productDetail.js";
-import Example from "assets/img/examples/product-1.png";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CardHeader from "components/Card/CardHeader.js";
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js";
