@@ -6,7 +6,7 @@ import styles from "assets/jss/material-kit-react/views/checkout.js";
 import Button from "components/CustomButtons/Button.js";
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
-import Example from "assets/img/examples/product-1.png"
+import {getQueyParamFromUrl} from 'util/UrlUtil'
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
@@ -16,7 +16,9 @@ import {consumeServiceGet} from 'service/ConsumeService'
 import consumeServicePost from 'service/ConsumeService'
 import {CORE_BASEURL,PULL_BASEURL} from 'constant/index'
 import { useHistory } from "react-router-dom";
+import {getFirstLetters} from 'util/NameUtils'
 import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyles = makeStyles(styles);
 export default function Checkout() {
@@ -28,6 +30,13 @@ export default function Checkout() {
     const [paymentMethod, setPaymentMethod] = React.useState("");
     const [isLoading, setIsLoading] = React.useState(false);
     const [states, SetStates] = React.useState([]);
+    const [product, setProduct] = React.useState({
+        productName:"",
+        productDescription:"",
+        sellerMerchantName:"",
+        imageURL:"",
+        amount:0
+    });
     const [order, setOrder] = React.useState({
         state:"",
         city:"",
@@ -36,8 +45,8 @@ export default function Checkout() {
         email:"",
         contactNumber:"",
         quantity:1,        
-        productId:"13ac0b07-d2a9-44ae-8655-8843827b52f1",
-        amount:"50000",
+        productId:"",
+        amount:"",
         neighborhood:""
     });
     const [errorMessage, setErrorMessage] = React.useState("");
@@ -45,6 +54,10 @@ export default function Checkout() {
 
     const callBackErrorGetCities = () => {
         setErrorMessage("Error obteniendo ciudades")        
+    }
+
+    const callBackErrorGetProduct = () => {
+        setErrorMessage("Error obteniendo información de producto")        
     }
 
     const handleChange = (event) => {
@@ -100,10 +113,10 @@ export default function Checkout() {
         setIsLoading(true)
         const url = `${CORE_BASEURL}/checkout/order`            
         let request = {
-            productId: order.productId,
+            productId: getQueyParamFromUrl("idc"),
             paymentMethod:paymentMethod,
             quantity: order.quantity,
-            amount:order.amount,
+            amount:order.quantity*product.amount,
             customer : {
                 name:order.name,
                 email:order.email,
@@ -182,12 +195,29 @@ export default function Checkout() {
         SetStates(states)
     }
 
+    const callBackSuccessGetProductInfo = (product) => {
+        setProduct(product)
+        getCities()
+    }
+
     const getCities = () => {
         const url = `${CORE_BASEURL}/logistic/cities`
         consumeServiceGet(callBackErrorGetCities,callBackSuccessGetCities,url)
     }
 
-    React.useEffect(() => { getCities()  }, []);
+    const getProductInformation = () => {
+        const id = getQueyParamFromUrl("idc")
+        const url = `${CORE_BASEURL}/dropshippingsale/public/view/checkout/${id}`
+        consumeServiceGet(callBackErrorGetProduct,callBackSuccessGetProductInfo,url)
+    }
+
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0
+      })
+
+    React.useEffect(() => { getProductInformation()  }, []);
 
     return(
     <GridContainer className={classes.container} >
@@ -201,19 +231,19 @@ export default function Checkout() {
                 className={classes.navLink}          
                 >          
                     <Avatar style={{backgroundColor: "rgb(29 143 210)"}} >
-                                TP
+                                {getFirstLetters(product.sellerMerchantName)}
                     </Avatar>
                                         
                 </Button>
-                <h3 className={classes.shopName}>Tu Tienda</h3>    
+                <h3 className={classes.shopName}>{product.sellerMerchantName}</h3>    
             </GridItem> 
             <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
-            <h3 className={classes.shopName}>Zapatos Aquiles línea</h3>
-            <div className={classes.totalPrice}><span>$35.000</span></div><br/>
-                <img src={Example} className={classes.imgProduct} />                                
+            <h3 className={classes.shopName}>{product.productName}</h3>
+            <div className={classes.totalPrice}><span>{formatter.format(product.amount)} domicilio gratis</span></div><br/>
+                <img src={product.imageURL} className={classes.imgProduct} />                                
             </GridItem>
             <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
-                <div className={classes.productDescription}> descripcion de prueba para ver como se ve esta inscripcion a</div>                
+                <div className={classes.productDescription}> {product.productDescription}</div>                
             </GridItem>
             <GridContainer justify="center" style={{marginTop:"30px",marginBottom:"30px"}}>
                 <GridItem justify="center" xs={6} sm={6} md={6} className={classes.detailText}> Cantidad </GridItem> 
@@ -297,10 +327,10 @@ export default function Checkout() {
             
             <br/>
             <Button onClick={createOrderCOD} className={classes.buttonText}  color="success" size="lg">
-                      Pagar $35.000 con contraentrega
+                      Pagar {formatter.format(product.amount*order.quantity)} con contraentrega
             </Button>
             <Button onClick={createOrderMPS} className={classes.buttonText} color="success" size="lg">
-                      Pagar $35.000 con pse
+                      Pagar {formatter.format(product.amount*order.quantity)} con pse
             </Button>    
         </GridItem>          
     </GridContainer>
