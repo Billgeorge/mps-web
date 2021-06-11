@@ -77,3 +77,37 @@ export const getPaymentIdState = (state) => {
             return 7
     }
 }
+export const getOrderIdState = (state) => {
+    switch(state){
+        case "Fallado" :
+            return  1      
+        case "En Despacho":
+            return 2
+        case "En Entrega":
+            return 3
+        case "Pendiente":
+            return 4
+        case "Pagado":
+            return 5
+        case "Transferido":
+            return 6
+            
+    }
+}
+export const getOrderState = (idState) => {
+    switch(idState){
+        case 1:
+            return "Fallido"        
+        case 2:
+            return "En Despacho"
+        case 3:
+            return "En Entrega"
+        case 4:
+            return "Pendiente"
+        case 5:
+            return "Pagado"
+        case 6:
+            return "Transferido"
+            
+    }
+}
