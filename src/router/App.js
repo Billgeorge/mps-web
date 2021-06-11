@@ -10,6 +10,7 @@ import CacheBuster from 'CacheBuster'
 // pages for this product
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import DashBoard  from "views/Dashboard/DashBoard.js";
+import DashBoardProvider  from "views/Dashboard/DashBoardProvider.js";
 import LoginPage from "views/LoginPage/LoginPage.js";
 import RegisterLanding from "views/RegisterPage/RegisterLanding";
 import CreatePassword from "views/RegisterPage/CreatePassword";
@@ -58,6 +59,7 @@ return (
                 <ProtectRoute path='/create-product' component={CreateProduct}  />                
                 <ProtectRoute path='/transaction-detail' component={TransactionDetail} />           
                 <ProtectRoute path='/dashboard' component={DashBoard} />
+                <ProtectRoute path='/dashboard-dropprovider' component={DashBoardProvider} />
                 <ProtectRoute path='/withdrawal' component={WithDrawal} />
                 <ProtectRoute path='/withdrawal-detail' component={WithdrawalDetail} />
                 <ProtectRoute path="/search-product" component={SearchProduct} />
