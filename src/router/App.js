@@ -11,10 +11,12 @@ import CacheBuster from 'CacheBuster'
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import DashBoard  from "views/Dashboard/DashBoard.js";
 import DashBoardProvider  from "views/Dashboard/DashBoardProvider.js";
+import DashboardDropSeller  from "views/Dashboard/DashboardDropSeller.js";
 import LoginPage from "views/LoginPage/LoginPage.js";
 import RegisterLanding from "views/RegisterPage/RegisterLanding";
 import CreatePassword from "views/RegisterPage/CreatePassword";
 import TransactionDetail from "views/TransactionDetail/TransactionDetail";
+import OrderDetail from "views/order/OrderDetail";
 import TransactionDetailPublic from "views/TransactionDetail/TransactionDetailPublic";
 import CreatePayment from "views/CreatePayment/CreatePayment";
 import checkout from "views/Checkout/Checkout";
@@ -52,6 +54,7 @@ return (
             <Router history={hist}>      
             <Switch>
                 <ProtectRoute path="/productDetail" component={ProductDetail} />
+                <ProtectRoute path="/order-detail" component={OrderDetail} />
                 <ProtectRoute path="/product-drop" component={ProductDropBoard} />
                 <ProtectRoute path='/product' component={ProductBoard} />                
                 <ProtectRoute path='/profile' component={ProfilePage} />
@@ -60,6 +63,7 @@ return (
                 <ProtectRoute path='/transaction-detail' component={TransactionDetail} />           
                 <ProtectRoute path='/dashboard' component={DashBoard} />
                 <ProtectRoute path='/dashboard-dropprovider' component={DashBoardProvider} />
+                <ProtectRoute path='/dashboard-dropseller' component={DashboardDropSeller} />
                 <ProtectRoute path='/withdrawal' component={WithDrawal} />
                 <ProtectRoute path='/withdrawal-detail' component={WithdrawalDetail} />
                 <ProtectRoute path="/search-product" component={SearchProduct} />

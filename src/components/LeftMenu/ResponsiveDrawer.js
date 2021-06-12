@@ -212,9 +212,13 @@ export function ResponsiveDrawer(props) {
       <Collapse in={openDashMenu} timeout="auto" unmountOnExit>
         <Divider />
         <List component="div" style={{paddingLeft:'15px'}}>
-          <ListItem button component="a" href="/dashboard" className={classes.menuItem}>
+          <ListItem button component="a" href="/dashboard-dropseller" className={classes.menuItem}>
             <ListItemIcon ><ReceiptIcon style={{color:'#2097F3'}} /></ListItemIcon>
-            <ListItemText style={{color:'#2097F3'}} primary="Ordenes" />
+            <ListItemText style={{color:'#2097F3'}} primary="Ordenes drop" />
+          </ListItem>
+          <ListItem button component="a" href="/dashboard-dropprovider" className={classes.menuItem}>
+            <ListItemIcon ><ReceiptIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            <ListItemText style={{color:'#2097F3'}} primary="Ordenes proveedor" />
           </ListItem>
           <ListItem button component="a" href="/dashboard" className={classes.menuItem}>
             <ListItemIcon ><PaymentIcon style={{color:'#2097F3'}} /></ListItemIcon>

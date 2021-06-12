@@ -10,6 +10,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "axios": "^0.21.1",
     "classnames": "2.2.6",
+    "file-saver": "^2.0.5",
     "history": "4.10.1",
     "moment": "2.26.0",
     "node-sass": "4.14.1",
@@ -33,7 +34,7 @@
     "redux-pouchdb": "^0.1.4"
   },
   "devDependencies": {
-    "@babel/cli": "7.10.1",
+    "@babel/cli": "^7.14.5",
     "@babel/plugin-proposal-class-properties": "7.10.1",
     "@babel/preset-env": "7.10.1",
     "@babel/preset-react": "7.10.1",

@@ -6,12 +6,6 @@ import styles from "assets/jss/material-kit-react/views/DashBoard.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
-import { FileSaver } from 'file-saver';
-
-
-import Button from "components/CustomButtons/Button.js";
-
-
 import Alert from '@material-ui/lab/Alert';
 
 import Table from '@material-ui/core/Table';
@@ -22,7 +16,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Footer from "components/Footer/Footer.js";
-import { getMerchantId, getMerchantName } from 'service/AuthenticationService';
+import { getMerchantId,getMerchantName } from 'service/AuthenticationService';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -31,7 +25,7 @@ import Select from '@material-ui/core/Select';
 import {getLegibleDate} from 'util/DateUtil'
 
 import {consumeServiceGet} from 'service/ConsumeService'
-import {CORE_BASEURL, getOrderState, getOrderIdState} from 'constant/index'
+import {CORE_BASEURL, getOrderState} from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 
 
@@ -41,67 +35,51 @@ const useStyles = makeStyles(styles);
 
 
   
-  export default function DashBoard(props) {
+  export default function DashboardDropSeller(props) {
 
-    const [ordersProvider, setOrders] = React.useState({
-      orders: [],
-      totalOrderAmountByStatus: 0,
-      totalProfitSaleByStatus: 0, 
-      totalOrderByStatus: 0
-
-    });    
+    const [products, setProducts] = React.useState({
+       orders:[],
+       totalOrderAmountByStatus:0,
+       totalProfitSaleByStatus:0,
+       totalOrderByStatus:0
+    });   
     const [errorMessage, setErrorMessage] = React.useState("");    
 
-    React.useEffect(() => getOrdersForProvider(), []);    
+    React.useEffect(() => getProductsForMerchant(), []);    
 
-    const [duration, setDuration] = React.useState(100);
+    const [duration, setDuration] = React.useState(15);
 
     const [orderState, setOrderState] = React.useState(0);
 
-    const handleChangeDuration = (event) => {
-      
+    const handleChangeDuration = (event) => {     
       setErrorMessage("")
       setDuration(event.target.value);
-      getOrdersForProvider('duration', event.target.value)
+      getProductsForMerchant('duration', event.target.value)
     };
 
-    const downloadDeliveryInfo = (id) => {
-      const url = `${CORE_BASEURL}/label/order/${id}`
-      consumeServiceGet(callBackError,callBackSuccessGet,url)
-    }
-
-    const handleChangeorderState = (event) => {
-      
+    const handleChangeOrderState = (event) => {     
       setErrorMessage("")
       setOrderState(event.target.value);
-      getOrdersForProvider('orderState',event.target.value)
+      getProductsForMerchant('orderState',event.target.value)
     };
 
-    const callBackSuccessGet = (file) =>{
-           const fileBlob = new Blob([file], { type: 'application/pdf' });
-           console.log("download file",file)
-           FileSaver.saveAs(fileBlob, "test.pdf");
-    }
-
-    const callBackSuccess = (ordersProvider) =>{
-      setOrders(ordersProvider)      
+    const callBackSuccess = (products) =>{
+      setProducts(products)      
     }
 
     const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
-      minimumFractionDigits: 2
+      minimumFractionDigits: 0
     })
 
-    const callBackError = () => {
-      setErrorMessage("Error descargando rotulo")
-    }
-
     const callBack = (msg) => {
-      setOrders({orders: [],
-        totalOrderAmountByStatus: 0,
-        totalProfitSaleByStatus: 0, 
-        totalOrderByStatus: 0})
+      setProducts({
+        orders:[],
+        totalOrderAmountByStatus:0,
+        totalProfitSaleByStatus:0,
+        totalOrderByStatus:0
+     })
       if(msg===404){
         setErrorMessage("No hay transacciones para mostrar")        
       }else{
@@ -109,11 +87,11 @@ const useStyles = makeStyles(styles);
       }      
     }
 
-    const getOrdersForProvider = (filter,value) => {
+    const getProductsForMerchant = (filter,value) => {
       const merchantId = getMerchantId()
       console.log('filter '+filter)
       console.log('value '+value)
-      let url=`${CORE_BASEURL}/order/provider?merchantId=${merchantId}`
+      let url=`${CORE_BASEURL}/order/dropseller?merchantId=${merchantId}`
       if(filter ==='duration'){
         url=`${url}&durationInDays=${value}`
         if(orderState!==0){
@@ -122,15 +100,15 @@ const useStyles = makeStyles(styles);
       }else{
         url=`${url}&durationInDays=${duration}`
       }
-      if(filter == 'orderState' && value!=-1){
+      if(filter === 'orderState' && value!==-1){
         url=`${url}&orderState=${value}`
       }
 
       consumeServiceGet(callBack,callBackSuccess,url)
     }
-          
+      
     const classes = useStyles();
-    const { ...rest } = props;    
+      
   
     return (
         <div>       
@@ -138,15 +116,15 @@ const useStyles = makeStyles(styles);
             
         <div className={classes.container}>
         <GridContainer className={classes.subContainer} justify="center" >
-          
-         
-         <GridItem xs={12} sm={12} md={12} className={classes.grid}>
-                <br/>
-                <Grid container className={classes.box} spacing={3}> 
+        | <GridItem xs={12} sm={12} md={12} className={classes.grid}>        
+            <Grid container className={classes.box}  spacing={3}>               
                 <Grid item xs={12} sm={12} md={6} >
                     Hola {getMerchantName()}, Bienvenido a MiPagoSeguro.
-                </Grid>
-                <br/>                  
+                </Grid>             
+            </Grid>
+         </GridItem>
+         <GridItem xs={12} sm={12} md={12} className={classes.grid}>
+                <Grid container className={classes.box} spacing={3}>                   
                 <Grid item xs={12} sm={12} md={12}>Filtrar Transacciones:</Grid>
                     <Grid item xs={12} sm={12} md={6} style={{textAlign:"center"}}>
                       <FormControl variant="outlined" style ={{width:"180px"}}>
@@ -155,7 +133,7 @@ const useStyles = makeStyles(styles);
                           labelId="demo-simple-select-outlined-label"
                           id="estado"
                           value={orderState}
-                          onChange={handleChangeorderState}
+                          onChange={handleChangeOrderState}
                           label="Estado"
                         >
                           <MenuItem value={-1}>
@@ -165,7 +143,7 @@ const useStyles = makeStyles(styles);
                           <MenuItem value={2}>En despacho</MenuItem>
                           <MenuItem value={3}>En entrega</MenuItem>
                           <MenuItem value={4}>Pago pendiente</MenuItem>
-                          <MenuItem value={5}>Transferido</MenuItem>                                                   
+                          <MenuItem value={5}>Transferido</MenuItem>                                                 
                         </Select>
                       </FormControl>
                     </Grid>
@@ -182,10 +160,10 @@ const useStyles = makeStyles(styles);
                             <MenuItem value={0}>
                               <em>Ninguno</em>
                             </MenuItem>
-                            <MenuItem value={1}>1 día</MenuItem>
-                            <MenuItem value={2}>2 días</MenuItem>
-                            <MenuItem value={7}>1 semana</MenuItem>
-                            <MenuItem value={30}>1 mes</MenuItem>
+                            <MenuItem value={10}>últimos 10 días</MenuItem>
+                            <MenuItem value={20}>últimos 20 días</MenuItem>
+                            <MenuItem value={30}>últimos 30 días</MenuItem>
+                            <MenuItem value={60}>últimos 60 días</MenuItem>
                           </Select>
                       </FormControl>
                     </Grid>
@@ -193,48 +171,54 @@ const useStyles = makeStyles(styles);
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
                 <Grid container className={classes.box} spacing={3}>                   
-        <Grid item ><span>Ganancia de ordenes {orderState!=0 && orderState!=-1?getOrderState(orderState)+'s':''}: </span> <br/><span className={classes.valueText}>{formatter.format(ordersProvider.totalProfitSaleByStatus)}</span></Grid>
+        <Grid item ><span>Total monto órdenes {orderState!=0 && orderState!=-1?getOrderState(orderState)+'s':''}:</span> <br/><span className={classes.valueText}>{products.totalOrderAmountByStatus}</span></Grid>
                 </Grid>   
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
                 <Grid container className={classes.box} spacing={3}>                   
-        <Grid item ><span> Número de ordenes {orderState!=0 && orderState!=-1?getOrderState(orderState)+'s':''}: </span> <br/><span className={classes.valueText}>{ordersProvider.totalOrderByStatus}</span></Grid>
+        <Grid item ><span>Total utilidad bruta {orderState!=0 && orderState!=-1?getOrderState(orderState)+'s':''}:</span> <br/><span className={classes.valueText}>{products.totalProfitSaleByStatus}</span></Grid>
                 </Grid>   
          </GridItem>   
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
                 <Grid container className={classes.box} spacing={3}>                   
-        <Grid item ><span>Dinero de ordenes {orderState!=0 && orderState!=-1?getOrderState(orderState)+'s':''}:</span> <br/><span className={classes.valueText}>{formatter.format(ordersProvider.totalOrderAmountByStatus)}</span></Grid>
+        <Grid item ><span>Número de órdenes:</span> <br/><span className={classes.valueText}>{products.totalOrderByStatus}</span></Grid>
                 </Grid>   
          </GridItem> 
          <GridItem xs={12} sm={12} md={12} className={classes.grid}>           
                 <Grid container className={classes.box} spacing={3}>
-                <Grid item  xs={12}><h2>Ordenes</h2></Grid>           
+                <Grid item  xs={12}><h2>Últimos Pagos</h2></Grid>                   
                    <Grid item xs={12} >
                    <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
                       <TableHead>
-                        <TableRow>                          
-                          <TableCell align="right">Nombre del Producto </TableCell>
-                          <TableCell align="right">Nombre del cliente</TableCell>
+                        <TableRow>
+                          <TableCell>Producto </TableCell>
+                          <TableCell align="right">Nombre Cliente </TableCell>
                           <TableCell align="right">Precio de venta</TableCell>
+                          <TableCell align="center">Precio de compra</TableCell>
+                          <TableCell align="center">Precio de flete</TableCell>
+                          <TableCell align="center">Utilidad por venta</TableCell>
                           <TableCell align="right">Estado</TableCell>
                           <TableCell align="right">Guía</TableCell>                          
                           <TableCell align="right">Fecha de creación</TableCell>
-                          <TableCell align="center">Rotulo</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {ordersProvider.orders.map((row) => (
-                          <TableRow key={row.name}>
-                            <TableCell align="right">{row.productName}</TableCell>                           
+                        {products.orders.map((row) => (
+                          <TableRow>
+                            <TableCell component="th" scope="row">
+                              <a target="_blank" href={`/order-detail/${row.orderId}`} style={{cursor:"pointer"}}>{row.productName}</a>
+                            </TableCell>
                             <TableCell align="right">{row.customerName}</TableCell>
                             <TableCell align="right">{formatter.format(row.sellPrice)}</TableCell>
-                            <TableCell align="right">{getOrderState(row.orderState)}</TableCell>                            
-                            <TableCell align="right">{row.guideNumber}</TableCell>                            
+                            <TableCell align="right">{formatter.format(row.buyPrice)}</TableCell>
+                            <TableCell align="right">{formatter.format(row.freightPrice)}</TableCell>
+                            <TableCell align="right">{formatter.format(row.profitSale)}</TableCell>
+                            <TableCell align="right">{getOrderState(row.orderState)}</TableCell>
+                            <TableCell align="right">{row.guideNumber}</TableCell>
                             <TableCell align="right">{
                               getLegibleDate(row.creationDate)
                             }</TableCell>
-                            <TableCell align="right"><a href={CORE_BASEURL+"/label/public/order/"+row.orderId}>Descargar Rotulo</a></TableCell>
                           </TableRow>
                         ))}
                       </TableBody>

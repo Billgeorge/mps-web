@@ -29,7 +29,7 @@ const formatter = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2
 })
   
-  export default function DashBoard(props) {
+  export default function TransactionDetail(props) {
 
     const [payment, setPayment] = React.useState({});
     const [customer, setCustomer] = React.useState({});
