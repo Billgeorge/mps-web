@@ -97,6 +97,10 @@ export default function CreateProduct(props) {
           if(document.getElementById('inventory').value!=""){
             inventory = document.getElementById('inventory').value
           }
+          let dropshippingPrice = null
+          if(dropshipping==="true"){
+            dropshippingPrice = document.getElementById('dropshippingPrice').value
+          }
           let requestForm = {    
             amount: document.getElementById("valor").value,
             name: document.getElementById('name').value,
@@ -104,7 +108,7 @@ export default function CreateProduct(props) {
             dropshipping:document.getElementById('dropshipping').value,
             description: document.getElementById("description").value,
             merchantId: getMerchantId(),
-            dropshippingPrice: document.getElementById('dropshippingPrice').value
+            dropshippingPrice: dropshippingPrice
           }
           const json = JSON.stringify(requestForm);
           const blob = new Blob([json], {
