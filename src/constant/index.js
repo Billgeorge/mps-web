@@ -1,8 +1,7 @@
 // 'http://localhost:8083/mps' 'http://localhost:8084/mps'
-import env from "react-dotenv";
 
-export const CORE_BASEURL = env.MPS_BACKEND_URL //'https://mpscore.herokuapp.com/mps' 'http://localhost:8083/mps' 
-export const PULL_BASEURL = env.PULL_BACKEND_URL//https://mps-cashin.herokuapp.com/mps'//'http://localhost:8084/mps'
+export const CORE_BASEURL = 'https://mps-qa.herokuapp.com/mps' //'https://mpscore.herokuapp.com/mps' 'http://localhost:8083/mps' 
+export const PULL_BASEURL = 'https://mps-cashin.herokuapp.com/mps'//https://mps-cashin.herokuapp.com/mps'//'http://localhost:8084/mps'
 
 export const getPaymentState = (idState) => {
     switch(idState){
