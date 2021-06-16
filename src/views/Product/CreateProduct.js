@@ -98,7 +98,7 @@ export default function CreateProduct(props) {
             inventory = document.getElementById('inventory').value
           }
           let dropshippingPrice = null
-          if(dropshipping==="true"){
+          if(document.getElementById('dropshippingPrice')!==null){
             dropshippingPrice = document.getElementById('dropshippingPrice').value
           }
           let requestForm = {    
