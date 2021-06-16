@@ -27,9 +27,15 @@
       type="text/css"
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
     />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dosis:wght@700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed&amp;family=Patrick+Hand&amp;display=swap"
+      rel="stylesheet"
+    />
     <link
       href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
       rel="stylesheet"
@@ -37,27 +43,49 @@
     <script>
       var wwwHost = "www.mipagoseguro.co";
       var host = "mipagoseguro.co";
-      if ((wwwHost == window.location.host || host == window.location.host) && (window.location.protocol != "https:")){
-      window.location.protocol = "https";
+      if (
+        (wwwHost == window.location.host || host == window.location.host) &&
+        window.location.protocol != "https:"
+      ) {
+        window.location.protocol = "https";
       }
-      </script>
-      <!-- Facebook Pixel Code -->
-<script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '792631834890508');
-  fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=792631834890508&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Facebook Pixel Code -->
+    </script>
+    <!-- Facebook Pixel Code -->
+    <script>
+      !(function (f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function () {
+          n.callMethod
+            ? n.callMethod.apply(n, arguments)
+            : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = !0;
+        n.version = "2.0";
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+      })(
+        window,
+        document,
+        "script",
+        "https://connect.facebook.net/en_US/fbevents.js"
+      );
+      fbq("init", "792631834890508");
+      fbq("track", "PageView");
+    </script>
+    <noscript
+      ><img
+        height="1"
+        width="1"
+        style="display: none"
+        src="https://www.facebook.com/tr?id=792631834890508&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Facebook Pixel Code -->
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -67,7 +95,11 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Mi Pago Seguro - Ofrece seguridad y confianza a tu cliente sin usar contraentrega</title>
+    <title>
+      Mi Pago Seguro - Ofrece seguridad y confianza a tu cliente sin usar
+      contraentrega
+    </title>
+    <script id="react-dotenv" src="./env.js"></script>
   </head>
   <body>
     <noscript> You need to enable JavaScript to run this app. </noscript>
@@ -82,24 +114,38 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
 
-    -->      
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-170818890-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async=""
+      src="https://www.googletagmanager.com/gtag/js?id=UA-170818890-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-  gtag('config', 'UA-170818890-1');
-</script>
-  <!--End of Tawk.to Script-->
-  <script type='text/javascript'>
-    window.smartlook||(function(d) {
-      var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];
-      var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';
-      c.charset='utf-8';c.src='https://rec.smartlook.com/recorder.js';h.appendChild(c);
-      })(document);
-      smartlook('init', '9eebd80416bec8a253e69144d9fab54b1d33fc14');
-  </script>
+      gtag("config", "UA-170818890-1");
+    </script>
+    <!--End of Tawk.to Script-->
+    <script type="text/javascript">
+      window.smartlook ||
+        (function (d) {
+          var o = (smartlook = function () {
+              o.api.push(arguments);
+            }),
+            h = d.getElementsByTagName("head")[0];
+          var c = d.createElement("script");
+          o.api = new Array();
+          c.async = true;
+          c.type = "text/javascript";
+          c.charset = "utf-8";
+          c.src = "https://rec.smartlook.com/recorder.js";
+          h.appendChild(c);
+        })(document);
+      smartlook("init", "9eebd80416bec8a253e69144d9fab54b1d33fc14");
+    </script>
   </body>
 </html>
