@@ -1,6 +1,6 @@
 // 'http://localhost:8083/mps' 'http://localhost:8084/mps'
-export const CORE_BASEURL = 'https://mpscore.herokuapp.com/mps'//'http://localhost:8083/mps'
-export const PULL_BASEURL = 'https://mps-cashin.herokuapp.com/mps'//'http://localhost:8084/mps'
+export const CORE_BASEURL = process.env.MPS_BACKEND_URL //'https://mpscore.herokuapp.com/mps' 'http://localhost:8083/mps' 
+export const PULL_BASEURL = process.env.PULL_BACKEND_URL//https://mps-cashin.herokuapp.com/mps'//'http://localhost:8084/mps'
 
 export const getPaymentState = (idState) => {
     switch(idState){
@@ -87,10 +87,8 @@ export const getOrderIdState = (state) => {
             return 3
         case "Pendiente":
             return 4
-        case "Pagado":
-            return 5
         case "Transferido":
-            return 6
+            return 5
             
     }
 }
@@ -105,8 +103,6 @@ export const getOrderState = (idState) => {
         case 4:
             return "Pendiente"
         case 5:
-            return "Pagado"
-        case 6:
             return "Transferido"
             
     }
