@@ -1,18 +1,17 @@
 import { container } from "assets/jss/material-kit-react.js";
 
-const checkoutStyle = {
+const productDetailStyle = {
     container: {
-        boxShadow: "0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)",
-        bordeRadius: "6px",
+        ...container,
+        position: 'relative',        
         backgroundColor: "#fff !important",
-        marginLeft:"1%",
+        marginLeft:"5%",
         marginRight:"1%",
-        marginTop:"20px",
-        paddingLeft:"1%",
-        padding:"1%",
-        zIndex: "12",
-        color: "#000",
-        ...container
+        marginTop:"60px",
+        paddingLeft:"2%",
+        paddingBottom: "200px",
+        paddingTop: "2%",
+        zIndex: "2"
     },
     buttons: {   
         border: "none",     
@@ -28,7 +27,8 @@ const checkoutStyle = {
     },
     rightSide:{
         backgroundColor:"#fff",
-        marginTop: "10%"
+        marginTop: "1%",
+        marginBottom: "1%"
     },
     detailText:{      
         fontSize: "20px",
@@ -39,13 +39,16 @@ const checkoutStyle = {
     },
     totalPrice:{
         fontSize: "36px",
-        fontWeight: "600"
+        fontWeight: "500",
+        color: "#000000CC",
+        fontFamily: "Proxima Nova,-apple-system,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif"
+
     },
     gridItemCard: {
         marginBottom: '20px',
     },
     media: {
-        height: 200,
+        height: 150,
         backgroundSize: '100%'       
     },
     imgProduct:{
@@ -58,7 +61,8 @@ const checkoutStyle = {
     productDescription:{
         fontSize: "18px",
         fontWeight: "400",
-        fontFamily: "Roboto, Helvetica, Arial, sans-serif"
+        fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+        color: "#9b9b9b"
     },
     midSize:{
         marginLeft:"0",
@@ -68,7 +72,7 @@ const checkoutStyle = {
         width:"100%"
     },
     shopName:{
-      fontWeight:"500",
+      fontWeight:"350",
       marginTop:"25px",
       marginBottom:"25px",
       marginLeft:"5px",
@@ -88,4 +92,4 @@ const checkoutStyle = {
     }
 }
 
-export default checkoutStyle;
+export default productDetailStyle;

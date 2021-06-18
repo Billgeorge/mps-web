@@ -1,9 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,10 +10,18 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles, useTheme,withStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import IconExpandLess from '@material-ui/icons/ExpandLess'
+import IconExpandMore from '@material-ui/icons/ExpandMore'
+import LocalConvenienceStoreIcon from '@material-ui/icons/LocalConvenienceStore';
+
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import StoreIcon from '@material-ui/icons/Storefront';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import clsx from 'clsx';
 
 
 import Avatar from '@material-ui/core/Avatar';
@@ -28,12 +34,70 @@ import { useHistory } from "react-router-dom";
 
 import Logo from "assets/img/icon_logo.png"
 import Button from "@material-ui/core/Button";
+import ReceiptIcon from '@material-ui/icons/Receipt';
+import PaymentIcon from '@material-ui/icons/Payment';
+import EditIcon from '@material-ui/icons/Edit';
+import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+import Collapse from '@material-ui/core/Collapse'
 
-const drawerWidth = 60;
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex'    
+    display: 'flex',
+  },
+  appBar: {
+    backgroundColor:'#2097F3',
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: 36,
+  },
+  hide: {
+    display: 'none',
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerClose: {
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: 'hidden',
+    width: theme.spacing(7) + 1,
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(9) + 1,
+    },
+  },
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
   },
   title: {
     lineHeight: "30px",
@@ -49,132 +113,163 @@ const useStyles = makeStyles((theme) => ({
       background: "transparent"
     }
   },
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  appBar: {
-    backgroundColor:'#2097F3',    
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,      
-    },
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
-    },
-  },
-  // necessary for content to be below app bar
-  toolbar: theme.mixins.toolbar,
-  
-  drawerPaper: {
-    width: drawerWidth,
-  },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
   },
 }));
 
-const StyledMenu = withStyles({
-  paper: {
-    border: '1px solid #d3d4d5',
-  },
-})((props) => (
-  <Menu
-    elevation={0}
-    getContentAnchorEl={null}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'center',
-    }}
-    {...props}
-  />
-));
 
-const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    '&:focus': {
-      backgroundColor: theme.palette.primary.main,
-      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        color: theme.palette.common.white,
-      },
-    },
-  },
-}))(MenuItem);
 
 export function ResponsiveDrawer(props) {
-  const { window } = props;
+  
   const classes = useStyles();
   const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [openProductMenu, setOpenProductMenu] = React.useState(false);
+  const [openDashMenu, setOpenDashMenu] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const history = useHistory();
+
+  function handleClick() {
+    setOpenProductMenu(!openProductMenu)
+  }
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClickProfile = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  function handleClickDash()  {
+    setOpenDashMenu(!openDashMenu);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  const StyledMenu = withStyles({
+    paper: {
+      border: '1px solid #d3d4d5',
+    },
+  })((props) => (
+    <Menu
+      elevation={0}
+      getContentAnchorEl={null}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }}
+      {...props}
+    />
+  ));
+  
+  const StyledMenuItem = withStyles((theme) => ({
+    root: {
+      '&:focus': {
+        backgroundColor: theme.palette.primary.main,
+        '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+          color: theme.palette.common.white,
+        },
+      },
+    },
+  }))(MenuItem);
 
   const logout = () => {
     localStorage.removeItem('currentUser');
     history.push("/login")
   }
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
   const brandComponent =<div><img src={Logo} style={{width:"50px"}}/><Button className={classes.title}>mipagoseguro</Button></div>;
 
   const drawer = (
     <div>
-      <div className={classes.toolbar} />
-      <Divider />
-      <List>
-        <ListItem>
-          <Button href="/dashboard">
-            <ListItemIcon> <DashboardIcon style={{color:'#2097F3'}} /></ListItemIcon> 
-          </Button>                   
-        </ListItem>
-        <ListItem>
-            <Button href="/withdrawal">
-              <ListItemIcon> <AccountBalanceIcon style={{color:'#2097F3'}} /></ListItemIcon>
-            </Button>                    
-        </ListItem>
-        <ListItem>
-            <Button href="/product">
-              <ListItemIcon> <StoreIcon style={{color:'#2097F3'}} /></ListItemIcon>
-            </Button>                    
-        </ListItem>        
-      </List>
-      <Divider />
-      <List>
-        <ListItem style={{padding:'0'}}>
+      <div className={classes.toolbar}>
+    <IconButton onClick={handleDrawerClose}>
+      {theme.direction === 'rtl' ? <ChevronRightIcon style={{color:'#2097F3'}} /> : <ChevronLeftIcon style={{color:'#2097F3'}} />}
+    </IconButton>
+  </div>
+  <Divider />
+  <List>
+    
+      <ListItem button onClick={handleClickDash} key="dashboard">
+        <ListItemIcon><DashboardIcon style={{color:'#2097F3'}} /></ListItemIcon>
+        <ListItemText style={{color:'#2097F3'}} primary="Consolidado" />
+        {openDashMenu ? <IconExpandLess style={{color:'#2097F3'}}/> : <IconExpandMore style={{color:'#2097F3'}}/>}
+      </ListItem>
+      <Collapse in={openDashMenu} timeout="auto" unmountOnExit>
+        <Divider />
+        <List component="div" style={{paddingLeft:'15px'}}>
+          <ListItem button component="a" href="/dashboard-dropseller" className={classes.menuItem}>
+            <ListItemIcon ><ReceiptIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            <ListItemText style={{color:'#2097F3'}} primary="Ordenes drop" />
+          </ListItem>
+          <ListItem button component="a" href="/dashboard-dropprovider" className={classes.menuItem}>
+            <ListItemIcon ><ReceiptIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            <ListItemText style={{color:'#2097F3'}} primary="Ordenes proveedor" />
+          </ListItem>
+          <ListItem button component="a" href="/dashboard" className={classes.menuItem}>
+            <ListItemIcon ><PaymentIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            <ListItemText style={{color:'#2097F3'}} primary="Pagos" />
+          </ListItem>          
+        </List>
+      </Collapse>
+      <ListItem button onClick={handleClick} key="product">
+        <ListItemIcon><StoreIcon style={{color:'#2097F3'}} /></ListItemIcon>
+        <ListItemText style={{color:'#2097F3'}} primary="Productos" />
+        {openProductMenu ? <IconExpandLess style={{color:'#2097F3'}}/> : <IconExpandMore style={{color:'#2097F3'}}/>}
+      </ListItem>
+      <Collapse in={openProductMenu} timeout="auto" unmountOnExit>
+        <Divider />
+        <List component="div" style={{paddingLeft:'15px'}}>
+          <ListItem button component="a" href="/product-drop" className={classes.menuItem}>
+            <ListItemIcon ><LocalConvenienceStoreIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            <ListItemText style={{color:'#2097F3'}} primary="Productos drop" />
+          </ListItem>
+          <ListItem button component="a" href="/product" className={classes.menuItem}>
+            <ListItemIcon ><EditIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            <ListItemText style={{color:'#2097F3'}} primary="Productos propios" />
+          </ListItem>
+          <ListItem button component="a" href="/search-product" className={classes.menuItem}>
+            <ListItemIcon ><ImageSearchIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            <ListItemText style={{color:'#2097F3'}} primary="Buscar producto" />
+          </ListItem>
+        </List>
+      </Collapse>
+      <ListItem button component="a" href="/withdrawal" key="withdrawal">
+        <ListItemIcon><AccountBalanceIcon style={{color:'#2097F3'}} /></ListItemIcon>
+        <ListItemText style={{color:'#2097F3'}} primary="Retiros" />
+      </ListItem>
+      <Divider/>
+      <ListItem style={{padding:'0'}}>
           <Button
               href=""
               color="transparent"
               target="_blank"
               style={{padding:"0"}}
               className={classes.navLink}
-              onClick={handleClick}
+              onClick={handleClickProfile}
             >          
-                <Avatar style={{backgroundColor: "rgb(29 143 210)"}}aria-label="recipe">
+                <IconButton aria-label="Perfil"><Avatar style={{backgroundColor: "rgb(29 143 210)"}} aria-label="recipe">
                             {getFirstLetters(getMerchantName())}
-                </Avatar>  
-                
+                </Avatar>
+                </IconButton>
+                <ListItemText style={{color:'#2097F3'}} primary={getMerchantName()} />
             </Button>
+            
+            
             <StyledMenu
             id="customized-menu"
             anchorEl={anchorEl}
@@ -207,66 +302,58 @@ export function ResponsiveDrawer(props) {
             </StyledMenuItem>
           </StyledMenu>
         </ListItem>
-      </List>
-    </div>
-  );
+    
+  </List>
+  </div>
+    );
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <div className={classes.root}>
-      
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar style={{backgroundColor:'while !important'}}>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
+        <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
+            onClick={handleDrawerOpen}
             edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open,
+            })}
           >
             <MenuIcon />
           </IconButton>
-          {brandComponent}        
+          {brandComponent}
         </Toolbar>
-      </AppBar>
-      <nav className={classes.drawer} aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
+      </AppBar>      
+      
+      
+      <Drawer
+        variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        classes={{
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
+        }}
+      >
             {drawer}
           </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>      
-    </div>
-  );
-}
+  </div>
+        );
+      }
 
-ResponsiveDrawer.propTypes = {
-  window: PropTypes.func,
-};
+
 
 export default ResponsiveDrawer;
