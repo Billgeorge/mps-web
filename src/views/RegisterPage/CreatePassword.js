@@ -66,16 +66,16 @@ export default function RegisterPage(props) {
         setIsPasswordCreated(true)
       }
       event.preventDefault()
-      if(document.getElementById("pass").value!=document.getElementById("confirmPass").value){
+      if(document.getElementById("pass").value!==document.getElementById("confirmPass").value){
         setErrorMessage({'Error':'Las contraseñas deben coincidir.'})
         return
       }
       setIsLoading(true)
       console.log("creating password")
       setErrorMessage({})
-      const form = event.currentTarget;
+      
       let id = getIdFromUrl()
-      if(id=="" || id==null || id=="password"){
+      if(id==="" || id===null || id==="password"){
         setErrorMessage({'Error':'No tienes autorización para hacer esto.'})
         return
       }

@@ -6,9 +6,6 @@ import styles from "assets/jss/material-kit-react/views/DashBoard.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
-import Link from "assets/img/link-button.png";
-import Button from "components/CustomButtons/Button.js";
-
 import Alert from '@material-ui/lab/Alert';
 
 import Table from '@material-ui/core/Table';
@@ -28,7 +25,7 @@ import Select from '@material-ui/core/Select';
 import {getLegibleDate} from 'util/DateUtil'
 
 import {consumeServiceGet} from 'service/ConsumeService'
-import {CORE_BASEURL, getPaymentState, getPaymentIdState} from 'constant/index'
+import {CORE_BASEURL, getOrderState} from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 
 
@@ -38,68 +35,36 @@ const useStyles = makeStyles(styles);
 
 
   
-  export default function DashBoard(props) {
+  export default function DashboardDropSeller(props) {
 
-    const [payments, setPayments] = React.useState([]);
-    const [numberPaymentPaid, setNumberPaymentPaid] = React.useState(0);
-    const [amounPaymentPaid, setAmountPaymentPaid] = React.useState(0);
-    const [pendingPayments, setPendingPayments] = React.useState('$ 0');
+    const [products, setProducts] = React.useState({
+       orders:[],
+       totalOrderAmountByStatus:0,
+       totalProfitSaleByStatus:0,
+       totalOrderByStatus:0
+    });   
     const [errorMessage, setErrorMessage] = React.useState("");    
 
-    React.useEffect(() => getPaymentsForMerchant(), []);    
+    React.useEffect(() => getProductsForMerchant(), []);    
 
     const [duration, setDuration] = React.useState(15);
 
-    const [paymentState, setPaymentState] = React.useState(0);
+    const [orderState, setOrderState] = React.useState(0);
 
-    const handleChangeDuration = (event) => {
-      setAmountPaymentPaid('$ 0')
-      setPendingPayments(0)
-      setNumberPaymentPaid(0)
+    const handleChangeDuration = (event) => {     
       setErrorMessage("")
       setDuration(event.target.value);
-      getPaymentsForMerchant('duration', event.target.value)
+      getProductsForMerchant('duration', event.target.value)
     };
 
-    const handleChangePaymentState = (event) => {
-      setAmountPaymentPaid('$ 0')
-      setPendingPayments(0)
-      setNumberPaymentPaid(0)
+    const handleChangeOrderState = (event) => {     
       setErrorMessage("")
-      setPaymentState(event.target.value);
-      getPaymentsForMerchant('paymentState',event.target.value)
+      setOrderState(event.target.value);
+      getProductsForMerchant('orderState',event.target.value)
     };
 
-    const callBackSuccess = (payments) =>{
-      setPayments(payments)
-      calculateTotal(payments)
-    }
-    const copyUrl = (id) => {
-      var getUrl = window.location;
-      var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
-      navigator.clipboard.writeText(baseUrl+"agree-payment/"+id);
-    }
-    const calculateTotal = (payments) => {
-      let pendingPayments = 0
-      let paidPayments = 0
-      let valuePaidPayments = 0
-      let paymentStateToCompare = 3
-      let paymentStateInput = document.getElementById('estado')
-      if(paymentStateInput.textContent !== 'Ninguno' && paymentStateInput.textContent !== "​"){
-        paymentStateToCompare=getPaymentIdState(paymentStateInput.textContent)
-      }
-      for (var i = 0; i < payments.length; i++) {
-        if(payments[i].idState === paymentStateToCompare){
-          paidPayments = paidPayments +1
-          valuePaidPayments = valuePaidPayments + payments[i].amount
-        } else if (payments[i].idState < 3){
-          pendingPayments = pendingPayments + 1
-        }    
-      }
-      setAmountPaymentPaid(formatter.format(valuePaidPayments))
-      setPendingPayments(pendingPayments)
-      setNumberPaymentPaid(paidPayments)
-
+    const callBackSuccess = (products) =>{
+      setProducts(products)      
     }
 
     const formatter = new Intl.NumberFormat('en-US', {
@@ -109,7 +74,12 @@ const useStyles = makeStyles(styles);
     })
 
     const callBack = (msg) => {
-      setPayments([])
+      setProducts({
+        orders:[],
+        totalOrderAmountByStatus:0,
+        totalProfitSaleByStatus:0,
+        totalOrderByStatus:0
+     })
       if(msg===404){
         setErrorMessage("No hay transacciones para mostrar")        
       }else{
@@ -117,21 +87,21 @@ const useStyles = makeStyles(styles);
       }      
     }
 
-    const getPaymentsForMerchant = (filter,value) => {
+    const getProductsForMerchant = (filter,value) => {
       const merchantId = getMerchantId()
       console.log('filter '+filter)
       console.log('value '+value)
-      let url=`${CORE_BASEURL}/payment/merchant?merchantId=${merchantId}`
+      let url=`${CORE_BASEURL}/order/dropseller?merchantId=${merchantId}`
       if(filter ==='duration'){
         url=`${url}&durationInDays=${value}`
-        if(paymentState!==0){
-          url=`${url}&paymentState=${paymentState}`
+        if(orderState!==0){
+          url=`${url}&orderState=${orderState}`
         }
       }else{
         url=`${url}&durationInDays=${duration}`
       }
-      if(filter === 'paymentState' && value!==-1){
-        url=`${url}&paymentState=${value}`
+      if(filter === 'orderState' && value!==-1){
+        url=`${url}&orderState=${value}`
       }
 
       consumeServiceGet(callBack,callBackSuccess,url)
@@ -142,29 +112,15 @@ const useStyles = makeStyles(styles);
   
     return (
         <div>       
-       
-        <ResponsiveDrawe />       
+       <ResponsiveDrawe />   
+            
         <div className={classes.container}>
         <GridContainer className={classes.subContainer} justify="center" >
         | <GridItem xs={12} sm={12} md={12} className={classes.grid}>        
             <Grid container className={classes.box}  spacing={3}>               
                 <Grid item xs={12} sm={12} md={6} >
-                    Hola {getMerchantName()}, Bienvenido a MiPagoSeguro
-                </Grid>
-                <Grid container xs={12} sm={12} md={6} justify="center" alignItems="center"> 
-                    
-                    <Grid item  xs={4}>
-                    <a>
-                    <div className={classes.boxItem} style={{margin:"10px"}}>
-                      <a href="/create-payment">
-                        <img src={Link} className={classes.imgLink} />
-                        <span className={classes.textButton}>Crear enlace de pago</span>
-                      </a>
-                    </div>
-                    </a>
-                    </Grid>
-                    
-                </Grid>                   
+                    Hola {getMerchantName()}, Bienvenido a MiPagoSeguro.
+                </Grid>             
             </Grid>
          </GridItem>
          <GridItem xs={12} sm={12} md={12} className={classes.grid}>
@@ -176,21 +132,18 @@ const useStyles = makeStyles(styles);
                         <Select
                           labelId="demo-simple-select-outlined-label"
                           id="estado"
-                          value={paymentState}
-                          onChange={handleChangePaymentState}
+                          value={orderState}
+                          onChange={handleChangeOrderState}
                           label="Estado"
                         >
                           <MenuItem value={-1}>
                             <em>Ninguno</em>
                           </MenuItem>
-                          <MenuItem value={1}>Creado</MenuItem>
-                          <MenuItem value={2}>Acordado</MenuItem>
-                          <MenuItem value={3}>Pagado</MenuItem>
-                          <MenuItem value={4}>Despachado</MenuItem>
-                          <MenuItem value={5}>Disputa</MenuItem>
-                          <MenuItem value={6}>Cerrado</MenuItem>
-                          <MenuItem value={7}>Recibido</MenuItem>
-                          <MenuItem value={8}>Transferido</MenuItem>                          
+                          <MenuItem value={1}>Fallido</MenuItem>
+                          <MenuItem value={2}>En despacho</MenuItem>
+                          <MenuItem value={3}>En entrega</MenuItem>
+                          <MenuItem value={4}>Pago pendiente</MenuItem>
+                          <MenuItem value={5}>Transferido</MenuItem>                                                 
                         </Select>
                       </FormControl>
                     </Grid>
@@ -218,49 +171,51 @@ const useStyles = makeStyles(styles);
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
                 <Grid container className={classes.box} spacing={3}>                   
-        <Grid item ><span>Dinero Transacciones {paymentState!=0 && paymentState!=-1?getPaymentState(paymentState)+'s':'pagadas'}:</span> <br/><span className={classes.valueText}>{amounPaymentPaid}</span></Grid>
+        <Grid item ><span>Total monto órdenes {orderState!=0 && orderState!=-1?getOrderState(orderState)+'s':''}:</span> <br/><span className={classes.valueText}>{products.totalOrderAmountByStatus}</span></Grid>
                 </Grid>   
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
                 <Grid container className={classes.box} spacing={3}>                   
-        <Grid item ><span>Transacciones {paymentState!=0 && paymentState!=-1?getPaymentState(paymentState)+'s':'pagadas'}:</span> <br/><span className={classes.valueText}>{numberPaymentPaid}</span></Grid>
+        <Grid item ><span>Total utilidad bruta {orderState!=0 && orderState!=-1?getOrderState(orderState)+'s':''}:</span> <br/><span className={classes.valueText}>{products.totalProfitSaleByStatus}</span></Grid>
                 </Grid>   
          </GridItem>   
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
                 <Grid container className={classes.box} spacing={3}>                   
-        <Grid item ><span>Transacciones Pendientes:</span> <br/><span className={classes.valueText}>{pendingPayments}</span></Grid>
+        <Grid item ><span>Número de órdenes:</span> <br/><span className={classes.valueText}>{products.totalOrderByStatus}</span></Grid>
                 </Grid>   
          </GridItem> 
          <GridItem xs={12} sm={12} md={12} className={classes.grid}>           
                 <Grid container className={classes.box} spacing={3}>
-                <Grid item  xs={12}><h2>Últimas Transacciones</h2></Grid>                   
+                <Grid item  xs={12}><h2>Últimos Pagos</h2></Grid>                   
                    <Grid item xs={12} >
                    <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
                       <TableHead>
                         <TableRow>
-                          <TableCell>Descripción </TableCell>
+                          <TableCell>Producto </TableCell>
                           <TableCell align="right">Nombre Cliente </TableCell>
-                          <TableCell align="right">Valor</TableCell>
-                          <TableCell align="center">Enlace</TableCell>
+                          <TableCell align="right">Precio de venta</TableCell>
+                          <TableCell align="center">Precio de compra</TableCell>
+                          <TableCell align="center">Precio de flete</TableCell>
+                          <TableCell align="center">Utilidad por venta</TableCell>
                           <TableCell align="right">Estado</TableCell>
-                          <TableCell align="right">Guía</TableCell>
-                          <TableCell align="right">Transportador</TableCell>
+                          <TableCell align="right">Guía</TableCell>                          
                           <TableCell align="right">Fecha de creación</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {payments.map((row) => (
-                          <TableRow key={row.name}>
+                        {products.orders.map((row) => (
+                          <TableRow>
                             <TableCell component="th" scope="row">
-                              <a target="_blank" href={`/transaction-detail/${row.id}`} style={{cursor:"pointer"}}>{row.description==null?'descripción vacía':row.description}</a>
+                              <a target="_blank" href={`/order-detail/${row.orderId}`} style={{cursor:"pointer"}}>{row.productName}</a>
                             </TableCell>
                             <TableCell align="right">{row.customerName}</TableCell>
-                            <TableCell align="right">{formatter.format(row.amount)}</TableCell>
-                            <TableCell align="right"><Button onClick={() => copyUrl(row.publicId)} color="primary">Copiar Enlace</Button></TableCell>
-                            <TableCell align="right">{getPaymentState(row.idState)}</TableCell>
+                            <TableCell align="right">{formatter.format(row.sellPrice)}</TableCell>
+                            <TableCell align="right">{formatter.format(row.buyPrice)}</TableCell>
+                            <TableCell align="right">{formatter.format(row.freightPrice)}</TableCell>
+                            <TableCell align="right">{formatter.format(row.profitSale)}</TableCell>
+                            <TableCell align="right">{getOrderState(row.orderState)}</TableCell>
                             <TableCell align="right">{row.guideNumber}</TableCell>
-                            <TableCell align="right">{row.transportCompany}</TableCell>
                             <TableCell align="right">{
                               getLegibleDate(row.creationDate)
                             }</TableCell>

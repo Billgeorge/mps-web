@@ -140,28 +140,64 @@ export function ResponsiveDrawer(props) {
 
   const drawer = (
     <div>
-      <div className={classes.toolbar} />
-      <Divider />
-      <List>
-        <ListItem>
-          <Button href="/dashboard">
-            <ListItemIcon> <DashboardIcon style={{color:'#2097F3'}} /></ListItemIcon> 
-          </Button>                   
-        </ListItem>
-        <ListItem>
-            <Button href="/withdrawal">
-              <ListItemIcon> <AccountBalanceIcon style={{color:'#2097F3'}} /></ListItemIcon>
-            </Button>                    
-        </ListItem>
-        <ListItem>
-            <Button href="/product">
-              <ListItemIcon> <StoreIcon style={{color:'#2097F3'}} /></ListItemIcon>
-            </Button>                    
-        </ListItem>        
-      </List>
-      <Divider />
-      <List>
-        <ListItem style={{padding:'0'}}>
+     <div className={classes.toolbar}>
+    <IconButton onClick={handleDrawerClose}>
+      {theme.direction === 'rtl' ? <ChevronRightIcon style={{color:'#2097F3'}} /> : <ChevronLeftIcon style={{color:'#2097F3'}} />}
+    </IconButton>
+  </div>
+  <Divider />
+  <List>
+    
+      <ListItem button onClick={handleClickDash} key="dashboard">
+        <ListItemIcon><DashboardIcon style={{color:'#2097F3'}} /></ListItemIcon>
+        <ListItemText style={{color:'#2097F3'}} primary="Consolidado" />
+        {openDashMenu ? <IconExpandLess style={{color:'#2097F3'}}/> : <IconExpandMore style={{color:'#2097F3'}}/>}
+      </ListItem>
+      <Collapse in={openDashMenu} timeout="auto" unmountOnExit>
+        <Divider />
+        <List component="div" style={{paddingLeft:'15px'}}>
+          <ListItem button component="a" href="/dashboard-dropseller" className={classes.menuItem}>
+            <ListItemIcon ><ReceiptIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            <ListItemText style={{color:'#2097F3'}} primary="Ordenes drop" />
+          </ListItem>
+          <ListItem button component="a" href="/dashboard-dropprovider" className={classes.menuItem}>
+            <ListItemIcon ><ReceiptIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            <ListItemText style={{color:'#2097F3'}} primary="Ordenes proveedor" />
+          </ListItem>
+          <ListItem button component="a" href="/dashboard" className={classes.menuItem}>
+            <ListItemIcon ><PaymentIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            <ListItemText style={{color:'#2097F3'}} primary="Pagos" />
+          </ListItem>          
+        </List>
+      </Collapse>
+      <ListItem button onClick={handleClick} key="product">
+        <ListItemIcon><StoreIcon style={{color:'#2097F3'}} /></ListItemIcon>
+        <ListItemText style={{color:'#2097F3'}} primary="Productos" />
+        {openProductMenu ? <IconExpandLess style={{color:'#2097F3'}}/> : <IconExpandMore style={{color:'#2097F3'}}/>}
+      </ListItem>
+      <Collapse in={openProductMenu} timeout="auto" unmountOnExit>
+        <Divider />
+        <List component="div" style={{paddingLeft:'15px'}}>
+          <ListItem button component="a" href="/product-drop" className={classes.menuItem}>
+            <ListItemIcon ><LocalConvenienceStoreIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            <ListItemText style={{color:'#2097F3'}} primary="Productos drop" />
+          </ListItem>
+          <ListItem button component="a" href="/product" className={classes.menuItem}>
+            <ListItemIcon ><EditIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            <ListItemText style={{color:'#2097F3'}} primary="Productos propios" />
+          </ListItem>
+          <ListItem button component="a" href="/search-product" className={classes.menuItem}>
+            <ListItemIcon ><ImageSearchIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            <ListItemText style={{color:'#2097F3'}} primary="Buscar producto" />
+          </ListItem>
+        </List>
+      </Collapse>
+      <ListItem button component="a" href="/withdrawal" key="withdrawal">
+        <ListItemIcon><AccountBalanceIcon style={{color:'#2097F3'}} /></ListItemIcon>
+        <ListItemText style={{color:'#2097F3'}} primary="Retiros" />
+      </ListItem>
+      <Divider/>
+      <ListItem style={{padding:'0'}}>
           <Button
               href=""
               color="transparent"
