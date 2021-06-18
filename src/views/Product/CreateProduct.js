@@ -78,6 +78,8 @@ export default function CreateProduct(props) {
         setIsLoading(false)
       }
       const callBackSucess = (response) =>{
+        document.getElementById("createProduct").reset();
+        setDropshipping(false)
         setSuccessMessage("Producto creado satisfactoriamente.")
         setIsLoading(false)        
       }
