@@ -75,7 +75,7 @@ export default function PaymentForm(props) {
             {
                 formRedirectFlag
                 ?
-            <form method="POST" action="https://secure.payzen.lat/vads-payment/" name="payzenForm" id="payzenForm" target="pzframe">
+            <form method="POST" action="https://secure.payzen.lat/vads-payment/" name="payzenForm" id="payzenForm">
                 <input type="hidden" name="vads_action_mode" value={paymentInformation.actionMode || ''} />
                 <input type="hidden" name="vads_amount" value={paymentInformation.amount || ''} />
                 <input type="hidden" name="vads_ctx_mode" value={paymentInformation.environment || ''} />

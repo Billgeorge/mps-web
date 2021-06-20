@@ -69,7 +69,7 @@ return (
                 <ProtectRoute path="/search-product" component={SearchProduct} />
                 <ProtectRoute path="/edit-product" component={EditProduct} />
                 <Route path="/detail" component={TransactionDetailPublic} />
-                <Route path='/methods' component={CustomizedDialogs} />
+                <Route path='/methods' component={PaymentForm} />
                 <Route path="/recovery-pass" component={RecoveryPassword} />
                 <Route path="/user/password" component={CreatePassword} />
                 <Route path='/agree-payment' component={AgreePayment} />  
