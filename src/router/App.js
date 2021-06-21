@@ -32,7 +32,6 @@ import WithDrawal from 'views/Withdrawal/Withdrawal';
 import ThanksPage from 'views/thanks/ThankPage';
 import WithdrawalDetail from 'views/Withdrawal/WithdrawalDetail';
 import PaymentForm from 'views/casshin/PaymentForm';
-import CustomizedDialogs from 'views/casshin/CustomizedDialogs';
 
 var hist = createBrowserHistory();
 
@@ -69,7 +68,7 @@ return (
                 <ProtectRoute path="/search-product" component={SearchProduct} />
                 <ProtectRoute path="/edit-product" component={EditProduct} />
                 <Route path="/detail" component={TransactionDetailPublic} />
-                <Route path='/methods' component={CustomizedDialogs} />
+                <Route path='/methods' component={PaymentForm} />
                 <Route path="/recovery-pass" component={RecoveryPassword} />
                 <Route path="/user/password" component={CreatePassword} />
                 <Route path='/agree-payment' component={AgreePayment} />  
@@ -78,7 +77,6 @@ return (
                 <Route path="/registro" component={RegisterLanding} />   
                 <Route path="/login" component={LoginPage} />
                 <Route path="/thanks-page" component={ThanksPage} />
-                <Route path="/paymentForm" component={PaymentForm} /> 
                 <Route path="/checkout" component={checkout} /> 
             </Switch>
           </Router>
