@@ -10,7 +10,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
-import {getIdFromUrl} from 'util/UrlUtil'
+import {getQueyParamFromUrl} from 'util/UrlUtil'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Pse from "assets/img/payments/pse.png"
@@ -52,13 +52,14 @@ export default function PaymentForm(props) {
         }               
     }
     const callBackGet = () => {
+        setIsLoading(false)
         let errorObjects = {"Error":"Error completando pago, por favor contactar a administrador"}
         setErrorMessage(errorObjects)        
       }
 
     const redirect = (paymentMethod) => {
         setIsLoading(true)
-        const id = getIdFromUrl()
+        const id = getQueyParamFromUrl('id')
         const url = `${PULL_BASEURL}/cashin/redirect/paymentmethod`
         console.log("redirect id"+id)
         consumeServicePatch({paymentPartnerId:id,paymentMethod:paymentMethod},callBackGet,callBackSuccessGetPaymentInformation,url)               
