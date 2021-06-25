@@ -39,6 +39,7 @@ export default function ProductDetail(props) {
     })
     const [merchant, setMerchant] =  React.useState({
         name:"",
+        contactNumber: ""
     })
     React.useEffect(() => {     
         changeMessageValidation()
@@ -57,7 +58,7 @@ export default function ProductDetail(props) {
             setProduct(response) 
             let idm = response.merchantId
             console.log("merchantId: ",idm)
-            let url1 = `${CORE_BASEURL}/merchant/public/${idm}`
+            let url1 = `${CORE_BASEURL}/merchant/${idm}`
             consumeServiceGet(callBack,callBackGetMerchantSucess,url1)    
                    
         }
@@ -120,6 +121,10 @@ export default function ProductDetail(props) {
             <GridItem  justify="center" xs={12} sm={12} md={12} className={classes.gridItemCard}>
             <h4 className={classes.productDescription} style={{fontSize:"25px"}}> Nombre Proveedor:  </h4>            
             <div className={classes.productDescription}> {merchant.name || ""} </div>
+            </GridItem>
+            <GridItem  justify="center" xs={12} sm={12} md={12} className={classes.gridItemCard}>
+            <h4 className={classes.productDescription} style={{fontSize:"25px"}}> Número de Contacto Proveedor:  </h4>            
+            <div className={classes.productDescription}> {merchant.contactNumber || ""} </div>
             </GridItem>
             <GridItem  justify="center" xs={12} sm={12} md={12} className={classes.gridItemCard}>
             <h4 className={classes.productDescription} style={{fontSize:"25px"}}> Cantidad Disponible: </h4>            
