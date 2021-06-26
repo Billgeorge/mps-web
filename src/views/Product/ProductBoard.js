@@ -141,7 +141,8 @@ const useStyles = makeStyles(styles);
                         <TableRow>
                           <TableCell></TableCell>
                           <TableCell align="center">Descripción</TableCell>
-                          <TableCell align="center">Valor</TableCell> 
+                          <TableCell align="center">Valor</TableCell>
+                          <TableCell align="center">Inventario</TableCell>
                           <TableCell align="center">Url</TableCell>
                           <TableCell align="center">Editar</TableCell>
                           <TableCell align="center">DropShipping</TableCell>                         
@@ -166,6 +167,7 @@ const useStyles = makeStyles(styles);
                             <TableCell align="center">{
                               formatter.format(row.amount)
                             }</TableCell>
+                            <TableCell align="center">{row.inventory}</TableCell>
                             <TableCell align="right"><center><Button onClick={() => copyUrl(row.shortId)} color="primary">Copiar Enlace</Button></center></TableCell>
                             <TableCell align="right"><center><a href={"/edit-product?idp="+row.shortId}><Button color="primary">Editar producto</Button></a></center></TableCell>
                             <TableCell align="center">{row.dropshipping ? "Si":"No"}</TableCell>
