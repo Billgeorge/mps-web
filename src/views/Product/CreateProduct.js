@@ -42,9 +42,15 @@ export default function CreateProduct(props) {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const [dropshipping, setDropshipping] = React.useState(false);
+
+  const [specialFeatures, setSpecialFeatures] = React.useState(false);
   
   const handleChange = (event) => {
     setDropshipping(event.target.value);
+  };
+
+  const handleChangeSpecialFeatures = (event) => {
+    setSpecialFeatures(event.target.value);
   };
 
   setTimeout(function() {
@@ -61,18 +67,22 @@ export default function CreateProduct(props) {
     const imageInput = document.getElementById("imageProfile");
 
     imageInput.addEventListener('change', (event) => {
-      console.log("previous",event.target.files[0])
+      setErrorMessage({})
       file =event.target.files[0]
-      console.log("changing",file)
-          
+      if(file && file.size>1048576){
+        setErrorMessage({'Error':'Tu imagén es muy pesada. No debe superar 1Mb'})
+      }   
     });    
     document.createProduct.onsubmit = function(event){
       setErrorMessage({})
       event.preventDefault()
       const callBack = (error) => {
-        if(error!=null){
+        if(error!=null && typeof error === 'object'){        
         setErrorMessage(error)
-        }else{
+        }else if(error!=null && typeof error === 'String'){
+          setErrorMessage({'Error':error})
+        }
+        else{
           setErrorMessage({'Error':'Ha ocurrido un error inesperado por favor contactar al administrador'})
         }
         setIsLoading(false)
@@ -110,6 +120,7 @@ export default function CreateProduct(props) {
             dropshipping:document.getElementById('dropshipping').value,
             description: document.getElementById("description").value,
             merchantId: getMerchantId(),
+            specialFeatures:document.getElementById('specialFeatures').value,
             dropshippingPrice: dropshippingPrice
           }
           const json = JSON.stringify(requestForm);
@@ -161,7 +172,7 @@ export default function CreateProduct(props) {
                                     : <span></span>
                         }
                         <FormControl style={{width:"100%",paddingBottom:"10px"}}>
-                          <span >Imagen del producto (al menos 500x500)</span>
+                          <span >Imagen del producto (al menos 800x800)</span>
                           <Button
                            id="image"
                            color="success"
@@ -206,6 +217,21 @@ export default function CreateProduct(props) {
                                   type="number"
                                   min="0"                                 
                               />
+                        </FormControl>
+                        <FormControl variant="outlined"  style={{width:"100%",paddingBottom:"10px"}}>
+                          <InputLabel htmlFor="specialFeatures">¿Tiene este producto características especiales? (color, talla u otra)</InputLabel>
+                          <Select
+                            native
+                            value= {specialFeatures || false}
+                            onChange={handleChangeSpecialFeatures}
+                            inputProps={{
+                              name: 'specialFeatures',
+                              id: 'specialFeatures'
+                            }}                            
+                          >                           
+                            <option value={true}>Si</option>
+                            <option value={false}>No</option>                            
+                          </Select>
                         </FormControl>
                         <FormControl variant="outlined"  style={{width:"100%",paddingBottom:"10px"}}>
                           <InputLabel htmlFor="dropshipping">¿Disponible para que otros lo vendan?</InputLabel>

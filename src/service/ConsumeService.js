@@ -19,7 +19,7 @@ const consumeServicePost = async (payload,callBack,callBackSuccess,url) => {
         if (responseU.status === 200) {
             callBackSuccess(responseU.data)
         } else {
-            callBack(null)
+            callBack(responseU.body)
         }
 
     } catch (error) {
@@ -29,10 +29,10 @@ const consumeServicePost = async (payload,callBack,callBackSuccess,url) => {
             } else if(403 === error.response.status){
                 useHistory.push("/login")
             }else{
-                callBack(null)
+                callBack(error.response.data)
             }
         }else{
-            callBack(null)
+            callBack("Error inesperado")
         }        
     }
 }
