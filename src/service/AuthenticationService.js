@@ -21,19 +21,27 @@ export const isAuthenticated = () => {
 }
 
 export const getCurrentAppToken = () => {
-    return JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value).token
+    if(localStorage.getItem('currentUser')){
+        return JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value).token
+    }
 }
 
 export const getEmail = () => {
-    return JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value).username
+    if(localStorage.getItem('currentUser')){
+        return JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value).username
+    }
  }
 
  export const getMerchantName = () => {
-    return JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value).merchantName
+     if(localStorage.getItem('currentUser')){
+        return JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value).merchantName
+     }
  }
 
  export const getMerchantId = () => {
-    return JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value).merchantId
+    if(localStorage.getItem('currentUser')){
+        return JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value).merchantId
+    }
  }
 
 export const  login = async (payload,callback, callBackError) =>{
