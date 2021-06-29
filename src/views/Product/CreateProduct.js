@@ -93,12 +93,14 @@ export default function CreateProduct(props) {
         setSuccessMessage("Producto creado satisfactoriamente.")
         setIsLoading(false)        
       }
-      if(file == null || (file!=null && document.getElementById('name').value 
+      if(file === null || (file!==null && document.getElementById('name').value 
         && document.getElementById('inventory').value
         && document.getElementById('dropshipping').value!=""
       )){
         
-        if(document.getElementById('dropshipping').value !="true" || (document.getElementById('dropshipping').value=="true" && document.getElementById('dropshippingPrice').value>0)){
+        if(document.getElementById('dropshipping').value !=="true" || 
+        (document.getElementById('dropshipping').value==="true" 
+        && document.getElementById('dropshippingPrice').value>0 && file)){
           setSuccessMessage(null)
           setIsLoading(true)
           const imageForm = new FormData()      
@@ -133,7 +135,7 @@ export default function CreateProduct(props) {
           consumeServicePost(data,callBack,callBackSucess,`${CORE_BASEURL}/product`)
         }else{
           setErrorMessage(
-            {'error':'Si es un producto dropshipping, es obligatorio colocar precio a distribuidor'}
+            {'error':'Si es un producto dropshipping, es obligatorio colocar precio a distribuidor y una foto del producto'}
           )
         }
       }else{

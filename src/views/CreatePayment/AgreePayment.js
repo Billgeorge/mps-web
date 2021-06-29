@@ -72,7 +72,7 @@ function AgreePayment(props) {
       idPayment=id
     }    
     const url = `${PULL_BASEURL}/cashin/redirect`
-    consumeServicePost({id:idPayment},callBackGet,callBackSuccessGetPaymentInformation,url)
+    consumeServicePost({id:idPayment},callBackPost,callBackSuccessGetPaymentInformation,url)
   }
 
   const [isLoading, setIsLoading] = React.useState(false);
@@ -111,11 +111,22 @@ function AgreePayment(props) {
     props.setFbPixel(merchant.fbId);
   }
 
-
+  const callBackPost = (error) => {
+    if(error!=null && typeof error === 'object'){        
+      setErrorMessage(error)
+      }else if(error!=null && typeof error === 'String'){
+        setErrorMessage({'Error':error})
+      }
+      else{
+        setErrorMessage({'Error':'Ha ocurrido un error inesperado por favor contactar al administrador'})
+      }
+      setIsLoading(false)
+  }
   const callBackGet = () => {
-    let errorObjects = {"Error":"Error completando pago, por favor contactar a administrador"}
+    let errorObjects = {"Error":"Error obteniendo información de pago"}
     setErrorMessage(errorObjects)
     setIsLoading(false)
+   
   }
 
   React.useEffect(() => 
@@ -127,7 +138,7 @@ function AgreePayment(props) {
   const getPaymentData = () => {
     const idp = getQueyParamFromUrl('idp')
     let url = ""
-    if(idp!=null){
+    if(idp!==null){
       url = `${CORE_BASEURL}/product/public/${idp}`
     }else{    
       const idPayment = getIdFromUrl().split('#')[0]
@@ -160,7 +171,7 @@ function AgreePayment(props) {
       let idPayment = ""
       let url = ""
       let customer = {}
-      if(idp!=null){
+      if(idp!==null){
         idPayment=idp
         url= CORE_BASEURL+"/product/payment"
         customer = {

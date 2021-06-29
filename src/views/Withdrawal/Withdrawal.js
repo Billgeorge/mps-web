@@ -68,7 +68,7 @@ const useStyles = makeStyles(styles);
         consumeServicePost({    
             idMerchant: merchantId,
             amount: amount
-          },callBack,callBackSuccessCreate,
+          },callBackPost,callBackSuccessCreate,
           CORE_BASEURL+"/withdrawal")
     }
 
@@ -85,6 +85,16 @@ const useStyles = makeStyles(styles);
       }else{
         setErrorMessage("Error Cargando retiros")
       }      
+    }
+    const callBackPost = (error) => {
+      if(error!=null && typeof error === 'object'){        
+      setErrorMessage('Ha ocurrido un error inesperado por favor contactar al administrador')
+      }else if(error!=null && typeof error === 'String'){
+        setErrorMessage(error)
+      }
+      else{
+        setErrorMessage('Ha ocurrido un error inesperado por favor contactar al administrador')
+      }
     }
 
     const classes = useStyles();

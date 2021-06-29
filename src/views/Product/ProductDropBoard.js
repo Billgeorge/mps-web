@@ -97,7 +97,8 @@ const useStyles = makeStyles(styles);
                           <TableCell align="center">Precio de compra</TableCell> 
                           <TableCell align="center">Precio de venta</TableCell>
                           <TableCell align="center">Inventario</TableCell>
-                          <TableCell align="center">Url checkout</TableCell>                         
+                          <TableCell align="center">Url checkout</TableCell>
+                          <TableCell align="center">Editar</TableCell>                         
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -112,6 +113,7 @@ const useStyles = makeStyles(styles);
                             }</TableCell>
                             <TableCell align="center">{row.inventory}</TableCell>
                             <TableCell align="right"><center><Button onClick={() => copyUrl(row.id)} color="primary">Copiar Enlace</Button></center></TableCell>                            
+                            <TableCell align="right"><center><a href={"/edit-checkout?idp="+row.id}><Button color="primary">Editar</Button></a></center></TableCell>                            
                           </TableRow>
                         ))}
                       </TableBody>

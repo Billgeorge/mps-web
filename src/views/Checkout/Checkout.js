@@ -35,7 +35,8 @@ export default function Checkout() {
         productDescription:"",
         sellerMerchantName:"",
         imageURL:"",
-        amount:0
+        amount:0,
+        specialConditions:false
     });
     const [order, setOrder] = React.useState({
         state:"",
@@ -47,7 +48,8 @@ export default function Checkout() {
         quantity:1,        
         productId:"",
         amount:"",
-        neighborhood:""
+        neighborhood:"",
+        observations:""
     });
     const [errorMessage, setErrorMessage] = React.useState("");
 
@@ -96,6 +98,11 @@ export default function Checkout() {
             return
         }
 
+        if(product.specialConditions && !order.observations){
+            setErrorMessage("Tu producto requiere que indiques color, talla o alguna condición especial. Colocalo en observaciones")
+            return
+        }
+
         if(!order.state){
             setErrorMessage("Departamento es obligatorio")
             return
@@ -126,7 +133,8 @@ export default function Checkout() {
                 neighborhood: order.neighborhood,
                 department:order.state
             },
-            isDrop: true
+            isDrop: true,
+            observations:order.observations
         }
         consumeServicePost(request,callBackErrorCreateOrder, callBackSuccess,url)
     }
@@ -262,7 +270,7 @@ export default function Checkout() {
                     }
             <GridContainer justify="center">
                 <GridItem xs={12} sm={12} md={12}>
-                    <TextField onChange={handleChange} value={order.name} name="name" style={{width:"98%", backgroundColor:"white"}}  id="outlined-basic" label="Nombre completo" variant="outlined" />                    
+                    <TextField onChange={handleChange} value={order.name} name="name" style={{width:"98%", backgroundColor:"white"}}  id="outlined-basic" label="Nombre completo" variant="outlined" required />                    
                 </GridItem>                    
             </GridContainer>
 
@@ -279,6 +287,7 @@ export default function Checkout() {
                         name: 'state',
                         id: 'outlined-age-native-simple',
                     }}
+                    
                     >
                         
                     <option aria-label="None" value="" />
@@ -312,17 +321,32 @@ export default function Checkout() {
                     </FormControl>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12} style={{marginTop:"10px"}}>
-                    <TextField onChange={handleChange} name="address" value={order.address} style={{width:"98%", backgroundColor:"white"}} placeholder="Ejemplo: calle 34 # 1w-88 conjunto glacial torre 4 apto 303" id="outlined-basic" label="Dirección completa" variant="outlined" />                
+                    <TextField onChange={handleChange} name="address" value={order.address} style={{width:"98%", backgroundColor:"white"}} placeholder="Ejemplo: calle 34 # 1w-88 conjunto glacial torre 4 apto 303" id="outlined-basic" label="Dirección completa" variant="outlined" required/>                
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12} style={{marginTop:"10px"}}>
-                    <TextField onChange={handleChange} name="neighborhood" value={order.neighborhood} style={{width:"98%", backgroundColor:"white"}} placeholder="Barrio" id="outlined-basic" label="Barrio" variant="outlined" />                
+                    <TextField onChange={handleChange} name="neighborhood" value={order.neighborhood} style={{width:"98%", backgroundColor:"white"}} placeholder="Barrio" id="outlined-basic" label="Barrio" variant="outlined" required/>                
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12} style={{marginTop:"10px"}}>
-                    <TextField  onChange={handleChange} type="email" name="email" value={order.email} style={{width:"98%", backgroundColor:"white"}}  id="outlined-basic" placeholder="tuemail@email.com" label="Correo electrónico" variant="outlined" />
+                    <TextField  onChange={handleChange} type="email" name="email" value={order.email} style={{width:"98%", backgroundColor:"white"}}  id="outlined-basic" placeholder="tuemail@email.com" label="Correo electrónico" variant="outlined" required />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12} style={{marginTop:"10px"}}>
-                    <TextField  onChange={handleChange} type ="number" name="contactNumber" value={order.contactNumber} style={{width:"98%", backgroundColor:"white"}}  id="outlined-basic" label="Número de celular" variant="outlined" />
-                </GridItem>                    
+                    <TextField  onChange={handleChange} type ="number" name="contactNumber" value={order.contactNumber} style={{width:"98%", backgroundColor:"white"}}  id="outlined-basic" label="Número de celular" variant="outlined" required/>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={12} style={{marginTop:"10px"}}>
+                <FormControl style={{width:"100%"}}>
+                          <TextField
+                            id="observations"
+                            name="observations"
+                            label="Observaciones del pedido (color, talla)"
+                            multiline
+                            rows={4}
+                            placeholder="Si necesitas poner el color, la talla o cualquier característica del producto. Escríbelo acá."
+                            variant="outlined"
+                            inputProps={{ maxLength: 1000 }}
+                            onChange={handleChange} value={order.observations}                             
+                          />
+                </FormControl>
+                </GridItem>                   
             </GridContainer>
             
             <br/>

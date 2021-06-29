@@ -27,6 +27,7 @@ import ProductDropBoard from "views/Product/ProductDropBoard";
 import ProductDetail from "views/Product/ProductDetail"
 import SearchProduct from "views/Product/SearchProduct";
 import EditProduct from "views/Product/EditProduct";
+import EditCheckout from "views/Checkout/EditCheckout";
 import RecoveryPassword from "views/RecoveryPassword/RecoveryPassword";
 import WithDrawal from 'views/Withdrawal/Withdrawal';
 import ThanksPage from 'views/thanks/ThankPage';
@@ -55,6 +56,7 @@ return (
                 <ProtectRoute path="/productDetail" component={ProductDetail} />
                 <ProtectRoute path="/order-detail" component={OrderDetail} />
                 <ProtectRoute path="/product-drop" component={ProductDropBoard} />
+                <ProtectRoute path="/edit-checkout" component={EditCheckout} />
                 <ProtectRoute path='/product' component={ProductBoard} />                
                 <ProtectRoute path='/profile' component={ProfilePage} />
                 <ProtectRoute path='/create-payment' component={CreatePayment}  />
