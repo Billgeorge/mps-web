@@ -58,7 +58,7 @@ export default function ProductDetail(props) {
             setProduct(response) 
             let idm = response.merchantId
             console.log("merchantId: ",idm)
-            let url1 = `${CORE_BASEURL}/merchant/${idm}`
+            let url1 = `${CORE_BASEURL}/merchant/visible/${idm}`
             consumeServiceGet(callBack,callBackGetMerchantSucess,url1)    
                    
         }

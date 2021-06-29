@@ -171,12 +171,12 @@ const useStyles = makeStyles(styles);
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
                 <Grid container className={classes.box} spacing={3}>                   
-        <Grid item ><span>Total monto órdenes {orderState!=0 && orderState!=-1?getOrderState(orderState)+'s':''}:</span> <br/><span className={classes.valueText}>{products.totalOrderAmountByStatus}</span></Grid>
+        <Grid item ><span>Total monto órdenes {orderState!=0 && orderState!=-1?getOrderState(orderState)+'s':''}:</span> <br/><span className={classes.valueText}>{formatter.format(products.totalOrderAmountByStatus)}</span></Grid>
                 </Grid>   
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
                 <Grid container className={classes.box} spacing={3}>                   
-        <Grid item ><span>Total utilidad bruta {orderState!=0 && orderState!=-1?getOrderState(orderState)+'s':''}:</span> <br/><span className={classes.valueText}>{products.totalProfitSaleByStatus}</span></Grid>
+        <Grid item ><span>Total utilidad bruta {orderState!=0 && orderState!=-1?getOrderState(orderState)+'s':''}:</span> <br/><span className={classes.valueText}>{formatter.format(products.totalProfitSaleByStatus)}</span></Grid>
                 </Grid>   
          </GridItem>   
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>

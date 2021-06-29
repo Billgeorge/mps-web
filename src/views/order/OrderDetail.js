@@ -104,27 +104,31 @@ const formatter = new Intl.NumberFormat('en-US', {
                 <Grid item ><span>Barrio del cliente:</span> <br/><span className={classes.valueTextDetail}>{!(order.customer.neighborhood)?'Barrio vacio':`${order.customer.neighborhood}`}</span></Grid>
               </Grid>   
          </GridItem>
-         <GridItem xs={12} sm={12} md={3} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
               <Grid container className={classes.boxDetail} spacing={3}>                   
                 <Grid item ><span>Ciudad del cliente:</span> <br/><span className={classes.valueTextDetail}>{!(order.customer.city)?'Ciudad vacia':`${order.customer.city}`}</span></Grid>
               </Grid>   
          </GridItem>
-         <GridItem xs={12} sm={12} md={3} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
               <Grid container className={classes.boxDetail} spacing={3}>                   
                 <Grid item ><span>Email del cliente:</span> <br/><span className={classes.valueTextDetail}>{!(order.customer.email)?'Email vacio':`${order.customer.email}`}</span></Grid>
               </Grid>   
          </GridItem>
-         <GridItem xs={12} sm={12} md={3} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
               <Grid container className={classes.boxDetail} spacing={3}>                   
                 <Grid item ><span>Departamento del cliente:</span> <br/><span className={classes.valueTextDetail}>{!(order.customer.department)?'Departamento vacio':`${order.customer.department}`}</span></Grid>
               </Grid>   
          </GridItem>
-         <GridItem xs={12} sm={12} md={3} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={6} className={classes.grid}>
+              <Grid container className={classes.boxDetail} spacing={3}>                   
+                <Grid item ><span>Observaciones:</span> <br/><span className={classes.valueTextDetail}>{!(order.observations)?'Sin observaciones':`${order.observations}`}</span></Grid>
+              </Grid>   
+         </GridItem>
+         <GridItem xs={12} sm={12} md={6} className={classes.grid}>
               <Grid container className={classes.boxDetail} spacing={3}>                   
                 <Grid item ><span>Estado:</span> <br/><span className={classes.valueTextDetail}>{getOrderState(order.orderStatus)}</span></Grid>
               </Grid>   
          </GridItem>
-         
           <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.boxDetail} spacing={3} justify="center">    
               <Button href="/dashboard-dropseller">Volver</Button>

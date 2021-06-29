@@ -62,7 +62,7 @@ const useStyles = makeStyles(styles);
       let url=`${CORE_BASEURL}/product/delete`
       consumeServicePost({    
         ids:idsToDelete
-      },callBack,callBackSucess,url)   
+      },callBackDelete,callBackSucess,url)   
     }
     const callBackSucess = () =>{
       setSuccessMessage("Productos eliminados, por favor actualiza la página si deseas ver los productos actualizados.")    
@@ -105,6 +105,16 @@ const useStyles = makeStyles(styles);
       }else{
         setErrorMessage("Error Cargando productos")
       }      
+    }
+    const callBackDelete = (error) => {
+      if(error!=null && typeof error === 'object'){        
+        setErrorMessage(error)
+        }else if(error!=null && typeof error === 'String'){
+          setErrorMessage({'Error':error})
+        }
+        else{
+          setErrorMessage({'Error':'Ha ocurrido un error inesperado por favor contactar al administrador'})
+        }
     }
 
     const getProductsForMerchant = (filter,value) => {

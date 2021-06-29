@@ -15,6 +15,7 @@ import { red } from '@material-ui/core/colors';
 import consumeServicePost from 'service/ConsumeService'
 import {CORE_BASEURL} from 'constant/index'
 import Alert from '@material-ui/lab/Alert';
+import CardMedia from '@material-ui/core/CardMedia';
 
 
 const useStylesJss = makeStyles(styles);
@@ -98,8 +99,13 @@ export default function SearchProduct(props) {
                             <GridItem style={{paddingBottom:'5vh'}} xs={12} sm={6} md={4} >
                                 <Card className={classes.root}>
                                     <CardHeader                                                                       
-                                        title={row.name}
+                                        title={row.name?row.name.substring(0,16):'Sin nombre'}
                                         subheader={row.inventory+" unidades disponibles"}
+                                    />
+                                    <CardMedia
+                                        className={classes.media}
+                                        image={row.imageUrlMin}
+                                        title={row.name?row.name:'Sin nombre'}
                                     />                              
                                     <CardContent>
                                         <Typography variant="body2" color="textSecondary" component="p">
@@ -109,6 +115,7 @@ export default function SearchProduct(props) {
                                     <CardActions disableSpacing style={{textAlign:"center"}}>
                                     <a
                                         href={"/productDetail?idp="+row.shortId}
+                                        target="blank"
                                     >
                                         <Button style={{left:"20%"}} color="primary" >
                                             Ver producto

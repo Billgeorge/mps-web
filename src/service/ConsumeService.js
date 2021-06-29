@@ -1,12 +1,9 @@
 import Axios from "axios";
-import { useHistory } from "react-router-dom";
 import {isAuthenticated,getCurrentAppToken} from 'service/AuthenticationService'
-
 
 const consumeServicePost = async (payload,callBack,callBackSuccess,url) => {
 
     //React.setActionState({ sending: true, error: null, });
-
     try {
         console.log('Enviando ...')
         putTokenHeader()
@@ -27,7 +24,7 @@ const consumeServicePost = async (payload,callBack,callBackSuccess,url) => {
             if(400 === error.response.status){
                 callBack(error.response.data)
             } else if(403 === error.response.status){
-                useHistory.push("/login")
+                window.location.href = '/login';
             }else{
                 callBack(error.response.data)
             }
@@ -38,7 +35,7 @@ const consumeServicePost = async (payload,callBack,callBackSuccess,url) => {
 }
 
 export const consumeServicePut = async (payload,callBack,callBackSuccess,url) => {
-    try {
+    try {        
         console.log('Enviando ...')
         putTokenHeader()
         const responseU = await Axios.put(url, payload);        
@@ -56,7 +53,7 @@ export const consumeServicePut = async (payload,callBack,callBackSuccess,url) =>
             if(400 === error.response.status){
                 callBack(error.response.data)
             } else if(403 === error.response.status){
-                useHistory.push("/login")
+                window.location.href = '/login';
             }else{
                 callBack(null)
             }
@@ -67,8 +64,6 @@ export const consumeServicePut = async (payload,callBack,callBackSuccess,url) =>
 }
 
 export const consumeServiceGet = async (callBack,callBackSuccess,url) => {
-
-    //React.setActionState({ sending: true, error: null, });
 
     try {
         console.log('Enviando ...')
@@ -91,7 +86,7 @@ export const consumeServiceGet = async (callBack,callBackSuccess,url) => {
             if(400 === error.response.status){
                 callBack(error.response.data)
             } if(403 === error.response.status){
-                useHistory.push("/login")
+                window.location.href = '/login';
             } if(404 === error.response.status){
                 callBack(404)
             } else{
@@ -128,7 +123,7 @@ export const consumeServicePatch = async (payload,callBack,callBackSuccess,url) 
             if(400 === error.response.status){
                 callBack(error.response.data)
             } if(403 === error.response.status){
-                useHistory.push("/login")
+                window.location.href = '/login';
             }else{
                 callBack(null)
             }
