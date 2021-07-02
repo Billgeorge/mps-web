@@ -33,6 +33,8 @@ import WithDrawal from 'views/Withdrawal/Withdrawal';
 import ThanksPage from 'views/thanks/ThankPage';
 import WithdrawalDetail from 'views/Withdrawal/WithdrawalDetail';
 import PaymentForm from 'views/casshin/PaymentForm';
+import CreateBranch from 'views/Branch/createBranch';
+
 
 var hist = createBrowserHistory();
 
@@ -69,6 +71,7 @@ return (
                 <ProtectRoute path='/withdrawal-detail' component={WithdrawalDetail} />
                 <ProtectRoute path="/search-product" component={SearchProduct} />
                 <ProtectRoute path="/edit-product" component={EditProduct} />
+                <ProtectRoute path="/createbranch" component={CreateBranch} />
                 <Route path="/detail" component={TransactionDetailPublic} />
                 <Route path='/methods' component={PaymentForm} />
                 <Route path="/recovery-pass" component={RecoveryPassword} />
@@ -80,6 +83,8 @@ return (
                 <Route path="/login" component={LoginPage} />
                 <Route path="/thanks-page" component={ThanksPage} />
                 <Route path="/checkout" component={checkout} /> 
+                
+                
             </Switch>
           </Router>
 
