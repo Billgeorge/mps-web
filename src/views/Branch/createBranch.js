@@ -216,6 +216,7 @@ export default function CreateProduct() {
                         name: 'city',
                         id: 'outlined-age-native-simple',
                       }}
+                      required
                     >
                       <option aria-label="None" value="" />
                       {
@@ -240,19 +241,7 @@ export default function CreateProduct() {
                       required
                     />
                   </FormControl>
-
-
-
-                  {Object.keys(errorMessage).map((keyName, i) => (
-                    <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>
-                  ))}
-                  {successMessage
-                    ? <Alert severity="success">{successMessage}</Alert>
-                    : <span></span>
-                  }
-                  <br />
-
-                  <CardHeader className={classes.cardHeader}>
+                  <CardHeader className={classes.cardHeader} style={{marginTop:"0px"}}>
                     <h4 style={{ fontWeight: "600" }}> Información de Contacto</h4>
                   </CardHeader>
                   <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
@@ -292,6 +281,13 @@ export default function CreateProduct() {
                     </FormControl>
                   </FormControl>
                 </CardBody>
+                {Object.keys(errorMessage).map((keyName, i) => (
+                    <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>
+                  ))}
+                  {successMessage
+                    ? <Alert severity="success">{successMessage}</Alert>
+                    : <span></span>
+                  }
                 <CardFooter className={classes.cardFooter}>
                   <Button color="primary" size="lg" type="submit">
                     Crear Sucursal
