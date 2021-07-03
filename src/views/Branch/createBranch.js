@@ -52,7 +52,7 @@ export default function CreateProduct() {
     let newCities = citiesResponse.filter(record => record.state == value)
     SetCities(newCities)
     SetCity({
-      department: value,
+      department: value,  
       code: "",
     })
     setErrorMessage("")
@@ -73,11 +73,11 @@ export default function CreateProduct() {
     consumeServiceGet(callBack, callBackGetDaneSucess, url)
 
   };
-
+  
   const callBack = (error) => {
     if (error != null && typeof error === 'object') {
       setErrorMessage(error)
-    } else if (error != null && typeof error === 'String') {
+    } else if (error != null) {
       setErrorMessage({ 'Error': error })
     }
     else {
@@ -118,19 +118,25 @@ export default function CreateProduct() {
   const classes = useStyles();
   const getCities = () => {
     const url = `${CORE_BASEURL}/logistic/cities`
-    consumeServiceGet(callBack, callBackSuccessGetCities, url)
+    consumeServiceGet(callBackErrorGetCities, callBackSuccessGetCities, url)
   }
   const changeMessageValidation = () => {
     getCities()
     document.createBranch.onsubmit = function (event) {
       setErrorMessage({})
+      setIsLoading(true)
       event.preventDefault()
       if (!document.getElementById('daneCode').value) {
         setErrorMessage({ 'Error': 'Debes seleccionar departamento y ciudad.' })
         return
       }
       const callBackSucess = (response) => {
-        setSuccessMessage("Sucursal creada satisfactoriamente.")
+        setSuccessMessage("Sucursal creada satisfactoriamente.") 
+        document.getElementById("createBranch").reset(); 
+        SetCity({
+          department: '',
+          code: ''
+        })        
         setIsLoading(false)
       }
       let branchData = {
@@ -150,6 +156,7 @@ export default function CreateProduct() {
         contact: contactData
       }
       consumeServicePost(createRequest, callBack, callBackSucess, `${CORE_BASEURL}/branch`)
+      
 
     }
   }
@@ -174,7 +181,6 @@ export default function CreateProduct() {
                     ? <center> <CircularProgress /></center>
                     : <span></span>
                   }
-
                   <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
                     <InputLabel htmlFor="name">Nombre de la sucursal</InputLabel>
                     <OutlinedInput
@@ -187,7 +193,7 @@ export default function CreateProduct() {
                   </FormControl>
 
                   <FormControl style={{ width: "50%", backgroundColor: "white" }} variant="outlined" className={classes.form}>
-                    <InputLabel htmlFor="outlined-age-native-simple">Departamento</InputLabel>
+                    <InputLabel htmlFor="separtment">Departamento</InputLabel>
                     <Select
                       native
                       value={city.department}
@@ -195,7 +201,7 @@ export default function CreateProduct() {
                       label="Departamento"
                       inputProps={{
                         name: 'state',
-                        id: 'outlined-age-native-simple',
+                        id: 'department',
                       }}
                     >
                       <option aria-label="None" value="" />
@@ -208,7 +214,7 @@ export default function CreateProduct() {
                   </FormControl>
 
                   <FormControl style={{ width: "48%", backgroundColor: "white" }} variant="outlined" className={classes.form}>
-                    <InputLabel htmlFor="outlined-age-native-simple">Ciudad</InputLabel>
+                    <InputLabel htmlFor="city">Ciudad</InputLabel>
                     <Select
                       native
                       value={city.code}
@@ -216,7 +222,7 @@ export default function CreateProduct() {
                       label="Ciudad"
                       inputProps={{
                         name: 'city',
-                        id: 'outlined-age-native-simple',
+                        id: 'city',
                       }}
                     >
                       <option aria-label="None" value="" />
