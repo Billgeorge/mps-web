@@ -131,6 +131,7 @@ export default function CreateProduct() {
       }
       const callBackSucess = (response) => {
         setSuccessMessage("Sucursal creada satisfactoriamente.")
+        document.getElementById("createPayment").reset();
         setIsLoading(false)
       }
       let branchData = {
