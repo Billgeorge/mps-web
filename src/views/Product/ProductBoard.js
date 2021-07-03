@@ -150,7 +150,7 @@ const useStyles = makeStyles(styles);
                       <TableHead>
                         <TableRow>
                           <TableCell></TableCell>
-                          <TableCell align="center">Descripción</TableCell>
+                          <TableCell align="center">Nombre</TableCell>
                           <TableCell align="center">Valor</TableCell>
                           <TableCell align="center">Inventario</TableCell>
                           <TableCell align="center">Inventario exclusivo</TableCell>
@@ -173,7 +173,7 @@ const useStyles = makeStyles(styles);
                                   />
                                 </center>
                             </TableCell>
-                            <TableCell align="center">{row.description}</TableCell>
+                            <TableCell align="center">{row.name}</TableCell>
                             <TableCell align="center">{
                               formatter.format(row.amount)
                             }</TableCell>

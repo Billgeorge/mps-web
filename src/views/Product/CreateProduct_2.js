@@ -135,28 +135,31 @@ export default function CreateProduct() {
     }
     const callBack = (error) => {
         if (error != null && typeof error === 'object') {
-          setErrorMessage(error)
+            setErrorMessage(error)
         } else if (error != null && typeof error === 'String') {
-          setErrorMessage({ 'Error': error })
+            setErrorMessage({ 'Error': error })
         }
         else {
-          setErrorMessage({ 'Error': 'Ha ocurrido un error inesperado por favor contactar al administrador' })
+            setErrorMessage({ 'Error': 'Ha ocurrido un error inesperado por favor contactar al administrador' })
         }
         setIsLoading(false)
     }
 
     const callBackCreateProducSuccess = (product) => {
-        console.log("product",product)
+        console.log("product", product)
         let createInventoryRequest = {
-            productId:product.id,
-            inventories:inventories
+            productId: product.id,
+            inventories: inventories
         }
         consumeServicePost(createInventoryRequest, callBack, callBackCreateInventorySuccess, `${CORE_BASEURL}/inventory`)
 
     }
 
     const callBackCreateInventorySuccess = (inventory) => {
-      setInfoMessage("Producto creado correctamente")
+        setIsLoading(false)
+        document.getElementById("createProduct").reset()
+        setInfoMessage("Producto creado correctamente")
+
     }
 
     const processInformationStepThree = () => {
@@ -174,7 +177,7 @@ export default function CreateProduct() {
                     merchantId: getMerchantId(),
                     specialFeatures: product.specialFeatures,
                     dropshippingPrice: product.dropshippingPrice,
-                    category:product.category
+                    category: product.category
                 }
                 const json = JSON.stringify(requestForm);
                 const blob = new Blob([json], {
@@ -183,6 +186,7 @@ export default function CreateProduct() {
                 const data = new FormData();
                 data.append("data", blob);
                 data.append("image", productImage);
+                setIsLoading(true)
                 consumeServicePost(data, callBack, callBackCreateProducSuccess, `${CORE_BASEURL}/product`)
             } else {
                 setErrorMessage({ 'Error': 'Debe poner inventario en al menos una bodega.' })
@@ -238,158 +242,160 @@ export default function CreateProduct() {
                                 <h3 style={{ fontWeight: "600" }}><a href="/product"><ArrowBackIcon /></a> Crear producto nuevo</h3>
                             </CardHeader>
                             <CardBody>
-                                {isLoading
-                                    ? <center> <CircularProgress /></center>
-                                    : <span></span>
-                                }
-                                {step === 1 ?
-                                    <GridItem xs={12} sm={12} md={12}>
+                                <form className={classes.form} validated="true" name="createProduct" id="createProduct">
+                                    {isLoading
+                                        ? <center> <CircularProgress /></center>
+                                        : <span></span>
+                                    }
+                                    {step === 1 ?
+                                        <GridItem xs={12} sm={12} md={12}>
+                                            <GridItem xs={12} sm={12} md={12}>
+
+
+                                                <img type="file" src={productImage} name="productImage" id="productImage" className={classes.imgProduct} />
+                                                <input onChange={fileSelected} accept="image/*" style={{ display: 'none' }} id="icon-button-file" type="file" />
+                                                <label className={classes.addImg} htmlFor="icon-button-file">
+                                                    <IconButton color="primary" aria-label="upload picture" component="span">
+                                                        <AddIcon />
+                                                    </IconButton>
+                                                </label>
+
+                                            </GridItem>
+                                            <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
+                                                <TextField onChange={handleChangeProduct} value={product.name} name="name" style={{ width: "98%", backgroundColor: "white" }} id="outlined-basic" label="Nombre producto" variant="outlined" required />
+                                            </GridItem>
+                                            <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
+                                                <TextField style={{ width: "100%", paddingBottom: "10px" }}
+                                                    id="description"
+                                                    onChange={handleChangeProduct} value={product.description} name="description"
+                                                    label="Descripción"
+                                                    multiline
+                                                    rows={4}
+                                                    placeholder="Características, beneficios y demás del producto"
+                                                    variant="outlined"
+                                                    inputProps={{ maxLength: 1000 }}
+                                                    required
+                                                />
+                                            </GridItem>
+
+                                        </GridItem>
+                                        : <span></span>}
+                                    {step === 2 ?
                                         <GridItem xs={12} sm={12} md={12}>
 
+                                            <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            onChange={handleChangeCheckBox} value={product.dropshipping} name="dropshipping"
+                                                            color="primary"
+                                                        />
+                                                    }
+                                                    label="¿Es producto dropshipping?"
+                                                />
+                                            </GridItem>
+                                            {product.dropshipping ?
+                                                <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
+                                                    <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
+                                                        <InputLabel htmlFor="valor">Precio a distribuidor</InputLabel>
+                                                        <OutlinedInput
+                                                            onChange={handleChangeProduct} value={product.dropshippingPrice} name="dropshippingPrice"
+                                                            id="dropshippingPrice"
+                                                            placeholder="Recuerda tener en cuenta nuestra comisión"
+                                                            startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                                            labelWidth={60}
+                                                            required
+                                                            inputProps={{ min: 10000 }}
+                                                            type="number"
+                                                        />
+                                                    </FormControl>
+                                                </GridItem>
+                                                : <span></span>}
 
-                                            <img type="file" src={productImage} name="productImage" id="productImage" className={classes.imgProduct} />
-                                            <input onChange={fileSelected} accept="image/*" style={{ display: 'none' }} id="icon-button-file" type="file" />
-                                            <label className={classes.addImg} htmlFor="icon-button-file">
-                                                <IconButton color="primary" aria-label="upload picture" component="span">
-                                                    <AddIcon />
-                                                </IconButton>
-                                            </label>
-
-                                        </GridItem>
-                                        <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
-                                            <TextField onChange={handleChangeProduct} value={product.name} name="name" style={{ width: "98%", backgroundColor: "white" }} id="outlined-basic" label="Nombre producto" variant="outlined" required />
-                                        </GridItem>
-                                        <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
-                                            <TextField style={{ width: "100%", paddingBottom: "10px" }}
-                                                id="description"
-                                                onChange={handleChangeProduct} value={product.description} name="description"
-                                                label="Descripción"
-                                                multiline
-                                                rows={4}
-                                                placeholder="Características, beneficios y demás del producto"
-                                                variant="outlined"
-                                                inputProps={{ maxLength: 1000 }}
-                                                required
-                                            />
-                                        </GridItem>
-
-                                    </GridItem>
-                                    : <span></span>}
-                                {step === 2 ?
-                                    <GridItem xs={12} sm={12} md={12}>
-
-                                        <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        onChange={handleChangeCheckBox} value={product.dropshipping} name="dropshipping"
-                                                        color="primary"
-                                                    />
-                                                }
-                                                label="¿Es producto dropshipping?"
-                                            />
-                                        </GridItem>
-                                        {product.dropshipping ?
                                             <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
                                                 <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
-                                                    <InputLabel htmlFor="valor">Precio a distribuidor</InputLabel>
+                                                    <InputLabel htmlFor="valor">Precio a consumidor</InputLabel>
                                                     <OutlinedInput
-                                                        onChange={handleChangeProduct} value={product.dropshippingPrice} name="dropshippingPrice"
-                                                        id="dropshippingPrice"
+                                                        id="amount"
+                                                        onChange={handleChangeProduct} value={product.amount} name="amount"
                                                         placeholder="Recuerda tener en cuenta nuestra comisión"
                                                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                                         labelWidth={60}
                                                         required
+                                                        min="1000"
                                                         inputProps={{ min: 10000 }}
                                                         type="number"
                                                     />
                                                 </FormControl>
                                             </GridItem>
-                                            : <span></span>}
+                                            <GridItem xs={12} sm={12} md={12} >
+                                                <FormControl style={{ width: "100%", backgroundColor: "white" }} variant="outlined" className={classes.formControl}>
+                                                    <InputLabel htmlFor="outlined-age-native-simple">Categoría de producto</InputLabel>
+                                                    <Select
+                                                        native
+                                                        onChange={handleChangeProduct} value={product.category} name="category"
+                                                        label="Categoría producto"
+                                                        inputProps={{
+                                                            name: 'category',
+                                                            id: 'category'
+                                                        }}
 
-                                        <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
-                                            <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
-                                                <InputLabel htmlFor="valor">Precio a consumidor</InputLabel>
-                                                <OutlinedInput
-                                                    id="amount"
-                                                    onChange={handleChangeProduct} value={product.amount} name="amount"
-                                                    placeholder="Recuerda tener en cuenta nuestra comisión"
-                                                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                                    labelWidth={60}
-                                                    required
-                                                    min="1000"
-                                                    inputProps={{ min: 10000 }}
-                                                    type="number"
+                                                    >
+
+                                                        <option aria-label="None" value="" />
+                                                        <option value="1">Mascotas</option>
+                                                        <option value="2">Tecnología</option>
+                                                        <option value="3">Hogar</option>
+                                                        <option value="4">Niños</option>
+                                                        <option value="5">Estilo de vida</option>
+                                                        <option value="6">Alimentos</option>
+                                                        <option value="7">Belleza</option>
+                                                        <option value="8">Otros</option>
+
+                                                    </Select>
+                                                </FormControl>
+                                            </GridItem>
+                                            <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            onChange={handleChangeCheckBox} value={product.specialFeatures} name="specialFeatures"
+                                                            color="primary"
+                                                        />
+                                                    }
+                                                    label="¿Este producto tiene características especiales (color, talla, etc)?"
                                                 />
-                                            </FormControl>
-                                        </GridItem>
-                                        <GridItem xs={12} sm={12} md={12} >
-                                            <FormControl style={{ width: "100%", backgroundColor: "white" }} variant="outlined" className={classes.formControl}>
-                                                <InputLabel htmlFor="outlined-age-native-simple">Categoría de producto</InputLabel>
-                                                <Select
-                                                    native
-                                                    onChange={handleChangeProduct} value={product.category} name="category"
-                                                    label="Categoría producto"
-                                                    inputProps={{
-                                                        name: 'category',
-                                                        id: 'category'
-                                                    }}
-
-                                                >
-
-                                                    <option aria-label="None" value="" />
-                                                    <option value="1">Mascotas</option>
-                                                    <option value="2">Tecnología</option>
-                                                    <option value="3">Hogar</option>
-                                                    <option value="4">Niños</option>
-                                                    <option value="5">Estilo de vida</option>
-                                                    <option value="6">Alimentos</option>
-                                                    <option value="7">Belleza</option>
-                                                    <option value="8">Otros</option>
-
-                                                </Select>
-                                            </FormControl>
-                                        </GridItem>
-                                        <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        onChange={handleChangeCheckBox} value={product.specialFeatures} name="specialFeatures"
-                                                        color="primary"
-                                                    />
-                                                }
-                                                label="¿Este producto tiene características especiales (color, talla, etc)?"
-                                            />
-                                        </GridItem>
-                                    </GridItem>
-                                    : <span></span>}
-                                {step === 3 ?
-                                    branch.map((row) => (
-                                        <GridContainer>
-                                            <GridItem xs={12} sm={12} md={12}>
-                                                <h5>Ingresa el inventario para cada bodega</h5>
                                             </GridItem>
-                                            <GridItem xs={6} sm={6} md={6} style={{ "text-align": "center", "padding-top": "10px" }}>
-                                                <label style={{ "font-size": "1.5em", "font-weight": "bold" }}>{row.name}:</label>
-                                            </GridItem>
-                                            <GridItem xs={6} sm={6} md={6}>
-                                                <TextField inputProps={{ min: 0, id: row.id }} type="number" style={{ width: "98%", backgroundColor: "white" }} id="outlined-basic" label="Inventario" variant="outlined" required />
-                                            </GridItem>
-                                        </GridContainer>
-                                    ))
-                                    : <span></span>}
-                                {step > 1 ?
-                                    <IconButton onClick={backStep} color="primary" aria-label="upload picture" component="span">
-                                        <ArrowBackIcon />
-                                    </IconButton>
-                                    : <span></span>}
-                                {Object.keys(errorMessage).map((keyName, i) => (
-                                    <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>
-                                ))}
-                                {infoMessage
-                                    ? <Alert severity="success">{infoMessage}</Alert>
-                                    : <span></span>
-                                }
+                                        </GridItem>
+                                        : <span></span>}
+                                    {step === 3 ?
+                                        branch.map((row) => (
+                                            <GridContainer>
+                                                <GridItem xs={12} sm={12} md={12}>
+                                                    <h5>Ingresa el inventario para cada bodega</h5>
+                                                </GridItem>
+                                                <GridItem xs={6} sm={6} md={6} style={{ "text-align": "center", "padding-top": "10px" }}>
+                                                    <label style={{ "font-size": "1.5em", "font-weight": "bold" }}>{row.name}:</label>
+                                                </GridItem>
+                                                <GridItem xs={6} sm={6} md={6}>
+                                                    <TextField inputProps={{ min: 0, id: row.id }} type="number" style={{ width: "98%", backgroundColor: "white" }} id="outlined-basic" label="Inventario" variant="outlined" required />
+                                                </GridItem>
+                                            </GridContainer>
+                                        ))
+                                        : <span></span>}
+                                    {step > 1 ?
+                                        <IconButton onClick={backStep} color="primary" aria-label="upload picture" component="span">
+                                            <ArrowBackIcon />
+                                        </IconButton>
+                                        : <span></span>}
+                                    {Object.keys(errorMessage).map((keyName, i) => (
+                                        <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>
+                                    ))}
+                                    {infoMessage
+                                        ? <Alert severity="success">{infoMessage}</Alert>
+                                        : <span></span>
+                                    }
+                                </form>
                             </CardBody>
                             <CardFooter className={classes.cardFooter}>
                                 <Button color="primary" size="lg" onClick={processInformation}>
