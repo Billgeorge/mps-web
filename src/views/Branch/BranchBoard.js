@@ -61,9 +61,9 @@ const useStyles = makeStyles(styles);
     const callBack = (error) => {
       setBranches([])
       if(error==404){
-        setErrorMessage("No hay productos para mostrar")        
+        setErrorMessage("No hay sucursales para mostrar")        
       }else{
-        setErrorMessage("Error Cargando productos")
+        setErrorMessage("Error Cargando sucursales")
       }      
     }
     

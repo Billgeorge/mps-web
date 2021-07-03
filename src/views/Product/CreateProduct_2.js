@@ -173,7 +173,8 @@ export default function CreateProduct() {
                     description: product.description,
                     merchantId: getMerchantId(),
                     specialFeatures: product.specialFeatures,
-                    dropshippingPrice: product.dropshippingPrice
+                    dropshippingPrice: product.dropshippingPrice,
+                    category:product.category
                 }
                 const json = JSON.stringify(requestForm);
                 const blob = new Blob([json], {
