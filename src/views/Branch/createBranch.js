@@ -55,7 +55,7 @@ export default function CreateProduct() {
       department: value,  
       code: "",
     })
-    setErrorMessage("")
+    setErrorMessage({})
 
 
   }
@@ -63,14 +63,19 @@ export default function CreateProduct() {
     SetDaneCode(response)
   }
   const handleChange = (event) => {
-    setErrorMessage("")
-    let value = event.target.value
+    setErrorMessage({})
+    document.getElementById('daneCode').value = ''
+    let value = event.target.value    
     SetCity({
       ...city,
       code: value,
     })
-    let url = `${CORE_BASEURL}/dane/town/${value}`
-    consumeServiceGet(callBack, callBackGetDaneSucess, url)
+    if(value){
+      let url = `${CORE_BASEURL}/dane/town/${value}`
+      consumeServiceGet(callBack, callBackGetDaneSucess, url)
+    }else{
+      setErrorMessage({'Error':"Debes Seleccionar una Ciudad"})
+    }
 
   };
   
@@ -92,7 +97,7 @@ export default function CreateProduct() {
   }, 700);
 
   const callBackErrorGetCities = () => {
-    setErrorMessage("Error obteniendo ciudades")
+    setErrorMessage({'Error':"Error obteniendo ciudades"})
   }
   const callBackSuccessGetCities = (cities) => {
     SetCities(cities)
@@ -120,11 +125,13 @@ export default function CreateProduct() {
     const url = `${CORE_BASEURL}/logistic/cities`
     consumeServiceGet(callBackErrorGetCities, callBackSuccessGetCities, url)
   }
+
   const changeMessageValidation = () => {
     getCities()
     document.createBranch.onsubmit = function (event) {
       setErrorMessage({})
       setIsLoading(true)
+      setSuccessMessage("")
       event.preventDefault()
       if (!document.getElementById('daneCode').value) {
         setErrorMessage({ 'Error': 'Debes seleccionar departamento y ciudad.' })
