@@ -46,6 +46,7 @@ export default function CreateInventory(props) {
 
     const callBackSucess = () => {
         setSuccessMessage("Inventario creado")
+        document.getElementById("createInventory").reset()
         setErrorMessage({})
         setIsLoading(false)
     }
@@ -84,7 +85,7 @@ export default function CreateInventory(props) {
                     <GridItem xs={12} sm={12} md={6}>
                         <Card className={classes[cardAnimaton]}>
 
-                            <form className={classes.form} validated="true" name="createPayment" id="createPayment">
+                            <form className={classes.form} validated="true" name="createInventory" id="createInventory">
                                 <CardHeader className={classes.cardHeader}>
                                     <h3 style={{ fontWeight: "600" }}><a href="/product"><ArrowBackIcon /></a> Crear inventario privado</h3>
                                 </CardHeader>
