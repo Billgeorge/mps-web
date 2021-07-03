@@ -51,12 +51,15 @@ export default function RegisterPage(props) {
     document.registerForm.onsubmit = function(event){
       setIsMerchantCreated(false)
       const callBack = (error) => {
-        let errorObjects = {"Error":"Error creando Merchant por favor contactar el administrador"}
-        if(error !== null){
-          errorObjects = error
-        }
-        setErrorMessage(errorObjects)
-        setIsLoading(false)
+        if(error!=null && typeof error === 'object'){        
+          setErrorMessage(error)
+          }else if(error!=null && typeof error === 'String'){
+            setErrorMessage({'Error':error})
+          }
+          else{
+            setErrorMessage({'Error':'Ha ocurrido un error inesperado por favor contactar al administrador'})
+          }
+          setIsLoading(false)
       }
       const callBackSucess = () =>{
         document.getElementById("registerForm").reset();

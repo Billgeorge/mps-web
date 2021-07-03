@@ -62,7 +62,7 @@ const useStyles = makeStyles(styles);
       let url=`${CORE_BASEURL}/product/delete`
       consumeServicePost({    
         ids:idsToDelete
-      },callBack,callBackSucess,url)   
+      },callBackDelete,callBackSucess,url)   
     }
     const callBackSucess = () =>{
       setSuccessMessage("Productos eliminados, por favor actualiza la página si deseas ver los productos actualizados.")    
@@ -106,6 +106,16 @@ const useStyles = makeStyles(styles);
         setErrorMessage("Error Cargando productos")
       }      
     }
+    const callBackDelete = (error) => {
+      if(error!=null && typeof error === 'object'){        
+        setErrorMessage(error)
+        }else if(error!=null && typeof error === 'String'){
+          setErrorMessage({'Error':error})
+        }
+        else{
+          setErrorMessage({'Error':'Ha ocurrido un error inesperado por favor contactar al administrador'})
+        }
+    }
 
     const getProductsForMerchant = (filter,value) => {
       const merchantId = getMerchantId()
@@ -140,10 +150,10 @@ const useStyles = makeStyles(styles);
                       <TableHead>
                         <TableRow>
                           <TableCell></TableCell>
-                          <TableCell align="center">Descripción</TableCell>
+                          <TableCell align="center">Nombre</TableCell>
                           <TableCell align="center">Valor</TableCell>
                           <TableCell align="center">Inventario</TableCell>
-                          <TableCell align="center">Url</TableCell>
+                          <TableCell align="center">Inventario exclusivo</TableCell>
                           <TableCell align="center">Editar</TableCell>
                           <TableCell align="center">DropShipping</TableCell>                         
                         </TableRow>
@@ -163,12 +173,12 @@ const useStyles = makeStyles(styles);
                                   />
                                 </center>
                             </TableCell>
-                            <TableCell align="center">{row.description}</TableCell>
+                            <TableCell align="center">{row.name}</TableCell>
                             <TableCell align="center">{
                               formatter.format(row.amount)
                             }</TableCell>
                             <TableCell align="center">{row.inventory}</TableCell>
-                            <TableCell align="right"><center><Button onClick={() => copyUrl(row.shortId)} color="primary">Copiar Enlace</Button></center></TableCell>
+                            <TableCell align="right"><center><a href={"/create-inventory?idp="+row.id}><Button color="primary">Asignar Inventario</Button></a></center></TableCell>
                             <TableCell align="right"><center><a href={"/edit-product?idp="+row.shortId}><Button color="primary">Editar producto</Button></a></center></TableCell>
                             <TableCell align="center">{row.dropshipping ? "Si":"No"}</TableCell>
                           </TableRow>

@@ -163,7 +163,9 @@ const useStyles = makeStyles(styles);
                           <MenuItem value={2}>En despacho</MenuItem>
                           <MenuItem value={3}>En entrega</MenuItem>
                           <MenuItem value={4}>Pago pendiente</MenuItem>
-                          <MenuItem value={5}>Transferido</MenuItem>                                                   
+                          <MenuItem value={5}>Transferido</MenuItem>
+                          <MenuItem value={6}>Entregado</MenuItem>
+                          <MenuItem value={7}>Devolucion</MenuItem>                                                
                         </Select>
                       </FormControl>
                     </Grid>
@@ -224,7 +226,7 @@ const useStyles = makeStyles(styles);
                       <TableBody>
                         {ordersProvider.orders.map((row) => (
                           <TableRow key={row.name}>
-                            <TableCell align="right">{row.productName}</TableCell>                           
+                            <TableCell align="right"><a target="_blank" href={`/order-detail/${row.orderId}`} style={{cursor:"pointer"}}>{row.productName}</a></TableCell>                           
                             <TableCell align="right">{row.customerName}</TableCell>
                             <TableCell align="right">{formatter.format(row.sellPrice)}</TableCell>
                             <TableCell align="right">{getOrderState(row.orderState)}</TableCell>                            

@@ -90,7 +90,12 @@ export const getOrderIdState = (state) => {
             return 4
         case "Transferido":
             return 5
-            
+        case "Entregado":
+            return 6
+        case "Devolucion":
+            return 7
+        case "Cancelado":
+            return 8
     }
 }
 export const getOrderState = (idState) => {
@@ -105,6 +110,12 @@ export const getOrderState = (idState) => {
             return "Pendiente"
         case 5:
             return "Transferido"
+        case 6:
+            return "Entregado"
+        case 7:
+            return "Devolucion"
+        case 8:
+            return "Cancelado"
             
     }
 }

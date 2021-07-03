@@ -20,7 +20,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import {getMerchantId} from 'service/AuthenticationService'
+import { getMerchantId } from 'service/AuthenticationService'
 
 import styles from "assets/jss/material-kit-react/views/createPayment.js";
 
@@ -28,12 +28,12 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import consumeServicePost from '../../service/ConsumeService'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 
-import {CORE_BASEURL} from 'constant/index'
+import { CORE_BASEURL } from 'constant/index'
 
 const useStyles = makeStyles(styles);
 
 export default function CreateProduct(props) {
-  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");  
+  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
 
   const [errorMessage, setErrorMessage] = React.useState({});
 
@@ -44,7 +44,7 @@ export default function CreateProduct(props) {
   const [dropshipping, setDropshipping] = React.useState(false);
 
   const [specialFeatures, setSpecialFeatures] = React.useState(false);
-  
+
   const handleChange = (event) => {
     setDropshipping(event.target.value);
   };
@@ -53,248 +53,250 @@ export default function CreateProduct(props) {
     setSpecialFeatures(event.target.value);
   };
 
-  setTimeout(function() {
+  setTimeout(function () {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
 
-  React.useEffect(() => {     
+  React.useEffect(() => {
     changeMessageValidation()
   }, []);
-  const changeMessageValidation = () =>{
+  const changeMessageValidation = () => {
     let file = null
     const imageInput = document.getElementById("imageProfile");
 
     imageInput.addEventListener('change', (event) => {
       setErrorMessage({})
-      file =event.target.files[0]
-      if(file && file.size>1048576){
-        setErrorMessage({'Error':'Tu imagén es muy pesada. No debe superar 1Mb'})
-      }   
-    });    
-    document.createProduct.onsubmit = function(event){
+      file = event.target.files[0]
+      if (file && file.size > 1048576) {
+        setErrorMessage({ 'Error': 'Tu imagén es muy pesada. No debe superar 1Mb' })
+      }
+    });
+    document.createProduct.onsubmit = function (event) {
       setErrorMessage({})
       event.preventDefault()
       const callBack = (error) => {
-        if(error!=null && typeof error === 'object'){        
-        setErrorMessage(error)
-        }else if(error!=null && typeof error === 'String'){
-          setErrorMessage({'Error':error})
+        if (error != null && typeof error === 'object') {
+          setErrorMessage(error)
+        } else if (error != null && typeof error === 'String') {
+          setErrorMessage({ 'Error': error })
         }
-        else{
-          setErrorMessage({'Error':'Ha ocurrido un error inesperado por favor contactar al administrador'})
+        else {
+          setErrorMessage({ 'Error': 'Ha ocurrido un error inesperado por favor contactar al administrador' })
         }
         setIsLoading(false)
       }
-      const callBackSucess = (response) =>{
+      const callBackSucess = (response) => {
         document.getElementById("createProduct").reset();
         setDropshipping(false)
         setSuccessMessage("Producto creado satisfactoriamente.")
-        setIsLoading(false)        
+        setIsLoading(false)
       }
-      if(file == null || (file!=null && document.getElementById('name').value 
+      if (file === null || (file !== null && document.getElementById('name').value
         && document.getElementById('inventory').value
-        && document.getElementById('dropshipping').value!=""
-      )){
-        
-        if(document.getElementById('dropshipping').value !="true" || (document.getElementById('dropshipping').value=="true" && document.getElementById('dropshippingPrice').value>0)){
+        && document.getElementById('dropshipping').value != ""
+      )) {
+
+        if (document.getElementById('dropshipping').value !== "true" ||
+          (document.getElementById('dropshipping').value === "true"
+            && document.getElementById('dropshippingPrice').value > 0 && file)) {
           setSuccessMessage(null)
           setIsLoading(true)
-          const imageForm = new FormData()      
+          const imageForm = new FormData()
           event.preventDefault()
-          setErrorMessage({})      
+          setErrorMessage({})
           const form = event.currentTarget;
-          let inventory="0"
-          if(document.getElementById('inventory').value!=""){
+          let inventory = "0"
+          if (document.getElementById('inventory').value != "") {
             inventory = document.getElementById('inventory').value
           }
           let dropshippingPrice = null
-          if(document.getElementById('dropshippingPrice')!==null){
+          if (document.getElementById('dropshippingPrice') !== null) {
             dropshippingPrice = document.getElementById('dropshippingPrice').value
           }
-          let requestForm = {    
+          let requestForm = {
             amount: document.getElementById("valor").value,
             name: document.getElementById('name').value,
             inventory: inventory,
-            dropshipping:document.getElementById('dropshipping').value,
+            dropshipping: document.getElementById('dropshipping').value,
             description: document.getElementById("description").value,
             merchantId: getMerchantId(),
-            specialFeatures:document.getElementById('specialFeatures').value,
+            specialFeatures: document.getElementById('specialFeatures').value,
             dropshippingPrice: dropshippingPrice
           }
           const json = JSON.stringify(requestForm);
           const blob = new Blob([json], {
-          type: 'application/json'
+            type: 'application/json'
           });
           const data = new FormData();
           data.append("data", blob);
           data.append("image", file);
-          consumeServicePost(data,callBack,callBackSucess,`${CORE_BASEURL}/product`)
-        }else{
+          consumeServicePost(data, callBack, callBackSucess, `${CORE_BASEURL}/product`)
+        } else {
           setErrorMessage(
-            {'error':'Si es un producto dropshipping, es obligatorio colocar precio a distribuidor'}
+            { 'error': 'Si es un producto dropshipping, es obligatorio colocar precio a distribuidor y una foto del producto' }
           )
         }
-      }else{
+      } else {
         setErrorMessage(
-          {'error':'Si seleccionas una imagen, es necesario llenar todas las entradas'}
+          { 'error': 'Si seleccionas una imagen, es necesario llenar todas las entradas' }
         )
-      }      
+      }
     }
     let htmlInputs = document.forms["createProduct"].getElementsByTagName("input");
     console.log(htmlInputs)
-    for(let input of htmlInputs){
+    for (let input of htmlInputs) {
       console.log(input.item)
-     input.oninvalid = function(e) {
+      input.oninvalid = function (e) {
         e.target.setCustomValidity("Este campo es obligatorio o invalido");
+      }
+      input.oninput = function (e) {
+        e.target.setCustomValidity("");
+      };
     }
-    input.oninput = function(e) {
-      e.target.setCustomValidity("");
-  };
-    }    
   }
   return (
-    
+
     <div>
       <ResponsiveDrawe />
       <div className={classes.container}>
-          <GridContainer justify="center">
-            <GridItem xs={12} sm={12} md={6}>
-              <Card className={classes[cardAnimaton]}>
-                  <form className={classes.form} validated="true" name="createProduct" id="createProduct">
-                        <CardHeader className={classes.cardHeader}>
-                            <h3 style={{fontWeight:"600"}}><a href="/product"><ArrowBackIcon /></a> Crear producto nuevo</h3>
-                        </CardHeader>                 
-                        <CardBody>
-                        {isLoading
-                                    ? <center> <CircularProgress/></center>
-                                    : <span></span>
-                        }
-                        <FormControl style={{width:"100%",paddingBottom:"10px"}}>
-                          <span >Imagen del producto (al menos 800x800)</span>
-                          <Button
-                           id="image"
-                           color="success"
-                            variant="contained"
-                            component="label"
-                          >
-                            Seleccionar imagen
-                            <input
-                              accept="image/*"
-                              type="file"
-                              id="imageProfile"                                                            
-                              hidden
-                            />
-                          </Button>
-                        </FormControl>
-                        <FormControl style={{width:"100%",paddingBottom:"10px"}}>
-                          <InputLabel htmlFor="name">Nombre del producto</InputLabel>
-                              <OutlinedInput
-                                  id="name"
-                                  placeholder="Nombre producto"                            
-                                  labelWidth={60}                                  
-                              />
-                        </FormControl>
-                        <FormControl style={{width:"100%",paddingBottom:"10px"}}>
-                          <TextField
-                            id="description"
-                            label="Descripción"
-                            multiline
-                            rows={4}
-                            placeholder="Características, beneficios y demás del producto"
-                            variant="outlined"
-                            inputProps={{ maxLength: 1000 }}
-                            required
-                          />
-                        </FormControl>
-                        <FormControl style={{width:"100%",paddingBottom:"10px"}}>
-                          <InputLabel htmlFor="inventory">Inventario del producto</InputLabel>
-                              <OutlinedInput
-                                  id="inventory"
-                                  placeholder="Número de unidades"                            
-                                  labelWidth={60}                                  
-                                  type="number"
-                                  min="0"                                 
-                              />
-                        </FormControl>
-                        <FormControl variant="outlined"  style={{width:"100%",paddingBottom:"10px"}}>
-                          <InputLabel htmlFor="specialFeatures">¿Tiene este producto características especiales? (color, talla u otra)</InputLabel>
-                          <Select
-                            native
-                            value= {specialFeatures || false}
-                            onChange={handleChangeSpecialFeatures}
-                            inputProps={{
-                              name: 'specialFeatures',
-                              id: 'specialFeatures'
-                            }}                            
-                          >                           
-                            <option value={true}>Si</option>
-                            <option value={false}>No</option>                            
-                          </Select>
-                        </FormControl>
-                        <FormControl variant="outlined"  style={{width:"100%",paddingBottom:"10px"}}>
-                          <InputLabel htmlFor="dropshipping">¿Disponible para que otros lo vendan?</InputLabel>
-                          <Select
-                            native
-                            value= {dropshipping || false}
-                            onChange={handleChange}
-                            inputProps={{
-                              name: 'dropshipping',
-                              id: 'dropshipping'
-                            }}                            
-                          >                           
-                            <option value={true}>Si</option>
-                            <option value={false}>No</option>                            
-                          </Select>
-                        </FormControl>
-                        {dropshipping=="true"
-                          ? <FormControl style={{width:"100%",paddingBottom:"10px"}}>
-                          <InputLabel htmlFor="valor">Precio a distribuidor</InputLabel>
-                          <OutlinedInput
-                              id="dropshippingPrice"
-                              placeholder="Precio para vendedor dropshipping"
-                              startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                              labelWidth={60}                              
-                              type="number"
-                          />
-                          </FormControl>
-                          :<span></span>
-                        }
-                        <FormControl style={{width:"100%",paddingBottom:"10px"}}>
-                            <InputLabel htmlFor="valor">Precio a consumidor</InputLabel>
-                            <OutlinedInput
-                                id="valor"
-                                placeholder="Recuerda tener en cuenta nuestra comisión"
-                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                labelWidth={60}
-                                required
-                                type="number"
-                            />
-                        </FormControl>
-                        
-                      
-                    {Object.keys(errorMessage).map((keyName, i) => (
-                      <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>    
-                    ))}
-                    {successMessage
-                      ?<Alert severity="success">{successMessage}</Alert> 
-                      :<span></span>
-                    }
-                    
-                      </CardBody>
-                      <CardFooter className={classes.cardFooter}>
-                        <Button color="primary" size="lg" type="submit">
-                          Crear Producto
-                        </Button>
-                      </CardFooter>
-                    </form>                  
-              </Card>
-            </GridItem>
-          </GridContainer>
-        </div>
-        <Footer />
+        <GridContainer justify="center">
+          <GridItem xs={12} sm={12} md={6}>
+            <Card className={classes[cardAnimaton]}>
+              <form className={classes.form} validated="true" name="createProduct" id="createProduct">
+                <CardHeader className={classes.cardHeader}>
+                  <h3 style={{ fontWeight: "600" }}><a href="/product"><ArrowBackIcon /></a> Crear producto nuevo</h3>
+                </CardHeader>
+                <CardBody>
+                  {isLoading
+                    ? <center> <CircularProgress /></center>
+                    : <span></span>
+                  }
+                  <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
+                    <span >Imagen del producto (al menos 800x800)</span>
+                    <Button
+                      id="image"
+                      color="success"
+                      variant="contained"
+                      component="label"
+                    >
+                      Seleccionar imagen
+                      <input
+                        accept="image/*"
+                        type="file"
+                        id="imageProfile"
+                        hidden
+                      />
+                    </Button>
+                  </FormControl>
+                  <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
+                    <InputLabel htmlFor="name">Nombre del producto</InputLabel>
+                    <OutlinedInput
+                      id="name"
+                      placeholder="Nombre producto"
+                      labelWidth={60}
+                    />
+                  </FormControl>
+                  <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
+                    <TextField
+                      id="description"
+                      label="Descripción"
+                      multiline
+                      rows={4}
+                      placeholder="Características, beneficios y demás del producto"
+                      variant="outlined"
+                      inputProps={{ maxLength: 1000 }}
+                      required
+                    />
+                  </FormControl>
+                  <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
+                    <InputLabel htmlFor="inventory">Inventario del producto</InputLabel>
+                    <OutlinedInput
+                      id="inventory"
+                      placeholder="Número de unidades"
+                      labelWidth={60}
+                      type="number"
+                      min="0"
+                    />
+                  </FormControl>
+                  <FormControl variant="outlined" style={{ width: "100%", paddingBottom: "10px" }}>
+                    <InputLabel htmlFor="specialFeatures">¿Tiene este producto características especiales? (color, talla u otra)</InputLabel>
+                    <Select
+                      native
+                      value={specialFeatures || false}
+                      onChange={handleChangeSpecialFeatures}
+                      inputProps={{
+                        name: 'specialFeatures',
+                        id: 'specialFeatures'
+                      }}
+                    >
+                      <option value={true}>Si</option>
+                      <option value={false}>No</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl variant="outlined" style={{ width: "100%", paddingBottom: "10px" }}>
+                    <InputLabel htmlFor="dropshipping">¿Disponible para que otros lo vendan?</InputLabel>
+                    <Select
+                      native
+                      value={dropshipping || false}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: 'dropshipping',
+                        id: 'dropshipping'
+                      }}
+                    >
+                      <option value={true}>Si</option>
+                      <option value={false}>No</option>
+                    </Select>
+                  </FormControl>
+                  {dropshipping == "true"
+                    ? <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
+                      <InputLabel htmlFor="valor">Precio a distribuidor</InputLabel>
+                      <OutlinedInput
+                        id="dropshippingPrice"
+                        placeholder="Precio para vendedor dropshipping"
+                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                        labelWidth={60}
+                        type="number"
+                      />
+                    </FormControl>
+                    : <span></span>
+                  }
+                  <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
+                    <InputLabel htmlFor="valor">Precio a consumidor</InputLabel>
+                    <OutlinedInput
+                      id="valor"
+                      placeholder="Recuerda tener en cuenta nuestra comisión"
+                      startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                      labelWidth={60}
+                      required
+                      type="number"
+                    />
+                  </FormControl>
+
+
+                  {Object.keys(errorMessage).map((keyName, i) => (
+                    <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>
+                  ))}
+                  {successMessage
+                    ? <Alert severity="success">{successMessage}</Alert>
+                    : <span></span>
+                  }
+
+                </CardBody>
+                <CardFooter className={classes.cardFooter}>
+                  <Button color="primary" size="lg" type="submit">
+                    Crear Producto
+                  </Button>
+                </CardFooter>
+              </form>
+            </Card>
+          </GridItem>
+        </GridContainer>
       </div>
-    
+      <Footer />
+    </div>
+
   );
 }
