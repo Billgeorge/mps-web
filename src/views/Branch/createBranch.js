@@ -39,11 +39,11 @@ export default function CreateProduct() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [citiesResponse, SetCitiesResponse] = React.useState([]);
   const [cities, SetCities] = React.useState([]);
-  const [city, SetCity] = React.useState({
+  const [city, setCity] = React.useState({
     department: "",
     code: "",
   })
-  const [daneCode, SetDaneCode] = React.useState({
+  const [daneCode, setDaneCode] = React.useState({
     id: ''
   })
 
@@ -51,7 +51,7 @@ export default function CreateProduct() {
     let value = event.target.value
     let newCities = citiesResponse.filter(record => record.state == value)
     SetCities(newCities)
-    SetCity({
+    setCity({
       department: value,  
       code: "",
     })
@@ -60,13 +60,14 @@ export default function CreateProduct() {
 
   }
   const callBackGetDaneSucess = (response) => {
-    SetDaneCode(response)
+    setDaneCode(response)
   }
   const handleChange = (event) => {
     setErrorMessage({})
-    document.getElementById('daneCode').value = ''
+    document.getElementById('daneCode').value=''
+    setDaneCode({ id: ''})
     let value = event.target.value    
-    SetCity({
+    setCity({
       ...city,
       code: value,
     })
@@ -129,8 +130,7 @@ export default function CreateProduct() {
   const changeMessageValidation = () => {
     getCities()
     document.createBranch.onsubmit = function (event) {
-      setErrorMessage({})
-      setIsLoading(true)
+      setErrorMessage({})      
       setSuccessMessage("")
       event.preventDefault()
       if (!document.getElementById('daneCode').value) {
@@ -140,7 +140,7 @@ export default function CreateProduct() {
       const callBackSucess = (response) => {
         setSuccessMessage("Sucursal creada satisfactoriamente.") 
         document.getElementById("createBranch").reset(); 
-        SetCity({
+        setCity({
           department: '',
           code: ''
         })        
@@ -162,6 +162,7 @@ export default function CreateProduct() {
         branch: branchData,
         contact: contactData
       }
+      setIsLoading(true)
       consumeServicePost(createRequest, callBack, callBackSucess, `${CORE_BASEURL}/branch`)
       
 
