@@ -163,7 +163,8 @@ export default function CreateProduct() {
     }
 
     const processInformationStepThree = () => {
-
+        setInfoMessage("")
+        setErrorMessage({})
         if (branch.length > 0) {
             setErrorMessage({})
             let inventory = calculateInventory()

@@ -63,8 +63,10 @@ export default function CreateInventory(props) {
         setIsLoading(false)
       }
     const createInventory = () => {
-        if (document.getElementById("quantity").value > 0 && document.getElementById("email").value) {
-            setIsLoading(true)
+        setSuccessMessage("")
+        setErrorMessage({})
+        if (document.getElementById("quantity").value > 0 && document.getElementById("email").value) {            setIsLoading(true)
+            
             let createInventoryRequest = {
                 email: document.getElementById("email").value,
                 quantity:document.getElementById("quantity").value,
