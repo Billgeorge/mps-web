@@ -20,7 +20,7 @@ import OrderDetail from "views/order/OrderDetail";
 import TransactionDetailPublic from "views/TransactionDetail/TransactionDetailPublic";
 import CreatePayment from "views/CreatePayment/CreatePayment";
 import checkout from "views/Checkout/Checkout";
-import CreateProduct from "views/Product/CreateProduct";
+import CreateProduct2 from "views/Product/CreateProduct_2";
 import AgreePayment from "views/CreatePayment/AgreePayment";
 import ProductBoard from "views/Product/ProductBoard";
 import ProductDropBoard from "views/Product/ProductDropBoard";
@@ -34,6 +34,8 @@ import ThanksPage from 'views/thanks/ThankPage';
 import WithdrawalDetail from 'views/Withdrawal/WithdrawalDetail';
 import PaymentForm from 'views/casshin/PaymentForm';
 import CreateBranch from 'views/Branch/createBranch';
+import CreateInventory from 'views/inventory/CreateInventory';
+import BranchBoard from 'views/Branch/BranchBoard';
 
 
 var hist = createBrowserHistory();
@@ -59,10 +61,12 @@ return (
                 <ProtectRoute path="/order-detail" component={OrderDetail} />
                 <ProtectRoute path="/product-drop" component={ProductDropBoard} />
                 <ProtectRoute path="/edit-checkout" component={EditCheckout} />
+                <ProtectRoute path="/create-inventory" component={CreateInventory} />
                 <ProtectRoute path='/product' component={ProductBoard} />                
                 <ProtectRoute path='/profile' component={ProfilePage} />
                 <ProtectRoute path='/create-payment' component={CreatePayment}  />
-                <ProtectRoute path='/create-product' component={CreateProduct}  />                
+                <ProtectRoute path='/branch' component={BranchBoard}  />
+                <ProtectRoute path='/create-product' component={CreateProduct2}  />                
                 <ProtectRoute path='/transaction-detail' component={TransactionDetail} />           
                 <ProtectRoute path='/dashboard' component={DashBoard} />
                 <ProtectRoute path='/dashboard-dropprovider' component={DashBoardProvider} />
@@ -71,7 +75,7 @@ return (
                 <ProtectRoute path='/withdrawal-detail' component={WithdrawalDetail} />
                 <ProtectRoute path="/search-product" component={SearchProduct} />
                 <ProtectRoute path="/edit-product" component={EditProduct} />
-                <ProtectRoute path="/createbranch" component={CreateBranch} />
+                <ProtectRoute path="/create-branch" component={CreateBranch} />                
                 <Route path="/detail" component={TransactionDetailPublic} />
                 <Route path='/methods' component={PaymentForm} />
                 <Route path="/recovery-pass" component={RecoveryPassword} />
