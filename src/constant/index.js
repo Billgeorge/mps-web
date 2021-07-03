@@ -1,7 +1,7 @@
 // 'http://localhost:8083/mps' 'http://localhost:8084/mps'
 
-export const CORE_BASEURL = 'https://mps-qa.herokuapp.com/mps'//'https://mpscore-prod.herokuapp.com/mps' //'https://mpscore.herokuapp.com/mps' 'http://localhost:8083/mps' 
-export const PULL_BASEURL = 'https://mps-cashin.herokuapp.com/mps' //'https://mps-cashin-prod.herokuapp.com/mps'//https://mps-cashin.herokuapp.com/mps'//'http://localhost:8084/mps'
+export const CORE_BASEURL = 'http://localhost:8083/mps' //'https://mpscore-prod.herokuapp.com/mps' //'https://mpscore.herokuapp.com/mps' 'http://localhost:8083/mps' 
+export const PULL_BASEURL = 'http://localhost:8084/mps' //'https://mps-cashin-prod.herokuapp.com/mps'//https://mps-cashin.herokuapp.com/mps'//'http://localhost:8084/mps'
 
 export const getPaymentState = (idState) => {
     switch(idState){
@@ -90,7 +90,12 @@ export const getOrderIdState = (state) => {
             return 4
         case "Transferido":
             return 5
-            
+        case "Entregado":
+            return 6
+        case "Devolucion":
+            return 7
+        case "Cancelado":
+            return 8
     }
 }
 export const getOrderState = (idState) => {
@@ -105,6 +110,12 @@ export const getOrderState = (idState) => {
             return "Pendiente"
         case 5:
             return "Transferido"
+        case 6:
+            return "Entregado"
+        case 7:
+            return "Devolucion"
+        case 8:
+            return "Cancelado"
             
     }
 }

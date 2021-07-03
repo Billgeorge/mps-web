@@ -30,6 +30,7 @@ export default function Checkout() {
     const [paymentMethod, setPaymentMethod] = React.useState("");
     const [isLoading, setIsLoading] = React.useState(false);
     const [states, SetStates] = React.useState([]);
+    const [existCOD, setExistCOD] = React.useState(true);
     const [product, setProduct] = React.useState({
         productName:"",
         productDescription:"",
@@ -52,6 +53,7 @@ export default function Checkout() {
         observations:""
     });
     const [errorMessage, setErrorMessage] = React.useState("");
+    const [infoMessage, setInfoMessage] = React.useState("");
 
 
     const callBackErrorGetCities = () => {
@@ -182,6 +184,24 @@ export default function Checkout() {
         });       
     }
 
+    const handleChangeCity = (event) => {
+        
+        let value = event.target.value
+        let selectedCity = citiesResponse.filter(record=> record.code == value)
+        if(selectedCity[0].againstDelivery==='INACTIVE'){
+            setExistCOD(false)
+            setInfoMessage("Aunque no hay contraentrega en tu destino. Puedes pagar con nuestro servicio de custodía de pagos y el dinero no será entregado al vendedor hasta que recibas tu pedido. Usar el botón pagar por pse para hacerlo.")
+        }else{
+            setInfoMessage("")
+            setExistCOD(true)
+        }        
+        const name = event.target.name;        
+        setOrder({
+          ...order,
+          [name]: event.target.value,
+        });       
+    }
+
     const callBackSuccessGetCities = (cities) => {
         SetCities(cities)
         SetCitiesResponse(cities)
@@ -304,7 +324,7 @@ export default function Checkout() {
                     <Select
                     native
                     value={order.city}
-                    onChange={handleChange}
+                    onChange={handleChangeCity}
                     label="Ciudad"
                     inputProps={{
                         name: 'city',
@@ -337,7 +357,7 @@ export default function Checkout() {
                           <TextField
                             id="observations"
                             name="observations"
-                            label="Observaciones del pedido (color, talla)"
+                            label="Observaciones del pedido (color,talla)"
                             multiline
                             rows={4}
                             placeholder="Si necesitas poner el color, la talla o cualquier característica del producto. Escríbelo acá."
@@ -346,13 +366,19 @@ export default function Checkout() {
                             onChange={handleChange} value={order.observations}                             
                           />
                 </FormControl>
-                </GridItem>                   
+                </GridItem>   
+                { infoMessage!=""
+                ?<GridItem xs={12} sm={12} md={12} ><Alert severity="success">{infoMessage}</Alert></GridItem>:<span></span>   
+                }                
             </GridContainer>
             
             <br/>
+            {existCOD?
             <Button onClick={createOrderCOD} className={classes.buttonText}  color="success" size="lg">
                       Pagar {formatter.format(product.amount*order.quantity)} con contraentrega
             </Button>
+            :<span></span>
+            }
             <Button onClick={createOrderMPS} className={classes.buttonText} color="success" size="lg">
                       Pagar {formatter.format(product.amount*order.quantity)} con pse
             </Button>    

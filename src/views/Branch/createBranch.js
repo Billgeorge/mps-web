@@ -118,23 +118,27 @@ export default function CreateProduct() {
   const classes = useStyles();
   const getCities = () => {
     const url = `${CORE_BASEURL}/logistic/cities`
-    consumeServiceGet(callBackErrorGetCities, callBackSuccessGetCities, url)
+    consumeServiceGet(callBack, callBackSuccessGetCities, url)
   }
   const changeMessageValidation = () => {
     getCities()
     document.createBranch.onsubmit = function (event) {
       setErrorMessage({})
       event.preventDefault()
+      if (!document.getElementById('daneCode').value) {
+        setErrorMessage({ 'Error': 'Debes seleccionar departamento y ciudad.' })
+        return
+      }
       const callBackSucess = (response) => {
         setSuccessMessage("Sucursal creada satisfactoriamente.")
         setIsLoading(false)
       }
-      let branch_data = {
+      let branchData = {
         name: document.getElementById('name').value,
         address: document.getElementById('address').value,
         daneCodeId: document.getElementById('daneCode').value
       }
-      let contact_data = {
+      let contactData = {
         name: document.getElementById('contactName').value,
         identification: document.getElementById('identification').value,
         phone: document.getElementById('phone').value,
@@ -142,8 +146,8 @@ export default function CreateProduct() {
       }
 
       let createRequest = {
-        branch: branch_data,
-        contact: contact_data
+        branch: branchData,
+        contact: contactData
       }
       consumeServicePost(createRequest, callBack, callBackSucess, `${CORE_BASEURL}/branch`)
 
@@ -163,7 +167,7 @@ export default function CreateProduct() {
             <Card className={classes[cardAnimaton]}>
               <form className={classes.form} validated="true" name="createBranch" id="createBranch">
                 <CardHeader className={classes.cardHeader}>
-                  <h3 style={{ fontWeight: "600" }}><a href="/product"><ArrowBackIcon /></a> Crear Sucursal nueva</h3>
+                  <h3 style={{ fontWeight: "600" }}><a href="/branch"><ArrowBackIcon /></a> Crear Sucursal nueva</h3>
                 </CardHeader>
                 <CardBody>
                   {isLoading
@@ -193,9 +197,7 @@ export default function CreateProduct() {
                         name: 'state',
                         id: 'outlined-age-native-simple',
                       }}
-
                     >
-
                       <option aria-label="None" value="" />
                       {
                         states.map(function (state) {
@@ -226,7 +228,7 @@ export default function CreateProduct() {
                     </Select>
                   </FormControl>
                   <FormControl>
-                    <input id='daneCode' type="hidden" value={daneCode.id} />                  
+                    <input id='daneCode' type="hidden" value={daneCode.id} />
                   </FormControl>
                   <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
                     <TextField
@@ -241,19 +243,8 @@ export default function CreateProduct() {
                     />
                   </FormControl>
 
-
-
-                  {Object.keys(errorMessage).map((keyName, i) => (
-                    <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>
-                  ))}
-                  {successMessage
-                    ? <Alert severity="success">{successMessage}</Alert>
-                    : <span></span>
-                  }
-                  <br />
-
                   <CardHeader className={classes.cardHeader}>
-                    <h4 style={{ fontWeight: "600" }}> Información de Contacto</h4>
+                    <h4 style={{ fontWeight: "600", paddingTop: "15px" }}> Información de Contacto</h4>
                   </CardHeader>
                   <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
                     <InputLabel htmlFor="contactName">Nombre Encargado</InputLabel>
@@ -269,6 +260,7 @@ export default function CreateProduct() {
                     <OutlinedInput
                       id="identification"
                       placeholder="Número de identificación"
+                      type="number"
                       labelWidth={60}
                       required
                     />
@@ -279,6 +271,7 @@ export default function CreateProduct() {
                       id="phone"
                       placeholder="Número de Contacto"
                       labelWidth={60}
+                      type="number"
                       required
                     />
                     <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
@@ -288,9 +281,18 @@ export default function CreateProduct() {
                         placeholder="Correo"
                         labelWidth={60}
                         required
+                        type="email"
                       />
                     </FormControl>
                   </FormControl>
+                  {Object.keys(errorMessage).map((keyName, i) => (
+                    <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>
+                  ))}
+                  {successMessage
+                    ? <Alert severity="success">{successMessage}</Alert>
+                    : <span></span>
+                  }
+                  <br />
                 </CardBody>
                 <CardFooter className={classes.cardFooter}>
                   <Button color="primary" size="lg" type="submit">

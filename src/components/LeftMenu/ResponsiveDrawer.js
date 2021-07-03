@@ -16,6 +16,7 @@ import IconExpandMore from '@material-ui/icons/ExpandMore'
 import LocalConvenienceStoreIcon from '@material-ui/icons/LocalConvenienceStore';
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import HomeWork from '@material-ui/icons/HomeWork';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -127,6 +128,7 @@ export function ResponsiveDrawer(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [openProductMenu, setOpenProductMenu] = React.useState(false);
+  const [openBranchMenu, setOpenBranchMenu] = React.useState(false);
   const [openDashMenu, setOpenDashMenu] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const history = useHistory();
@@ -248,6 +250,10 @@ export function ResponsiveDrawer(props) {
           </ListItem>
         </List>
       </Collapse>
+      <ListItem button component="a" href="/branch" key="branch">
+        <ListItemIcon><HomeWork style={{color:'#2097F3'}} /></ListItemIcon>
+        <ListItemText style={{color:'#2097F3'}} primary="Sucursales" />        
+      </ListItem>      
       <ListItem button component="a" href="/withdrawal" key="withdrawal">
         <ListItemIcon><AccountBalanceIcon style={{color:'#2097F3'}} /></ListItemIcon>
         <ListItemText style={{color:'#2097F3'}} primary="Retiros" />
