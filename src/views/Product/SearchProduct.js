@@ -66,7 +66,13 @@ export default function SearchProduct(props) {
                 key:"disabled",
                 value:true,
                 operation:"NOT_EQUAL"
+            },
+            {
+                key:"inventory",
+                value:0,
+                operation:"GREATER_THAN"
             }
+            
         ]
         let url=`${CORE_BASEURL}/product/criteria`
         consumeServicePost(criteriaRequest,callBack,callBackSucess,url)           
