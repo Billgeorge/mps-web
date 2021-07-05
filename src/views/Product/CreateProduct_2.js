@@ -122,6 +122,7 @@ export default function CreateProduct() {
     }
 
     const processInformationStepTwo = () => {
+        setInfoMessage("")
         if (product.amount > 0 && ((product.dropshipping && product.dropshippingPrice > 0)
             || (!product.dropshipping)) && product.category) {
             setStep(step + 1)
@@ -157,9 +158,22 @@ export default function CreateProduct() {
 
     const callBackCreateInventorySuccess = (inventory) => {
         setIsLoading(false)
-        document.getElementById("createProduct").reset()
+        document.getElementById("createProduct").reset()        
         setInfoMessage("Producto creado correctamente")
-
+        setStep(1)
+        setProductImage(emptyImage)
+        setProduct(
+            {
+                name: '',
+                description: '',
+                dropshipping: false,
+                amount: 0,
+                dropshippingPrice: 0,
+                specialFeatures: false,
+                category: 0,
+                inventory: 0
+            }
+        )
     }
 
     const processInformationStepThree = () => {
@@ -214,6 +228,7 @@ export default function CreateProduct() {
     }
 
     const processInformationStepOne = () => {
+        setInfoMessage("")
         if (product.name && product.description && productImage !== emptyImage) {
             setStep(step + 1)
             setErrorMessage({})
