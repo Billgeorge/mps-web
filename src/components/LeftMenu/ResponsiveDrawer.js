@@ -15,6 +15,8 @@ import IconExpandLess from '@material-ui/icons/ExpandLess'
 import IconExpandMore from '@material-ui/icons/ExpandMore'
 import LocalConvenienceStoreIcon from '@material-ui/icons/LocalConvenienceStore';
 
+import StarsIcon from '@material-ui/icons/Stars';
+
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HomeWork from '@material-ui/icons/HomeWork';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -247,6 +249,10 @@ export function ResponsiveDrawer(props) {
           <ListItem button component="a" href="/search-product" className={classes.menuItem}>
             <ListItemIcon ><ImageSearchIcon style={{color:'#2097F3'}} /></ListItemIcon>
             <ListItemText style={{color:'#2097F3'}} primary="Buscar producto" />
+          </ListItem>
+          <ListItem button component="a" href="/private-product" className={classes.menuItem}>
+            <ListItemIcon ><StarsIcon style={{color:'#2097F3'}} /></ListItemIcon>
+            <ListItemText style={{color:'#2097F3'}} primary="Productos privados" />
           </ListItem>
         </List>
       </Collapse>
