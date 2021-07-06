@@ -24,6 +24,7 @@ import CreateProduct2 from "views/Product/CreateProduct_2";
 import AgreePayment from "views/CreatePayment/AgreePayment";
 import ProductBoard from "views/Product/ProductBoard";
 import ProductDropBoard from "views/Product/ProductDropBoard";
+import PrivateProducts from "views/Product/PrivateProducts";
 import ProductDetail from "views/Product/ProductDetail"
 import SearchProduct from "views/Product/SearchProduct";
 import EditProduct from "views/Product/EditProduct";
@@ -61,6 +62,7 @@ return (
                 <ProtectRoute path="/order-detail" component={OrderDetail} />
                 <ProtectRoute path="/product-drop" component={ProductDropBoard} />
                 <ProtectRoute path="/edit-checkout" component={EditCheckout} />
+                <ProtectRoute path="/private-product" component={PrivateProducts} />
                 <ProtectRoute path="/create-inventory" component={CreateInventory} />
                 <ProtectRoute path='/product' component={ProductBoard} />                
                 <ProtectRoute path='/profile' component={ProfilePage} />
