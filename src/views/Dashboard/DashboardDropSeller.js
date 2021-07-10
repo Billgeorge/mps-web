@@ -188,7 +188,7 @@ const useStyles = makeStyles(styles);
          </GridItem> 
          <GridItem xs={12} sm={12} md={12} className={classes.grid}>           
                 <Grid container className={classes.box} spacing={3}>
-                <Grid item  xs={12}><h2>Últimos Pagos</h2></Grid>                   
+                <Grid item  xs={12}><h2>Últimas Ordenes</h2></Grid>                   
                    <Grid item xs={12} >
                    <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
