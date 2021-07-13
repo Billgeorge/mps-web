@@ -37,6 +37,8 @@ import PaymentForm from 'views/casshin/PaymentForm';
 import CreateBranch from 'views/Branch/createBranch';
 import CreateInventory from 'views/inventory/CreateInventory';
 import BranchBoard from 'views/Branch/BranchBoard';
+import PrivateInventoryBoard from 'views/inventory/PrivateInventory';
+import EditPrivateInventory from 'views/inventory/EditPrivateInventory';
 
 
 var hist = createBrowserHistory();
@@ -63,6 +65,8 @@ return (
                 <ProtectRoute path="/product-drop" component={ProductDropBoard} />
                 <ProtectRoute path="/edit-checkout" component={EditCheckout} />
                 <ProtectRoute path="/private-product" component={PrivateProducts} />
+                <ProtectRoute path="/private-inventory" component={PrivateInventoryBoard} />
+                <ProtectRoute path="/edit-private-inventory" component={EditPrivateInventory} />                
                 <ProtectRoute path="/create-inventory" component={CreateInventory} />
                 <ProtectRoute path='/product' component={ProductBoard} />                
                 <ProtectRoute path='/profile' component={ProfilePage} />

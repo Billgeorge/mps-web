@@ -125,7 +125,7 @@ export const consumeServicePatch = async (payload,callBack,callBackSuccess,url) 
             } if(403 === error.response.status){
                 window.location.href = '/login';
             }else{
-                callBack(null)
+                callBack(error.response.data)
             }
         }else{
             callBack(null)
