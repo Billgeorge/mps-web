@@ -39,6 +39,7 @@ import CreateInventory from 'views/inventory/CreateInventory';
 import BranchBoard from 'views/Branch/BranchBoard';
 import PrivateInventoryBoard from 'views/inventory/PrivateInventory';
 import EditPrivateInventory from 'views/inventory/EditPrivateInventory';
+import EditInventoryProduct from 'views/Product/EditInventoryProduct';
 
 
 var hist = createBrowserHistory();
@@ -61,6 +62,7 @@ return (
             <Router history={hist}>      
             <Switch>
                 <ProtectRoute path="/productDetail" component={ProductDetail} />
+                <ProtectRoute path="/edit-product-inventory" component={EditInventoryProduct} />
                 <ProtectRoute path="/order-detail" component={OrderDetail} />
                 <ProtectRoute path="/product-drop" component={ProductDropBoard} />
                 <ProtectRoute path="/edit-checkout" component={EditCheckout} />

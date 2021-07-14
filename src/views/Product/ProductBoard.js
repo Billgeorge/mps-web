@@ -179,7 +179,7 @@ const useStyles = makeStyles(styles);
                             }</TableCell>
                             <TableCell align="center">{row.inventory}</TableCell>
                             <TableCell align="right"><center><a href={"/create-inventory?idp="+row.id}><Button color="primary">Asignar Inventario</Button></a></center></TableCell>
-                            <TableCell align="right"><center><a href={"/edit-product?idp="+row.shortId}><Button color="primary">Editar producto</Button></a></center></TableCell>
+                            <TableCell align="right"><center><a href={"/edit-product-inventory?idp="+row.id}><Button color="primary">Editar Inventario</Button></a></center></TableCell>
                             <TableCell align="center">{row.dropshipping ? "Si":"No"}</TableCell>
                           </TableRow>
                         ))}
