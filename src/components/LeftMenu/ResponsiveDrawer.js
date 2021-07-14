@@ -9,7 +9,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
-import { makeStyles, useTheme,withStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import IconExpandLess from '@material-ui/icons/ExpandLess'
 import IconExpandMore from '@material-ui/icons/ExpandMore'
@@ -28,8 +28,8 @@ import clsx from 'clsx';
 
 
 import Avatar from '@material-ui/core/Avatar';
-import {getMerchantName} from 'service/AuthenticationService'
-import {getFirstLetters} from 'util/NameUtils'
+import { getMerchantName } from 'service/AuthenticationService'
+import { getFirstLetters } from 'util/NameUtils'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ExitToApp from '@material-ui/icons/ExitToApp';
@@ -42,6 +42,7 @@ import PaymentIcon from '@material-ui/icons/Payment';
 import EditIcon from '@material-ui/icons/Edit';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import Collapse from '@material-ui/core/Collapse'
+import AssistantIcon from '@material-ui/icons/Assistant';
 
 const drawerWidth = 240;
 
@@ -50,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   appBar: {
-    backgroundColor:'#2097F3',
+    backgroundColor: '#2097F3',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -125,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export function ResponsiveDrawer(props) {
-  
+
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -139,6 +140,10 @@ export function ResponsiveDrawer(props) {
     setOpenProductMenu(!openProductMenu)
   }
 
+  function handleClickBranch() {
+    setOpenBranchMenu(!openBranchMenu)
+  }
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -147,7 +152,7 @@ export function ResponsiveDrawer(props) {
     setAnchorEl(event.currentTarget);
   };
 
-  function handleClickDash()  {
+  function handleClickDash() {
     setOpenDashMenu(!openDashMenu);
   };
 
@@ -174,7 +179,7 @@ export function ResponsiveDrawer(props) {
       {...props}
     />
   ));
-  
+
   const StyledMenuItem = withStyles((theme) => ({
     root: {
       '&:focus': {
@@ -196,128 +201,145 @@ export function ResponsiveDrawer(props) {
   };
 
 
-  const brandComponent =<div><img src={Logo} style={{width:"50px"}}/><Button className={classes.title}>mipagoseguro</Button></div>;
+  const brandComponent = <div><img src={Logo} style={{ width: "50px" }} /><Button className={classes.title}>mipagoseguro</Button></div>;
 
   const drawer = (
     <div>
       <div className={classes.toolbar}>
-    <IconButton onClick={handleDrawerClose}>
-      {theme.direction === 'rtl' ? <ChevronRightIcon style={{color:'#2097F3'}} /> : <ChevronLeftIcon style={{color:'#2097F3'}} />}
-    </IconButton>
-  </div>
-  <Divider />
-  <List>
-    
-      <ListItem button onClick={handleClickDash} key="dashboard">
-        <ListItemIcon><DashboardIcon style={{color:'#2097F3'}} /></ListItemIcon>
-        <ListItemText style={{color:'#2097F3'}} primary="Consolidado" />
-        {openDashMenu ? <IconExpandLess style={{color:'#2097F3'}}/> : <IconExpandMore style={{color:'#2097F3'}}/>}
-      </ListItem>
-      <Collapse in={openDashMenu} timeout="auto" unmountOnExit>
+        <IconButton onClick={handleDrawerClose}>
+          {theme.direction === 'rtl' ? <ChevronRightIcon style={{ color: '#2097F3' }} /> : <ChevronLeftIcon style={{ color: '#2097F3' }} />}
+        </IconButton>
+      </div>
+      <Divider />
+      <List>
+
+        <ListItem button onClick={handleClickDash} key="dashboard">
+          <ListItemIcon><DashboardIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+          <ListItemText style={{ color: '#2097F3' }} primary="Consolidado" />
+          {openDashMenu ? <IconExpandLess style={{ color: '#2097F3' }} /> : <IconExpandMore style={{ color: '#2097F3' }} />}
+        </ListItem>
+        <Collapse in={openDashMenu} timeout="auto" unmountOnExit>
+          <Divider />
+          <List component="div" style={{ paddingLeft: '15px' }}>
+            <ListItem button component="a" href="/dashboard-dropseller" className={classes.menuItem}>
+              <ListItemIcon ><ReceiptIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+              <ListItemText style={{ color: '#2097F3' }} primary="Ordenes drop" />
+            </ListItem>
+            <ListItem button component="a" href="/dashboard-dropprovider" className={classes.menuItem}>
+              <ListItemIcon ><ReceiptIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+              <ListItemText style={{ color: '#2097F3' }} primary="Ordenes proveedor" />
+            </ListItem>
+            <ListItem button component="a" href="/dashboard" className={classes.menuItem}>
+              <ListItemIcon ><PaymentIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+              <ListItemText style={{ color: '#2097F3' }} primary="Pagos" />
+            </ListItem>
+          </List>
+        </Collapse>
+        <ListItem button onClick={handleClick} key="product">
+          <ListItemIcon><StoreIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+          <ListItemText style={{ color: '#2097F3' }} primary="Productos" />
+          {openProductMenu ? <IconExpandLess style={{ color: '#2097F3' }} /> : <IconExpandMore style={{ color: '#2097F3' }} />}
+        </ListItem>
+        <Collapse in={openProductMenu} timeout="auto" unmountOnExit>
+          <Divider />
+          <List component="div" style={{ paddingLeft: '15px' }}>
+            <ListItem button component="a" href="/product-drop" className={classes.menuItem}>
+              <ListItemIcon ><LocalConvenienceStoreIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+              <ListItemText style={{ color: '#2097F3' }} primary="Productos drop" />
+            </ListItem>
+            <ListItem button component="a" href="/product" className={classes.menuItem}>
+              <ListItemIcon ><EditIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+              <ListItemText style={{ color: '#2097F3' }} primary="Productos propios" />
+            </ListItem>
+            <ListItem button component="a" href="/search-product" className={classes.menuItem}>
+              <ListItemIcon ><ImageSearchIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+              <ListItemText style={{ color: '#2097F3' }} primary="Buscar producto" />
+            </ListItem>
+            <ListItem button component="a" href="/private-product" className={classes.menuItem}>
+              <ListItemIcon ><StarsIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+              <ListItemText style={{ color: '#2097F3' }} primary="Productos privados" />
+            </ListItem>
+          </List>
+        </Collapse>
+        <ListItem button onClick={handleClickBranch} key="branch">
+          <ListItemIcon><HomeWork style={{ color: '#2097F3' }} /></ListItemIcon>
+          <ListItemText style={{ color: '#2097F3' }} primary="Sucursales" />
+          {openBranchMenu ? <IconExpandLess style={{ color: '#2097F3' }} /> : <IconExpandMore style={{ color: '#2097F3' }} />}
+        </ListItem>
+
+        <Collapse in={openBranchMenu} timeout="auto" unmountOnExit>
+          <Divider />
+          <List component="div" style={{ paddingLeft: '15px' }}>
+            <ListItem button component="a" href="/branch" key="branch">
+              <ListItemIcon><HomeWork style={{ color: '#2097F3' }} /></ListItemIcon>
+              <ListItemText style={{ color: '#2097F3' }} primary="Bodegas" />
+            </ListItem>
+
+            <ListItem button component="a" href="/private-inventory" key="private-inventory">
+              <ListItemIcon><AssistantIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+              <ListItemText style={{ color: '#2097F3' }} primary="Inventarios exclusivos" />
+            </ListItem>
+          </List>
+        </Collapse>
+
+        <ListItem button component="a" href="/withdrawal" key="withdrawal">
+          <ListItemIcon><AccountBalanceIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+          <ListItemText style={{ color: '#2097F3' }} primary="Retiros" />
+        </ListItem>
         <Divider />
-        <List component="div" style={{paddingLeft:'15px'}}>
-          <ListItem button component="a" href="/dashboard-dropseller" className={classes.menuItem}>
-            <ListItemIcon ><ReceiptIcon style={{color:'#2097F3'}} /></ListItemIcon>
-            <ListItemText style={{color:'#2097F3'}} primary="Ordenes drop" />
-          </ListItem>
-          <ListItem button component="a" href="/dashboard-dropprovider" className={classes.menuItem}>
-            <ListItemIcon ><ReceiptIcon style={{color:'#2097F3'}} /></ListItemIcon>
-            <ListItemText style={{color:'#2097F3'}} primary="Ordenes proveedor" />
-          </ListItem>
-          <ListItem button component="a" href="/dashboard" className={classes.menuItem}>
-            <ListItemIcon ><PaymentIcon style={{color:'#2097F3'}} /></ListItemIcon>
-            <ListItemText style={{color:'#2097F3'}} primary="Pagos" />
-          </ListItem>          
-        </List>
-      </Collapse>
-      <ListItem button onClick={handleClick} key="product">
-        <ListItemIcon><StoreIcon style={{color:'#2097F3'}} /></ListItemIcon>
-        <ListItemText style={{color:'#2097F3'}} primary="Productos" />
-        {openProductMenu ? <IconExpandLess style={{color:'#2097F3'}}/> : <IconExpandMore style={{color:'#2097F3'}}/>}
-      </ListItem>
-      <Collapse in={openProductMenu} timeout="auto" unmountOnExit>
-        <Divider />
-        <List component="div" style={{paddingLeft:'15px'}}>
-          <ListItem button component="a" href="/product-drop" className={classes.menuItem}>
-            <ListItemIcon ><LocalConvenienceStoreIcon style={{color:'#2097F3'}} /></ListItemIcon>
-            <ListItemText style={{color:'#2097F3'}} primary="Productos drop" />
-          </ListItem>
-          <ListItem button component="a" href="/product" className={classes.menuItem}>
-            <ListItemIcon ><EditIcon style={{color:'#2097F3'}} /></ListItemIcon>
-            <ListItemText style={{color:'#2097F3'}} primary="Productos propios" />
-          </ListItem>
-          <ListItem button component="a" href="/search-product" className={classes.menuItem}>
-            <ListItemIcon ><ImageSearchIcon style={{color:'#2097F3'}} /></ListItemIcon>
-            <ListItemText style={{color:'#2097F3'}} primary="Buscar producto" />
-          </ListItem>
-          <ListItem button component="a" href="/private-product" className={classes.menuItem}>
-            <ListItemIcon ><StarsIcon style={{color:'#2097F3'}} /></ListItemIcon>
-            <ListItemText style={{color:'#2097F3'}} primary="Productos privados" />
-          </ListItem>
-        </List>
-      </Collapse>
-      <ListItem button component="a" href="/branch" key="branch">
-        <ListItemIcon><HomeWork style={{color:'#2097F3'}} /></ListItemIcon>
-        <ListItemText style={{color:'#2097F3'}} primary="Sucursales" />        
-      </ListItem>      
-      <ListItem button component="a" href="/withdrawal" key="withdrawal">
-        <ListItemIcon><AccountBalanceIcon style={{color:'#2097F3'}} /></ListItemIcon>
-        <ListItemText style={{color:'#2097F3'}} primary="Retiros" />
-      </ListItem>
-      <Divider/>
-      <ListItem style={{padding:'0'}}>
+        <ListItem style={{ padding: '0' }}>
           <Button
-              href=""
-              color="transparent"
-              target="_blank"
-              style={{padding:"0"}}
-              className={classes.navLink}
-              onClick={handleClickProfile}
-            >          
-                <IconButton aria-label="Perfil"><Avatar style={{backgroundColor: "rgb(29 143 210)"}} aria-label="recipe">
-                            {getFirstLetters(getMerchantName())}
-                </Avatar>
-                </IconButton>
-                <ListItemText style={{color:'#2097F3'}} primary={getMerchantName()} />
-            </Button>
-            
-            
-            <StyledMenu
+            href=""
+            color="transparent"
+            target="_blank"
+            style={{ padding: "0" }}
+            className={classes.navLink}
+            onClick={handleClickProfile}
+          >
+            <IconButton aria-label="Perfil"><Avatar style={{ backgroundColor: "rgb(29 143 210)" }} aria-label="recipe">
+              {getFirstLetters(getMerchantName())}
+            </Avatar>
+            </IconButton>
+            <ListItemText style={{ color: '#2097F3' }} primary={getMerchantName()} />
+          </Button>
+
+
+          <StyledMenu
             id="customized-menu"
             anchorEl={anchorEl}
             keepMounted
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <StyledMenuItem>          
+            <StyledMenuItem>
               <ListItemText primary={getMerchantName()} />
             </StyledMenuItem>
             <StyledMenuItem>
-            
-            <ListItemIcon>
-              
-                <Avatar style={{backgroundColor: "rgb(29 143 210)"}}aria-label="recipe">
-                                {}
-                </Avatar>  
+
+              <ListItemIcon>
+
+                <Avatar style={{ backgroundColor: "rgb(29 143 210)" }} aria-label="recipe">
+                  { }
+                </Avatar>
               </ListItemIcon>
               <a href="/profile">
-              < ListItemText primary="Mi Perfil" />
+                < ListItemText primary="Mi Perfil" />
               </a>
-            </StyledMenuItem>        
+            </StyledMenuItem>
             <StyledMenuItem onClick={logout}>
-              
+
               <ListItemIcon>
                 <ExitToApp fontSize="small" />
               </ListItemIcon>
               <ListItemText primary="Cerrar Sesión" />
-              
+
             </StyledMenuItem>
           </StyledMenu>
         </ListItem>
-    
-  </List>
-  </div>
-    );
+
+      </List>
+    </div>
+  );
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -344,9 +366,9 @@ export function ResponsiveDrawer(props) {
           </IconButton>
           {brandComponent}
         </Toolbar>
-      </AppBar>      
-      
-      
+      </AppBar>
+
+
       <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
@@ -360,11 +382,11 @@ export function ResponsiveDrawer(props) {
           }),
         }}
       >
-            {drawer}
-          </Drawer>
-  </div>
-        );
-      }
+        {drawer}
+      </Drawer>
+    </div>
+  );
+}
 
 
 

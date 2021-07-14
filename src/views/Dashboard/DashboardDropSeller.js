@@ -196,6 +196,7 @@ const useStyles = makeStyles(styles);
                         <TableRow>
                           <TableCell>Producto </TableCell>
                           <TableCell align="right">Nombre Cliente </TableCell>
+                          <TableCell align="right">Celular Cliente </TableCell>
                           <TableCell align="right">Precio de venta</TableCell>
                           <TableCell align="center">Precio de compra</TableCell>
                           <TableCell align="center">Precio de flete</TableCell>
@@ -212,6 +213,7 @@ const useStyles = makeStyles(styles);
                               <a target="_blank" href={`/order-detail/${row.orderId}`} style={{cursor:"pointer"}}>{row.productName}</a>
                             </TableCell>
                             <TableCell align="right">{row.customerName}</TableCell>
+                            <TableCell align="right">{row.customerPhone}</TableCell>
                             <TableCell align="right">{formatter.format(row.sellPrice)}</TableCell>
                             <TableCell align="right">{formatter.format(row.buyPrice)}</TableCell>
                             <TableCell align="right">{formatter.format(row.freightPrice)}</TableCell>

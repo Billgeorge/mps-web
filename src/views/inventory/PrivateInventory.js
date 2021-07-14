@@ -25,29 +25,26 @@ import {CORE_BASEURL} from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 
 import { useHistory } from "react-router-dom";
+import {getLegibleDate} from 'util/DateUtil'
 
 const useStyles = makeStyles(styles);
 
 
   
-  export default function BranchBoard(props) {
+  export default function PrivateInventoryBoard(props) {
 
-    const [branches, setBranches] = React.useState([]);
+    const [inventories, setInventories] = React.useState([]);
     const [errorMessage, setErrorMessage] = React.useState("");
     const [successMessage, setSuccessMessage] = React.useState("");
     
-    React.useEffect(() => getBranchesForMerchant(), []);    
+    React.useEffect(() => getPrivateInventoriesForProvider(), []);    
 
-    const callBackSuccess = (branches) =>{
-        setBranches(branches)      
+    const callBackSuccess = (inventories) =>{
+        setInventories(inventories)      
     }
 
     const history = useHistory();
 
-    const createBranch = () =>{
-        history.push("create-branch")
-    }
-    
 
     const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -56,18 +53,18 @@ const useStyles = makeStyles(styles);
     })
 
     const callBack = (error) => {
-      setBranches([])
+        setInventories([])
       if(error==404){
-        setErrorMessage("No hay sucursales para mostrar")        
+        setErrorMessage("No hay inventarios privados para mostrar")        
       }else{
-        setErrorMessage("Error Cargando sucursales")
+        setErrorMessage("Error Cargando inventarios")
       }      
     }
     
-    const getBranchesForMerchant = (filter,value) => {
+    const getPrivateInventoriesForProvider = (filter,value) => {
       const merchantId = getMerchantId()
-      console.log('getting withdrawals ')
-      let url=`${CORE_BASEURL}/branch/merchant/${merchantId}`
+      console.log('getting inventories ')
+      let url=`${CORE_BASEURL}/privateinventory/provider/${merchantId}`
       consumeServiceGet(callBack,callBackSuccess,url)      
     }
       
@@ -89,28 +86,29 @@ const useStyles = makeStyles(styles);
                             A continuación ves las bodegas que tienes registradas                    
                         </Grid>                              
                     </Grid>
-                </GridItem>   
-                   <Grid item xs={12}><Button style={{marginLeft:"10px"}} color="primary"  onClick={createBranch}> Crear Bodega</Button></Grid>                   
+                </GridItem>     
                    <Grid item xs={12} >
                    <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
                       <TableHead>
                         <TableRow>
-                          <TableCell align="center">Nombre</TableCell>
-                          <TableCell align="center">Dirección</TableCell>
-                          <TableCell align="center">Email Encargado</TableCell>
-                          <TableCell align="center">Número de encargado</TableCell>                                             
+                          <TableCell align="center">Nombre de vendedor</TableCell>
+                          <TableCell align="center">Nombre de producto</TableCell>
+                          <TableCell align="center">Cantidad</TableCell>
+                          <TableCell align="center">Fecha creación</TableCell>
+                          <TableCell align="center">Editar</TableCell>                                             
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {branches.map((row) => (
+                        {inventories.map((row) => (
                           <TableRow>                            
-                            <TableCell align="center">{row.name}</TableCell>
+                            <TableCell align="center">{row.dropSellerName}</TableCell>
                             <TableCell align="center">{
-                              row.address
+                              row.productName
                             }</TableCell>
-                            <TableCell align="center">{row.contactEmail}</TableCell>
-                            <TableCell align="center">{row.contactPhone}</TableCell>
+                            <TableCell align="center">{row.quantity}</TableCell>
+                            <TableCell align="center">{getLegibleDate(row.creationDate)}</TableCell>
+                            <TableCell align="center"><a href={"/edit-private-inventory?idp="+row.id}><Button style={{marginLeft:"10px"}} color="primary"> Editar inventario</Button></a></TableCell>                            
                           </TableRow>
                         ))}
                       </TableBody>
