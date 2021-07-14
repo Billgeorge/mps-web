@@ -75,6 +75,7 @@ export default function EditInventoryProduct(props) {
     const saveInventory = () => {
         setSuccessMessage("")
         setErrorMessage({})
+        setInventories([])
         if (branch.length > 0) {
             setErrorMessage({})
             let inventory = calculateInventory()
