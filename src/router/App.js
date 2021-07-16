@@ -40,6 +40,7 @@ import BranchBoard from 'views/Branch/BranchBoard';
 import PrivateInventoryBoard from 'views/inventory/PrivateInventory';
 import EditPrivateInventory from 'views/inventory/EditPrivateInventory';
 import EditInventoryProduct from 'views/Product/EditInventoryProduct';
+import CreatePromotion from 'views/Promotion/CreatePromotion';
 
 
 var hist = createBrowserHistory();
@@ -83,7 +84,8 @@ return (
                 <ProtectRoute path='/withdrawal-detail' component={WithdrawalDetail} />
                 <ProtectRoute path="/search-product" component={SearchProduct} />
                 <ProtectRoute path="/edit-product" component={EditProduct} />
-                <ProtectRoute path="/create-branch" component={CreateBranch} />                
+                <ProtectRoute path="/create-branch" component={CreateBranch} />   
+                <ProtectRoute path="/create-promotion" component={CreatePromotion} />
                 <Route path="/detail" component={TransactionDetailPublic} />
                 <Route path='/methods' component={PaymentForm} />
                 <Route path="/recovery-pass" component={RecoveryPassword} />
