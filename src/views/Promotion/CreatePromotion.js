@@ -23,7 +23,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { consumeServicePatch } from 'service/ConsumeService'
 import { getQueyParamFromUrl } from 'util/UrlUtil'
 
-import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
+import ResponsiveDrawer from "components/LeftMenu/ResponsiveDrawer.js"
 import styles from "assets/jss/material-kit-react/views/createPayment.js";
 import {CORE_BASEURL} from 'constant/index'
 
@@ -95,7 +95,7 @@ export default function CreatePromotion(props) {
     }
     return (
         <div>
-            <ResponsiveDrawe />
+            <ResponsiveDrawer />
             <div className={classes.container}>
                 <GridContainer justify="center">
                     <GridItem xs={12} sm={12} md={6}>
