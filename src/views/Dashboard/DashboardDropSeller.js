@@ -27,6 +27,8 @@ import {getLegibleDate} from 'util/DateUtil'
 import {consumeServiceGet} from 'service/ConsumeService'
 import {CORE_BASEURL, getOrderState} from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
+import Button from "components/CustomButtons/Button.js";
+import TextField from '@material-ui/core/TextField';
 
 
 
@@ -51,6 +53,11 @@ const useStyles = makeStyles(styles);
 
     const [orderState, setOrderState] = React.useState(0);
 
+    const [filter, setFilter] = React.useState({
+      guideNumber:null,
+      contactPhone:null
+    });
+
     const handleChangeDuration = (event) => {     
       setErrorMessage("")
       setDuration(event.target.value);
@@ -62,6 +69,20 @@ const useStyles = makeStyles(styles);
       setOrderState(event.target.value);
       getProductsForMerchant('orderState',event.target.value)
     };
+
+    const handleChange = (event) => {
+      setErrorMessage("")
+      const name = event.target.name;
+      setFilter({
+        ...filter,
+        [name]: event.target.value,
+      });
+  };
+
+    const filterTransactions = () => {   
+      setErrorMessage("")
+      getProductsForMerchant("numbers","")      
+    }
 
     const callBackSuccess = (products) =>{
       setProducts(products)      
@@ -89,21 +110,27 @@ const useStyles = makeStyles(styles);
 
     const getProductsForMerchant = (filter,value) => {
       const merchantId = getMerchantId()
-      console.log('filter '+filter)
-      console.log('value '+value)
       let url=`${CORE_BASEURL}/order/dropseller?merchantId=${merchantId}`
       if(filter ==='duration'){
         url=`${url}&durationInDays=${value}`
-        if(orderState!==0){
-          url=`${url}&orderState=${orderState}`
-        }
+        
       }else{
         url=`${url}&durationInDays=${duration}`
       }
       if(filter === 'orderState' && value!==-1){
         url=`${url}&orderState=${value}`
       }
-
+      if(filter==="numbers"){
+        if(document.getElementById("guideNumber").value){
+          url = `${url}&guideNumber=${document.getElementById("guideNumber").value}`
+        }
+        if(document.getElementById("contactPhone").value){
+          url = `${url}&contactNumber=${document.getElementById("contactPhone").value}`
+        }
+        if(orderState!==0){
+          url=`${url}&orderState=${orderState}`
+        }        
+      }
       consumeServiceGet(callBack,callBackSuccess,url)
     }
       
@@ -149,7 +176,7 @@ const useStyles = makeStyles(styles);
                         </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={12} md={6} style={{textAlign:"center"}} >
+                    <Grid item xs={12} sm={12} md={4} style={{textAlign:"center"}} >
                       <FormControl variant="outlined" style={{width:"180px"}}>
                           <InputLabel id="demo-simple-select-outlined-label">Tiempo</InputLabel>
                           <Select
@@ -169,6 +196,13 @@ const useStyles = makeStyles(styles);
                           </Select>
                       </FormControl>
                     </Grid>
+                    <Grid item xs={12} sm={12} md={4} style={{textAlign:"center"}}>
+                    <TextField onChange={handleChange}  value={filter.guideNumber} inputProps={{ min: 0, id:'guideNumber',name:'guideNumber'}} type="number" style={{ width:"180px",backgroundColor: "white" }} id="outlined-basic" label="Número de guía" variant="outlined" required />
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={4} style={{textAlign:"center"}} >
+                          <TextField onChange={handleChange} value={filter.contactPhone} inputProps={{ min: 0, id:'contactPhone',name:'contactPhone'}} type="number" style={{ width:"180px",backgroundColor: "white" }} id="outlined-basic" label="Celular cliente" variant="outlined" required />
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={4} style={{textAlign:"center"}} ><Button  color="primary" onClick={filterTransactions}> Filtrar</Button></Grid>
                 </Grid>   
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
