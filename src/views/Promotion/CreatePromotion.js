@@ -68,6 +68,11 @@ export default function CreatePromotion(props) {
         }
         const callBackSucess = () => {
             setSuccessMessage("Promoción creada con éxito")
+            document.getElementById("createPromotion").reset();
+            setForm({
+                quantity: 0,
+                number: 0
+            })
             setIsLoading(false)
         }
         let idc = getQueyParamFromUrl('idc')
@@ -85,7 +90,7 @@ export default function CreatePromotion(props) {
                     condition: "EQUAL",
                     discount:{
                         target: "TOTAL_PRICE",
-                        type: "FIXED_VALUE",
+                        type: "FIXED_PRICE",
                         amount: document.getElementById("amount").value
                     }
                 }]
@@ -102,7 +107,7 @@ export default function CreatePromotion(props) {
                         <Card className={classes[cardAnimaton]}>
                             <form className={classes.form} validated="true" name="createPromotion" id="createPromotion">
                                 <CardHeader className={classes.cardHeader}>
-                                    <h3 style={{ fontWeight: "600" }}><a href="/product-drop"><ArrowBackIcon /></a> Editar producto</h3>
+                                    <h3 style={{ fontWeight: "600" }}><a href="/product-drop"><ArrowBackIcon /></a> Crear Promoción</h3>
                                 </CardHeader>
                                 <CardBody>
                                     {isLoading
