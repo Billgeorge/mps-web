@@ -13,10 +13,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Tooltip from "@material-ui/core/Tooltip";
 import ListItemText from '@material-ui/core/ListItemText';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-import {getEmail, getMerchantName} from 'service/AuthenticationService'
+import { getMerchantName} from 'service/AuthenticationService'
 
 import {getFirstLetters} from 'util/NameUtils'
 

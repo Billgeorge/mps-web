@@ -3,6 +3,7 @@
 export const CORE_BASEURL = 'https://mpscore-prod.herokuapp.com/mps' //'https://mpscore.herokuapp.com/mps' 'http://localhost:8083/mps' 
 export const PULL_BASEURL = 'https://mps-cashin-prod.herokuapp.com/mps' //https://mps-cashin.herokuapp.com/mps'//'http://localhost:8084/mps'
 
+
 export const getPaymentState = (idState) => {
     switch(idState){
         case 1:

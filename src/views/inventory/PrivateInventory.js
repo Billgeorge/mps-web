@@ -79,11 +79,11 @@ const useStyles = makeStyles(styles);
         <GridContainer className={classes.subContainer} justify="center" >
          <GridItem xs={12} sm={12} md={12} className={classes.grid}>           
                 <Grid container className={classes.box} spacing={3}>
-                <Grid item  xs={12}><h2>Sucursales</h2></Grid>
+                <Grid item  xs={12}><h2>Tus inventarios privados</h2></Grid>
                 <GridItem xs={12} sm={12} md={12} className={classes.grid}>        
                     <Grid container className={classes.box}  spacing={3}>               
                         <Grid item xs={12} sm={12} md={12} >
-                            A continuación ves las bodegas que tienes registradas                    
+                            A continuación ves los inventarios privados que has creado             
                         </Grid>                              
                     </Grid>
                 </GridItem>     
