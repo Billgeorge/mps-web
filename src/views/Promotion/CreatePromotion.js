@@ -68,7 +68,11 @@ export default function CreatePromotion(props) {
         }
         const callBackSucess = () => {
             setSuccessMessage("Promoción creada con éxito")
-            document.getElementById("createBranch").reset();
+            document.getElementById("createPromotion").reset();
+            setForm({
+                quantity: 0,
+                number: 0
+            })
             setIsLoading(false)
         }
         let idc = getQueyParamFromUrl('idc')
