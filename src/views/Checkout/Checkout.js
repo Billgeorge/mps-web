@@ -31,13 +31,16 @@ export default function Checkout() {
     const [isLoading, setIsLoading] = React.useState(false);
     const [states, SetStates] = React.useState([]);
     const [existCOD, setExistCOD] = React.useState(true);
+    const [totalPrice, setTotalPrice] = React.useState(null);    
+
     const [product, setProduct] = React.useState({
         productName:"",
         productDescription:"",
         sellerMerchantName:"",
         imageURL:"",
         amount:0,
-        specialConditions:false
+        specialConditions:false,
+        discounts:[]
     });
     const [order, setOrder] = React.useState({
         state:"",
@@ -79,7 +82,19 @@ export default function Checkout() {
           ...order,
           quantity:quantity
         });
+        validateDiscount(quantity)        
     };
+
+    const validateDiscount = (quantity) => {
+        let discountRule = product.discounts.filter(function (el) {
+            return el.quantity === quantity;
+        });
+        if(discountRule.length>0){
+            setTotalPrice(discountRule[0].finalPrice)
+        }else{
+            setTotalPrice(null)
+        }
+    }
 
     const createOrder = (paymentMethod) => {
         setErrorMessage("") 
@@ -125,7 +140,7 @@ export default function Checkout() {
             productId: getQueyParamFromUrl("idc"),
             paymentMethod:paymentMethod,
             quantity: order.quantity,
-            amount:order.quantity*product.amount,
+            amount:totalPrice?totalPrice:product.amount*order.quantity,
             customer : {
                 name:order.name,
                 email:order.email,
@@ -375,12 +390,12 @@ export default function Checkout() {
             <br/>
             {existCOD?
             <Button onClick={createOrderCOD} className={classes.buttonText}  color="success" size="lg">
-                      Pagar {formatter.format(product.amount*order.quantity)} con contraentrega
+                      Pagar {formatter.format(totalPrice?totalPrice:product.amount*order.quantity)} con contraentrega
             </Button>
             :<span></span>
             }
             <Button onClick={createOrderMPS} className={classes.buttonText} color="success" size="lg">
-                      Pagar {formatter.format(product.amount*order.quantity)} con pse
+                      Pagar {formatter.format(totalPrice?totalPrice:product.amount*order.quantity)} con pse
             </Button>    
         </GridItem>          
     </GridContainer>

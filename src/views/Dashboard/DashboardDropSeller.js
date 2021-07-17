@@ -176,7 +176,7 @@ const useStyles = makeStyles(styles);
                         </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={12} md={4} style={{textAlign:"center"}} >
+                    <Grid item xs={12} sm={12} md={6} style={{textAlign:"center"}} >
                       <FormControl variant="outlined" style={{width:"180px"}}>
                           <InputLabel id="demo-simple-select-outlined-label">Tiempo</InputLabel>
                           <Select
@@ -195,14 +195,7 @@ const useStyles = makeStyles(styles);
                             <MenuItem value={60}>últimos 60 días</MenuItem>
                           </Select>
                       </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={4} style={{textAlign:"center"}}>
-                    <TextField onChange={handleChange}  value={filter.guideNumber} inputProps={{ min: 0, id:'guideNumber',name:'guideNumber'}} type="number" style={{ width:"180px",backgroundColor: "white" }} id="outlined-basic" label="Número de guía" variant="outlined" required />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={4} style={{textAlign:"center"}} >
-                          <TextField onChange={handleChange} value={filter.contactPhone} inputProps={{ min: 0, id:'contactPhone',name:'contactPhone'}} type="number" style={{ width:"180px",backgroundColor: "white" }} id="outlined-basic" label="Celular cliente" variant="outlined" required />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={4} style={{textAlign:"center"}} ><Button  color="primary" onClick={filterTransactions}> Filtrar</Button></Grid>
+                    </Grid>                    
                 </Grid>   
          </GridItem>
          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
