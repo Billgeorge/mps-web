@@ -6,10 +6,6 @@ import styles from "assets/jss/material-kit-react/views/DashBoard.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
-import { FileSaver } from 'file-saver';
-
-
-
 import Alert from '@material-ui/lab/Alert';
 
 import Table from '@material-ui/core/Table';
@@ -32,6 +28,11 @@ import { getLegibleDate } from 'util/DateUtil'
 import { consumeServiceGet } from 'service/ConsumeService'
 import { CORE_BASEURL, getOrderState, getOrderIdState } from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
+import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+
+import NavigateNextSharpIcon from '@material-ui/icons/NavigateNextSharp';
+import NavigateBeforeSharpIcon from '@material-ui/icons/NavigateBeforeSharp';
 
 
 
@@ -55,22 +56,20 @@ export default function DashBoard(props) {
 
   const [duration, setDuration] = React.useState(100);
 
+  const [page, setPage] = React.useState(1);
+
   const [orderState, setOrderState] = React.useState(0);
 
   const [selected, setSelected] = React.useState([]);
 
   const handleChangeDuration = (event) => {
-
     setErrorMessage("")
     setDuration(event.target.value);
-    getOrdersForProvider('duration', event.target.value)
   };
 
-  const handleChangeorderState = (event) => {
-
+  const handleChangeOrderState = (event) => {
     setErrorMessage("")
     setOrderState(event.target.value);
-    getOrdersForProvider('orderState', event.target.value)
   };
 
   const getMultipleOrdersString = (event) => {
@@ -81,11 +80,14 @@ export default function DashBoard(props) {
     return multipleOrders
   };
 
-  const callBackSuccessGet = (file) => {
-    const fileBlob = new Blob([file], { type: 'application/pdf' });
-    console.log("download file", file)
-    FileSaver.saveAs(fileBlob, "test.pdf");
-  }
+  const handleChange = (event) => {
+    setErrorMessage("")
+    const name = event.target.name;
+    setFilter({
+      ...filter,
+      [name]: event.target.value,
+    });
+  };
 
   const callBackSuccess = (ordersProvider) => {
     setOrders(ordersProvider)
@@ -97,9 +99,9 @@ export default function DashBoard(props) {
     minimumFractionDigits: 2
   })
 
-  const callBackError = () => {
-    setErrorMessage("Error descargando rotulo")
-  }
+  const [filter, setFilter] = React.useState({
+    guideNumber: null
+  });
 
   const callBack = (msg) => {
     setOrders({
@@ -135,25 +137,38 @@ export default function DashBoard(props) {
     setSelected(newSelected);
   };
 
+  const filterTransactions = () => {
+    setErrorMessage("")
+    getOrdersForProvider("numbers", "")
+  }
+
   const getOrdersForProvider = (filter, value) => {
     const merchantId = getMerchantId()
-    console.log('filter ' + filter)
-    console.log('value ' + value)
-    let url = `${CORE_BASEURL}/order/provider?merchantId=${merchantId}`
-    if (filter === 'duration') {
-      url = `${url}&durationInDays=${value}`
-      if (orderState !== 0) {
-        url = `${url}&orderState=${orderState}`
-      }
-    } else {
-      url = `${url}&durationInDays=${duration}`
+    let url = `${CORE_BASEURL}/order/provider?merchantId=${merchantId}&durationInDays=${duration}`
+    if (document.getElementById("guideNumber").value) {
+      url = `${url}&guideNumber=${document.getElementById("guideNumber").value}`
     }
-    if (filter == 'orderState' && value != -1) {
-      url = `${url}&orderState=${value}`
+    if (orderState > 0) {
+      url = `${url}&orderState=${orderState}`
+    }
+
+    if (filter === 'changePage') {
+      url = `${url}&pageNumber=${value}`
     }
 
     consumeServiceGet(callBack, callBackSuccess, url)
   }
+
+  const handleNextPage = (event) => {
+    console.log("page", page)
+    setPage(page + 1);
+    getOrdersForProvider('changePage', page + 1)
+  };
+
+  const handleBeforePage = (event) => {
+    setPage(page - 1);
+    getOrdersForProvider('changePage', page - 1)
+  };
 
   const classes = useStyles();
 
@@ -184,7 +199,7 @@ export default function DashBoard(props) {
                     labelId="demo-simple-select-outlined-label"
                     id="estado"
                     value={orderState}
-                    onChange={handleChangeorderState}
+                    onChange={handleChangeOrderState}
                     label="Estado"
                   >
                     <MenuItem value={-1}>
@@ -220,6 +235,12 @@ export default function DashBoard(props) {
                   </Select>
                 </FormControl>
               </Grid>
+              <Grid item xs={12} sm={12} md={6} style={{ textAlign: "center" }}>
+                <TextField onChange={handleChange} value={filter.guideNumber} inputProps={{ min: 0, id: 'guideNumber', name: 'guideNumber' }} type="number" style={{ width: "180px", backgroundColor: "white" }} id="outlined-basic" label="Número de guía" variant="outlined" required />
+              </Grid>
+
+              <Grid item xs={12} sm={12} md={6} style={{ textAlign: "center" }} ><Button color="primary" onClick={filterTransactions}> Filtrar</Button></Grid>
+            
             </Grid>
           </GridItem>
           <GridItem xs={12} sm={12} md={4} className={classes.grid}>
@@ -296,6 +317,21 @@ export default function DashBoard(props) {
                     </TableBody>
                   </Table>
                 </TableContainer>
+                <div style={{ textAlign: 'right' }}>
+                  <p style={{ float: 'left' }}>Página: {page}. Total registros: {ordersProvider.totalRecords ? ordersProvider.totalRecords : 15}</p>
+                  {
+                    page > 1 ? <IconButton onClick={handleBeforePage} aria-label="anterior">
+                      <NavigateBeforeSharpIcon />
+                    </IconButton> : <span></span>
+                  }
+
+                  {
+                    page < ordersProvider.totalPages ? <IconButton onClick={handleNextPage} aria-label="siguiente">
+                    <NavigateNextSharpIcon />
+                  </IconButton> : <span></span>
+                  }
+
+                </div>
               </Grid>
             </Grid>
           </GridItem>
