@@ -1,4 +1,6 @@
 import React from "react";
+
+import { connect } from 'react-redux'
 import { makeStyles } from "@material-ui/core/styles";
 import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/GridItem";
@@ -13,15 +15,17 @@ import FormControl from '@material-ui/core/FormControl';
 import GroupedButtons from 'views/Components/Numeric'
 import Alert from '@material-ui/lab/Alert';
 import {consumeServiceGet} from 'service/ConsumeService'
+import {setFbPixel,setValue} from 'actions/setFbPixel'
 import consumeServicePost from 'service/ConsumeService'
 import {CORE_BASEURL,PULL_BASEURL} from 'constant/index'
 import { useHistory } from "react-router-dom";
 import {getFirstLetters} from 'util/NameUtils'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ReactPixel from 'react-facebook-pixel';
 
 
 const useStyles = makeStyles(styles);
-export default function Checkout() {
+function Checkout(props) {
 
     const classes = useStyles();
     const history = useHistory();
@@ -134,12 +138,14 @@ export default function Checkout() {
             return
         }
         setIsLoading(true)
-        const url = `${CORE_BASEURL}/checkout/order`            
+        const url = `${CORE_BASEURL}/checkout/order`
+        let totalOrderPrice= totalPrice?totalPrice:product.amount*order.quantity
+        props.setValue(totalOrderPrice)            
         let request = {
             productId: getQueyParamFromUrl("idc"),
             paymentMethod:paymentMethod,
             quantity: order.quantity,
-            amount:totalPrice?totalPrice:product.amount*order.quantity,
+            amount:totalOrderPrice,
             customer : {
                 name:order.name,
                 email:order.email,
@@ -231,6 +237,11 @@ export default function Checkout() {
     }
 
     const callBackSuccessGetProductInfo = (product) => {
+        if(product.fbId){
+            ReactPixel.init(product.fbId);
+            props.setFbPixel(product.fbId)
+            ReactPixel.fbq('track', 'InitiateCheckout');
+        }        
         setProduct(product)
         getCities()
     }
@@ -392,3 +403,9 @@ export default function Checkout() {
     )
 
 }
+
+const mapDispatchToProps = {
+    setFbPixel,setValue
+}
+  
+export default connect(null, mapDispatchToProps)(Checkout);
