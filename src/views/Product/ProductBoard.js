@@ -20,191 +20,197 @@ import Paper from '@material-ui/core/Paper';
 import Footer from "components/Footer/Footer.js";
 import { getMerchantId } from 'service/AuthenticationService';
 
-import {consumeServiceGet} from 'service/ConsumeService'
+import { consumeServiceGet } from 'service/ConsumeService'
 import consumeServicePost from 'service/ConsumeService'
-import {CORE_BASEURL} from 'constant/index'
+import { CORE_BASEURL } from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
+import SplitButton from 'components/SplitButton/SplitButton';
 
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(styles);
 
 
-  
-  export default function ProductBoard(props) {
 
-    const [products, setProductsl] = React.useState([]);
-    const [isChecked, setIsCHecked] = React.useState(false);
-    const [isEnabled, setIsEnabled] = React.useState(false);
-    const [errorMessage, setErrorMessage] = React.useState("");
-    const [successMessage, setSuccessMessage] = React.useState("");
-    const [idsToDelete, setIdsToDelete] = React.useState([]);    
+export default function ProductBoard(props) {
 
-    React.useEffect(() => getProductsForMerchant(), []);    
+  const [products, setProductsl] = React.useState([]);
+  const [isChecked, setIsCHecked] = React.useState(false);
+  const [isEnabled, setIsEnabled] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
+  const [successMessage, setSuccessMessage] = React.useState("");
+  const [idsToDelete, setIdsToDelete] = React.useState([]);
 
-    const callBackSuccess = (products) =>{
-      setProductsl(products)      
-    }
+  React.useEffect(() => getProductsForMerchant(), []);
 
-    const history = useHistory();
+  const callBackSuccess = (products) => {
+    setProductsl(products)
+  }
 
-    const copyUrl = (id) => {
-      var getUrl = window.location;
-      var baseUrl = getUrl .protocol + "//" + getUrl.host + "/";
-      navigator.clipboard.writeText(baseUrl+"agree-payment?idp="+id);
-    }
+  const history = useHistory();
 
-    const createProduct = () =>{
-        history.push("create-product")
-    }
+  const copyUrl = (id) => {
+    var getUrl = window.location;
+    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+    navigator.clipboard.writeText(baseUrl + "agree-payment?idp=" + id);
+  }
 
-    const deleteProducts = () =>{
-      let url=`${CORE_BASEURL}/product/delete`
-      consumeServicePost({    
-        ids:idsToDelete
-      },callBackDelete,callBackSucess,url)   
-    }
-    const callBackSucess = () =>{
-      setSuccessMessage("Productos eliminados, por favor actualiza la página si deseas ver los productos actualizados.")    
-    }
+  const createProduct = () => {
+    history.push("create-product")
+  }
 
-    const validatedChecked = (event) =>{      
-      var inputElements = document.getElementsByClassName('productCheck');
-      var cont = 0
-      for(var i=0; inputElements[i]; ++i){
-        console.log("array", inputElements[i].value)
-            if(inputElements[i].checked){      
-              cont++        
-              if(idsToDelete.indexOf(inputElements[i].value)=='-1'){
-                idsToDelete.push(inputElements[i].value)
-              }                
-            }else{
-              if(idsToDelete.indexOf(inputElements[i].value)!='-1'){
-                idsToDelete.splice(idsToDelete.indexOf(inputElements[i].value),1)
-              }              
-            }
-      }
-      if(cont>0){
-        setIsEnabled(true)
-      }else{
-        setIsEnabled(false)
-      }
-      console.log("array", idsToDelete)
-    }
+  const deleteProducts = () => {
+    let url = `${CORE_BASEURL}/product/delete`
+    consumeServicePost({
+      ids: idsToDelete
+    }, callBackDelete, callBackSucess, url)
+  }
+  const callBackSucess = () => {
+    setSuccessMessage("Productos eliminados, por favor actualiza la página si deseas ver los productos actualizados.")
+  }
 
-    const formatter = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2
-    })
-
-    const callBack = (msg) => {
-      setProductsl([])
-      if(msg==404){
-        setErrorMessage("No hay productos para mostrar")        
-      }else{
-        setErrorMessage("Error Cargando productos")
-      }      
-    }
-    const callBackDelete = (error) => {
-      if(error!=null && typeof error === 'object'){        
-        setErrorMessage(error)
-        }else if(error!=null && typeof error === 'String'){
-          setErrorMessage({'Error':error})
+  const validatedChecked = (event) => {
+    var inputElements = document.getElementsByClassName('productCheck');
+    var cont = 0
+    for (var i = 0; inputElements[i]; ++i) {
+      console.log("array", inputElements[i].value)
+      if (inputElements[i].checked) {
+        cont++
+        if (idsToDelete.indexOf(inputElements[i].value) == '-1') {
+          idsToDelete.push(inputElements[i].value)
         }
-        else{
-          setErrorMessage({'Error':'Ha ocurrido un error inesperado por favor contactar al administrador'})
+      } else {
+        if (idsToDelete.indexOf(inputElements[i].value) != '-1') {
+          idsToDelete.splice(idsToDelete.indexOf(inputElements[i].value), 1)
         }
+      }
     }
+    if (cont > 0) {
+      setIsEnabled(true)
+    } else {
+      setIsEnabled(false)
+    }
+    console.log("array", idsToDelete)
+  }
 
-    const getProductsForMerchant = (filter,value) => {
-      const merchantId = getMerchantId()
-      console.log('getting withdrawals ')
-      let url=`${CORE_BASEURL}/product/merchant/${merchantId}`
-      consumeServiceGet(callBack,callBackSuccess,url)      
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2
+  })
+
+  const callBack = (msg) => {
+    setProductsl([])
+    if (msg == 404) {
+      setErrorMessage("No hay productos para mostrar")
+    } else {
+      setErrorMessage("Error Cargando productos")
     }
-      
-    const classes = useStyles();
-    const { ...rest } = props;    
-  
-    return (
-        <div>       
-       
-        <ResponsiveDrawe />       
-        <div className={classes.container}>
+  }
+  const callBackDelete = (error) => {
+    if (error != null && typeof error === 'object') {
+      setErrorMessage(error)
+    } else if (error != null && typeof error === 'String') {
+      setErrorMessage({ 'Error': error })
+    }
+    else {
+      setErrorMessage({ 'Error': 'Ha ocurrido un error inesperado por favor contactar al administrador' })
+    }
+  }
+
+  const getProductsForMerchant = (filter, value) => {
+    const merchantId = getMerchantId()
+    console.log('getting withdrawals ')
+    let url = `${CORE_BASEURL}/product/merchant/${merchantId}`
+    consumeServiceGet(callBack, callBackSuccess, url)
+  }
+
+  const classes = useStyles();
+  const { ...rest } = props;
+
+  return (
+    <div>
+
+      <ResponsiveDrawe />
+      <div className={classes.container}>
         <GridContainer className={classes.subContainer} justify="center" >
-         <GridItem xs={12} sm={12} md={12} className={classes.grid}>           
+          <GridItem xs={12} sm={12} md={12} className={classes.grid}>
+            <Grid container className={classes.box} spacing={3}>
+              <Grid item xs={12}><h2>Productos</h2></Grid>
+              <GridItem xs={12} sm={12} md={12} className={classes.grid}>
                 <Grid container className={classes.box} spacing={3}>
-                <Grid item  xs={12}><h2>Productos</h2></Grid>
-                <GridItem xs={12} sm={12} md={12} className={classes.grid}>        
-                    <Grid container className={classes.box}  spacing={3}>               
-                        <Grid item xs={12} sm={12} md={12} >
-                            A continuación ves los productos que has creado, cada producto siempre tendrá la misma url.                     
-                        </Grid>                              
-                    </Grid>
-                </GridItem>   
-                   <Grid item xs={12}><Button style={{marginLeft:"10px"}} color="primary"  onClick={createProduct}> Crear Producto</Button><Button  style={{marginLeft:"10px"}} color="primary" disabled={!isEnabled} onClick={deleteProducts} > Eliminar seleccionados</Button></Grid>                   
-                   <Grid item xs={12} >
-                   <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="simple table">
-                      <TableHead>
+                  <Grid item xs={12} sm={12} md={12} >
+                    A continuación ves los productos que has creado, cada producto siempre tendrá la misma url.
+                  </Grid>
+                </Grid>
+              </GridItem>
+              <Grid item xs={12}><Button style={{ marginLeft: "10px" }} color="primary" onClick={createProduct}> Crear Producto</Button><Button style={{ marginLeft: "10px" }} color="primary" disabled={!isEnabled} onClick={deleteProducts} > Eliminar seleccionados</Button></Grid>
+              <Grid item xs={12} >
+                <TableContainer component={Paper}>
+                  <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell></TableCell>
+                        <TableCell align="center">Nombre</TableCell>
+                        <TableCell align="center">Valor</TableCell>
+                        <TableCell align="center">Inventario</TableCell>
+                        <TableCell align="center">Asignar Inventario</TableCell>
+                        <TableCell align="center">Acciones</TableCell>
+                        <TableCell align="center">DropShipping</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {products.map((row) => (
                         <TableRow>
-                          <TableCell></TableCell>
-                          <TableCell align="center">Nombre</TableCell>
-                          <TableCell align="center">Valor</TableCell>
-                          <TableCell align="center">Inventario</TableCell>
-                          <TableCell align="center">Inventario exclusivo</TableCell>
-                          <TableCell align="center">Editar</TableCell>
-                          <TableCell align="center">DropShipping</TableCell>                         
+                          <TableCell align="center">
+                            <center>
+                              <input
+                                type="checkbox"
+                                className="productCheck"
+                                value={row.shortId}
+                                defaultChecked={isChecked}
+                                color="primary"
+                                onChange={validatedChecked}
+                              />
+                            </center>
+                          </TableCell>
+                          <TableCell align="center">{row.name}</TableCell>
+                          <TableCell align="center">{
+                            formatter.format(row.amount)
+                          }</TableCell>
+                          <TableCell align="center">{row.inventory}</TableCell>
+                          <TableCell align="right"><center><a href={+row.id}><Button color="primary">Asignar Inventario</Button></a></center></TableCell>
+                          <TableCell align="center">
+                            <SplitButton options={[
+                              { label: "Editar Inventario", action: "/edit-product-inventory?idp=" + row.id },
+                              { label: "Editar Producto", action: "/edit-product?idp=" + row.shortId }
+                            ]} ></SplitButton>
+                          </TableCell>
+                          <TableCell align="center">{row.dropshipping ? "Si" : "No"}</TableCell>
                         </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {products.map((row) => (
-                          <TableRow>
-                            <TableCell align="center">
-                                <center>
-                                    <input
-                                    type="checkbox"
-                                    className="productCheck"
-                                    value={row.shortId}
-                                    defaultChecked={isChecked}                                  
-                                    color="primary"
-                                    onChange={validatedChecked}                                    
-                                  />
-                                </center>
-                            </TableCell>
-                            <TableCell align="center">{row.name}</TableCell>
-                            <TableCell align="center">{
-                              formatter.format(row.amount)
-                            }</TableCell>
-                            <TableCell align="center">{row.inventory}</TableCell>
-                            <TableCell align="right"><center><a href={"/create-inventory?idp="+row.id}><Button color="primary">Asignar Inventario</Button></a></center></TableCell>
-                            <TableCell align="right"><center><a href={"/edit-product-inventory?idp="+row.id}><Button color="primary">Editar Inventario</Button></a></center></TableCell>
-                            <TableCell align="center">{row.dropshipping ? "Si":"No"}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                   </Grid>
-                </Grid>   
-         </GridItem>
-         {errorMessage != ""
-                  ?
-                  <Alert severity="error">{errorMessage}</Alert>
-                  : <span>	&nbsp;</span>   
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Grid>
+            </Grid>
+          </GridItem>
+          {errorMessage != ""
+            ?
+            <Alert severity="error">{errorMessage}</Alert>
+            : <span>	&nbsp;</span>
           }
           {successMessage != ""
-                  ?
-                  <Alert severity="success">{successMessage}</Alert>
-                  : <span>	&nbsp;</span>   
-          }      
+            ?
+            <Alert severity="success">{successMessage}</Alert>
+            : <span>	&nbsp;</span>
+          }
         </GridContainer>
-        </div>
-        <Footer />
       </div>
-      
-      
-      
-    );
-  }
+      <Footer />
+    </div>
+
+
+
+  );
+}
