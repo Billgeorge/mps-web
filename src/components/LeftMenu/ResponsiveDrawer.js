@@ -43,6 +43,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import Collapse from '@material-ui/core/Collapse'
 import AssistantIcon from '@material-ui/icons/Assistant';
+import PieChartIcon from '@material-ui/icons/PieChart';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 const drawerWidth = 240;
 
@@ -133,6 +135,7 @@ export function ResponsiveDrawer(props) {
   const [openProductMenu, setOpenProductMenu] = React.useState(false);
   const [openBranchMenu, setOpenBranchMenu] = React.useState(false);
   const [openDashMenu, setOpenDashMenu] = React.useState(false);
+  const [openDashDropMenu, setOpenDashDropMenu] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const history = useHistory();
 
@@ -154,6 +157,10 @@ export function ResponsiveDrawer(props) {
 
   function handleClickDash() {
     setOpenDashMenu(!openDashMenu);
+  };
+
+  function handleClickDashDrop() {
+    setOpenDashDropMenu(!openDashDropMenu);
   };
 
   const handleDrawerClose = () => {
@@ -221,10 +228,24 @@ export function ResponsiveDrawer(props) {
         <Collapse in={openDashMenu} timeout="auto" unmountOnExit>
           <Divider />
           <List component="div" style={{ paddingLeft: '15px' }}>
-            <ListItem button component="a" href="/dashboard-dropseller" className={classes.menuItem}>
-              <ListItemIcon ><ReceiptIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-              <ListItemText style={{ color: '#2097F3' }} primary="Ordenes drop" />
+            <ListItem button onClick={handleClickDashDrop} key="dashboard">
+              <ListItemIcon><ShoppingCartIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+              <ListItemText style={{ color: '#2097F3' }} primary="Dropshipper" />
+              {openDashDropMenu ? <IconExpandLess style={{ color: '#2097F3' }} /> : <IconExpandMore style={{ color: '#2097F3' }} />}
             </ListItem>
+            <Collapse in={openDashDropMenu} timeout="auto" unmountOnExit>
+              <Divider />
+              <List component="div" style={{ paddingLeft: '15px' }}>
+                <ListItem button component="a" href="/dashboard-dropseller" className={classes.menuItem}>
+                  <ListItemIcon ><ReceiptIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+                  <ListItemText style={{ color: '#2097F3' }} primary="Ordenes drop" />
+                </ListItem>
+                <ListItem button component="a" href="/result" className={classes.menuItem}>
+                  <ListItemIcon ><PieChartIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+                  <ListItemText style={{ color: '#2097F3' }} primary="Resumen" />
+                </ListItem>
+              </List>
+            </Collapse>
             <ListItem button component="a" href="/dashboard-dropprovider" className={classes.menuItem}>
               <ListItemIcon ><ReceiptIcon style={{ color: '#2097F3' }} /></ListItemIcon>
               <ListItemText style={{ color: '#2097F3' }} primary="Ordenes proveedor" />

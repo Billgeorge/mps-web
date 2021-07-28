@@ -41,6 +41,7 @@ import PrivateInventoryBoard from 'views/inventory/PrivateInventory';
 import EditPrivateInventory from 'views/inventory/EditPrivateInventory';
 import EditInventoryProduct from 'views/Product/EditInventoryProduct';
 import CreatePromotion from 'views/Promotion/CreatePromotion';
+import Results from 'views/Dashboard/Results'
 
 
 var hist = createBrowserHistory();
@@ -91,13 +92,11 @@ return (
                 <Route path="/recovery-pass" component={RecoveryPassword} />
                 <Route path="/user/password" component={CreatePassword} />
                 <Route path='/agree-payment' component={AgreePayment} />  
-                <Route path="/registro" component={RegisterLanding} />
-                <Route path="/thanks-page" component={ThanksPage} />   
                 <Route path="/registro" component={RegisterLanding} />   
                 <Route path="/login" component={LoginPage} />
                 <Route path="/thanks-page" component={ThanksPage} />
                 <Route path="/checkout" component={checkout} /> 
-                
+                <ProtectRoute path="/result" component={Results} /> 
                 
             </Switch>
           </Router>
