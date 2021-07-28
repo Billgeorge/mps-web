@@ -45,7 +45,7 @@ export default function EditProduct(props) {
   const [successMessage, setSuccessMessage] = React.useState(null);
 
   const [isLoading, setIsLoading] = React.useState(false);
-  const [productImage, setProductImage] = React.useState('');
+  const [productImage, setProductImage] = React.useState(emptyImage);
 
   const [editForm, setEditForm] = React.useState({
     amount: "",
@@ -205,7 +205,7 @@ export default function EditProduct(props) {
                   </GridItem>                  
                    
                   </FormControl>
-                  <FormControl style={{ width: "100%", paddingBottom: "10px",paddingTop: "20px" }}>
+                  <FormControl style={{ width: "100%", paddingBottom: "10px",paddingTop: "10px" }}>
                     <TextField
                       id="description"
                       name="description"

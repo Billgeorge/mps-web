@@ -105,7 +105,7 @@ const signupPageStyle = {
   },
   imgProduct:{
     width: "100%",
-    maxWidth: "500px",
+    maxWidth: "550px",
     height: "auto",
     margin:"auto",
     borderColor:"gray",
@@ -121,10 +121,10 @@ const signupPageStyle = {
       paddingLeft:"10vh"
     }
   },
-  addImg:{
-    position: "absolute",
-    top: "87%",
-    right: "12%"
+  addImg:{    
+    position: "relative",
+    top: "80%",
+    left: "50%"
   }
 };
 
