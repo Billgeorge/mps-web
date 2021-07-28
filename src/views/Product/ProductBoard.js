@@ -179,7 +179,7 @@ export default function ProductBoard(props) {
                             formatter.format(row.amount)
                           }</TableCell>
                           <TableCell align="center">{row.inventory}</TableCell>
-                          <TableCell align="right"><center><a href={+row.id}><Button color="primary">Asignar Inventario</Button></a></center></TableCell>
+                          <TableCell align="right"><center><a href={"/create-inventory?idp="+row.id}><Button color="primary">Asignar Inventario</Button></a></center></TableCell>
                           <TableCell align="center">
                             <SplitButton options={[
                               { label: "Editar Inventario", action: "/edit-product-inventory?idp=" + row.id },
