@@ -1,6 +1,6 @@
 {
   "name": "material-kit-react",
-  "version": "1.10.15",
+  "version": "1.10.16",
   "description": "Material Kit React. Coded by Creative Tim",
   "private": true,
   "main": "src/index.js",
@@ -10,7 +10,6 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "axios": "^0.21.1",
     "chart.js": "^3.4.1",
-    "chartjs-plugin-labels": "^1.1.0",
     "classnames": "2.2.6",
     "file-saver": "^2.0.5",
     "history": "4.10.1",
@@ -25,6 +24,7 @@
     "react-dom": "16.13.1",
     "react-facebook-pixel": "^1.0.4",
     "react-iframe": "^1.8.0",
+    "react-minimal-pie-chart": "^8.2.0",
     "react-player": "^2.6.2",
     "react-redux": "^7.2.2",
     "react-router-dom": "5.2.0",

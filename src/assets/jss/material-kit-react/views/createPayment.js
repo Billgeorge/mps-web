@@ -103,6 +103,16 @@ const signupPageStyle = {
     textAlign: "center",
     padding: "0"
   },
+  imgProduct:{
+    width: "100%",
+    maxWidth: "550px",
+    height: "auto",
+    margin:"auto",
+    borderColor:"gray",
+    borderStyle:"dashed",
+    borderWidth:"thin"
+    
+  },
   inputIconsColor: {
     color: "#495057"
   },
@@ -110,6 +120,11 @@ const signupPageStyle = {
     container:{
       paddingLeft:"10vh"
     }
+  },
+  addImg:{    
+    position: "relative",
+    top: "80%",
+    left: "50%"
   }
 };
 
