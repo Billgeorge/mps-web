@@ -28,6 +28,7 @@ import Select from '@material-ui/core/Select';
 import { getLegibleDate } from 'util/DateUtil'
 
 import { consumeServiceGet } from 'service/ConsumeService'
+import consumeServicePost from '../../service/ConsumeService'
 import { CORE_BASEURL, getOrderState } from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 import Button from "components/CustomButtons/Button.js";
@@ -49,6 +50,8 @@ export default function DashboardDropSeller(props) {
     totalOrderByStatus: 0
   });
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [confirmSuccessMessage, setConfirmSuccessMessage] = React.useState("");
+  
 
   const [page, setPage] = React.useState(1);
 
@@ -121,6 +124,34 @@ export default function DashboardDropSeller(props) {
     } else {
       setErrorMessage("Error Cargando Transacciones")
     }
+  }
+
+  const confirmOrder= (orderId) =>{
+    const url = `${CORE_BASEURL}/logistic/freight/COD`
+    const request = {
+      orderId:orderId,
+      sellerMerchantId:getMerchantId()
+    }
+    consumeServicePost(request,callBackConfirm,callBackSuccessConfirm,url)
+  }
+
+  const callBackSuccessConfirm =()=>{
+    setConfirmSuccessMessage("Orden confirmada")
+    setTimeout(() => {
+      setConfirmSuccessMessage("")
+   }, 2000)
+  }  
+  
+  const callBackConfirm = (error) => {
+    let errorObjects = "Error confirmando orden"
+    if (error !== null) {
+      if(typeof error === 'object'){
+        errorObjects=JSON.stringify(error)
+      }else{
+        errorObjects = error
+      }          
+    }
+    setErrorMessage(errorObjects)    
   }
 
   const getProductsForMerchant = (filter, value) => {
@@ -232,11 +263,17 @@ export default function DashboardDropSeller(props) {
           <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
               <Grid item xs={12}><h2>Últimas Ordenes</h2></Grid>
+              {confirmSuccessMessage != ""
+            ?
+            <Alert severity="success">{confirmSuccessMessage}</Alert>
+            : <span>	&nbsp;</span>
+          }
               <Grid item xs={12} >
                 <TableContainer component={Paper}>
                   <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                       <TableRow>
+                        <TableCell>Acción</TableCell>
                         <TableCell>Producto </TableCell>
                         <TableCell align="right">Nombre Cliente </TableCell>
                         <TableCell align="right">Celular Cliente </TableCell>
@@ -252,6 +289,13 @@ export default function DashboardDropSeller(props) {
                     <TableBody>
                       {products.orders.map((row) => (
                         <TableRow>
+                          <TableCell component="th" scope="row">
+                            {row.orderState===10?
+                              <Button color="primary" onClick={() => confirmOrder(row.orderId)} >
+                              confirmar
+                            </Button>:<span></span>
+                            }
+                          </TableCell>
                           <TableCell component="th" scope="row">
                             <a target="_blank" href={`/order-detail/${row.orderId}`} style={{ cursor: "pointer" }}>{row.productName}</a>
                           </TableCell>
@@ -282,11 +326,11 @@ export default function DashboardDropSeller(props) {
 
                   {
                     page < products.totalPages ? <IconButton onClick={handleNextPage} aria-label="siguiente">
-                    <NavigateNextSharpIcon />
-                  </IconButton> : <span></span>
+                      <NavigateNextSharpIcon />
+                    </IconButton> : <span></span>
                   }
 
-                  
+
 
                 </div>
               </Grid>

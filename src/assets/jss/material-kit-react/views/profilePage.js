@@ -73,6 +73,11 @@ const profilePageStyle = {
   navWrapper: {
     margin: "20px auto 50px auto",
     textAlign: "center"
+  },
+  '@media(max-width: 600px)':{
+    formContainer:{
+      paddingLeft:"2vh"
+    }
   }
 };
 

@@ -1,7 +1,7 @@
 
 
-export const CORE_BASEURL = process.env.REACT_APP_CORE_BASEURL
-export const PULL_BASEURL = process.env.REACT_APP_PULL_BASEURL
+export const CORE_BASEURL = 'http://localhost:8083/mps' //'https://mpscore-prod.herokuapp.com/mps' //'https://mpscore.herokuapp.com/mps' 'http://localhost:8083/mps' 
+export const PULL_BASEURL = 'http://localhost:8084/mps' //'https://mps-cashin-prod.herokuapp.com/mps'//https://mps-cashin.herokuapp.com/mps'//'http://localhost:8084/mps'
 
 export const getPaymentState = (idState) => {
     switch(idState){
@@ -96,6 +96,8 @@ export const getOrderIdState = (state) => {
             return 7
         case "Cancelado":
             return 8
+        case "Por confirmar":
+            return 10
     }
 }
 export const getOrderState = (idState) => {
@@ -116,6 +118,8 @@ export const getOrderState = (idState) => {
             return "Devolucion"
         case 8:
             return "Cancelado"
+        case 10:
+            return "Por confirmar"
             
     }
 }
