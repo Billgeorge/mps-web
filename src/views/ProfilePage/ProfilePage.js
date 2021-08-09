@@ -98,7 +98,7 @@ export default function ProfilePage(props) {
   }
 
   const callBackBankInfo = (msg) => {
-    setProfile({})
+    setBankingInformation({})
     if (msg == 404) {
       setErrorMessage("No Tienes información bancaría registrada")
     } else {
