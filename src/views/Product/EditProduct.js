@@ -174,7 +174,8 @@ export default function EditProduct(props) {
             <Card className={classes[cardAnimaton]}>
               <form className={classes.form} validated="true" name="editProduct" id="editProduct">
                 <CardHeader className={classes.cardHeader}>
-                  <h3 style={{ fontWeight: "600" }}><a href="/product"><ArrowBackIcon /></a> Editar producto</h3>
+                  <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{    color: "#9c27b0", textDecoration: "none",
+                              backgroundColor: "transparent", cursor:"pointer"}} onClick={()=>props.history.push('/product')} /> Editar producto</h3>
                 </CardHeader>
                 <CardBody>
                   {isLoading

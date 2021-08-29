@@ -20,6 +20,7 @@ import OrderDetail from "views/order/OrderDetail";
 import TransactionDetailPublic from "views/TransactionDetail/TransactionDetailPublic";
 import CreatePayment from "views/CreatePayment/CreatePayment";
 import checkout from "views/Checkout/Checkout";
+import EditCustomer from "views/Checkout/EditCustomer";
 import CreateProduct2 from "views/Product/CreateProduct_2";
 import AgreePayment from "views/CreatePayment/AgreePayment";
 import ProductBoard from "views/Product/ProductBoard";
@@ -88,6 +89,7 @@ return (
                 <ProtectRoute path="/create-branch" component={CreateBranch} />   
                 <ProtectRoute path="/create-promotion" component={CreatePromotion} />
                 <Route path="/detail" component={TransactionDetailPublic} />
+                <Route path="/customer" component={EditCustomer} />
                 <Route path='/methods' component={PaymentForm} />
                 <Route path="/recovery-pass" component={RecoveryPassword} />
                 <Route path="/user/password" component={CreatePassword} />

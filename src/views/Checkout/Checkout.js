@@ -172,7 +172,7 @@ function Checkout(props) {
 
     const callBackSuccess=(order)=>{
         if(order.paymentMethod=="COD"){
-            history.push("/thanks-page")
+            history.push("/thanks-page?cod=true")
         }else{
             const url = `${PULL_BASEURL}/cashin/redirect`
             consumeServicePost({id:order},callBackErrorCreateOrder,callBackSuccessGetPaymentInformation,url)
@@ -188,7 +188,7 @@ function Checkout(props) {
     }
 
     const handleChangeState = (event) => {
-        let value = event.target.value
+        let value = event.target.value        
         let newCities = citiesResponse.filter(record=> record.state == value)
         setOrder({
             ...order,

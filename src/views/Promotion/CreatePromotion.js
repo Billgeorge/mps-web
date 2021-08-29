@@ -107,7 +107,8 @@ export default function CreatePromotion(props) {
                         <Card className={classes[cardAnimaton]}>
                             <form className={classes.form} validated="true" name="createPromotion" id="createPromotion">
                                 <CardHeader className={classes.cardHeader}>
-                                    <h3 style={{ fontWeight: "600" }}><a href="/product-drop"><ArrowBackIcon /></a> Crear Promoción</h3>
+                                    <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{    color: "#9c27b0", textDecoration: "none",
+                                        backgroundColor: "transparent", cursor:"pointer"}} onClick={()=>props.history.push('/product-drop')} />Crear Promoción</h3>
                                 </CardHeader>
                                 <CardBody>
                                     {isLoading

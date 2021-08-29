@@ -6,6 +6,7 @@ import styles from "assets/jss/material-kit-react/views/DashBoard.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import IconButton from '@material-ui/core/IconButton';
+import SplitButton from 'components/SplitButton/SplitButton';
 
 import Alert from '@material-ui/lab/Alert';
 import NavigateNextSharpIcon from '@material-ui/icons/NavigateNextSharp';
@@ -173,7 +174,7 @@ export default function DashboardDropSeller(props) {
 
     consumeServiceGet(callBack, callBackSuccess, url)
   }
-
+  
   const classes = useStyles();
 
 
@@ -237,10 +238,10 @@ export default function DashboardDropSeller(props) {
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={12} md={4} style={{ textAlign: "center" }}>
-                <TextField onChange={handleChange} value={filter.guideNumber} inputProps={{ min: 0, id: 'guideNumber', name: 'guideNumber' }} type="number" style={{ width: "180px", backgroundColor: "white" }} id="outlined-basic" label="Número de guía" variant="outlined" required />
+                <TextField onChange={handleChange} value={filter.guideNumber?filter.guideNumber:''} inputProps={{ min: 0, id: 'guideNumber', name: 'guideNumber' }} type="number" style={{ width: "180px", backgroundColor: "white" }} id="outlined-basic" label="Número de guía" variant="outlined" required />
               </Grid>
               <Grid item xs={12} sm={12} md={4} style={{ textAlign: "center" }} >
-                <TextField onChange={handleChange} value={filter.contactPhone} inputProps={{ min: 0, id: 'contactPhone', name: 'contactPhone' }} type="number" style={{ width: "180px", backgroundColor: "white" }} id="outlined-basic" label="Celular cliente" variant="outlined" required />
+                <TextField onChange={handleChange} value={filter.contactPhone?filter.contactPhone:''} inputProps={{ min: 0, id: 'contactPhone', name: 'contactPhone' }} type="number" style={{ width: "180px", backgroundColor: "white" }} id="outlined-basic" label="Celular cliente" variant="outlined" required />
               </Grid>
               <Grid item xs={12} sm={12} md={4} style={{ textAlign: "center" }} ><Button color="primary" onClick={filterTransactions}> Filtrar</Button></Grid>
             </Grid>
@@ -288,12 +289,14 @@ export default function DashboardDropSeller(props) {
                     </TableHead>
                     <TableBody>
                       {products.orders.map((row) => (
-                        <TableRow>
+                        <TableRow key={row.orderId}>
                           <TableCell component="th" scope="row">
                             {row.orderState===10?
-                              <Button color="primary" onClick={() => confirmOrder(row.orderId)} >
-                              confirmar
-                            </Button>:<span></span>
+                              <SplitButton options={[
+                                { label: "Editar Pedido", action: "/customer?id=" + row.orderId },
+                                { label: "Confirmar",callBack:confirmOrder,id:row.orderId }
+                              ]} ></SplitButton>
+                              :<span></span>
                             }
                           </TableCell>
                           <TableCell component="th" scope="row">
