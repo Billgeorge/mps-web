@@ -215,6 +215,7 @@ export default function DashboardDropSeller(props) {
                     <MenuItem value={6}>Entregado</MenuItem>
                     <MenuItem value={7}>Devolucion</MenuItem>
                     <MenuItem value={8}>Cancelado</MenuItem>
+                    <MenuItem value={9}>Novedad</MenuItem>
                     <MenuItem value={10}>Por confirmar</MenuItem>
                   </Select>
                 </FormControl>
