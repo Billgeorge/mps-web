@@ -119,14 +119,19 @@ const formatter = new Intl.NumberFormat('en-US', {
                 <Grid item ><span>Departamento del cliente:</span> <br/><span className={classes.valueTextDetail}>{!(order.customer.department)?'Departamento vacio':`${order.customer.department}`}</span></Grid>
               </Grid>   
          </GridItem>
-         <GridItem xs={12} sm={12} md={6} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
               <Grid container className={classes.boxDetail} spacing={3}>                   
                 <Grid item ><span>Observaciones:</span> <br/><span className={classes.valueTextDetail}>{!(order.observations)?'Sin observaciones':`${order.observations}`}</span></Grid>
               </Grid>   
          </GridItem>
-         <GridItem xs={12} sm={12} md={6} className={classes.grid}>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
               <Grid container className={classes.boxDetail} spacing={3}>                   
                 <Grid item ><span>Estado:</span> <br/><span className={classes.valueTextDetail}>{getOrderState(order.orderStatus)}</span></Grid>
+              </Grid>   
+         </GridItem>
+         <GridItem xs={12} sm={12} md={4} className={classes.grid}>
+              <Grid container className={classes.boxDetail} spacing={3}>                   
+                <Grid item ><span>Vendedor:</span> <br/><span className={classes.valueTextDetail}>{!(order.sellerName)?'Ciudad vacia':`${order.sellerName}`}</span></Grid>
               </Grid>   
          </GridItem>
           <GridItem xs={12} sm={12} md={12} className={classes.grid}>
