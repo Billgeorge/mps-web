@@ -212,6 +212,8 @@ export default function DashBoard(props) {
                     <MenuItem value={5}>Transferido</MenuItem>
                     <MenuItem value={6}>Entregado</MenuItem>
                     <MenuItem value={7}>Devolucion</MenuItem>
+                    <MenuItem value={8}>Cancelado</MenuItem>
+                    <MenuItem value={10}>Por confirmar</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
