@@ -310,8 +310,7 @@ export function ResponsiveDrawer(props) {
         <Divider />
         <ListItem style={{ padding: '0' }}>
           <Button
-            href=""
-            color="transparent"
+            href=""            
             target="_blank"
             style={{ padding: "0" }}
             className={classes.navLink}

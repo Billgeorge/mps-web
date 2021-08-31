@@ -45,7 +45,12 @@ export default function SplitButton(props) {
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
-    history.push(options[index].action)    
+    if(options[index].action){
+      history.push(options[index].action)
+    }else{
+      const callBack = options[index].callBack
+      callBack(options[index].id)
+    }   
     setOpen(false);
   };
 
@@ -90,10 +95,10 @@ export default function SplitButton(props) {
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList id="split-button-menu">
                   {options.map((option, index) => (
-                         <MenuItem
+                         <MenuItem                         
                          className={classes.menuItemCustom}
                          containerElement={<Link to={option.action} />}
-                         key={option}
+                         key={index}
                          disabled={index === 2}
                          selected={index === selectedIndex}
                          onClick={(event) => handleMenuItemClick(event, index)}
