@@ -96,6 +96,8 @@ export const getOrderIdState = (state) => {
             return 7
         case "Cancelado":
             return 8
+        case "Novedad":
+            return 9
         case "Por confirmar":
             return 10
     }
@@ -118,6 +120,8 @@ export const getOrderState = (idState) => {
             return "Devolucion"
         case 8:
             return "Cancelado"
+        case 9:
+            return "Novedad"
         case 10:
             return "Por confirmar"
             
