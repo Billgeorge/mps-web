@@ -103,7 +103,8 @@ export default function RegisterPage(props) {
                   { url == "" 
                    ?<form className={classes.form} validated="true" name="createPayment" id="createPayment">
                         <CardHeader className={classes.cardHeader}>
-                            <h3 style={{fontWeight:"600"}}><a href="/dashboard"><ArrowBackIcon /></a> Crear enlace de pago</h3>
+                            <h3 style={{fontWeight:"600"}}><ArrowBackIcon style={{    color: "#9c27b0", textDecoration: "none",
+                              backgroundColor: "transparent", cursor:"pointer"}} onClick={()=>props.history.push('/dashboard')} /> Crear enlace de pago</h3>
                         </CardHeader>                 
                         <CardBody>
                         {isLoading

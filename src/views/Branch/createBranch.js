@@ -30,7 +30,7 @@ import { CORE_BASEURL } from 'constant/index'
 
 const useStyles = makeStyles(styles);
 
-export default function CreateProduct() {
+export default function CreateProduct(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
 
   const [errorMessage, setErrorMessage] = React.useState({});
@@ -182,7 +182,8 @@ export default function CreateProduct() {
             <Card className={classes[cardAnimaton]}>
               <form className={classes.form} validated="true" name="createBranch" id="createBranch">
                 <CardHeader className={classes.cardHeader}>
-                  <h3 style={{ fontWeight: "600" }}><a href="/branch"><ArrowBackIcon /></a> Crear Sucursal nueva</h3>
+                  <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{    color: "#9c27b0", textDecoration: "none",
+                              backgroundColor: "transparent", cursor:"pointer"}} onClick={()=>props.history.push('/branch')} /> Crear Sucursal nueva</h3>
                 </CardHeader>
                 <CardBody>
                   {isLoading

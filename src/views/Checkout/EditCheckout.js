@@ -19,6 +19,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import {getQueyParamFromUrl} from 'util/UrlUtil'
+import Link from '@material-ui/core/Link';
 
 
 import styles from "assets/jss/material-kit-react/views/createPayment.js";
@@ -100,7 +101,8 @@ export default function EditCheckout(props) {
               <Card className={classes[cardAnimaton]}>
                   <form className={classes.form} validated="true" name="editProduct" id="editProduct">
                         <CardHeader className={classes.cardHeader}>
-                            <h3 style={{fontWeight:"600"}}><a href="/product-drop"><ArrowBackIcon /></a> Editar producto</h3>
+                            <h3 style={{fontWeight:"600"}}><ArrowBackIcon style={{    color: "#9c27b0", textDecoration: "none",
+                              backgroundColor: "transparent", cursor:"pointer"}} onClick={()=>props.history.push('/product-drop')} />Editar producto</h3>
                         </CardHeader>                 
                         <CardBody>
                             <p style={{fontWeight:"600",fontSize: "1.2em",fontFamily: 'Dosis, sans-serif'}}>

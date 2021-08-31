@@ -96,7 +96,8 @@ export default function ProductDetail(props) {
     <GridContainer className={classes.container} >
         <GridItem className={classes.sideSection} xs={12} sm={12} md={6}>
             <CardHeader className={classes.cardHeader}>
-                <h3 style={{fontWeight:"600"}}><a href="/search-product"><ArrowBackIcon /></a> Detalle de producto </h3>
+                <h3 style={{fontWeight:"600"}}><ArrowBackIcon style={{    color: "#9c27b0", textDecoration: "none",
+                              backgroundColor: "transparent", cursor:"pointer"}} onClick={()=>props.history.push('/search-product')} /> Detalle de producto </h3>
             </CardHeader>
             <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
             <h3 className={classes.shopName}

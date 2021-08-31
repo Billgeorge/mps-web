@@ -65,8 +65,8 @@ export default function CreateInventory(props) {
     const createInventory = () => {
         setSuccessMessage("")
         setErrorMessage({})
-        if (document.getElementById("quantity").value > 0 && document.getElementById("email").value) {            setIsLoading(true)
-            
+        if (document.getElementById("quantity").value > 0 && document.getElementById("email").value) {            
+            setIsLoading(true)            
             let createInventoryRequest = {
                 email: document.getElementById("email").value,
                 quantity:document.getElementById("quantity").value,
@@ -89,7 +89,8 @@ export default function CreateInventory(props) {
 
                             <form className={classes.form} validated="true" name="createInventory" id="createInventory">
                                 <CardHeader className={classes.cardHeader}>
-                                    <h3 style={{ fontWeight: "600" }}><a href="/product"><ArrowBackIcon /></a> Crear inventario privado</h3>
+                                    <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{    color: "#9c27b0", textDecoration: "none",
+                              backgroundColor: "transparent", cursor:"pointer"}} onClick={()=>props.history.push('/product')} /> Crear inventario privado</h3>
                                 </CardHeader>
                                 <CardBody>
                                     {isLoading

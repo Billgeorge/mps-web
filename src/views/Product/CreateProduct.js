@@ -166,7 +166,8 @@ export default function CreateProduct(props) {
             <Card className={classes[cardAnimaton]}>
               <form className={classes.form} validated="true" name="createProduct" id="createProduct">
                 <CardHeader className={classes.cardHeader}>
-                  <h3 style={{ fontWeight: "600" }}><a href="/product"><ArrowBackIcon /></a> Crear producto nuevo</h3>
+                  <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{    color: "#9c27b0", textDecoration: "none",
+                              backgroundColor: "transparent", cursor:"pointer"}} onClick={()=>props.history.push('/product')} /> Crear producto nuevo</h3>
                 </CardHeader>
                 <CardBody>
                   {isLoading
