@@ -14,6 +14,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import IconExpandLess from '@material-ui/icons/ExpandLess'
 import IconExpandMore from '@material-ui/icons/ExpandMore'
 import LocalConvenienceStoreIcon from '@material-ui/icons/LocalConvenienceStore';
+import Fab from '@material-ui/core/Fab';
 
 import StarsIcon from '@material-ui/icons/Stars';
 
@@ -356,7 +357,6 @@ export function ResponsiveDrawer(props) {
             </StyledMenuItem>
           </StyledMenu>
         </ListItem>
-
       </List>
     </div>
   );
@@ -372,6 +372,7 @@ export function ResponsiveDrawer(props) {
           [classes.appBarShift]: open,
         })}
       >
+        
         <Toolbar>
           <IconButton
             color="inherit"
@@ -384,11 +385,11 @@ export function ResponsiveDrawer(props) {
           >
             <MenuIcon />
           </IconButton>
-          {brandComponent}
-        </Toolbar>
-      </AppBar>
+          {brandComponent}                             
+        </Toolbar>       
 
-
+      </AppBar>     
+      
       <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
@@ -403,6 +404,9 @@ export function ResponsiveDrawer(props) {
         }}
       >
         {drawer}
+      <Fab onClick={()=>history.push('/charge')} style={{background: '#2097F3',color: 'white'}} variant="extended">
+          Recargar
+      </Fab>       
       </Drawer>
     </div>
   );
