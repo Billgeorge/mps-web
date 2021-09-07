@@ -47,12 +47,11 @@ export default function ChargeAccount(props) {
         setErrorMessage("Valor es obligatorio")
     }else{
         setErrorMessage("")
+        setIsLoading(true)
+        const amount = document.getElementById("valor").value
+        const url = `${PULL_BASEURL}/cashin/redirect`
+                consumeServicePost({id:getMerchantId(),isMerchantPayment:true,amount:amount},callBackError,callBackSucessCreateRedirect,url)
     }
-    setIsLoading(true)
-    const amount = document.getElementById("valor").value
-    const url = `${PULL_BASEURL}/cashin/redirect`
-            consumeServicePost({id:getMerchantId(),isMerchantPayment:true,amount:amount},callBackError,callBackSucessCreateRedirect,url)
-    
  }
 
  const callBackError =()=>{
