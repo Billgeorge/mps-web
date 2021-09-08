@@ -29,7 +29,7 @@ import clsx from 'clsx';
 
 
 import Avatar from '@material-ui/core/Avatar';
-import { getMerchantName,getBalanceMerchant } from 'service/AuthenticationService'
+import { getMerchantName, getBalanceMerchant } from 'service/AuthenticationService'
 import { getFirstLetters } from 'util/NameUtils'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -46,6 +46,9 @@ import Collapse from '@material-ui/core/Collapse'
 import AssistantIcon from '@material-ui/icons/Assistant';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import { consumeServiceGet } from 'service/ConsumeService'
+import { getMerchantId} from 'service/AuthenticationService'
+import {CORE_BASEURL} from 'constant/index'
 
 const drawerWidth = 240;
 
@@ -138,6 +141,7 @@ export function ResponsiveDrawer(props) {
   const [openDashMenu, setOpenDashMenu] = React.useState(false);
   const [openDashDropMenu, setOpenDashDropMenu] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [balance, setBalance] = React.useState(0);
   const history = useHistory();
 
   function handleClick() {
@@ -311,7 +315,7 @@ export function ResponsiveDrawer(props) {
         <Divider />
         <ListItem style={{ padding: '0' }}>
           <Button
-            href=""            
+            href=""
             target="_blank"
             style={{ padding: "0" }}
             className={classes.navLink}
@@ -321,7 +325,7 @@ export function ResponsiveDrawer(props) {
               {getFirstLetters(getMerchantName())}
             </Avatar>
             </IconButton>
-            <ListItemText style={{ color: '#2097F3' }} primary={getMerchantName()} />            
+            <ListItemText style={{ color: '#2097F3' }} primary={getMerchantName()} />
           </Button>
           <StyledMenu
             id="customized-menu"
@@ -356,11 +360,28 @@ export function ResponsiveDrawer(props) {
           </StyledMenu>
         </ListItem>
         <ListItem>
-            <ListItemText style={{ color: '#2097F3', textAlign:'center' }} primary={`Tu saldo: ${getBalanceMerchant()}`} />
+          <ListItemText style={{ color: '#2097F3', textAlign: 'center' }} primary={`Tu saldo: ${balance}`} />
         </ListItem>
       </List>
     </div>
   );
+
+  React.useEffect(() => {
+    if (localStorage.getItem('isMerchantUpdated')) {
+      let url = `${CORE_BASEURL}/merchant/${getMerchantId()}`
+      consumeServiceGet(callBack, callBackSuccess, url)
+
+    }
+  })
+
+  const callBack = () => {
+
+  }
+
+  const callBackSuccess = (merchant) => {
+      setBalance(merchant.balance)
+      localStorage.removeItem("isMerchantUpdated")
+  }
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -373,7 +394,7 @@ export function ResponsiveDrawer(props) {
           [classes.appBarShift]: open,
         })}
       >
-        
+
         <Toolbar>
           <IconButton
             color="inherit"
@@ -386,11 +407,11 @@ export function ResponsiveDrawer(props) {
           >
             <MenuIcon />
           </IconButton>
-          {brandComponent}                             
-        </Toolbar>       
+          {brandComponent}
+        </Toolbar>
 
-      </AppBar>     
-      
+      </AppBar>
+
       <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
@@ -405,9 +426,9 @@ export function ResponsiveDrawer(props) {
         }}
       >
         {drawer}
-      <Fab onClick={()=>history.push('/charge')} style={{background: '#2097F3',color: 'white'}} variant="extended">
+        <Fab onClick={() => history.push('/charge')} style={{ background: '#2097F3', color: 'white' }} variant="extended">
           Recargar
-      </Fab>       
+        </Fab>
       </Drawer>
     </div>
   );

@@ -7,9 +7,6 @@ import GridContainer from "components/Grid/GridContainer.js";
 import styles from "assets/jss/material-kit-react/views/thankPage.js";
 import GridItem from 'components/Grid/GridItem';
 import { getQueyParamFromUrl } from 'util/UrlUtil'
-import { consumeServiceGet } from 'service/ConsumeService'
-import { getMerchantId,setBalance } from 'service/AuthenticationService'
-import {CORE_BASEURL} from 'constant/index'
 
 import Logo from "assets/img/logo_completo.png"
 import ReactPixel from 'react-facebook-pixel';
@@ -26,22 +23,8 @@ function ThankPage(props) {
         setIsCOD(getQueyParamFromUrl("cod"))
         ReactPixel.init(props.fbId);
         console.log('fbId ', props.fbId);
-        ReactPixel.fbq('track', 'Purchase', { currency: "COP", value: props.value });
-        if (localStorage.getItem('isMerchantUpdated')) {
-            let url = `${CORE_BASEURL}/merchant/${getMerchantId()}`
-            consumeServiceGet(callBack, callBackSuccess, url)
-
-        }
+        ReactPixel.fbq('track', 'Purchase', { currency: "COP", value: props.value });        
     })
-
-    const callBack = () => {
-
-    }
-
-    const callBackSuccess = (merchant) => {
-        setBalance(merchant.balance)
-    }
-
 
     return (
         <GridContainer justify="center" className={classes.root}>
