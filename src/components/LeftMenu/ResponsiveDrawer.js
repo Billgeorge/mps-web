@@ -140,7 +140,7 @@ export function ResponsiveDrawer(props) {
   const [openDashMenu, setOpenDashMenu] = React.useState(false);
   const [openDashDropMenu, setOpenDashDropMenu] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [balance, setBalance] = React.useState(getBalanceMerchant());
+  const [balance, setBalance] = React.useState(0);
   const history = useHistory();
 
   function handleClick() {
@@ -366,10 +366,10 @@ export function ResponsiveDrawer(props) {
   );
 
   React.useEffect(() => {
+    setBalance(getBalanceMerchant());
     if (localStorage.getItem('isMerchantUpdated')) {
       let url = `${CORE_BASEURL}/merchant/${getMerchantId()}`
       consumeServiceGet(callBack, callBackSuccess, url)
-
     }
   })
 
