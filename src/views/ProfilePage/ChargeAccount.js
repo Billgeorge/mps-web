@@ -25,7 +25,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 import { useHistory } from "react-router-dom";
 import Alert from '@material-ui/lab/Alert';
-import { getMerchantId } from "service/AuthenticationService";
+import { getMerchantId} from "service/AuthenticationService";
 
 
 const useStyles = makeStyles(styles);
@@ -61,6 +61,7 @@ export default function ChargeAccount(props) {
 
  const callBackSucessCreateRedirect=(paymentInformation) =>{
   setIsLoading(false)
+  localStorage.setItem("isMerchantUpdated", true)
    history.push("/methods?id="+paymentInformation.id)
  }
 

@@ -29,7 +29,7 @@ import clsx from 'clsx';
 
 
 import Avatar from '@material-ui/core/Avatar';
-import { getMerchantName } from 'service/AuthenticationService'
+import { getMerchantName,getBalanceMerchant } from 'service/AuthenticationService'
 import { getFirstLetters } from 'util/NameUtils'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -321,10 +321,8 @@ export function ResponsiveDrawer(props) {
               {getFirstLetters(getMerchantName())}
             </Avatar>
             </IconButton>
-            <ListItemText style={{ color: '#2097F3' }} primary={getMerchantName()} />
+            <ListItemText style={{ color: '#2097F3' }} primary={getMerchantName()} />            
           </Button>
-
-
           <StyledMenu
             id="customized-menu"
             anchorEl={anchorEl}
@@ -356,6 +354,9 @@ export function ResponsiveDrawer(props) {
 
             </StyledMenuItem>
           </StyledMenu>
+        </ListItem>
+        <ListItem>
+            <ListItemText style={{ color: '#2097F3', textAlign:'center' }} primary={`Tu saldo: ${getBalanceMerchant()}`} />
         </ListItem>
       </List>
     </div>
