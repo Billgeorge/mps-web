@@ -29,7 +29,6 @@ import clsx from 'clsx';
 
 
 import Avatar from '@material-ui/core/Avatar';
-import { getMerchantName, getBalanceMerchant } from 'service/AuthenticationService'
 import { getFirstLetters } from 'util/NameUtils'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -47,7 +46,7 @@ import AssistantIcon from '@material-ui/icons/Assistant';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { consumeServiceGet } from 'service/ConsumeService'
-import { getMerchantId} from 'service/AuthenticationService'
+import { getMerchantName,getMerchantId,getBalanceMerchant,setBalanceMerchant} from 'service/AuthenticationService'
 import {CORE_BASEURL} from 'constant/index'
 
 const drawerWidth = 240;
@@ -141,7 +140,7 @@ export function ResponsiveDrawer(props) {
   const [openDashMenu, setOpenDashMenu] = React.useState(false);
   const [openDashDropMenu, setOpenDashDropMenu] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [balance, setBalance] = React.useState(0);
+  const [balance, setBalance] = React.useState(getBalanceMerchant());
   const history = useHistory();
 
   function handleClick() {
@@ -380,6 +379,7 @@ export function ResponsiveDrawer(props) {
 
   const callBackSuccess = (merchant) => {
       setBalance(merchant.balance)
+      setBalanceMerchant(merchant.balance)
       localStorage.removeItem("isMerchantUpdated")
   }
 

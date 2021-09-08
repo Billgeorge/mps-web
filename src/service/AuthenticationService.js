@@ -38,6 +38,15 @@ export const getEmail = () => {
      }
  }
 
+ export const setBalanceMerchant = (balance) => {
+    if(localStorage.getItem('currentUser')){
+        console.log("Updating balance ",balance)
+       const item =  JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value)
+       item.balance = balance
+       setWithExpiry('currentUser',JSON.stringify(item),3600000)
+    }
+}
+
  export const getMerchantId = () => {
     if(localStorage.getItem('currentUser')){
         return JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value).merchantId
