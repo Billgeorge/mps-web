@@ -171,12 +171,7 @@ function Checkout(props) {
     }
 
     const callBackSuccess = (order) => {
-        if (order.paymentMethod == "COD") {
-            history.push("/thanks-page?cod=true")
-        } else {
-            const url = `${PULL_BASEURL}/cashin/redirect`
-            consumeServicePost({ id: order }, callBackErrorCreateOrder, callBackSuccessGetPaymentInformation, url)
-        }
+        history.push("/thanks-page")        
     }
 
     const callBackSuccessGetPaymentInformation = (paymentInformation) => {
