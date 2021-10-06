@@ -41,19 +41,13 @@ export default function ProductBoard(props) {
   const [successMessage, setSuccessMessage] = React.useState("");
   const [idsToDelete, setIdsToDelete] = React.useState([]);
 
-  React.useEffect(() => getProductsForMerchant(), []);
+  React.useEffect(() => getProductsForMerchant());
 
   const callBackSuccess = (products) => {
     setProductsl(products)
   }
 
   const history = useHistory();
-
-  const copyUrl = (id) => {
-    var getUrl = window.location;
-    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
-    navigator.clipboard.writeText(baseUrl + "agree-payment?idp=" + id);
-  }
 
   const createProduct = () => {
     history.push("create-product")
@@ -76,11 +70,11 @@ export default function ProductBoard(props) {
       console.log("array", inputElements[i].value)
       if (inputElements[i].checked) {
         cont++
-        if (idsToDelete.indexOf(inputElements[i].value) == '-1') {
+        if (idsToDelete.indexOf(inputElements[i].value) === '-1') {
           idsToDelete.push(inputElements[i].value)
         }
       } else {
-        if (idsToDelete.indexOf(inputElements[i].value) != '-1') {
+        if (idsToDelete.indexOf(inputElements[i].value) !== '-1') {
           idsToDelete.splice(idsToDelete.indexOf(inputElements[i].value), 1)
         }
       }

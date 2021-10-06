@@ -264,6 +264,11 @@ export default function DashboardDropSeller(props) {
               <Grid item ><span>Número de órdenes:</span> <br /><span className={classes.valueText}>{products.totalOrderByStatus}</span></Grid>
             </Grid>
           </GridItem>
+          <Grid item xs={12} sm={12} md={4} className={classes.grid}>
+            <Button  onClick={()=>props.history.push("/online-order")} color="primary">
+              Crear orden online
+            </Button>
+          </Grid>
           <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
               <Grid item xs={12}><h2>Últimas Ordenes</h2></Grid>

@@ -66,7 +66,7 @@ export const getEmail = () => {
 
 export const  login = async (payload,callback, callBackError) =>{
     console.log("autenticando")
-    const response = await Axios.post(`${CORE_BASEURL}/auth/signin`, payload)
+    await Axios.post(`${CORE_BASEURL}/auth/signin`, payload)  
     .then(response =>{
         const signInRespose = response.data    
         if (response.status === 200) {

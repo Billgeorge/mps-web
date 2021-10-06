@@ -66,10 +66,10 @@ const useStyles = makeStyles(styles);
         document.disputeForm.onsubmit = function(event){
           console.log(event.submitter.outerText)
           event.preventDefault()
-          if(event.submitter.outerText == "CREAR DISPUTA"){
+          if(event.submitter.outerText === "CREAR DISPUTA"){
             console.log("Creando disputa")
           updatePaymentState(5)
-          }else if(event.submitter.outerText == "NO HA LLEGADO"){
+          }else if(event.submitter.outerText === "NO HA LLEGADO"){
             console.log("Postergando cierre")
             delayPayment()
           }else{
@@ -129,9 +129,6 @@ const useStyles = makeStyles(styles);
           style={{
               backgroundColor:"#2097F3",
               paddingTop:"20px"
-            /*backgroundImage: "url(" + image + ")",
-            backgroundSize: "cover",
-            backgroundPosition: "top center"*/
           }}
         >
         <div className={classes.container}>

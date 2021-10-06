@@ -5,7 +5,6 @@ import GridItem from "components/Grid/GridItem";
 import styles from "assets/jss/material-kit-react/views/CreateProduct";
 import Button from "components/CustomButtons/Button.js";
 import TextField from '@material-ui/core/TextField';
-import { getQueyParamFromUrl } from 'util/UrlUtil'
 import CardFooter from "components/Card/CardFooter.js";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -81,7 +80,7 @@ export default function CreateProduct(props) {
     }
 
     const callBackErrorGetBranches = (error) => {
-        if (error == 404) {
+        if (error === 404) {
             setErrorMessage({ "Error": "No tiene asociada sucursales, por favor crear al menos una" })
         } else {
             setErrorMessage({ "Error": "Error cargando sucursales" })
@@ -114,10 +113,9 @@ export default function CreateProduct(props) {
         if (step === 2) {
             processInformationStepTwo()
         }
-        if (step == 3) {
-            {
-                processInformationStepThree()
-            }
+        if (step === 3) {
+            processInformationStepThree()
+            
         }
     }
 
