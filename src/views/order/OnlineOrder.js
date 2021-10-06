@@ -73,7 +73,7 @@ export default function OnlineOrder(props) {
         setErrorMessage("Error generando orden online. Contacte al administrador")
     }
 
-    React.useEffect(() => { getCities() });
+    React.useEffect(() => { getCities() }, []);
 
     const getCities = () => {
         const url = `${CORE_BASEURL}/logistic/cities`

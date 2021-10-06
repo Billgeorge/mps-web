@@ -68,7 +68,7 @@ export default function WarrantyOrder(props) {
         setErrorMessage("Error generando garantía. Contacte al administrador")
     }
 
-    React.useEffect(() => { getCities() });
+    React.useEffect(() => { getCities() }, []);
 
     const getCities = () => {
         const url = `${CORE_BASEURL}/logistic/cities`
