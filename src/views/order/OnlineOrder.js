@@ -101,7 +101,7 @@ export default function OnlineOrder(props) {
             return
         }
         setIsLoading(true)
-        let url = ""
+        let url = `${CORE_BASEURL}/order/online-order`
         let request = {
             dropSaleId: onlineOrder.product,
             quantity: onlineOrder.quantity,
