@@ -371,7 +371,7 @@ export function ResponsiveDrawer(props) {
       let url = `${CORE_BASEURL}/merchant/${getMerchantId()}`
       consumeServiceGet(callBack, callBackSuccess, url)
     }
-  })
+  },[])
 
   const callBack = () => {
 

@@ -114,6 +114,8 @@ export default function WarrantyOrder(props) {
 
     const callBackSuccess = () => {
         setWarrantyOrder({})
+        localStorage.setItem("isMerchantUpdated", true)
+        document.getElementById("warrantyOrderForm").reset()
         setIsLoading(false)
         setInfoMessage("Solicitud creada")
     }
@@ -197,108 +199,110 @@ export default function WarrantyOrder(props) {
                                 : <span></span>
                             }
                             <CardBody>
-                                <CustomInput
-                                    labelText="Número de guía de orden original"
-                                    formControlProps={{
-                                        fullWidth: true
-                                    }}
-                                    inputProps={{
-                                        type: "number",
-                                        onChange: handleChange,
-                                        value: warrantyOrder.guideNumber,
-                                        id: "guideNumber",
-                                        name: "guideNumber",
-                                        required: true,
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <LocalShipping className={classes.inputIconsColor} />
-                                            </InputAdornment>
-                                        )
-                                    }}
-
-                                />
-                                <FormControlLabel style={{ paddingBottom: '10px' }}
-                                    control={<Checkbox color="primary" name="checkedA" onChange={handlePickUp} checked={pickUp} />}
-                                    label="¿Deseas que se recoja el producto enviado?"
-                                />
-
-                                <FormControl style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} variant="outlined" className={classes.formControl}>
-                                    <TextField id="standard-basic" label="¿Quién paga los fletes?" />
-                                    <Select
-                                        native
-                                        value={warrantyOrder.paymentResponsible}
-                                        onChange={handleChange}
-                                        name="paymentResponsible"
-                                        label="Categoría producto"
+                                <form id="warrantyOrderForm">
+                                    <CustomInput
+                                        labelText="Número de guía de orden original"
+                                        formControlProps={{
+                                            fullWidth: true
+                                        }}
                                         inputProps={{
-                                            name: 'paymentResponsible',
-                                            id: 'paymentResponsible'
+                                            type: "number",
+                                            onChange: handleChange,
+                                            value: warrantyOrder.guideNumber,
+                                            id: "guideNumber",
+                                            name: "guideNumber",
+                                            required: true,
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <LocalShipping className={classes.inputIconsColor} />
+                                                </InputAdornment>
+                                            )
                                         }}
 
-                                    >
+                                    />
+                                    <FormControlLabel style={{ paddingBottom: '10px' }}
+                                        control={<Checkbox color="primary" name="checkedA" onChange={handlePickUp} checked={pickUp} />}
+                                        label="¿Deseas que se recoja el producto enviado?"
+                                    />
 
-                                        <option value="1">Mi tienda</option>
-                                        <option value="2">La tienda del vendedor</option>
-                                    </Select>
-                                </FormControl>
-                                <FormControlLabel style={{ paddingBottom: '10px' }}
-                                    control={<Checkbox color="primary" checked={changeAddress}
-                                        onChange={handleChangeAddress} name="changeAddress" />}
-                                    label="Cambiar dirección cliente"
-                                />
-                                {changeAddress ? <>
-                                    <p>Ingresa la dirección donde se entregará y se recogerá (Si aplica) </p>
-                                    <TextField name="address" id="address" value={warrantyOrder.address} onChange={handleChange} style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} placeholder="Ejemplo: calle 34 # 1w-88 conjunto glacial torre 4 apto 303" label="Dirección Cliente" variant="outlined" required />
                                     <FormControl style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} variant="outlined" className={classes.formControl}>
-                                        <InputLabel>Departamento</InputLabel>
+                                        <TextField id="standard-basic" label="¿Quién paga los fletes?" />
                                         <Select
                                             native
-                                            label="Departamento"
-                                            inputProps={{
-                                                name: 'state',
-                                                id: 'state'
-                                            }}
-                                            value={warrantyOrder.state}
-                                            onChange={handleChangeState}
-
-                                        >
-                                            <option aria-label="None" value="" />
-                                            {
-                                                states.map(function (state) {
-                                                    return <option value={state}>{state}</option>;
-                                                })
-                                            }
-                                        </Select>
-                                    </FormControl>
-                                    <FormControl style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} variant="outlined" className={classes.formControl}>
-                                        <InputLabel>Ciudad</InputLabel>
-                                        <Select
-                                            native
-                                            label="Ciudad"
-                                            inputProps={{
-                                                name: 'city',
-                                                id: 'city'
-                                            }}
+                                            value={warrantyOrder.paymentResponsible}
                                             onChange={handleChange}
-                                            value={warrantyOrder.city}
+                                            name="paymentResponsible"
+                                            label="Categoría producto"
+                                            inputProps={{
+                                                name: 'paymentResponsible',
+                                                id: 'paymentResponsible'
+                                            }}
 
                                         >
 
-                                            <option aria-label="None" value="" />
-                                            {
-                                                cities.map(function (item) {
-                                                    return <option value={item.code}>{item.city}</option>;
-                                                })
-                                            }
+                                            <option value="1">Mi tienda</option>
+                                            <option value="2">La tienda del vendedor</option>
                                         </Select>
                                     </FormControl>
-                                </> : <></>}
-                                {errorMessage
-                                    ? <Alert severity="error">{errorMessage}</Alert> : <span></span>
-                                }
-                                {infoMessage
-                                    ? <Alert severity="success">{infoMessage}</Alert> : <span></span>
-                                }
+                                    <FormControlLabel style={{ paddingBottom: '10px' }}
+                                        control={<Checkbox color="primary" checked={changeAddress}
+                                            onChange={handleChangeAddress} name="changeAddress" />}
+                                        label="Cambiar dirección cliente"
+                                    />
+                                    {changeAddress ? <>
+                                        <p>Ingresa la dirección donde se entregará y se recogerá (Si aplica) </p>
+                                        <TextField name="address" id="address" value={warrantyOrder.address} onChange={handleChange} style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} placeholder="Ejemplo: calle 34 # 1w-88 conjunto glacial torre 4 apto 303" label="Dirección Cliente" variant="outlined" required />
+                                        <FormControl style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} variant="outlined" className={classes.formControl}>
+                                            <InputLabel>Departamento</InputLabel>
+                                            <Select
+                                                native
+                                                label="Departamento"
+                                                inputProps={{
+                                                    name: 'state',
+                                                    id: 'state'
+                                                }}
+                                                value={warrantyOrder.state}
+                                                onChange={handleChangeState}
+
+                                            >
+                                                <option aria-label="None" value="" />
+                                                {
+                                                    states.map(function (state) {
+                                                        return <option value={state}>{state}</option>;
+                                                    })
+                                                }
+                                            </Select>
+                                        </FormControl>
+                                        <FormControl style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} variant="outlined" className={classes.formControl}>
+                                            <InputLabel>Ciudad</InputLabel>
+                                            <Select
+                                                native
+                                                label="Ciudad"
+                                                inputProps={{
+                                                    name: 'city',
+                                                    id: 'city'
+                                                }}
+                                                onChange={handleChange}
+                                                value={warrantyOrder.city}
+
+                                            >
+
+                                                <option aria-label="None" value="" />
+                                                {
+                                                    cities.map(function (item) {
+                                                        return <option value={item.code}>{item.city}</option>;
+                                                    })
+                                                }
+                                            </Select>
+                                        </FormControl>
+                                    </> : <></>}
+                                    {errorMessage
+                                        ? <Alert severity="error">{errorMessage}</Alert> : <span></span>
+                                    }
+                                    {infoMessage
+                                        ? <Alert severity="success">{infoMessage}</Alert> : <span></span>
+                                    }
+                                </form>
                             </CardBody>
                             <CardFooter className={classes.cardFooter}>
                                 <Button color="primary" size="lg" type="button" onClick={generateWarrantyOrder}>

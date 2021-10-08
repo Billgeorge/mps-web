@@ -122,6 +122,8 @@ export default function OnlineOrder(props) {
 
     const callBackSuccess = () => {
         setIsLoading(false)
+        localStorage.setItem("isMerchantUpdated", true)
+        document.getElementById("orderOnlineForm").reset();
         setOnlineOrder({})
         setInfoMessage("Orden creada")
     }
@@ -197,102 +199,104 @@ export default function OnlineOrder(props) {
                                 : <span></span>
                             }
                             <CardBody>
-                                <FormControl style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} variant="outlined" className={classes.formControl}>
-                                    <InputLabel>Producto</InputLabel>
-                                    <Select
-                                        native
-                                        label="Producto"
-                                        inputProps={{
-                                            name: 'product',
-                                            id: 'product'
-                                        }}
-                                        value={onlineOrder.product}
-                                        onChange={handleChange}
+                                <form id="orderOnlineForm">
+                                    <FormControl style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} variant="outlined" className={classes.formControl}>
+                                        <InputLabel>Producto</InputLabel>
+                                        <Select
+                                            native
+                                            label="Producto"
+                                            inputProps={{
+                                                name: 'product',
+                                                id: 'product'
+                                            }}
+                                            value={onlineOrder.product}
+                                            onChange={handleChange}
 
-                                    >
-                                        <option aria-label="None" value="" />
-                                        {
-                                            products.map(function (product) {
-                                                return <option value={product.id}>{product.name}</option>;
-                                            })
-                                        }
-                                    </Select>
-                                </FormControl>
-                                <Grid container justify="center" style={{ marginTop: "30px", marginBottom: "30px" }}>
-                                    <GridItem xs={6} sm={6} md={6} className={classes.detailText}> Cantidad </GridItem>
-                                    <GridItem style={{ margin: "0 auto" }} xs={6} sm={6} md={6}> <GroupedButtons callback={handleChangeQuantity} counter={1}></GroupedButtons></GridItem>
-                                </Grid>
-                                <TextField name="name" id="name" value={onlineOrder.name} onChange={handleChange} style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} placeholder="Ejemplo: calle 34 # 1w-88 conjunto glacial torre 4 apto 303" label="Nombre completo Cliente" variant="outlined" required />
-                                <FormControl style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} variant="outlined" className={classes.formControl}>
-                                    <InputLabel>Departamento</InputLabel>
-                                    <Select
-                                        native
-                                        label="Departamento"
-                                        inputProps={{
-                                            name: 'state',
-                                            id: 'state'
-                                        }}
-                                        value={onlineOrder.state}
-                                        onChange={handleChangeState}
+                                        >
+                                            <option aria-label="None" value="" />
+                                            {
+                                                products.map(function (product) {
+                                                    return <option value={product.id}>{product.name}</option>;
+                                                })
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                    <Grid container justify="center" style={{ marginTop: "30px", marginBottom: "30px" }}>
+                                        <GridItem xs={6} sm={6} md={6} className={classes.detailText}> Cantidad </GridItem>
+                                        <GridItem style={{ margin: "0 auto" }} xs={6} sm={6} md={6}> <GroupedButtons callback={handleChangeQuantity} counter={1}></GroupedButtons></GridItem>
+                                    </Grid>
+                                    <TextField name="name" id="name" value={onlineOrder.name} onChange={handleChange} style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} placeholder="Ejemplo: calle 34 # 1w-88 conjunto glacial torre 4 apto 303" label="Nombre completo Cliente" variant="outlined" required />
+                                    <FormControl style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} variant="outlined" className={classes.formControl}>
+                                        <InputLabel>Departamento</InputLabel>
+                                        <Select
+                                            native
+                                            label="Departamento"
+                                            inputProps={{
+                                                name: 'state',
+                                                id: 'state'
+                                            }}
+                                            value={onlineOrder.state}
+                                            onChange={handleChangeState}
 
-                                    >
-                                        <option aria-label="None" value="" />
-                                        <option value="value">ciudad</option>
-                                        {
-                                            states.map(function (state) {
-                                                return <option value={state}>{state}</option>;
-                                            })
-                                        }
-                                    </Select>
-                                </FormControl>
-                                <FormControl style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} variant="outlined" className={classes.formControl}>
-                                    <InputLabel>Ciudad</InputLabel>
-                                    <Select
-                                        native
-                                        label="Ciudad"
-                                        inputProps={{
-                                            name: 'city',
-                                            id: 'city'
-                                        }}
-                                        onChange={handleChange}
-                                        value={onlineOrder.city}
+                                        >
+                                            <option aria-label="None" value="" />
+                                            <option value="value">ciudad</option>
+                                            {
+                                                states.map(function (state) {
+                                                    return <option value={state}>{state}</option>;
+                                                })
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                    <FormControl style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} variant="outlined" className={classes.formControl}>
+                                        <InputLabel>Ciudad</InputLabel>
+                                        <Select
+                                            native
+                                            label="Ciudad"
+                                            inputProps={{
+                                                name: 'city',
+                                                id: 'city'
+                                            }}
+                                            onChange={handleChange}
+                                            value={onlineOrder.city}
 
-                                    >
+                                        >
 
-                                        <option aria-label="None" value="" />
-                                        <option value="value">ciudad</option>
-                                        {
-                                            cities.map(function (item) {
-                                                return <option value={item.code}>{item.city}</option>;
-                                            })
-                                        }
-                                    </Select>
-                                </FormControl>
-                                <p>Ingresa la dirección completa del cliente</p>
-                                <TextField name="address" id="address" value={onlineOrder.address} onChange={handleChange} style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} placeholder="Ejemplo: calle 34 # 1w-88 conjunto glacial torre 4 apto 303" label="Dirección Cliente" variant="outlined" required />
-                                <TextField name="neighborhood" id="neighborhood" value={onlineOrder.neighborhood} onChange={handleChange} style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} placeholder="Barrio Benito Salas" label="Barrio Cliente" variant="outlined" required />
-                                <TextField name="email" id="email" value={onlineOrder.email} onChange={handleChange} type="email" style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} placeholder="cliente@gmail.com" label="Email cliente" variant="outlined" required />
-                                <TextField name="contactNumber" id="contactNumber" value={onlineOrder.contactNumber} type="number" onChange={handleChange} style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} placeholder="3134897500" label="Número de contacto Cliente" variant="outlined" required />
-                                <FormControl style={{ width: "100%" }}>
-                                    <TextField
-                                        id="observations"
-                                        name="observations"
-                                        label="Observaciones del pedido (color,talla)"
-                                        multiline
-                                        rows={4}
-                                        placeholder="Si necesitas poner el color, la talla o cualquier característica del producto. Escríbelo acá."
-                                        variant="outlined"
-                                        inputProps={{ maxLength: 1000 }}
-                                        onChange={handleChange}
-                                    />
-                                </FormControl>
+                                            <option aria-label="None" value="" />
+                                            <option value="value">ciudad</option>
+                                            {
+                                                cities.map(function (item) {
+                                                    return <option value={item.code}>{item.city}</option>;
+                                                })
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                    <p>Ingresa la dirección completa del cliente</p>
+                                    <TextField name="address" id="address" value={onlineOrder.address} onChange={handleChange} style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} placeholder="Ejemplo: calle 34 # 1w-88 conjunto glacial torre 4 apto 303" label="Dirección Cliente" variant="outlined" required />
+                                    <TextField name="neighborhood" id="neighborhood" value={onlineOrder.neighborhood} onChange={handleChange} style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} placeholder="Barrio Benito Salas" label="Barrio Cliente" variant="outlined" required />
+                                    <TextField name="email" id="email" value={onlineOrder.email} onChange={handleChange} type="email" style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} placeholder="cliente@gmail.com" label="Email cliente" variant="outlined" required />
+                                    <TextField name="contactNumber" id="contactNumber" value={onlineOrder.contactNumber} type="number" onChange={handleChange} style={{ width: "100%", backgroundColor: "white", paddingBottom: '10px' }} placeholder="3134897500" label="Número de contacto Cliente" variant="outlined" required />
+                                    <FormControl style={{ width: "100%" }}>
+                                        <TextField
+                                            id="observations"
+                                            name="observations"
+                                            label="Observaciones del pedido (color,talla)"
+                                            multiline
+                                            rows={4}
+                                            placeholder="Si necesitas poner el color, la talla o cualquier característica del producto. Escríbelo acá."
+                                            variant="outlined"
+                                            inputProps={{ maxLength: 1000 }}
+                                            onChange={handleChange}
+                                        />
+                                    </FormControl>
 
-                                {errorMessage
-                                    ? <Alert severity="error">{errorMessage}</Alert> : <span></span>
-                                }
-                                {infoMessage
-                                    ? <Alert severity="success">{infoMessage}</Alert> : <span></span>
-                                }
+                                    {errorMessage
+                                        ? <Alert severity="error">{errorMessage}</Alert> : <span></span>
+                                    }
+                                    {infoMessage
+                                        ? <Alert severity="success">{infoMessage}</Alert> : <span></span>
+                                    }
+                                </form>
                             </CardBody>
                             <CardFooter className={classes.cardFooter}>
                                 <Button color="primary" size="lg" type="button" onClick={generateOnlineOrder}>
