@@ -177,6 +177,9 @@ export default function CreateProduct(props) {
     const processInformationStepThree = () => {
         setInfoMessage("")
         setErrorMessage({})
+        if (isLoading) {
+            return
+        }
         if (branch.length > 0) {
             setErrorMessage({})
             let inventory = calculateInventory()

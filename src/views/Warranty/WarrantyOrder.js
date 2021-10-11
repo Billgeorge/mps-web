@@ -95,7 +95,7 @@ export default function WarrantyOrder(props) {
             setErrorMessage("Faltan campos obligatorios.");
             return;
         }
-        setErrorMessage("");
+        setErrorMessage("");       
         setIsLoading(true);
         const url = `${CORE_BASEURL}/order/warranty`
         let request = {}

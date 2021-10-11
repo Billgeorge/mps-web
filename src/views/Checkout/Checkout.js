@@ -103,6 +103,10 @@ function Checkout(props) {
         setErrorMessage("")
         setPaymentMethod(paymentMethod)
 
+        if (isLoading) {
+            return
+        }
+
         if (!order.name) {
             setErrorMessage("Nombre es obligatorio")
             return

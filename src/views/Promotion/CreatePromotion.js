@@ -81,6 +81,9 @@ export default function CreatePromotion(props) {
             setErrorMessage({})
             event.preventDefault()
             setSuccessMessage(null)
+            if (isLoading) {
+                return
+            }
             setIsLoading(true)
 
             consumeServicePatch({

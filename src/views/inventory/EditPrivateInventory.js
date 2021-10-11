@@ -52,7 +52,9 @@ export default function EditPrivateInventory(props) {
   };
 
   const saveAmount = () => {
-    setIsLoading(false)
+    if (isLoading) {
+      return
+    }
     setSuccessMessage(null)
     setErrorMessage({})
     if (!editForm.amount) {
@@ -85,7 +87,7 @@ export default function EditPrivateInventory(props) {
     }
     setIsLoading(false)
   }
-  
+
   const callBackSuccess = (error) => {
     editForm.amount = ""
     setSuccessMessage("Inventario privado editado correctamente")
@@ -108,8 +110,10 @@ export default function EditPrivateInventory(props) {
             <Card className={classes[cardAnimaton]}>
               <form className={classes.form} validated="true">
                 <CardHeader className={classes.cardHeader}>
-                  <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{    color: "#9c27b0", textDecoration: "none",
-                              backgroundColor: "transparent", cursor:"pointer"}} onClick={()=>props.history.push('/private-inventory')} /> Editar inventario privado</h3>
+                  <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{
+                    color: "#9c27b0", textDecoration: "none",
+                    backgroundColor: "transparent", cursor: "pointer"
+                  }} onClick={() => props.history.push('/private-inventory')} /> Editar inventario privado</h3>
                 </CardHeader>
                 <CardBody>
                   <p style={{ fontWeight: "600", fontSize: "1.2em", fontFamily: 'Dosis, sans-serif' }}>

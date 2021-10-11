@@ -18,7 +18,7 @@ import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import {CORE_BASEURL} from '../../constant/index'
+import { CORE_BASEURL } from '../../constant/index'
 
 import Alert from '@material-ui/lab/Alert';
 
@@ -31,7 +31,7 @@ const useStyles = makeStyles(styles);
 
 export default function LoginPage(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
-  setTimeout(function() {
+  setTimeout(function () {
     setCardAnimation("");
   }, 700);
 
@@ -42,38 +42,41 @@ export default function LoginPage(props) {
   const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => changeMessageValidation(), []);
-  const changeMessageValidation = () =>{
-    document.recoveryForm.onsubmit = function(event){
+  const changeMessageValidation = () => {
+    document.recoveryForm.onsubmit = function (event) {
       console.log("recovering pass")
       event.preventDefault()
       setIsRequestSuccess(false);
       setErrorMessage("")
-      const callBackSucess = () =>{
+      const callBackSucess = () => {
         setIsLoading(false);
         setIsRequestSuccess(true);
       }
-      const callBackError = (message) =>{
+      const callBackError = (message) => {
         setErrorMessage("Ha ocurrido un error, por favor contacte al administrador")
         setIsLoading(false);
       }
-      setIsLoading(true);      
-      consumeServicePost(    
-        document.getElementById("email").value,callBackError,
-        callBackSucess,CORE_BASEURL+"/user/recovery-password")      
+      if (isLoading) {
+        return
+      }
+      setIsLoading(true);
+      consumeServicePost(
+        document.getElementById("email").value, callBackError,
+        callBackSucess, CORE_BASEURL + "/user/recovery-password")
     }
     let htmlInputs = document.forms["recoveryForm"].getElementsByTagName("input");
     console.log(htmlInputs)
-    for(let input of htmlInputs){
+    for (let input of htmlInputs) {
       console.log(input.item)
-     input.oninvalid = function(e) {
+      input.oninvalid = function (e) {
         e.target.setCustomValidity("Este campo es obligatorio o invalido");
+      }
+      input.oninput = function (e) {
+        e.target.setCustomValidity("");
+      };
     }
-    input.oninput = function(e) {
-      e.target.setCustomValidity("");
-  };
-    }    
   }
- 
+
   const { ...rest } = props;
   return (
     <div>
@@ -98,14 +101,14 @@ export default function LoginPage(props) {
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form} validated="true" name="recoveryForm" id="recoveryForm">
                   <CardHeader color="primary" className={classes.cardHeader}>
-                    <h4>Recuperar Contraseña</h4>                    
-                  </CardHeader>                  
+                    <h4>Recuperar Contraseña</h4>
+                  </CardHeader>
                   <CardBody>
-                  <span>Por favor ingresa tu correo electrónico:</span>
-                  {isLoading
-                                ? <CircularProgress/>
-                                : <span></span>
-                  }                    
+                    <span>Por favor ingresa tu correo electrónico:</span>
+                    {isLoading
+                      ? <CircularProgress />
+                      : <span></span>
+                    }
                     <CustomInput
                       labelText="Correo Electrónico..."
                       id="email"
@@ -122,19 +125,19 @@ export default function LoginPage(props) {
                         )
                       }}
                     />
-                  {errorMessage !== ""
-                  ?
-                  <Alert severity="error">{errorMessage}</Alert>
-                  : <span>	&nbsp;</span>   
-                              }
-                  {isRequestSuccess
-                                ? <Alert severity="success">Hemos enviado un correo para que crees una nueva contraseña. 
-                                Por favor asegurate de revisar la carpeta de no deseados o spam, en caso de no verlo en la bandeja de entrada.</Alert>    
-                                : <span></span>
-                                }                 
+                    {errorMessage !== ""
+                      ?
+                      <Alert severity="error">{errorMessage}</Alert>
+                      : <span>	&nbsp;</span>
+                    }
+                    {isRequestSuccess
+                      ? <Alert severity="success">Hemos enviado un correo para que crees una nueva contraseña.
+                        Por favor asegurate de revisar la carpeta de no deseados o spam, en caso de no verlo en la bandeja de entrada.</Alert>
+                      : <span></span>
+                    }
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
-                    <Button type = "submit" simple color="primary" size="lg">
+                    <Button type="submit" simple color="primary" size="lg">
                       RECUPERAR CONTRASEÑA
                     </Button>
                   </CardFooter>
