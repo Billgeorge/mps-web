@@ -63,10 +63,18 @@ export default function WarrantyOrder(props) {
     const history = useHistory();
 
 
-    const callBackError = () => {
+    const callBackError = (error) => {
         setIsLoading(false)
-        setErrorMessage("Error generando garantía. Contacte al administrador")
-    }
+        let errorObjects = "Error creando garantia"
+        if (error !== null) {
+          if(typeof error === 'object'){
+            errorObjects=JSON.stringify(error)
+          }else{
+            errorObjects = error
+          }          
+        }
+        setErrorMessage(errorObjects)    
+      }
 
     React.useEffect(() => { getCities() }, []);
 
