@@ -66,12 +66,12 @@ export default function RegisterPage(props) {
         setIsLoading(false)
         setIsMerchantCreated(true)
       }
+      event.preventDefault()
       if (isLoading) {
         return
       }
       setIsLoading(true)
-      console.log("creating merchant")
-      event.preventDefault()
+      console.log("creating merchant")      
       setErrorMessage({})
       const form = event.currentTarget;
       consumeServicePost({

@@ -130,12 +130,12 @@ export default function CreateProduct(props) {
   const changeMessageValidation = () => {
     getCities()
     document.createBranch.onsubmit = function (event) {
+      event.preventDefault()
       if (isLoading) {
         return
       }
       setErrorMessage({})
-      setSuccessMessage("")
-      event.preventDefault()
+      setSuccessMessage("")      
       if (!document.getElementById('daneCode').value) {
         setErrorMessage({ 'Error': 'Debes seleccionar departamento y ciudad.' })
         return

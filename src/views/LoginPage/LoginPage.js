@@ -46,10 +46,10 @@ export default function LoginPage(props) {
   const changeMessageValidation = () => {
     document.loginForm.onsubmit = function (event) {
       console.log("signing in")
+      event.preventDefault()
       if (isLoading) {
         return
       }
-      event.preventDefault()
       setErrorMessage("")
       const callBackSucess = () => {
         history.push("/dashboard")

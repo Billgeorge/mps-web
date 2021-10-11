@@ -68,12 +68,13 @@ export default function RegisterPage(props) {
         document.getElementById("createPayment").reset();
         setIsLoading(false)
       }
+      event.preventDefault()
       if (isLoading) {
         return
       }
       setIsLoading(true)
       console.log("submitting")
-      event.preventDefault()
+      
       setErrorMessage({})
       const form = event.currentTarget;
       consumeServicePost({

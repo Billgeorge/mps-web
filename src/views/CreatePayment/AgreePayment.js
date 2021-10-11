@@ -158,6 +158,7 @@ function AgreePayment(props) {
         setErrorMessage(errorObjects)
         setIsLoading(false)
       }
+      event.preventDefault()
       if (isLoading) {
         return
       }
@@ -166,7 +167,7 @@ function AgreePayment(props) {
       }
       setIsLoading(true)
       console.log("submitting")
-      event.preventDefault()
+      
       setErrorMessage({})
       const form = event.currentTarget;
       const idp = getQueyParamFromUrl('idp')
