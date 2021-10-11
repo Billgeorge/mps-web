@@ -30,7 +30,7 @@ export default function Parallax(props) {
         window.removeEventListener("scroll", resetTransform);
       }
     };
-  });
+  }, []);
   const resetTransform = () => {
     var windowScrollTop = window.pageYOffset / 3;
     setTransform("translate3d(0," + windowScrollTop + "px,0)");

@@ -24,7 +24,7 @@ function ThankPage(props) {
         ReactPixel.init(props.fbId);
         console.log('fbId ', props.fbId);
         ReactPixel.fbq('track', 'Purchase', { currency: "COP", value: props.value });        
-    })
+    }, [])
 
     return (
         <GridContainer justify="center" className={classes.root}>

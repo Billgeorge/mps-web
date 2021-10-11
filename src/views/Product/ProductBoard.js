@@ -41,7 +41,7 @@ export default function ProductBoard(props) {
   const [successMessage, setSuccessMessage] = React.useState("");
   const [idsToDelete, setIdsToDelete] = React.useState([]);
 
-  React.useEffect(() => getProductsForMerchant());
+  React.useEffect(() => getProductsForMerchant(),[]);
 
   const callBackSuccess = (products) => {
     setProductsl(products)
@@ -114,7 +114,7 @@ export default function ProductBoard(props) {
 
   const getProductsForMerchant = (filter, value) => {
     const merchantId = getMerchantId()
-    console.log('getting withdrawals ')
+    console.log('getting products ')
     let url = `${CORE_BASEURL}/product/merchant/${merchantId}`
     consumeServiceGet(callBack, callBackSuccess, url)
   }

@@ -128,7 +128,7 @@ export default function ProfilePage(props) {
     getInformationProfile();
     getBankingInformation();
     changeMessageValidation();
-  });
+  }, []);
 
   const getInformationProfile = () => {
     const merchantId = getMerchantId()
