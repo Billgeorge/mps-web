@@ -142,6 +142,7 @@ function ResponsiveDrawer(props) {
   const [openDashDropMenu, setOpenDashDropMenu] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [balance, setBalance] = React.useState(0);
+  const [mustChange, setMustChange] = React.useState(false);
 
   const history = useHistory();
 
@@ -361,6 +362,9 @@ function ResponsiveDrawer(props) {
           </StyledMenu>
         </ListItem>
         <ListItem>
+          {props.updateMerchant?            
+            setMustChange(!mustChange):<></>
+          }
           <ListItemText style={{ color: '#2097F3', textAlign: 'center' }} primary={`Tu saldo: ${balance}`} />
         </ListItem>
       </List>
@@ -373,7 +377,7 @@ function ResponsiveDrawer(props) {
       let url = `${CORE_BASEURL}/merchant/${getMerchantId()}`
       consumeServiceGet(callBack, callBackSuccess, url)
     }
-  },[props.updateMerchant])
+  },[mustChange])
 
   const callBack = () => {
 
