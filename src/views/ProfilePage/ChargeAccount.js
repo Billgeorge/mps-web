@@ -4,6 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
 
 import FormControl from '@material-ui/core/FormControl';
+import { connect } from 'react-redux'
+import { setUpdateMerchant } from 'actions/actions'
 import InputLabel from '@material-ui/core/InputLabel';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Footer from "components/Footer/Footer.js";
@@ -30,7 +32,7 @@ import { getMerchantId } from "service/AuthenticationService";
 
 const useStyles = makeStyles(styles);
 
-export default function ChargeAccount(props) {
+function ChargeAccount(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   const [errorMessage, setErrorMessage] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -64,6 +66,7 @@ export default function ChargeAccount(props) {
 
   const callBackSucessCreateRedirect = (paymentInformation) => {
     setIsLoading(false)
+    setUpdateMerchant(!props.updateMerchant)
     localStorage.setItem("isMerchantUpdated", true)
     history.push("/methods?id=" + paymentInformation.id)
   }
@@ -120,3 +123,15 @@ export default function ChargeAccount(props) {
 
   );
 }
+
+const mapDispatchToProps = {
+  setUpdateMerchant
+}
+
+const mapStateToProps = (state) => {
+  return {
+      updateMerchant: state.fbReducer.updateMerchant
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChargeAccount);

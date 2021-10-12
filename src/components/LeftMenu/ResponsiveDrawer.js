@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import AppBar from '@material-ui/core/AppBar';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
@@ -130,7 +131,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export function ResponsiveDrawer(props) {
+function ResponsiveDrawer(props) {
 
   const classes = useStyles();
   const theme = useTheme();
@@ -141,6 +142,7 @@ export function ResponsiveDrawer(props) {
   const [openDashDropMenu, setOpenDashDropMenu] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [balance, setBalance] = React.useState(0);
+
   const history = useHistory();
 
   function handleClick() {
@@ -371,7 +373,7 @@ export function ResponsiveDrawer(props) {
       let url = `${CORE_BASEURL}/merchant/${getMerchantId()}`
       consumeServiceGet(callBack, callBackSuccess, url)
     }
-  },[])
+  },[props.updateMerchant])
 
   const callBack = () => {
 
@@ -434,6 +436,10 @@ export function ResponsiveDrawer(props) {
   );
 }
 
+const mapStateToProps = (state) => {
+  return {
+      updateMerchant: state.fbReducer.updateMerchant
+  }
+};
 
-
-export default ResponsiveDrawer;
+export default connect(mapStateToProps, null)(ResponsiveDrawer);

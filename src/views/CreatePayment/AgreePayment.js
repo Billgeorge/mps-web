@@ -38,7 +38,7 @@ import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 import consumerService from '../../service/ConsumeService'
 import ReactPixel from 'react-facebook-pixel';
 
-import { setFbPixel, setValue } from 'actions/setFbPixel'
+import { setFbPixel, setValue } from 'actions/actions'
 
 import { useHistory } from "react-router-dom";
 

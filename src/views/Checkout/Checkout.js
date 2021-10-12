@@ -15,7 +15,7 @@ import FormControl from '@material-ui/core/FormControl';
 import GroupedButtons from 'views/Components/Numeric'
 import Alert from '@material-ui/lab/Alert';
 import { consumeServiceGet } from 'service/ConsumeService'
-import { setFbPixel, setValue } from 'actions/setFbPixel'
+import { setFbPixel, setValue } from 'actions/actions'
 import consumeServicePost from 'service/ConsumeService'
 import { CORE_BASEURL, PULL_BASEURL } from 'constant/index'
 import { useHistory } from "react-router-dom";

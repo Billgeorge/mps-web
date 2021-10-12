@@ -40,8 +40,9 @@ export default function ProductBoard(props) {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
   const [idsToDelete, setIdsToDelete] = React.useState([]);
+  const [mustChange, setMustChange] = React.useState(false);
 
-  React.useEffect(() => getProductsForMerchant(),[]);
+  React.useEffect(() => getProductsForMerchant(), [mustChange]);
 
   const callBackSuccess = (products) => {
     setProductsl(products)
@@ -60,23 +61,22 @@ export default function ProductBoard(props) {
     }, callBackDelete, callBackSucess, url)
   }
   const callBackSucess = () => {
-    setSuccessMessage("Productos eliminados, por favor actualiza la página si deseas ver los productos actualizados.")
+    setMustChange(!mustChange)
+    setSuccessMessage("Productos eliminados")
   }
 
   const validatedChecked = (event) => {
-    var inputElements = document.getElementsByClassName('productCheck');
-    var cont = 0
-    for (var i = 0; inputElements[i]; ++i) {
-      console.log("array", inputElements[i].value)
-      if (inputElements[i].checked) {
+
+    let cont = 0
+    if (event.target.checked) {
+      if (idsToDelete.indexOf(event.target.value) === -1) {
         cont++
-        if (idsToDelete.indexOf(inputElements[i].value) === '-1') {
-          idsToDelete.push(inputElements[i].value)
-        }
-      } else {
-        if (idsToDelete.indexOf(inputElements[i].value) !== '-1') {
-          idsToDelete.splice(idsToDelete.indexOf(inputElements[i].value), 1)
-        }
+        idsToDelete.push(event.target.value)
+      }
+    } else {
+      if (idsToDelete.indexOf(event.target.value) !== -1) {
+        cont--
+        idsToDelete.splice(idsToDelete.indexOf(event.target.value), 1)
       }
     }
     if (cont > 0) {
@@ -139,7 +139,12 @@ export default function ProductBoard(props) {
                 </Grid>
               </GridItem>
               <Grid item xs={12}><Button style={{ marginLeft: "10px" }} color="primary" onClick={createProduct}> Crear Producto</Button><Button style={{ marginLeft: "10px" }} color="primary" disabled={!isEnabled} onClick={deleteProducts} > Eliminar seleccionados</Button></Grid>
-              <Grid item xs={12} >
+              <Grid item xs={12}>
+                {successMessage != ""
+                  ?
+                  <Alert severity="success">{successMessage}</Alert>
+                  : <span>	&nbsp;</span>
+                }
                 <TableContainer component={Paper}>
                   <Table className={classes.table} aria-label="simple table">
                     <TableHead>
@@ -155,12 +160,13 @@ export default function ProductBoard(props) {
                     </TableHead>
                     <TableBody>
                       {products.map((row) => (
-                        <TableRow>
+                        <TableRow key={row.shortId}>
                           <TableCell align="center">
                             <center>
                               <input
                                 type="checkbox"
                                 className="productCheck"
+                                id={row.shortId}
                                 value={row.shortId}
                                 defaultChecked={isChecked}
                                 color="primary"
@@ -173,7 +179,7 @@ export default function ProductBoard(props) {
                             formatter.format(row.amount)
                           }</TableCell>
                           <TableCell align="center">{row.inventory}</TableCell>
-                          <TableCell align="right"><center><a href={"/create-inventory?idp="+row.id}><Button color="primary">Asignar Inventario</Button></a></center></TableCell>
+                          <TableCell align="right"><center><a href={"/create-inventory?idp=" + row.id}><Button color="primary">Asignar Inventario</Button></a></center></TableCell>
                           <TableCell align="center">
                             <SplitButton options={[
                               { label: "Editar Inventario", action: "/edit-product-inventory?idp=" + row.id },
@@ -192,11 +198,6 @@ export default function ProductBoard(props) {
           {errorMessage != ""
             ?
             <Alert severity="error">{errorMessage}</Alert>
-            : <span>	&nbsp;</span>
-          }
-          {successMessage != ""
-            ?
-            <Alert severity="success">{successMessage}</Alert>
             : <span>	&nbsp;</span>
           }
         </GridContainer>

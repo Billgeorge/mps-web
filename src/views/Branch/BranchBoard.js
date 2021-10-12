@@ -35,8 +35,9 @@ export default function BranchBoard(props) {
   const [branches, setBranches] = React.useState([]);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
+  const [mustChange, setMustChange] = React.useState(false);
 
-  React.useEffect(() => getBranchesForMerchant(), []);
+  React.useEffect(() => getBranchesForMerchant(), [mustChange]);
 
   const callBackSuccess = (branches) => {
     setBranches(branches)
@@ -67,6 +68,7 @@ export default function BranchBoard(props) {
   }
 
   const callBackSuccessDelete = () =>{
+    setMustChange(!mustChange)
     setSuccessMessage("Sucursal eliminada satisfactoriamente")
   }
 
@@ -120,7 +122,7 @@ export default function BranchBoard(props) {
                     </TableHead>
                     <TableBody>
                       {branches.map((row) => (
-                        <TableRow>
+                        <TableRow key={row.id}>
                           <TableCell align="center">{row.name}</TableCell>
                           <TableCell align="center">{row.address}</TableCell>
                           <TableCell align="center">{row.contactEmail}</TableCell>

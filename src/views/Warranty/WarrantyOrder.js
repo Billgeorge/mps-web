@@ -1,6 +1,8 @@
 import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from 'react-redux'
+import { setUpdateMerchant } from 'actions/actions'
 // @material-ui/icons
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -35,7 +37,7 @@ import { Checkbox } from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
-export default function WarrantyOrder(props) {
+function WarrantyOrder(props) {
     const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
     const [errorMessage, setErrorMessage] = React.useState(null);
     const [infoMessage, setInfoMessage] = React.useState(null);
@@ -67,14 +69,14 @@ export default function WarrantyOrder(props) {
         setIsLoading(false)
         let errorObjects = "Error creando garantia"
         if (error !== null) {
-          if(typeof error === 'object'){
-            errorObjects=JSON.stringify(error)
-          }else{
-            errorObjects = error
-          }          
+            if (typeof error === 'object') {
+                errorObjects = JSON.stringify(error)
+            } else {
+                errorObjects = error
+            }
         }
-        setErrorMessage(errorObjects)    
-      }
+        setErrorMessage(errorObjects)
+    }
 
     React.useEffect(() => { getCities() }, []);
 
@@ -95,7 +97,7 @@ export default function WarrantyOrder(props) {
             setErrorMessage("Faltan campos obligatorios.");
             return;
         }
-        setErrorMessage("");       
+        setErrorMessage("");
         setIsLoading(true);
         const url = `${CORE_BASEURL}/order/warranty`
         let request = {}
@@ -122,6 +124,7 @@ export default function WarrantyOrder(props) {
 
     const callBackSuccess = () => {
         setWarrantyOrder({})
+        setUpdateMerchant(!props.updateMerchant)
         localStorage.setItem("isMerchantUpdated", true)
         document.getElementById("warrantyOrderForm").reset()
         setIsLoading(false)
@@ -326,3 +329,15 @@ export default function WarrantyOrder(props) {
 
     );
 }
+
+const mapDispatchToProps = {
+    setUpdateMerchant
+}
+
+const mapStateToProps = (state) => {
+    return {
+        updateMerchant: state.fbReducer.updateMerchant
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WarrantyOrder);

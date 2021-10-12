@@ -1,9 +1,10 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from 'react-redux'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import FormControl from '@material-ui/core/FormControl';
 import Footer from "components/Footer/Footer.js";
-import GridContainer from "components/Grid/GridContainer.js";
+import { setUpdateMerchant } from 'actions/actions'
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
@@ -30,7 +31,7 @@ import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles(styles);
 
-export default function OnlineOrder(props) {
+function OnlineOrder(props) {
     const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
     const [errorMessage, setErrorMessage] = React.useState(null);
     const [infoMessage, setInfoMessage] = React.useState(null);
@@ -66,19 +67,19 @@ export default function OnlineOrder(props) {
             quantity: quantity
         });
     };
-   
+
     const callBackError = (error) => {
         setIsLoading(false)
         let errorObjects = "Error creando garantia"
         if (error !== null) {
-          if(typeof error === 'object'){
-            errorObjects=JSON.stringify(error)
-          }else{
-            errorObjects = error
-          }          
+            if (typeof error === 'object') {
+                errorObjects = JSON.stringify(error)
+            } else {
+                errorObjects = error
+            }
         }
-        setErrorMessage(errorObjects)    
-      }
+        setErrorMessage(errorObjects)
+    }
 
     React.useEffect(() => { getCities() }, []);
 
@@ -129,6 +130,7 @@ export default function OnlineOrder(props) {
 
     const callBackSuccess = () => {
         setIsLoading(false)
+        setUpdateMerchant(!props.updateMerchant)
         localStorage.setItem("isMerchantUpdated", true)
         document.getElementById("orderOnlineForm").reset();
         setOnlineOrder({})
@@ -319,3 +321,15 @@ export default function OnlineOrder(props) {
 
     );
 }
+
+const mapDispatchToProps = {
+    setUpdateMerchant
+}
+
+const mapStateToProps = (state) => {
+    return {
+        updateMerchant: state.fbReducer.updateMerchant
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(OnlineOrder);

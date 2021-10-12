@@ -222,8 +222,8 @@ export default function ProfilePage(props) {
       }
 
       event.preventDefault()
-      if (document.getElementById('bankAccount').value === '0' || document.getElementById('accountType').value === '0' ||
-        document.getElementById('documentType').value === '0') {
+      if (document.getElementById('bankAccount').value == '0' || document.getElementById('accountType').value == '0' ||
+        document.getElementById('documentType').value == '0') {
         let errorObjects = "Todos los campos son obligatorios"
         setErrorMessage(errorObjects)
         return
