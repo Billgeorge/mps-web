@@ -20,7 +20,7 @@ import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import {login} from '../../service/AuthenticationService'
+import { login } from '../../service/AuthenticationService'
 import Alert from '@material-ui/lab/Alert';
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
@@ -31,7 +31,7 @@ const useStyles = makeStyles(styles);
 
 export default function LoginPage(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
-  setTimeout(function() {
+  setTimeout(function () {
     setCardAnimation("");
   }, 700);
 
@@ -43,40 +43,43 @@ export default function LoginPage(props) {
   const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => changeMessageValidation(), []);
-  const changeMessageValidation = () =>{
-    document.loginForm.onsubmit = function(event){
+  const changeMessageValidation = () => {
+    document.loginForm.onsubmit = function (event) {
       console.log("signing in")
       event.preventDefault()
+      if (isLoading) {
+        return
+      }
       setErrorMessage("")
-      const callBackSucess = () =>{
+      const callBackSucess = () => {
         history.push("/dashboard")
         setIsLoading(false);
       }
-      const callBackError = (message) =>{
+      const callBackError = (message) => {
         setErrorMessage(message)
         setIsLoading(false);
       }
       const form = event.currentTarget;
-      setIsLoading(true);      
-      login({    
+      setIsLoading(true);
+      login({
         username: document.getElementById("email").value,
         password: document.getElementById("pass").value
-      },callBackSucess,callBackError)      
+      }, callBackSucess, callBackError)
     }
     let htmlInputs = document.forms["loginForm"].getElementsByTagName("input");
     console.log(htmlInputs)
-    for(let input of htmlInputs){
+    for (let input of htmlInputs) {
       console.log(input.item)
-     input.oninvalid = function(e) {
+      input.oninvalid = function (e) {
         e.target.setCustomValidity("Este campo es obligatorio o invalido");
+      }
+      input.oninput = function (e) {
+        e.target.setCustomValidity("");
+      };
     }
-    input.oninput = function(e) {
-      e.target.setCustomValidity("");
-  };
-    }    
   }
-  const showPassword = event =>{
-    event.preventDefault()   
+  const showPassword = event => {
+    event.preventDefault()
     setHiddenPassword(!isPassWordHidden)
   }
   const [isPassWordHidden, setHiddenPassword] = React.useState(true);
@@ -104,13 +107,13 @@ export default function LoginPage(props) {
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form} validated="true" name="loginForm" id="loginForm">
                   <CardHeader color="primary" className={classes.cardHeader}>
-                    <h4>Inicio Sesión</h4>                    
-                  </CardHeader>                  
+                    <h4>Inicio Sesión</h4>
+                  </CardHeader>
                   <CardBody>
-                  {isLoading
-                                ? <CircularProgress/>
-                                : <span></span>
-                  }                    
+                    {isLoading
+                      ? <CircularProgress />
+                      : <span></span>
+                    }
                     <CustomInput
                       labelText="Correo Electrónico..."
                       id="email"
@@ -146,21 +149,21 @@ export default function LoginPage(props) {
                         autoComplete: "off"
                       }}
                     />
-                     <a onClick={showPassword} style={{cursor:'pointer'}}>
-                  {isPassWordHidden
-                                ? <span>Ver contraseña</span>
-                                : <span>Ocultar contraseña</span>
-                                }</a>
-                  {errorMessage != ""
-                  ?
-                  <Alert severity="error">{errorMessage}</Alert>
-                  : <span>	&nbsp;</span>   
-                              }
-                  <br/><br/>
-                  <span>¿Olvidaste tu contraseña? <a href="/recovery-pass" style={{cursor:'pointer'}}>Recupera tu contraseña</a></span>                  
+                    <a onClick={showPassword} style={{ cursor: 'pointer' }}>
+                      {isPassWordHidden
+                        ? <span>Ver contraseña</span>
+                        : <span>Ocultar contraseña</span>
+                      }</a>
+                    {errorMessage != ""
+                      ?
+                      <Alert severity="error">{errorMessage}</Alert>
+                      : <span>	&nbsp;</span>
+                    }
+                    <br /><br />
+                    <span>¿Olvidaste tu contraseña? <a href="/recovery-pass" style={{ cursor: 'pointer' }}>Recupera tu contraseña</a></span>
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
-                    <Button type = "submit" simple color="primary" size="lg">
+                    <Button type="submit" simple color="primary" size="lg">
                       Iniciar Sesión
                     </Button>
                   </CardFooter>

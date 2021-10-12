@@ -49,7 +49,7 @@ export default function EditProduct(props) {
 
   const [editForm, setEditForm] = React.useState({
     amount: "",
-    dropshipping: false,    
+    dropshipping: false,
     name: "",
     description: "",
     dropshippingPrice: 0,
@@ -86,14 +86,17 @@ export default function EditProduct(props) {
     fr.readAsDataURL(file);
   }
   const processInformation = () => {
-    setErrorMessage({})    
+    setErrorMessage({})
     setSuccessMessage(null)
+    if (isLoading) {
+      return
+    }
     const callBackSucess = () => {
       setSuccessMessage("Producto editado satisfactoriamente.")
       setIsLoading(false)
-    }    
+    }
     let dropshippingPrice = null
-    
+
     if (document.getElementById('dropshipping').value === "true" && document.getElementById("dropshippingPrice").value < 1) {
       setErrorMessage({ 'Error': 'Para un producto dropshipping es obligatorio el precio a distribuidor' })
       return
@@ -103,19 +106,19 @@ export default function EditProduct(props) {
     }
     setIsLoading(true)
     let productForm = {
-      amount: document.getElementById('valor').value,      
+      amount: document.getElementById('valor').value,
       name: document.getElementById('name').value,
       description: document.getElementById('description').value,
       dropshipping: document.getElementById('dropshipping').value,
       dropshippingPrice: dropshippingPrice,
       shortId: idp
     }
-    const data = new FormData();    
+    const data = new FormData();
     const json = JSON.stringify(productForm);
     const blob = new Blob([json], {
       type: 'application/json'
     });
-    data.append("data", blob);      
+    data.append("data", blob);
     data.append("image", productImage);
     consumeServicePatch(data, callBack, callBackSucess, `${CORE_BASEURL}/product`)
 
@@ -132,15 +135,15 @@ export default function EditProduct(props) {
     setIsLoading(false)
     setEditForm(response)
   }
-  
-  
+
+
   const classes = useStyles();
   React.useEffect(() => {
     changeMessageValidation()
   }, []);
-  const changeMessageValidation = () => {    
+  const changeMessageValidation = () => {
     let url = `${CORE_BASEURL}/product/public/${idp}`
-    consumeServiceGet(callBack, callBackGetSucess, url)   
+    consumeServiceGet(callBack, callBackGetSucess, url)
     const loadMessagesInput = () => {
       let htmlInputs = document.forms["editProduct"].getElementsByTagName("input");
       let htmlTextArea = document.forms["editProduct"].getElementsByTagName("textarea");
@@ -174,8 +177,10 @@ export default function EditProduct(props) {
             <Card className={classes[cardAnimaton]}>
               <form className={classes.form} validated="true" name="editProduct" id="editProduct">
                 <CardHeader className={classes.cardHeader}>
-                  <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{    color: "#9c27b0", textDecoration: "none",
-                              backgroundColor: "transparent", cursor:"pointer"}} onClick={()=>props.history.push('/product')} /> Editar producto</h3>
+                  <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{
+                    color: "#9c27b0", textDecoration: "none",
+                    backgroundColor: "transparent", cursor: "pointer"
+                  }} onClick={() => props.history.push('/product')} /> Editar producto</h3>
                 </CardHeader>
                 <CardBody>
                   {isLoading
@@ -195,18 +200,18 @@ export default function EditProduct(props) {
 
                   </FormControl>
                   <FormControl>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <img type="file" src={editForm.imageUrl || emptyImage} name="productImage" id="productImage" className={classes.imgProduct} />
-                    <input onChange={fileSelected} accept="image/*" style={{ display: 'none' }} id="icon-button-file" type="file" />
-                    <label className={classes.addImg} htmlFor="icon-button-file">
-                      <IconButton color="primary" aria-label="upload picture" component="span">
-                        <AddIcon />
-                      </IconButton>
-                    </label>
-                  </GridItem>                  
-                   
+                    <GridItem xs={12} sm={12} md={12}>
+                      <img type="file" src={editForm.imageUrl || emptyImage} name="productImage" id="productImage" className={classes.imgProduct} />
+                      <input onChange={fileSelected} accept="image/*" style={{ display: 'none' }} id="icon-button-file" type="file" />
+                      <label className={classes.addImg} htmlFor="icon-button-file">
+                        <IconButton color="primary" aria-label="upload picture" component="span">
+                          <AddIcon />
+                        </IconButton>
+                      </label>
+                    </GridItem>
+
                   </FormControl>
-                  <FormControl style={{ width: "100%", paddingBottom: "10px",paddingTop: "10px" }}>
+                  <FormControl style={{ width: "100%", paddingBottom: "10px", paddingTop: "10px" }}>
                     <TextField
                       id="description"
                       name="description"
@@ -220,7 +225,7 @@ export default function EditProduct(props) {
                       onChange={handleChange}
                       required
                     />
-                  </FormControl>                  
+                  </FormControl>
                   <FormControl variant="outlined" style={{ width: "100%", paddingBottom: "10px" }}>
                     <InputLabel htmlFor="dropshipping">¿Disponible para que otros lo vendan?</InputLabel>
                     <Select

@@ -22,11 +22,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from "components/CustomButtons/Button.js";
+import { useHistory } from "react-router-dom";
 
 import { getLegibleDate } from 'util/DateUtil'
 
 import { consumeServiceGet } from 'service/ConsumeService'
-import { CORE_BASEURL, getOrderState, getOrderIdState } from 'constant/index'
+import { CORE_BASEURL, getOrderState } from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
@@ -42,6 +43,8 @@ const useStyles = makeStyles(styles);
 
 
 export default function DashBoard(props) {
+
+  const history = useHistory();
 
   const [ordersProvider, setOrders] = React.useState({
     orders: [],
@@ -263,6 +266,11 @@ export default function DashBoard(props) {
               </Grid>
             </Grid>
           </GridItem>
+          <Grid item xs={12} sm={12} md={4} className={classes.grid}>
+            <Button  onClick={()=>history.push("/warranty")} color="primary">
+              Crear orden de garantía
+            </Button>
+          </Grid>
           <Grid item xs={12} sm={12} md={4} className={classes.grid}>
             <Button component="a" href={CORE_BASEURL + "/label/public/order/" + getMerchantId()} color="primary">
               Descargar rótulos pendientes

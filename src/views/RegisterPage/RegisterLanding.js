@@ -8,7 +8,7 @@ import Email from "@material-ui/icons/Email";
 import Storefront from "@material-ui/icons/Storefront";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
-import {CORE_BASEURL} from '../../constant/index'
+import { CORE_BASEURL } from '../../constant/index'
 
 // core components
 import Header from "components/Header/Header.js";
@@ -25,72 +25,75 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
-import { Smartphone} from "@material-ui/icons";
+import { Smartphone } from "@material-ui/icons";
 import consumeServicePost from '../../service/ConsumeService'
 
 const useStyles = makeStyles(styles);
 
 export default function RegisterLanding(props) {
-  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");  
+  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
 
   const [errorMessage, setErrorMessage] = React.useState({});
-  
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [isMerchantCreated, setIsMerchantCreated] = React.useState(false);    
 
-  setTimeout(function() {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isMerchantCreated, setIsMerchantCreated] = React.useState(false);
+
+  setTimeout(function () {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
 
   React.useEffect(() => changeMessageValidation(), []);
-  const changeMessageValidation = () =>{
-    document.registerForm.onsubmit = function(event){
+  const changeMessageValidation = () => {
+    document.registerForm.onsubmit = function (event) {
       setIsMerchantCreated(false)
       const callBack = (error) => {
-        if(error!=null && typeof error === 'object'){        
+        if (error != null && typeof error === 'object') {
           setErrorMessage(error)
-          }else if(error!=null && typeof error === 'String'){
-            setErrorMessage({'Error':error})
-          }
-          else{
-            setErrorMessage({'Error':'Ha ocurrido un error inesperado por favor contactar al administrador'})
-          }
-          setIsLoading(false)
+        } else if (error != null && typeof error === 'String') {
+          setErrorMessage({ 'Error': error })
+        }
+        else {
+          setErrorMessage({ 'Error': 'Ha ocurrido un error inesperado por favor contactar al administrador' })
+        }
+        setIsLoading(false)
       }
-      const callBackSucess = () =>{
+      const callBackSucess = () => {
         document.getElementById("registerForm").reset();
         setIsLoading(false)
         setIsMerchantCreated(true)
       }
-      setIsLoading(true)
-      console.log("creating merchant")
       event.preventDefault()
+      if (isLoading) {
+        return
+      }
+      setIsLoading(true)
+      console.log("creating merchant")      
       setErrorMessage({})
-      const form = event.currentTarget;      
-      consumeServicePost({    
+      const form = event.currentTarget;
+      consumeServicePost({
         name: document.getElementById("merchantName").value,
-        email:document.getElementById("email").value,
-        contactNumber: document.getElementById("contactNumber").value        
-      },callBack,callBackSucess,
-      CORE_BASEURL+"/merchant/landing")
+        email: document.getElementById("email").value,
+        contactNumber: document.getElementById("contactNumber").value
+      }, callBack, callBackSucess,
+        CORE_BASEURL + "/merchant/landing")
     }
     let htmlInputs = document.forms["registerForm"].getElementsByTagName("input");
     console.log(htmlInputs)
-    for(let input of htmlInputs){
+    for (let input of htmlInputs) {
       console.log(input.item)
-     input.oninvalid = function(e) {
+      input.oninvalid = function (e) {
         e.target.setCustomValidity("Este campo es obligatorio o invalido");
+      }
+      input.oninput = function (e) {
+        e.target.setCustomValidity("");
+      };
     }
-    input.oninput = function(e) {
-      e.target.setCustomValidity("");
-  };
-    }    
   }
-  
+
   return (
-    
+
     <div>
       <Header
         absolute
@@ -102,7 +105,7 @@ export default function RegisterLanding(props) {
       <div
         className={classes.pageHeader}
         style={{
-            backgroundColor:"#03a9f4"
+          backgroundColor: "#03a9f4"
           /*backgroundImage: "url(" + image + ")",
           backgroundSize: "cover",
           backgroundPosition: "top center"*/
@@ -114,14 +117,14 @@ export default function RegisterLanding(props) {
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form} validated="true" name="registerForm" id="registerForm">
                   <CardHeader color="primary" className={classes.cardHeader}>
-                    <h4>Registro</h4>                    
-                  </CardHeader>                  
+                    <h4>Registro</h4>
+                  </CardHeader>
                   <CardBody>
-                  {isLoading
-                                ? <CircularProgress/>
-                                : <span></span>
-                  }
-                    <CustomInput                    
+                    {isLoading
+                      ? <CircularProgress />
+                      : <span></span>
+                    }
+                    <CustomInput
                       labelText="Nombre Comercio..."
                       id="merchantName"
                       formControlProps={{
@@ -139,13 +142,13 @@ export default function RegisterLanding(props) {
                     />
                     <CustomInput
                       labelText="Correo Electrónico..."
-                      id="email"                      
+                      id="email"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
                         type: "email",
-                        required: true,                        
+                        required: true,
                         endAdornment: (
                           <InputAdornment position="end">
                             <Email className={classes.inputIconsColor} />
@@ -168,28 +171,28 @@ export default function RegisterLanding(props) {
                           </InputAdornment>
                         )
                       }}
-                    />                    
-                   
-                {Object.keys(errorMessage).map((keyName, i) => (
-                  <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>    
-                ))}
-                {isMerchantCreated
-                                ? <Alert severity="success">¡Bienvenido a MiPagoSeguro!, Revisa tu correo y crea tu contraseña lo antes posible. </Alert>    
-                                : <span></span>
-                                }
-                 <br/>
-                 <GridItem md={12}>
+                    />
+
+                    {Object.keys(errorMessage).map((keyName, i) => (
+                      <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>
+                    ))}
+                    {isMerchantCreated
+                      ? <Alert severity="success">¡Bienvenido a MiPagoSeguro!, Revisa tu correo y crea tu contraseña lo antes posible. </Alert>
+                      : <span></span>
+                    }
+                    <br />
+                    <GridItem md={12}>
                       <span>Al registrarte estas aceptando los <a href="https://www.mipagoseguro.co/terminos-y-condiciones/" target="_blank">términos y condiciones</a></span>
-                    </GridItem> 
+                    </GridItem>
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
                     <Button simple color="primary" size="lg" type="submit">
                       Registrarse
-                    </Button>                                      
-                  </CardFooter>                  
+                    </Button>
+                  </CardFooter>
                 </form>
               </Card>
-            </GridItem>            
+            </GridItem>
           </GridContainer>
         </div>
         <Footer whiteFont />

@@ -100,8 +100,6 @@ export const consumeServiceGet = async (callBack,callBackSuccess,url) => {
 
 export const consumeServicePatch = async (payload,callBack,callBackSuccess,url) => {
 
-    //React.setActionState({ sending: true, error: null, });
-
     try {
         console.log('Enviando ...')
         putTokenHeader()
