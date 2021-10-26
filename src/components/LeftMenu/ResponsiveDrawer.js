@@ -6,6 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
+import { Link } from 'react-router-dom';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -35,7 +36,7 @@ import Collapse from '@material-ui/core/Collapse'
 
 import GroupIcon from '@material-ui/icons/Group';
 import { consumeServiceGet } from 'service/ConsumeService'
-import { getMerchantName, getMerchantId, getBalanceMerchant, setBalanceMerchant } from 'service/AuthenticationService'
+import { getMerchantName, getMerchantId, getBalanceMerchant, setBalanceMerchant,getRole } from 'service/AuthenticationService'
 import { CORE_BASEURL } from 'constant/index'
 import styles from "assets/jss/material-kit-react/components/leftMenu";
 
@@ -185,10 +186,10 @@ function ResponsiveDrawer(props) {
                 <Avatar style={{ backgroundColor: "rgb(29 143 210)" }} aria-label="recipe">
                   { }
                 </Avatar>
-              </ListItemIcon>
-              <a href="/profile">
+              </ListItemIcon>              
+              <Link to="/profile" >
                 < ListItemText primary="Mi Perfil" />
-              </a>
+              </Link>
             </StyledMenuItem>
             <StyledMenuItem onClick={logout}>
 
@@ -212,6 +213,7 @@ function ResponsiveDrawer(props) {
 
   React.useEffect(() => {
     setBalance(getBalanceMerchant());
+    setUserRole(getRole());
     if (localStorage.getItem('isMerchantUpdated')) {
       let url = `${CORE_BASEURL}/merchant/${getMerchantId()}`
       consumeServiceGet(callBack, callBackSuccess, url)

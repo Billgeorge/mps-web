@@ -64,6 +64,12 @@ export const getEmail = () => {
     }
  }
 
+ export const getRole = () => {
+    if(localStorage.getItem('currentUser')){
+        return JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value).role
+    }
+ }
+
 export const  login = async (payload,callback, callBackError) =>{
     console.log("autenticando")
     await Axios.post(`${CORE_BASEURL}/auth/signin`, payload)  
