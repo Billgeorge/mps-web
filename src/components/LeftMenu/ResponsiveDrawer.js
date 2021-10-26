@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { connect } from 'react-redux'
 import AppBar from '@material-ui/core/AppBar';
 import Divider from '@material-ui/core/Divider';
@@ -14,144 +15,52 @@ import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import IconExpandLess from '@material-ui/icons/ExpandLess'
 import IconExpandMore from '@material-ui/icons/ExpandMore'
-import LocalConvenienceStoreIcon from '@material-ui/icons/LocalConvenienceStore';
 import Fab from '@material-ui/core/Fab';
 
-import StarsIcon from '@material-ui/icons/Stars';
-
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import HomeWork from '@material-ui/icons/HomeWork';
+
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import StoreIcon from '@material-ui/icons/Storefront';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import clsx from 'clsx';
-
-
 import Avatar from '@material-ui/core/Avatar';
 import { getFirstLetters } from 'util/NameUtils'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import { useHistory } from "react-router-dom";
-
 import Logo from "assets/img/icon_logo.png"
 import Button from "@material-ui/core/Button";
-import ReceiptIcon from '@material-ui/icons/Receipt';
-import PaymentIcon from '@material-ui/icons/Payment';
-import EditIcon from '@material-ui/icons/Edit';
-import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+import SellIcon from '@material-ui/icons/Store';
 import Collapse from '@material-ui/core/Collapse'
-import AssistantIcon from '@material-ui/icons/Assistant';
-import PieChartIcon from '@material-ui/icons/PieChart';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+
+
+import GroupIcon from '@material-ui/icons/Group';
 import { consumeServiceGet } from 'service/ConsumeService'
-import { getMerchantName,getMerchantId,getBalanceMerchant,setBalanceMerchant} from 'service/AuthenticationService'
-import {CORE_BASEURL} from 'constant/index'
+import { getMerchantName, getMerchantId, getBalanceMerchant, setBalanceMerchant } from 'service/AuthenticationService'
+import { CORE_BASEURL } from 'constant/index'
+import styles from "assets/jss/material-kit-react/components/leftMenu";
 
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  appBar: {
-    backgroundColor: '#2097F3',
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  hide: {
-    display: 'none',
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-  },
-  drawerOpen: {
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerClose: {
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: 'hidden',
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
-    },
-  },
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-  },
-  title: {
-    lineHeight: "30px",
-    fontSize: "1.5em",
-    fontFamily: 'Dosis, sans-serif',
-    borderRadius: "3px",
-    textTransform: "none",
-    color: "inherit",
-    padding: "8px 16px",
-    letterSpacing: "unset",
-    "&:hover,&:focus": {
-      color: "inherit",
-      background: "transparent"
-    }
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-}));
+import SellerMenu from './SellerMenu';
+import ProviderMenu from './ProviderMenu';
 
 
 
 function ResponsiveDrawer(props) {
 
-  const classes = useStyles();
   const theme = useTheme();
+  const useStyles = makeStyles(styles(theme));
+  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [openProductMenu, setOpenProductMenu] = React.useState(false);
-  const [openBranchMenu, setOpenBranchMenu] = React.useState(false);
-  const [openDashMenu, setOpenDashMenu] = React.useState(false);
-  const [openDashDropMenu, setOpenDashDropMenu] = React.useState(false);
+  const [openProviderMenu, setOpenProviderMenu] = React.useState(false);
+  const [openSellerMenu, setOpenSellerMenu] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [balance, setBalance] = React.useState(0);
+  const [userRole, setUserRole] = React.useState(null);
   const [mustChange, setMustChange] = React.useState(false);
 
   const history = useHistory();
 
-  function handleClick() {
-    setOpenProductMenu(!openProductMenu)
-  }
-
-  function handleClickBranch() {
-    setOpenBranchMenu(!openBranchMenu)
+  function handleClickProv() {
+    setOpenProviderMenu(!openProviderMenu)
   }
 
   const handleDrawerOpen = () => {
@@ -162,12 +71,8 @@ function ResponsiveDrawer(props) {
     setAnchorEl(event.currentTarget);
   };
 
-  function handleClickDash() {
-    setOpenDashMenu(!openDashMenu);
-  };
-
-  function handleClickDashDrop() {
-    setOpenDashDropMenu(!openDashDropMenu);
+  function handleClickSell() {
+    setOpenSellerMenu(!openSellerMenu);
   };
 
   const handleDrawerClose = () => {
@@ -226,94 +131,28 @@ function ResponsiveDrawer(props) {
       </div>
       <Divider />
       <List>
-
-        <ListItem button onClick={handleClickDash} key="dashboard">
-          <ListItemIcon><DashboardIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-          <ListItemText style={{ color: '#2097F3' }} primary="Consolidado" />
-          {openDashMenu ? <IconExpandLess style={{ color: '#2097F3' }} /> : <IconExpandMore style={{ color: '#2097F3' }} />}
-        </ListItem>
-        <Collapse in={openDashMenu} timeout="auto" unmountOnExit>
-          <Divider />
-          <List component="div" style={{ paddingLeft: '15px' }}>
-            <ListItem button onClick={handleClickDashDrop} key="dashboard">
-              <ListItemIcon><ShoppingCartIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-              <ListItemText style={{ color: '#2097F3' }} primary="Dropshipper" />
-              {openDashDropMenu ? <IconExpandLess style={{ color: '#2097F3' }} /> : <IconExpandMore style={{ color: '#2097F3' }} />}
+        { !userRole  ?
+          <>
+            <ListItem button onClick={handleClickSell} key="seller">
+              <ListItemIcon><SellIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+              <ListItemText style={{ color: '#2097F3' }} primary="Vendedor" />
+              {openSellerMenu ? <IconExpandLess style={{ color: '#2097F3' }} /> : <IconExpandMore style={{ color: '#2097F3' }} />}
             </ListItem>
-            <Collapse in={openDashDropMenu} timeout="auto" unmountOnExit>
+            <Collapse in={openSellerMenu} timeout="auto" unmountOnExit>
               <Divider />
-              <List component="div" style={{ paddingLeft: '15px' }}>
-                <ListItem button component="a" href="/dashboard-dropseller" className={classes.menuItem}>
-                  <ListItemIcon ><ReceiptIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-                  <ListItemText style={{ color: '#2097F3' }} primary="Ordenes drop" />
-                </ListItem>
-                <ListItem button component="a" href="/result" className={classes.menuItem}>
-                  <ListItemIcon ><PieChartIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-                  <ListItemText style={{ color: '#2097F3' }} primary="Resumen" />
-                </ListItem>
-              </List>
+              <SellerMenu />
             </Collapse>
-            <ListItem button component="a" href="/dashboard-dropprovider" className={classes.menuItem}>
-              <ListItemIcon ><ReceiptIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-              <ListItemText style={{ color: '#2097F3' }} primary="Ordenes proveedor" />
+            <ListItem button onClick={handleClickProv} key="provider">
+              <ListItemIcon><GroupIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+              <ListItemText style={{ color: '#2097F3' }} primary="Proveedor" />
+              {openProviderMenu ? <IconExpandLess style={{ color: '#2097F3' }} /> : <IconExpandMore style={{ color: '#2097F3' }} />}
             </ListItem>
-            <ListItem button component="a" href="/dashboard" className={classes.menuItem}>
-              <ListItemIcon ><PaymentIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-              <ListItemText style={{ color: '#2097F3' }} primary="Pagos" />
-            </ListItem>
-          </List>
-        </Collapse>
-        <ListItem button onClick={handleClick} key="product">
-          <ListItemIcon><StoreIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-          <ListItemText style={{ color: '#2097F3' }} primary="Productos" />
-          {openProductMenu ? <IconExpandLess style={{ color: '#2097F3' }} /> : <IconExpandMore style={{ color: '#2097F3' }} />}
-        </ListItem>
-        <Collapse in={openProductMenu} timeout="auto" unmountOnExit>
-          <Divider />
-          <List component="div" style={{ paddingLeft: '15px' }}>
-            <ListItem button component="a" href="/product-drop" className={classes.menuItem}>
-              <ListItemIcon ><LocalConvenienceStoreIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-              <ListItemText style={{ color: '#2097F3' }} primary="Productos drop" />
-            </ListItem>
-            <ListItem button component="a" href="/product" className={classes.menuItem}>
-              <ListItemIcon ><EditIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-              <ListItemText style={{ color: '#2097F3' }} primary="Productos propios" />
-            </ListItem>
-            <ListItem button component="a" href="/search-product" className={classes.menuItem}>
-              <ListItemIcon ><ImageSearchIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-              <ListItemText style={{ color: '#2097F3' }} primary="Buscar producto" />
-            </ListItem>
-            <ListItem button component="a" href="/private-product" className={classes.menuItem}>
-              <ListItemIcon ><StarsIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-              <ListItemText style={{ color: '#2097F3' }} primary="Productos privados" />
-            </ListItem>
-          </List>
-        </Collapse>
-        <ListItem button onClick={handleClickBranch} key="branch">
-          <ListItemIcon><HomeWork style={{ color: '#2097F3' }} /></ListItemIcon>
-          <ListItemText style={{ color: '#2097F3' }} primary="Sucursales" />
-          {openBranchMenu ? <IconExpandLess style={{ color: '#2097F3' }} /> : <IconExpandMore style={{ color: '#2097F3' }} />}
-        </ListItem>
-
-        <Collapse in={openBranchMenu} timeout="auto" unmountOnExit>
-          <Divider />
-          <List component="div" style={{ paddingLeft: '15px' }}>
-            <ListItem button component="a" href="/branch" key="branch">
-              <ListItemIcon><HomeWork style={{ color: '#2097F3' }} /></ListItemIcon>
-              <ListItemText style={{ color: '#2097F3' }} primary="Bodegas" />
-            </ListItem>
-
-            <ListItem button component="a" href="/private-inventory" key="private-inventory">
-              <ListItemIcon><AssistantIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-              <ListItemText style={{ color: '#2097F3' }} primary="Inventarios exclusivos" />
-            </ListItem>
-          </List>
-        </Collapse>
-
-        <ListItem button component="a" href="/withdrawal" key="withdrawal">
-          <ListItemIcon><AccountBalanceIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-          <ListItemText style={{ color: '#2097F3' }} primary="Retiros" />
-        </ListItem>
+            <Collapse in={openProviderMenu} timeout="auto" unmountOnExit>
+              <Divider />
+              <ProviderMenu />
+            </Collapse>
+          </>
+          : userRole==="provider"?<ProviderMenu paddingLeft="0"/>:<SellerMenu paddingLeft="0"/>}
         <Divider />
         <ListItem style={{ padding: '0' }}>
           <Button
@@ -362,8 +201,8 @@ function ResponsiveDrawer(props) {
           </StyledMenu>
         </ListItem>
         <ListItem>
-          {props.updateMerchant?            
-            setMustChange(!mustChange):<></>
+          {props.updateMerchant ?
+            setMustChange(!mustChange) : <></>
           }
           <ListItemText style={{ color: '#2097F3', textAlign: 'center' }} primary={`Tu saldo: ${balance}`} />
         </ListItem>
@@ -377,19 +216,18 @@ function ResponsiveDrawer(props) {
       let url = `${CORE_BASEURL}/merchant/${getMerchantId()}`
       consumeServiceGet(callBack, callBackSuccess, url)
     }
-  },[mustChange])
+  }, [mustChange])
 
   const callBack = () => {
 
   }
 
   const callBackSuccess = (merchant) => {
-      setBalance(merchant.balance)
-      setBalanceMerchant(merchant.balance)
-      localStorage.removeItem("isMerchantUpdated")
+    setBalance(merchant.balance)
+    setBalanceMerchant(merchant.balance)
+    setUserRole(merchant.role)
+    localStorage.removeItem("isMerchantUpdated")
   }
-
-  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <div className={classes.root}>
@@ -442,7 +280,7 @@ function ResponsiveDrawer(props) {
 
 const mapStateToProps = (state) => {
   return {
-      updateMerchant: state.fbReducer.updateMerchant
+    updateMerchant: state.fbReducer.updateMerchant
   }
 };
 

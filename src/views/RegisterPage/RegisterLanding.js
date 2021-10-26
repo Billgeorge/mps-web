@@ -2,6 +2,7 @@ import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import {getQueyParamFromUrl} from 'util/UrlUtil'
 
 // @material-ui/icons
 import Email from "@material-ui/icons/Email";
@@ -72,9 +73,11 @@ export default function RegisterLanding(props) {
       console.log("creating merchant")      
       setErrorMessage({})
       const form = event.currentTarget;
+      const role = getQueyParamFromUrl("rol")
       consumeServicePost({
         name: document.getElementById("merchantName").value,
         email: document.getElementById("email").value,
+        role:role,
         contactNumber: document.getElementById("contactNumber").value
       }, callBack, callBackSucess,
         CORE_BASEURL + "/merchant/landing")
