@@ -20,14 +20,13 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Footer from "components/Footer/Footer.js";
-import { getMerchantId } from 'service/AuthenticationService';
 
 import { consumeServiceGet } from 'service/ConsumeService'
 import consumeServicePost from 'service/ConsumeService'
 import { CORE_BASEURL } from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 import SplitButton from 'components/SplitButton/SplitButton';
-import Pagination  from "@material-ui/lab/Pagination";
+import Pagination from "@material-ui/lab/Pagination";
 
 import { useHistory } from "react-router-dom";
 import SearchBar from "material-ui-search-bar";
@@ -39,7 +38,7 @@ const useStyles = makeStyles(styles);
 export default function ProductBoard(props) {
 
   const [products, setProductsl] = React.useState({
-    content:[]
+    content: []
   });
   const [isChecked, setIsCHecked] = React.useState(false);
   const [isEnabled, setIsEnabled] = React.useState(false);
@@ -53,7 +52,7 @@ export default function ProductBoard(props) {
   const [totalPages, setTotalPages] = React.useState(1);
   const [currentPage, setCurrentPage] = React.useState(0);
 
-  React.useEffect(() => searchProductByFilter("",0,currentPage), [mustChange]);
+  React.useEffect(() => searchProductByFilter("", 0, currentPage), [mustChange]);
 
   const callBackSuccess = (products) => {
     setIsLoading(false)
@@ -78,16 +77,16 @@ export default function ProductBoard(props) {
     setSuccessMessage("Productos eliminados")
   }
 
-  const handleChange = (event,page) => {
-    setCurrentPage(page-1)
-    searchProductByFilter(searchText,category,page-1)
+  const handleChange = (event, page) => {
+    setCurrentPage(page - 1)
+    searchProductByFilter(searchText, category, page - 1)
   }
 
   const handleChangeCategory = (event) => {
     let value = event.target.value
     setCategory(value)
     setCurrentPage(0)
-    searchProductByFilter(searchText,value,currentPage)
+    searchProductByFilter(searchText, value, currentPage)
   }
 
   const validatedChecked = (event) => {
@@ -121,7 +120,7 @@ export default function ProductBoard(props) {
   const callBack = (msg) => {
     setIsLoading(false)
     setProductsl({
-      content:[]
+      content: []
     })
     if (msg == 404) {
       setErrorMessage("No hay productos para mostrar")
@@ -144,17 +143,17 @@ export default function ProductBoard(props) {
   const { ...rest } = props;
 
   const searchProductByFilter = (searchText, category, currentPage) => {
-    if(isLoading){
+    if (isLoading) {
       return
     }
-    setErrorMessage("")    
+    setErrorMessage("")
     let url = `${CORE_BASEURL}/product/filter?size=15&pageNumber=${currentPage}`
-    console.log('getting products ')    
-    if (category > 0) {      
+    console.log('getting products ')
+    if (category > 0) {
       url = `${url}&category=${category}`
     }
-    if (searchText) {             
-        url = `${url}&searchText=${searchText}`      
+    if (searchText) {
+      url = `${url}&searchText=${searchText}`
     }
     setIsLoading(true)
     consumeServiceGet(callBack, callBackSuccess, url)
@@ -181,19 +180,19 @@ export default function ProductBoard(props) {
                   value={searchText}
                   placeholder="Qué buscas?"
                   onChange={(newValue) => setSearchText(newValue)}
-                  onCancelSearch={() => {setSearchText(''); searchProductByFilter("",category,0)}}
-                  onRequestSearch={(event) => {setCurrentPage(0);searchProductByFilter(searchText,category,0)}}
+                  onCancelSearch={() => { setSearchText(''); searchProductByFilter("", category, 0) }}
+                  onRequestSearch={(event) => { setCurrentPage(0); searchProductByFilter(searchText, category, 0) }}
                 />
               </GridItem>
               <GridItem xs={12} sm={12} md={6} style={{ marginTop: '15px' }} className={classes.grid}>
                 <Select native
-                value={category}
-                onChange={handleChangeCategory}
-                label="Categoría"
-                inputProps={{
-                  name: 'category',
-                  id: 'category',
-                }}
+                  value={category}
+                  onChange={handleChangeCategory}
+                  label="Categoría"
+                  inputProps={{
+                    name: 'category',
+                    id: 'category',
+                  }}
                 >
                   <option value={0}>Categorías</option>
                   <option value={1}>Mascotas</option>
@@ -215,15 +214,15 @@ export default function ProductBoard(props) {
                 <Pagination
                   count={totalPages}
                   size="large"
-                  page={currentPage+1}
+                  page={currentPage + 1}
                   variant="outlined"
                   shape="rounded"
                   onChange={handleChange}
                 />
                 {isLoading
-                    ? <center> <CircularProgress /></center>
-                    : <span></span>
-                  }
+                  ? <center> <CircularProgress /></center>
+                  : <span></span>
+                }
                 <TableContainer component={Paper}>
                   <Table className={classes.table} aria-label="simple table">
                     <TableHead>
@@ -271,6 +270,14 @@ export default function ProductBoard(props) {
                     </TableBody>
                   </Table>
                 </TableContainer>
+                <Pagination
+                  count={totalPages}
+                  size="large"
+                  page={currentPage + 1}
+                  variant="outlined"
+                  shape="rounded"
+                  onChange={handleChange}
+                />
               </Grid>
             </Grid>
           </GridItem>
