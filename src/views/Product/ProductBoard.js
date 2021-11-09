@@ -1,10 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Select from '@material-ui/core/Select';
 
 import Grid from '@material-ui/core/Grid';
 import styles from "assets/jss/material-kit-react/views/DashBoard.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Button from "components/CustomButtons/Button.js";
 
@@ -18,15 +20,16 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Footer from "components/Footer/Footer.js";
-import { getMerchantId } from 'service/AuthenticationService';
 
 import { consumeServiceGet } from 'service/ConsumeService'
 import consumeServicePost from 'service/ConsumeService'
 import { CORE_BASEURL } from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 import SplitButton from 'components/SplitButton/SplitButton';
+import Pagination from "@material-ui/lab/Pagination";
 
 import { useHistory } from "react-router-dom";
+import SearchBar from "material-ui-search-bar";
 
 const useStyles = makeStyles(styles);
 
@@ -34,17 +37,26 @@ const useStyles = makeStyles(styles);
 
 export default function ProductBoard(props) {
 
-  const [products, setProductsl] = React.useState([]);
+  const [products, setProductsl] = React.useState({
+    content: []
+  });
   const [isChecked, setIsCHecked] = React.useState(false);
   const [isEnabled, setIsEnabled] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
   const [idsToDelete, setIdsToDelete] = React.useState([]);
   const [mustChange, setMustChange] = React.useState(false);
+  const [searchText, setSearchText] = React.useState("");
+  const [category, setCategory] = React.useState(-1);
+  const [totalPages, setTotalPages] = React.useState(1);
+  const [currentPage, setCurrentPage] = React.useState(0);
 
-  React.useEffect(() => getProductsForMerchant(), [mustChange]);
+  React.useEffect(() => searchProductByFilter("", 0, currentPage), [mustChange]);
 
   const callBackSuccess = (products) => {
+    setIsLoading(false)
+    setTotalPages(products.totalPages)
     setProductsl(products)
   }
 
@@ -63,6 +75,18 @@ export default function ProductBoard(props) {
   const callBackSucess = () => {
     setMustChange(!mustChange)
     setSuccessMessage("Productos eliminados")
+  }
+
+  const handleChange = (event, page) => {
+    setCurrentPage(page - 1)
+    searchProductByFilter(searchText, category, page - 1)
+  }
+
+  const handleChangeCategory = (event) => {
+    let value = event.target.value
+    setCategory(value)
+    setCurrentPage(0)
+    searchProductByFilter(searchText, value, currentPage)
   }
 
   const validatedChecked = (event) => {
@@ -94,7 +118,10 @@ export default function ProductBoard(props) {
   })
 
   const callBack = (msg) => {
-    setProductsl([])
+    setIsLoading(false)
+    setProductsl({
+      content: []
+    })
     if (msg == 404) {
       setErrorMessage("No hay productos para mostrar")
     } else {
@@ -112,15 +139,25 @@ export default function ProductBoard(props) {
     }
   }
 
-  const getProductsForMerchant = (filter, value) => {
-    const merchantId = getMerchantId()
-    console.log('getting products ')
-    let url = `${CORE_BASEURL}/product/merchant/${merchantId}`
-    consumeServiceGet(callBack, callBackSuccess, url)
-  }
-
   const classes = useStyles();
   const { ...rest } = props;
+
+  const searchProductByFilter = (searchText, category, currentPage) => {
+    if (isLoading) {
+      return
+    }
+    setErrorMessage("")
+    let url = `${CORE_BASEURL}/product/filter?size=15&pageNumber=${currentPage}`
+    console.log('getting products ')
+    if (category > 0) {
+      url = `${url}&category=${category}`
+    }
+    if (searchText) {
+      url = `${url}&searchText=${searchText}`
+    }
+    setIsLoading(true)
+    consumeServiceGet(callBack, callBackSuccess, url)
+  }
 
   return (
     <div>
@@ -138,12 +175,53 @@ export default function ProductBoard(props) {
                   </Grid>
                 </Grid>
               </GridItem>
+              <GridItem xs={12} sm={12} md={6} className={classes.grid}>
+                <SearchBar
+                  value={searchText}
+                  placeholder="Qué buscas?"
+                  onChange={(newValue) => setSearchText(newValue)}
+                  onCancelSearch={() => { setSearchText(''); searchProductByFilter("", category, 0) }}
+                  onRequestSearch={(event) => { setCurrentPage(0); searchProductByFilter(searchText, category, 0) }}
+                />
+              </GridItem>
+              <GridItem xs={12} sm={12} md={6} style={{ marginTop: '15px' }} className={classes.grid}>
+                <Select native
+                  value={category}
+                  onChange={handleChangeCategory}
+                  label="Categoría"
+                  inputProps={{
+                    name: 'category',
+                    id: 'category',
+                  }}
+                >
+                  <option value={0}>Categorías</option>
+                  <option value={1}>Mascotas</option>
+                  <option value={2}>Tecnología</option>
+                  <option value={3}>Hogar</option>
+                  <option value={4}>Niños</option>
+                  <option value={5}>Estilo de vida</option>
+                  <option value={7}>Ropa y Calzado</option>
+                  <option value={6}>Otros</option>
+                </Select>
+              </GridItem>
               <Grid item xs={12}><Button style={{ marginLeft: "10px" }} color="primary" onClick={createProduct}> Crear Producto</Button><Button style={{ marginLeft: "10px" }} color="primary" disabled={!isEnabled} onClick={deleteProducts} > Eliminar seleccionados</Button></Grid>
               <Grid item xs={12}>
                 {successMessage != ""
                   ?
                   <Alert severity="success">{successMessage}</Alert>
                   : <span>	&nbsp;</span>
+                }
+                <Pagination
+                  count={totalPages}
+                  size="large"
+                  page={currentPage + 1}
+                  variant="outlined"
+                  shape="rounded"
+                  onChange={handleChange}
+                />
+                {isLoading
+                  ? <center> <CircularProgress /></center>
+                  : <span></span>
                 }
                 <TableContainer component={Paper}>
                   <Table className={classes.table} aria-label="simple table">
@@ -159,7 +237,7 @@ export default function ProductBoard(props) {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {products.map((row) => (
+                      {products.content.map((row) => (
                         <TableRow key={row.shortId}>
                           <TableCell align="center">
                             <center>
@@ -192,6 +270,14 @@ export default function ProductBoard(props) {
                     </TableBody>
                   </Table>
                 </TableContainer>
+                <Pagination
+                  count={totalPages}
+                  size="large"
+                  page={currentPage + 1}
+                  variant="outlined"
+                  shape="rounded"
+                  onChange={handleChange}
+                />
               </Grid>
             </Grid>
           </GridItem>

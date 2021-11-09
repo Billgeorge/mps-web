@@ -20,11 +20,14 @@ const consumeServicePost = async (payload,callBack,callBackSuccess,url) => {
         }
 
     } catch (error) {
+        console.log("error",error.response)
         if(error.response){
             if(400 === error.response.status){
                 callBack(error.response.data)
             } else if(403 === error.response.status){
                 window.location.href = '/login';
+            }else if(404 === error.response.status){
+                callBack(404)
             }else{
                 callBack(error.response.data)
             }
