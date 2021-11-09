@@ -78,8 +78,9 @@ export default function ProductBoard(props) {
     setSuccessMessage("Productos eliminados")
   }
 
-  const handleChange = () => {
-    searchProductByFilter(searchText,category,currentPage+1)
+  const handleChange = (event,page) => {
+    setCurrentPage(page-1)
+    searchProductByFilter(searchText,category,page-1)
   }
 
   const handleChangeCategory = (event) => {
@@ -180,8 +181,8 @@ export default function ProductBoard(props) {
                   value={searchText}
                   placeholder="Qué buscas?"
                   onChange={(newValue) => setSearchText(newValue)}
-                  onCancelSearch={() => {setSearchText(''); searchProductByFilter("",category,currentPage)}}
-                  onRequestSearch={(event) => {setCurrentPage(0);searchProductByFilter(searchText,category,currentPage)}}
+                  onCancelSearch={() => {setSearchText(''); searchProductByFilter("",category,0)}}
+                  onRequestSearch={(event) => {setCurrentPage(0);searchProductByFilter(searchText,category,0)}}
                 />
               </GridItem>
               <GridItem xs={12} sm={12} md={6} style={{ marginTop: '15px' }} className={classes.grid}>
