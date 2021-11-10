@@ -20,6 +20,7 @@ import SearchBar from "material-ui-search-bar";
 import Select from '@material-ui/core/Select';
 import Pagination from "@material-ui/lab/Pagination";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { categories } from 'constant/index'
 
 
 const useStylesJss = makeStyles(styles);
@@ -168,16 +169,17 @@ export default function SearchProduct(props) {
                                     }}
                                 >
                                     <option value={0}>Categorías</option>
-                                    <option value={1}>Mascotas</option>
-                                    <option value={2}>Tecnología</option>
-                                    <option value={3}>Hogar</option>
-                                    <option value={4}>Niños</option>
-                                    <option value={5}>Estilo de vida</option>
-                                    <option value={7}>Ropa y Calzado</option>
-                                    <option value={6}>Otros</option>
+                                    {
+
+                                        categories.map(function (category) {
+                                            return <option value={category.category}>{category.name}</option>;
+                                        })
+
+                                    }
                                 </Select>
                             </GridItem>
-                            <GridItem xs={12} sm={12} md={12} >
+
+                            <GridItem style={{ marginTop: '15px' }} xs={12} sm={12} md={12} >
                                 <Pagination
                                     count={totalPages}
                                     size="large"

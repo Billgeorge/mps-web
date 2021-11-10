@@ -30,6 +30,7 @@ import Pagination from "@material-ui/lab/Pagination";
 
 import { useHistory } from "react-router-dom";
 import SearchBar from "material-ui-search-bar";
+import {categories} from 'constant/index'
 
 const useStyles = makeStyles(styles);
 
@@ -195,13 +196,13 @@ export default function ProductBoard(props) {
                   }}
                 >
                   <option value={0}>Categorías</option>
-                  <option value={1}>Mascotas</option>
-                  <option value={2}>Tecnología</option>
-                  <option value={3}>Hogar</option>
-                  <option value={4}>Niños</option>
-                  <option value={5}>Estilo de vida</option>
-                  <option value={7}>Ropa y Calzado</option>
-                  <option value={6}>Otros</option>
+                  {
+
+                    categories.map(function (category) {
+                      return <option value={category.category}>{category.name}</option>;
+                    })
+
+                  }
                 </Select>
               </GridItem>
               <Grid item xs={12}><Button style={{ marginLeft: "10px" }} color="primary" onClick={createProduct}> Crear Producto</Button><Button style={{ marginLeft: "10px" }} color="primary" disabled={!isEnabled} onClick={deleteProducts} > Eliminar seleccionados</Button></Grid>

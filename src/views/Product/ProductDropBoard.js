@@ -20,7 +20,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Footer from "components/Footer/Footer.js";
-import { getMerchantId } from 'service/AuthenticationService';
 import SearchBar from "material-ui-search-bar";
 
 import consumeServicePost from 'service/ConsumeService'
@@ -28,6 +27,7 @@ import { CORE_BASEURL } from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 import SplitButton from 'components/SplitButton/SplitButton';
 import Pagination from "@material-ui/lab/Pagination";
+import {categories} from 'constant/index'
 
 const useStyles = makeStyles(styles);
 
@@ -160,13 +160,13 @@ export default function ProductDropBoard() {
                   }}
                 >
                   <option value={0}>Categorías</option>
-                  <option value={1}>Mascotas</option>
-                  <option value={2}>Tecnología</option>
-                  <option value={3}>Hogar</option>
-                  <option value={4}>Niños</option>
-                  <option value={5}>Estilo de vida</option>
-                  <option value={7}>Ropa y Calzado</option>
-                  <option value={6}>Otros</option>
+                  {
+
+                    categories.map(function (category) {
+                      return <option value={category.category}>{category.name}</option>;
+                    })
+
+                  }
                 </Select>
               </GridItem>
               <GridItem xs={12} sm={12} md={12} className={classes.grid}>
