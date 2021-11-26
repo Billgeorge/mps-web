@@ -148,7 +148,7 @@ const useStyles = makeStyles(styles);
         <GridContainer className={classes.subContainer} justify="center" >
         | <GridItem xs={12} sm={12} md={12} className={classes.grid}>        
             <Grid container className={classes.box}  spacing={3}>               
-                <Grid item xs={12} sm={12} md={6} >
+                <Grid item xs={12} sm={12} md={6} style={{textTransform: 'capitalize'}}>
                     Hola {getMerchantName()}, Bienvenido a MiPagoSeguro.
                 </Grid>
                 <Grid container xs={12} sm={12} md={6} justify="center" alignItems="center"> 
@@ -233,7 +233,7 @@ const useStyles = makeStyles(styles);
          </GridItem> 
          <GridItem xs={12} sm={12} md={12} className={classes.grid}>           
                 <Grid container className={classes.box} spacing={3}>
-                <Grid item  xs={12}><h2>Últimos Pagos</h2></Grid>                   
+                <Grid item  xs={12}><h2 style={{fontWeight: "500"}} className={classes.title} >Últimos Pagos</h2></Grid>                   
                    <Grid item xs={12} >
                    <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">

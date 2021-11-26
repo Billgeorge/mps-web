@@ -141,7 +141,7 @@ export default function Results() {
                 <GridContainer className={classes.subContainer} justify="center" >
 
                     <GridItem xs={12} sm={12} md={12} className={classes.grid}>
-                        <h1 style={{ color: 'black' }}>Tus resultados</h1>
+                        <h2 style={{ color: 'black', marginBottom: '1.25rem' }} className={classes.title}>Tus resultados</h2>
                         <Grid container className={classes.box} spacing={3}>
                             <Grid item xs={12} sm={12} md={4} className={classes.grid} style={{ textAlign: 'center' }}>
                                 <TextField

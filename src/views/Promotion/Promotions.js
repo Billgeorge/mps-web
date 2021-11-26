@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
@@ -47,6 +47,7 @@ export const Promotions = () => {
     const [promotions, setPromotions] = React.useState([]);      
 
     const [errorMessage, setErrorMessage] = React.useState({});
+    const [loadingImage, setLoadingImage] = useState(false)
     const [successMessage, setSuccessMessage] = React.useState(null);
     const [mustChange, setMustChange] = React.useState(false);
     const [product, setProduct] = React.useState({
@@ -65,7 +66,7 @@ export const Promotions = () => {
     }
 
     const callBackSuccessGetProductInfo = (product) => {
-
+      setLoadingImage(false) 
       setProduct(product)
   }
 
@@ -114,18 +115,22 @@ export const Promotions = () => {
     
     useEffect(() => {
       getPromotionById();
-      getProductInformation();
 
   }, [mustChange])
+
+  useEffect(() => {
+    getProductInformation();
+    setLoadingImage(true)
+  }, [])
   
 
     
     const handleRemove = (quantity) => { 
-      const payload = {id:idc, quantity}      
-      removePromotion(payload);
+      const payload = {id:idc, quantity}            
       if (isLoading) {
         return
     }
+    removePromotion(payload);
     setIsLoading(true)   
     }
     return (
@@ -139,24 +144,28 @@ export const Promotions = () => {
                 <Grid> <h5 className={classes.title}>Estas viendo promociones del producto:</h5></Grid> 
                  </GridItem>        
               
+    
         <GridItem xs={12} sm={12} md={12}>
             <Grid >                     
               
               <Grid item xs={12} sm={12} md={12} style={{ display: 'flex', justifyContent: 'center'}} >
                     
             
+              {loadingImage 
+            ? <center> <CircularProgress /></center>
+            : 
           <Card>
             <CardHeader
               className={classes.cardHeader}
               title={productName}
                   
               />
-              <img
+            <img
                 className={classes.picture}                        
                 src={imageURL}
                 alt={productName}
               />
-              </Card>                   
+              </Card>  }                 
               </Grid>
             </Grid>
         </GridItem>  
@@ -171,10 +180,7 @@ export const Promotions = () => {
            
 
             <Grid item xs={12} >
-                {isLoading
-                  ? <center> <CircularProgress /></center>
-                  : <span></span>
-                }
+                {isLoading && <center> <CircularProgress /></center>}
                 {successMessage && <Alert severity="success" style={{marginBottom: '2rem', width: '60%', margin:'0 auto'}}>{successMessage}</Alert>}
                 <TableContainer component={Paper} style={{ margin: '0 auto', width: '90%'}}>
                   <Table className={classes.table} aria-label="simple table">

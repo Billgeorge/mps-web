@@ -119,8 +119,7 @@ export default function CreatePromotion(props) {
                                   <div style={{display: 'flex', flexDirection: 'row-reverse', marginTop: '2rem', alignItems: 'center',justifyContent: 'space-evenly'}}>
                                         <h3 style={{ fontWeight: "600"}}>
                                         Crear Promoción</h3>
-                                        <ArrowBackIcon style={{color: "#9c27b0", textDecoration: "none",
-                                        cursor:"pointer", marginRight: "1rem", width: '40px', height: '40px', border: '1px solid #000', borderRadius: '50%'}} onClick={()=>props.history.push(`/promotions?idc=${idc}`)} />
+                                        <ArrowBackIcon className={classes.arrow}  onClick={()=>props.history.push(`/promotions?idc=${idc}`)} />
                                   </div>
                                 </CardHeader>
                                 <CardBody>

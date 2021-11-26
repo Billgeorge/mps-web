@@ -201,7 +201,7 @@ export default function EditProduct(props) {
                   </FormControl>
                   <FormControl>
                     <GridItem xs={12} sm={12} md={12}>
-                      <img type="file" src={editForm.imageUrl || emptyImage} name="productImage" id="productImage" className={classes.imgProduct} />
+                      <img type="file" src={editForm.imageUrl || emptyImage} alt="NotFound" name="productImage" id="productImage" className={classes.imgProduct} />
                       <input onChange={fileSelected} accept="image/*" style={{ display: 'none' }} id="icon-button-file" type="file" />
                       <label className={classes.addImg} htmlFor="icon-button-file">
                         <IconButton color="primary" aria-label="upload picture" component="span">

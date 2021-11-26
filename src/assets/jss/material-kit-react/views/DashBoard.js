@@ -11,6 +11,9 @@ const signupPageStyle = {
     color: "#FFFFFF",
     paddingBottom: "200px"
   },
+  title:{
+    fontSize: "2rem"
+  },
   textButton:{
     display: "inline-block",
     width: "100%",
@@ -102,7 +105,11 @@ const signupPageStyle = {
       textAlign:"center"
     },
     container:{
-      paddingLeft:"10vh"
+      paddingLeft:"15vh"
+    },
+    title:{
+      fontSize:"1.5rem",
+      textAlign:"center"
     }
   }  
   

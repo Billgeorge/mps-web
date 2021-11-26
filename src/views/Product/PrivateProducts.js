@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
       maxWidth: 345,
     },
-    media: {
+      media: {
       height: 0,
       paddingTop: '56.25%', // 16:9
     },
@@ -83,7 +83,7 @@ export default function PrivateProducts(props) {
         <div className={jssclasses.container}>        
             <GridContainer>            
                 <GridItem xs={12} sm={12} md={12} >
-                <h2 style={{color:"#000"}} >Productos privados disponibles</h2>
+                <h2 style={{color:"#000"}} className={jssclasses.title} >Productos privados disponibles</h2>
                     <GridContainer>
                         {products.map((row) => (    
                             <GridItem style={{paddingBottom:'5vh'}} xs={12} sm={6} md={4} >

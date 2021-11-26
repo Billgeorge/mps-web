@@ -1,8 +1,11 @@
+import { container } from "assets/jss/material-kit-react.js";
+
 
 
 const promotionStyle = {
 
     container: {   
+        ...container,
         paddingTop: "15vh",
         marginBottom: "2rem",
         width: "90%",
@@ -18,7 +21,12 @@ const promotionStyle = {
         height: '40px',
         border: "1px solid #000", 
         borderRadius: '50%',
-        
+        '&:hover':{
+            transition: '.3s',
+            backgroundColor: '#9c27b0',
+            color: '#fff',
+            border: 'none',
+        }        
         
     },
     title:{

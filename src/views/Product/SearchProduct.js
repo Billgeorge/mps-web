@@ -147,7 +147,7 @@ export default function SearchProduct(props) {
             <div className={jssclasses.container}>
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={12} >
-                        <h2 style={{ color: "#000" }} >Productos disponibles</h2>
+                        <h2 style={{ color: "#000" }} className={jssclasses.title} >Productos disponibles</h2>
                         <GridContainer>
                             <GridItem xs={12} sm={12} md={6} className={classes.grid}>
                                 <SearchBar

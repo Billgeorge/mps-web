@@ -123,7 +123,7 @@ function ResponsiveDrawer(props) {
   };
 
 
-  const brandComponent = <div><img src={Logo} style={{ width: "50px" }} /><Button className={classes.title}>mipagoseguro</Button></div>;
+  const brandComponent = <div><img src={Logo} alt='Mi pago seguro' style={{ width: "50px" }} /><Button className={classes.title}>mipagoseguro</Button></div>;
 
   const drawer = (
     <div>
