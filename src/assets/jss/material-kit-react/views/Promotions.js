@@ -22,7 +22,7 @@ const promotionStyle = {
         border: "1px solid #000", 
         borderRadius: '50%',
         '&:hover':{
-            transition: '.3s',
+            transition: '.2s',
             backgroundColor: '#9c27b0',
             color: '#fff',
             border: 'none',

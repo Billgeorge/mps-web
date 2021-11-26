@@ -120,7 +120,7 @@ export default function WithDrawal(props) {
 
           <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
-              <Grid item xs={12}><h2>Retiros</h2></Grid>
+              <Grid item xs={12}><h2 style={{fontWeight: "500", textAlign: "center"}} className={classes.title}>Retiros</h2></Grid>
               <Grid item xs={12} >
                 <TableContainer component={Paper}>
                   <Table className={classes.table} aria-label="simple table">
