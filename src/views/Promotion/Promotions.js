@@ -192,7 +192,7 @@ export const Promotions = () => {
                           <TableCell align="center">{promo.discount.amount}</TableCell>
                           <TableCell align="center">
                             <Button onClick={() => handleRemove(promo.quantity)} color="primary">
-                            Delete</Button>  
+                            Eliminar</Button>  
                             </TableCell>                           
                                               
                         </TableRow>
