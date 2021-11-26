@@ -218,7 +218,7 @@ export default function ProductDropBoard() {
                           <TableCell align="center">
                             <SplitButton options={[
                               { label: "Editar", action: "/edit-checkout?idp=" + row.id },
-                              { label: "Crear promoción", action: "/create-promotion?idc=" + row.id }
+                              { label: "Ver Promociones", action: "/promotions?idc=" + row.id }
                             ]} ></SplitButton>
                           </TableCell>
                         </TableRow>

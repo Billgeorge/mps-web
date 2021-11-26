@@ -40,9 +40,14 @@ export default function CreatePromotion(props) {
     const [isLoading, setIsLoading] = React.useState(false);
 
     const [form, setForm] = React.useState({
-        quantity: 0,
-        amount: 0
+        quantity: '',
+        amount: '',
     })
+
+    const {amount, quantity} = form;
+    
+
+    const idc = getQueyParamFromUrl('idc');
 
     setTimeout(function () {
         setCardAnimation("");
@@ -70,35 +75,36 @@ export default function CreatePromotion(props) {
             setSuccessMessage("Promoción creada con éxito")
             document.getElementById("createPromotion").reset();
             setForm({
-                quantity: 0,
-                number: 0
+                quantity: '',
+                number: ''
             })
             setIsLoading(false)
         }
-        let idc = getQueyParamFromUrl('idc')
 
+       
         document.createPromotion.onsubmit = function (event) {
+            event.preventDefault()          
+        
             setErrorMessage({})
-            event.preventDefault()
             setSuccessMessage(null)
             if (isLoading) {
                 return
             }
             setIsLoading(true)
 
-            consumeServicePatch({
-                dropshippingSaleId: idc,
-                discountRules: [{
-                    quantity: document.getElementById("quantity").value,
-                    condition: "EQUAL",
-                    discount:{
-                        target: "TOTAL_PRICE",
-                        type: "FIXED_PRICE",
-                        amount: document.getElementById("amount").value
-                    }
-                }]
-
-            }, callBack,callBackSucess,`${CORE_BASEURL}/discounts`)
+              consumeServicePatch({
+                    dropshippingSaleId: idc,
+                    discountRules: [{
+                        quantity: document.getElementById("quantity").value,
+                        condition: "EQUAL",
+                        discount:{
+                            target: "TOTAL_PRICE",
+                            type: "FIXED_PRICE",
+                            amount: document.getElementById("amount").value
+                        }
+                    }]
+    
+                }, callBack,callBackSucess,`${CORE_BASEURL}/discounts`)
         }
     }
     return (
@@ -110,8 +116,12 @@ export default function CreatePromotion(props) {
                         <Card className={classes[cardAnimaton]}>
                             <form className={classes.form} validated="true" name="createPromotion" id="createPromotion">
                                 <CardHeader className={classes.cardHeader}>
-                                    <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{    color: "#9c27b0", textDecoration: "none",
-                                        backgroundColor: "transparent", cursor:"pointer"}} onClick={()=>props.history.push('/product-drop')} />Crear Promoción</h3>
+                                  <div style={{display: 'flex', flexDirection: 'row-reverse', marginTop: '2rem', alignItems: 'center',justifyContent: 'space-evenly'}}>
+                                        <h3 style={{ fontWeight: "600"}}>
+                                        Crear Promoción</h3>
+                                        <ArrowBackIcon style={{color: "#9c27b0", textDecoration: "none",
+                                        cursor:"pointer", marginRight: "1rem", width: '40px', height: '40px', border: '1px solid #000', borderRadius: '50%'}} onClick={()=>props.history.push(`/promotions?idc=${idc}`)} />
+                                  </div>
                                 </CardHeader>
                                 <CardBody>
                                     {isLoading
@@ -127,7 +137,7 @@ export default function CreatePromotion(props) {
                                             labelWidth={60}
                                             required
                                             type="number"
-                                            value={form.quantity || ""}
+                                            value={quantity}
                                             onChange={handleChange}
                                         />
                                     </FormControl>
@@ -140,7 +150,7 @@ export default function CreatePromotion(props) {
                                             labelWidth={60}
                                             required
                                             type="number"
-                                            value={form.amount || ""}
+                                            value={amount}
                                             onChange={handleChange}
                                         />
                                     </FormControl>
@@ -157,8 +167,8 @@ export default function CreatePromotion(props) {
                                 </CardBody>
                                 <CardFooter className={classes.cardFooter}>
                                     <Button color="primary" size="lg" type="submit">
-                                        Crear Promoción
-                                    </Button>
+                                        Crear
+                                     </Button>
                                 </CardFooter>
                             </form>
                         </Card>

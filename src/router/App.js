@@ -46,6 +46,7 @@ import CreatePromotion from 'views/Promotion/CreatePromotion';
 import Results from 'views/Dashboard/Results'
 import WarrantyOrder from 'views/Warranty/WarrantyOrder';
 import OnlineOrder from 'views/order/OnlineOrder';
+import { Promotions } from 'views/Promotion/Promotions';
 
 
 var hist = createBrowserHistory();
@@ -92,6 +93,7 @@ return (
                 <ProtectRoute path="/create-branch" component={CreateBranch} />
                 <ProtectRoute path="/charge" component={ChargeAccount} />   
                 <ProtectRoute path="/create-promotion" component={CreatePromotion} />
+                <ProtectRoute path="/promotions" component={Promotions} />
                 <ProtectRoute path="/warranty" component={WarrantyOrder} />
                 <ProtectRoute path="/online-order" component={OnlineOrder} />
                 <Route path="/detail" component={TransactionDetailPublic} />

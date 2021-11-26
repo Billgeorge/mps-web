@@ -17,6 +17,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import IconExpandLess from '@material-ui/icons/ExpandLess'
 import IconExpandMore from '@material-ui/icons/ExpandMore'
 import Fab from '@material-ui/core/Fab';
+import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
@@ -31,7 +32,8 @@ import { useHistory } from "react-router-dom";
 import Logo from "assets/img/icon_logo.png"
 import Button from "@material-ui/core/Button";
 import SellIcon from '@material-ui/icons/Store';
-import Collapse from '@material-ui/core/Collapse'
+import Collapse from '@material-ui/core/Collapse';
+
 
 
 import GroupIcon from '@material-ui/icons/Group';
@@ -205,7 +207,10 @@ function ResponsiveDrawer(props) {
           {props.updateMerchant ?
             setMustChange(!mustChange) : <></>
           }
-          <ListItemText style={{ color: '#2097F3', textAlign: 'center' }} primary={`Tu saldo: ${balance}`} />
+
+          {open
+          ?<ListItemText style={{ color: '#2097F3', textAlign: 'center' }} primary={`Tu saldo: ${balance}`} />
+          :<ListItemText style={{ color: '#2097F3', textAlign: 'center' }} primary={`${balance}`} /> }
         </ListItem>
       </List>
     </div>
@@ -233,7 +238,8 @@ function ResponsiveDrawer(props) {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
+      <CssBaseline />     
+
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
@@ -241,6 +247,7 @@ function ResponsiveDrawer(props) {
         })}
       >
 
+      
         <Toolbar>
           <IconButton
             color="inherit"
@@ -255,6 +262,10 @@ function ResponsiveDrawer(props) {
           </IconButton>
           {brandComponent}
         </Toolbar>
+
+     
+
+        
 
       </AppBar>
 
@@ -272,9 +283,12 @@ function ResponsiveDrawer(props) {
         }}
       >
         {drawer}
-        <Fab onClick={() => history.push('/charge')} style={{ background: '#2097F3', color: 'white' }} variant="extended">
-          Recargar
-        </Fab>
+        {open
+        ? <Fab onClick={() => history.push('/charge')} style={{ background: '#2097F3', color: 'white' }} variant="extended">
+        Recargar
+      </Fab>
+        :<MonetizationOnOutlinedIcon color="white" onClick={() => history.push('/charge')} style={{cursor: 'pointer',background: '#2097F3', margin: '0 auto', width: '100%', height: '30px', color: 'white' }} />}
+        
       </Drawer>
     </div>
   );
