@@ -37,17 +37,20 @@ const promotionStyle = {
         
     },
     cardHeader:{
-        textTransform: 'capitalize'
+        textTransform: 'capitalize',
+        textAlign: 'center',
     },
     picture:{
+        display: 'block',
         height: '200px', 
-        width: '100%', 
-        maxWidth: '500px'
+        width: '250px',
+        objectFit: 'contain',
+        margin: '0 auto'
     },
     
     '@media(max-width: 600px)':{    
     container:{
-      paddingLeft:"10vh"
+      paddingLeft:"10vh",
     },
     title: {
         fontSize: '1rem'

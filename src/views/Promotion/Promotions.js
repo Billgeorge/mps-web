@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
@@ -25,70 +25,67 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { CORE_BASEURL } from 'constant';
+/* Reducer */
+import { promotionsReducer } from 'reducers/promotionsReducer';
+import { types } from 'types.js/types';
+import { doSuccessMessage, doErrorMessage, doGetProduct, doIsLoading } from 'actions/actionsPromotion';
 
 
-
-
-
+const initialState = {
+  errorMessage: '', 
+  successMessage: '', 
+  isLoading: false,
+  mustChange: false,
+  product: {
+    productName: '',
+    imageURL: '',
+  },
+  isLoadinImage: false,
+}
 
 const useStyles = makeStyles(styles);
 
 
 
 export const Promotions = () => {
-  const classes = useStyles();
+    const classes = useStyles();
  
-  const idc = getQueyParamFromUrl('idc'); 
-  
-  
+    const idc = getQueyParamFromUrl('idc');  
+
     const history = useHistory();
-  
+    
+    const [{successMessage, isLoading, mustChange, product, isLoadingImage}, dispatch] = useReducer(promotionsReducer, initialState)
+    const {productName, imageURL} = product;
 
     const [promotions, setPromotions] = React.useState([]);      
-
-    const [errorMessage, setErrorMessage] = React.useState({});
-    const [loadingImage, setLoadingImage] = useState(false)
-    const [successMessage, setSuccessMessage] = React.useState(null);
-    const [mustChange, setMustChange] = React.useState(false);
-    const [product, setProduct] = React.useState({
-      productName: "",     
-      imageURL: "",
-     
-  });
-
-  const {productName, imageURL} = product;
-
-
-      const [isLoading, setIsLoading] = React.useState(false);   
+    
 
       const callBackErrorGetProduct = () => {
-        setErrorMessage("Error obteniendo información de producto")
+        dispatch(doErrorMessage('Error obteniendo información de producto'))
+       
     }
 
     const callBackSuccessGetProductInfo = (product) => {
-      setLoadingImage(false) 
-      setProduct(product)
+       dispatch(doGetProduct(product))
   }
 
     const callBack = (error) => {
       if (error != null) {
-        setErrorMessage(error)
+        dispatch(doErrorMessage(error))
       } else {
-        setErrorMessage({ 'Error': 'Ha ocurrido un error inesperado por favor contactar al administrador' })
+        dispatch(doErrorMessage('Ha ocurrido un error inesperado por favor contactar al administrador'))
       }
-      setIsLoading(false)
     }
+    
     const callBackSuccess = (data) => {
       setPromotions(data);      
     }      
 
     
     const callBackDelete = (error) =>{
-      setErrorMessage("Error borrando Promocion")
+      dispatch(doErrorMessage(error))
     }
   
-  
-
     const getProductInformation = () => {
       const url = `${CORE_BASEURL}/dropshippingsale/public/view/checkout/${idc}`;
       consumeServiceGet(callBackErrorGetProduct, callBackSuccessGetProductInfo, url);
@@ -106,10 +103,8 @@ export const Promotions = () => {
     }
 
     const callBackSuccessDelete = () =>{
-         setSuccessMessage("Promocion eliminada")
-         setMustChange(!mustChange)
-         setIsLoading(false)
-
+      dispatch(doSuccessMessage(mustChange, 'Promocion eliminada'))
+      
     }
 
     
@@ -120,19 +115,21 @@ export const Promotions = () => {
 
   useEffect(() => {
     getProductInformation();
-    setLoadingImage(true)
+    dispatch({type: types.isLoadingImage})
   }, [])
   
 
     
     const handleRemove = (quantity) => { 
-      const payload = {id:idc, quantity}            
-      if (isLoading) {
-        return
+                 
+      if (isLoading) return;
+      const payload = {id:idc, quantity}     
+        removePromotion(payload);
+        dispatch(doIsLoading())   
     }
-    removePromotion(payload);
-    setIsLoading(true)   
-    }
+
+    
+
     return (
         <>  
             <ResponsiveDrawer />
@@ -151,10 +148,10 @@ export const Promotions = () => {
               <Grid item xs={12} sm={12} md={12} style={{ display: 'flex', justifyContent: 'center'}} >
                     
             
-              {loadingImage 
+              {isLoadingImage 
             ? <center> <CircularProgress /></center>
             : 
-          <Card>
+          <Card  >
             <CardHeader
               className={classes.cardHeader}
               title={productName}
@@ -175,6 +172,7 @@ export const Promotions = () => {
             <Button  onClick={()=>history.push(`/create-promotion?idc=${idc}`)} color="primary" style={{marginBottom: '1rem'}}>
               Crear Promoción
             </Button>
+           
             </GridItem>
 
            
