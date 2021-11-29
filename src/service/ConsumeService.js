@@ -3,7 +3,6 @@ import {isAuthenticated,getCurrentAppToken} from 'service/AuthenticationService'
 
 const consumeServicePost = async (payload,callBack,callBackSuccess,url) => {
 
-    //React.setActionState({ sending: true, error: null, });
     try {
         console.log('Enviando ...')
         putTokenHeader()

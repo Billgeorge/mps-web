@@ -193,6 +193,7 @@ function Checkout(props) {
             ...order,
             city: "",
         })
+        console.log("cities ",newCities)
         SetCities(newCities)
         setErrorMessage("")
         const name = event.target.name;
@@ -328,7 +329,9 @@ function Checkout(props) {
                                 <option aria-label="None" value="" />
                                 {
                                     states.map(function (state) {
-                                        return <option value={state}>{state}</option>;
+                                        return <option value={state}>{state.toLowerCase().replace(/^./, (str) => {
+                                            return str.toUpperCase();
+                                          })}</option>;
                                     })
                                 }
                             </Select>
@@ -348,8 +351,20 @@ function Checkout(props) {
                             >
                                 <option aria-label="None" value="" />
                                 {
-                                    cities.map(function (item) {
-                                        return <option value={item.code}>{item.city}</option>;
+                                    cities.sort(
+                                        function (a, b) {
+                                            if (a.city < b.city) {
+                                                return -1;
+                                            }
+                                            if (b.city < a.city) {
+                                                return 1;
+                                            }
+                                            return 0;
+                                        }
+                                    ).map(function (item) {
+                                        return <option value={item.code}>{item.city.toLowerCase().replace(/^./, (str) => {
+                                            return str.toUpperCase();
+                                          })}</option>;
                                     })
                                 }
                             </Select>
