@@ -83,10 +83,11 @@ function ChargeAccount(props) {
             <Card className={classes[cardAnimaton]}>
               <form className={classes.form} validated="true" name="createPayment" id="createPayment">
                 <CardHeader className={classes.cardHeader}>
-                  <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{
-                    color: "#9c27b0", textDecoration: "none",
-                    backgroundColor: "transparent", cursor: "pointer"
-                  }} onClick={() => props.history.push('/dashboard')} /> Recarga tu cuenta</h3>
+                <div style={{display: 'flex', flexDirection: 'row-reverse', marginTop: '2rem', alignItems: 'center',justifyContent: 'space-evenly'}}>
+                    <h3 style={{ fontWeight: "600"}}>
+                    Crear Promoción</h3>
+                    <ArrowBackIcon className={classes.arrow}  onClick={()=>props.history.push(`/dashboard`)} />
+                </div>
                 </CardHeader>
                 {isLoading
                   ? <GridItem xs={12} sm={12} md={12}><center><CircularProgress /></center></GridItem>

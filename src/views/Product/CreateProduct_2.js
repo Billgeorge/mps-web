@@ -13,7 +13,6 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import Alert from '@material-ui/lab/Alert';
 import { CORE_BASEURL, PULL_BASEURL } from 'constant/index'
-import { useHistory } from "react-router-dom";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 import emptyImage from "assets/img/new_product.png"
@@ -35,7 +34,7 @@ export default function CreateProduct(props) {
 
     const classes = useStyles();
     const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
-    const history = useHistory();
+    
     const [isLoading, setIsLoading] = React.useState(false);
     const [step, setStep] = React.useState(1);
     const [errorMessage, setErrorMessage] = React.useState("");
@@ -270,7 +269,7 @@ export default function CreateProduct(props) {
                                             <GridItem xs={12} sm={12} md={12}>
 
 
-                                                <img type="file" src={productImage} name="productImage" id="productImage" className={classes.imgProduct} />
+                                                <img type="file" src={productImage} name="productImage" alt='Imagen' id="productImage" className={classes.imgProduct} />
                                                 <input onChange={fileSelected} accept="image/*" style={{ display: 'none' }} id="icon-button-file" type="file" />
                                                 <label className={classes.addImg} htmlFor="icon-button-file">
                                                     <IconButton color="primary" aria-label="upload picture" component="span">

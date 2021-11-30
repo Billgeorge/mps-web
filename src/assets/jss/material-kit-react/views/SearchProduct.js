@@ -1,4 +1,6 @@
 import { container } from "assets/jss/material-kit-react.js";
+import signupPageStyle from "./DashBoard";
+
 
 const SearchProductStyle = {
   container: {
@@ -11,10 +13,19 @@ const SearchProductStyle = {
     color: "#FFFFFF",
     paddingBottom: "200px"
   },
+  title: {
+    ...signupPageStyle.title
+  },
+
   '@media(max-width: 600px)':{
     container:{
-      paddingLeft:"10vh"
+      paddingLeft:"15vh"
+    },
+    title: {
+      fontSize:"1.5rem",
+      textAlign:"center"
     }
+   
   }  
 }
 

@@ -139,7 +139,7 @@ export default function ProductDropBoard() {
         <GridContainer className={classes.subContainer} justify="center" >
           <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
-              <Grid item xs={12}><h2>Tus Productos Dropshipping</h2></Grid>
+              <Grid item xs={12}><h2 className={classes.title}>Tus Productos Dropshipping</h2></Grid>
               <GridItem xs={12} sm={12} md={6} className={classes.grid}>
                 <SearchBar
                   value={searchText}
@@ -218,7 +218,7 @@ export default function ProductDropBoard() {
                           <TableCell align="center">
                             <SplitButton options={[
                               { label: "Editar", action: "/edit-checkout?idp=" + row.id },
-                              { label: "Crear promoción", action: "/create-promotion?idc=" + row.id }
+                              { label: "Ver Promociones", action: "/promotions?idc=" + row.id }
                             ]} ></SplitButton>
                           </TableCell>
                         </TableRow>

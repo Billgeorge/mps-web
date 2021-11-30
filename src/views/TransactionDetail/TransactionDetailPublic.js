@@ -191,18 +191,18 @@ const useStyles = makeStyles(styles);
                           </FormControl>
                         </GridItem>
                         <GridItem xs={4} sm={3} md={3}>
-                          <Button size="small" value="dispute" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
+                          <Button value="dispute" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
                             Crear disputa
                           </Button>
                         </GridItem>
                         <GridItem xs={4} sm={3} md={3}>
-                          <Button size="small"  value ="receive" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
+                          <Button  value ="receive" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
                             Ya Recibí
                           </Button>
                         </GridItem>
                         <GridItem xs={4} sm={3} md={3}>
                         {aboutToClose == true                          
-                         ? <Button size="small"  value ="receive" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
+                         ? <Button  value ="receive" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
                             No Ha llegado
                           </Button>
                           :<span></span>}
