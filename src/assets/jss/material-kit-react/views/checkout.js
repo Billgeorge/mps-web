@@ -28,7 +28,7 @@ const checkoutStyle = {
     },
     rightSide:{
         backgroundColor:"#fff",
-        marginTop: "10%"
+        marginTop: "2%"
     },
     detailText:{      
         fontSize: "1.5rem",
