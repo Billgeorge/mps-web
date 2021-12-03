@@ -22,6 +22,8 @@ import { useHistory } from "react-router-dom";
 import { getFirstLetters } from 'util/NameUtils'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ReactPixel from 'react-facebook-pixel';
+import { Variants } from "./Variants";
+import { object } from "prop-types";
 
 
 const useStyles = makeStyles(styles);
@@ -35,6 +37,7 @@ function Checkout(props) {
     const [isLoading, setIsLoading] = React.useState(false);
     const [states, SetStates] = React.useState([]);
     const [totalPrice, setTotalPrice] = React.useState(null);    
+    const [counter, setCounter] = React.useState(0)
 
     const [product, setProduct] = React.useState({
         productName: "",
@@ -43,8 +46,43 @@ function Checkout(props) {
         imageURL: "",
         amount: 0,
         specialConditions: false,
-        discounts: []
+        discounts: [],
+        
     });
+    const [state, setstate] = React.useState({
+        isMaster: true,
+        variants: [{
+            "productId": "183c5704-b468-41bb-8490-e33f6931e24c",
+            "attributes": "{'color':'red', 'talla':'xs', 'procesador':'El mejor'}",
+            "quantity": 0
+            },
+            {
+            "productId": "795be164-30e4-42c0-86cc-be596cdeb6f6",
+            "attributes": "{'color':'blue', 'talla':'l'}",
+            "quantity": 2
+            }],
+
+    })
+
+    const llave =  state.variants.map(({attributes}) => {
+            const jsonTexto = attributes;
+            const replace = jsonTexto.replace(/'/g, '"')
+            const atributos = JSON.parse(replace);
+            return (Object.keys(atributos));     
+            
+        })
+    const key = llave[0]
+
+    const value =  state.variants.map(({attributes}) => {
+        const jsonTexto = attributes;
+        const replace = jsonTexto.replace(/'/g, '"')
+        const atributos = JSON.parse(replace);
+        return (Object.values(atributos));  
+         
+    })
+
+    
+    
     const [order, setOrder] = React.useState({
         state: "",
         city: "",
@@ -58,6 +96,8 @@ function Checkout(props) {
         neighborhood: "",
         observations: ""
     });
+
+    
     const [errorMessage, setErrorMessage] = React.useState("");
     const [infoMessage, setInfoMessage] = React.useState("");
 
@@ -284,15 +324,73 @@ function Checkout(props) {
                 <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
                     <h3 className={classes.shopName}>{product.productName}</h3>
                     <div className={classes.totalPrice}><span>{formatter.format(product.amount)} domicilio gratis</span></div><br />
-                    <img src={product.imageURL} className={classes.imgProduct} />
+                    <img src={product.imageURL} alt={product.productName} className={classes.imgProduct} />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
                     <div className={classes.productDescription}> {product.productDescription}</div>
                 </GridItem>
-                <GridContainer justify="center" style={{ marginTop: "30px", marginBottom: "30px" }}>
-                    <GridItem justify="center" xs={6} sm={6} md={6} className={classes.detailText}> Cantidad </GridItem>
-                    <GridItem justify="center" style={{ margin: "0 auto" }} xs={6} sm={6} md={6}> <GroupedButtons callback={handleChangeQuantity} counter={1}></GroupedButtons></GridItem>
+                <GridContainer justify="center" >
+                    
+                    <GridItem xs={12} sm={12} md={12} >
+                    {(state.isMaster) 
+                    ?(<>
+
+                    <h1 className={classes.title}>Selecciona tus opciones para continuar</h1>
+                    <div className={classes.containerVariants} >   
+                {key.map(key => (
+                    <>
+                   <FormControl variant="outlined" className={classes.formControl}>
+                   <InputLabel style={{textTransform: 'capitalize'}} >{key}</InputLabel>
+                            <Select
+                                native                               
+                                label={key}                               
+                                >
+                              <option aria-label="None" value="" />
+
+                              { value.map(value => (
+                                  <>
+                                <option>{value[0]}</option>
+                                <option>{value[1]}</option>
+                                </>
+                              ))
+                                  }
+                               </Select>
+                     </FormControl>
+                    </>
+                ))}                    
+                     <GroupedButtons callback={handleChangeQuantity} counter={1}></GroupedButtons>
+                     <Button color='primary'>Agregar</Button>
+                     </div> 
+
+                     <div className={classes.containerItems}>
+                        <h1 className={classes.title} style={{padding: '10px', textAlign: 'center'}}>Lista De Productos</h1>
+                        
+                        <div className={classes.conteinerItem}>
+                            <div>
+                                <span  >Color: Azul, </span>
+                                <span >Talla: xs, </span>
+                                <span >Cantidad: 2, </span>
+                            </div>
+
+                            <div>
+                                <Button color="primary" size="sm" >Eliminar</Button>
+                            </div>
+                            
+                        </div>
+
+                     </div>
+
+                    </>)
+                    :(<> <GridItem xs={12} sm={12} md={12} style={{padding: '20px', marginTop:'1rem', display: 'flex', alignItems: 'center',justifyContent: 'space-between'}}>
+                    <h1 className={classes.detailText}> Cantidad </h1>
+                    <GroupedButtons callback={handleChangeQuantity} counter={1}></GroupedButtons> </GridItem></>)
+
+           
+                 
+                    }
+                    </GridItem>
                 </GridContainer>
+                                
             </GridItem>
             <GridItem xs={12} sm={12} md={6} className={classes.rightSide}>
                 <h3 className={classes.shopName}>Información de entrega</h3>
@@ -403,6 +501,7 @@ function Checkout(props) {
                 </GridContainer>
 
                 <br />
+               
                 <Button onClick={createOrderCOD} className={classes.buttonText} color="success" size="lg">
                     Pagar {formatter.format(totalPrice ? totalPrice : product.amount * order.quantity)} con contraentrega
                 </Button>
