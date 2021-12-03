@@ -1,5 +1,7 @@
-export const CORE_BASEURL = process.env.REACT_APP_CORE_BASEURL  //'http://localhost:8084'
-export const PULL_BASEURL = process.env.REACT_APP_PULL_BASEURL //'http://localhost:8084'
+// export const CORE_BASEURL = process.env.REACT_APP_CORE_BASEURL  //'http://localhost:8084'
+// export const PULL_BASEURL = process.env.REACT_APP_PULL_BASEURL // 'http://localhost:8084'
+export const CORE_BASEURL ='http://localhost:8084'
+export const PULL_BASEURL = 'http://localhost:8084'
 
 export const getPaymentState = (idState) => {
     switch (idState) {
