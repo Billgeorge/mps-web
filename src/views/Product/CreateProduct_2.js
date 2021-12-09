@@ -1,4 +1,5 @@
 import React from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
 import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/GridItem";
@@ -6,20 +7,12 @@ import styles from "assets/jss/material-kit-react/views/CreateProduct";
 import Button from "components/CustomButtons/Button.js";
 import TextField from '@material-ui/core/TextField';
 import CardFooter from "components/Card/CardFooter.js";
-import InputAdornment from '@material-ui/core/InputAdornment';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
 import Alert from '@material-ui/lab/Alert';
-import { CORE_BASEURL, PULL_BASEURL } from 'constant/index'
+import { CORE_BASEURL } from 'constant/index'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 import emptyImage from "assets/img/new_product.png"
-import AddIcon from '@material-ui/icons/AddAPhoto'
 import IconButton from '@material-ui/core/IconButton';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import Card from "components/Card/Card.js";
@@ -27,6 +20,10 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import consumeServicePost from '../../service/ConsumeService'
 import { consumeServiceGet } from '../../service/ConsumeService'
 import { getMerchantId } from 'service/AuthenticationService'
+import CreateProductStepTwo from './CreateProduct2'
+import CreateProductStepOne from "./CreateProduct1";
+import CustomField from "./CustomField";
+import InventoryPerBranch from "./InventoryPerBranch";
 
 
 const useStyles = makeStyles(styles);
@@ -34,14 +31,33 @@ export default function CreateProduct(props) {
 
     const classes = useStyles();
     const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
-    
+
     const [isLoading, setIsLoading] = React.useState(false);
+    const [specialFeature1, setSpecialFeature1] = React.useState({
+        nameFeature: '',
+        valuesFeature: ''
+    });
+    const [specialFeature2, setSpecialFeature2] = React.useState({
+        nameFeature: '',
+        valuesFeature: ''
+    });
+    const [specialFeature3, setSpecialFeature3] = React.useState({
+        nameFeature: '',
+        valuesFeature: ''
+    });
     const [step, setStep] = React.useState(1);
     const [errorMessage, setErrorMessage] = React.useState("");
     const [productImage, setProductImage] = React.useState(emptyImage);
     const [infoMessage, setInfoMessage] = React.useState("");
     const [inventories, setInventories] = React.useState([]);
+    const [showCustomFields, setShowCustomFields] = React.useState(false);
+    const [combinations, setCombinations] = React.useState([]);
 
+    const [dimensions, setDimensions] = React.useState({
+        long: 0,
+        width: 0,
+        height: 0
+    })
     const [product, setProduct] = React.useState({
         name: '',
         description: '',
@@ -50,7 +66,12 @@ export default function CreateProduct(props) {
         dropshippingPrice: 0,
         specialFeatures: false,
         category: 0,
-        inventory: 0
+        inventory: 0,
+        dimensions: [],
+        weight: 0,
+        warranty: '',
+        variants: [],
+        sku: ''
     });
     const [branch, setBranch] = React.useState(
         []
@@ -64,9 +85,40 @@ export default function CreateProduct(props) {
         });
     };
 
+    const handleSpecialFeature1 = (event) => {
+        const name = event.target.name;
+        setSpecialFeature1({
+            ...specialFeature1,
+            [name]: event.target.value,
+        });
+    };
+
+    const handleSpecialFeature2 = (event) => {
+        const name = event.target.name;
+        setSpecialFeature2({
+            ...specialFeature2,
+            [name]: event.target.value,
+        });
+    };
+
+    const handleSpecialFeature3 = (event) => {
+        const name = event.target.name;
+        setSpecialFeature3({
+            ...specialFeature3,
+            [name]: event.target.value,
+        });
+    };
+
+    const handleChangeDimensions = (event) => {
+        const name = event.target.name;
+        setDimensions({
+            ...dimensions,
+            [name]: event.target.value,
+        });
+    };
+
     const handleChangeCheckBox = (event) => {
         const name = event.target.name;
-
         setProduct({
             ...product,
             [name]: event.target.checked
@@ -76,7 +128,8 @@ export default function CreateProduct(props) {
 
     const callBackSuccessGetBranches = (branches) => {
         setBranch(branches)
-    }
+        setStep(step + 1)
+    }    
 
     const callBackErrorGetBranches = (error) => {
         if (error === 404) {
@@ -109,27 +162,125 @@ export default function CreateProduct(props) {
         if (step === 1) {
             processInformationStepOne()
         }
-        if (step === 2) {
+        if (step === 2 && !showCustomFields) {
             processInformationStepTwo()
+        }
+        if (step === 2 && showCustomFields) {
+            processInformationCustomFields()
         }
         if (step === 3) {
             processInformationStepThree()
-            
+
         }
+    }
+
+    const processInformationCustomFields = () => {
+        setInfoMessage("")
+        setErrorMessage({})
+        if ((specialFeature1.nameFeature && specialFeature1.valuesFeature) ||
+            (specialFeature2.nameFeature && specialFeature2.valuesFeature) ||
+            (specialFeature3.nameFeature && specialFeature3.valuesFeature)) {
+            getBranches()
+            consolidateSpecialFeatures()
+
+        } else {
+            setErrorMessage({ 'Error': 'Debes crear al menos una característica' })
+        }
+    }
+
+    const consolidateSpecialFeatures = () =>{
+        let totalSpecialFeatures=0
+        let finalSpecialFeatures = []
+        if(specialFeature1.nameFeature && specialFeature1.valuesFeature){
+            finalSpecialFeatures.push(specialFeature1.valuesFeature.split(','))
+            totalSpecialFeatures++
+        }
+        if(specialFeature2.nameFeature && specialFeature2.valuesFeature){
+            finalSpecialFeatures.push(specialFeature2.valuesFeature.split(','))
+            totalSpecialFeatures++
+        }
+        if(specialFeature3.nameFeature && specialFeature3.valuesFeature){
+            finalSpecialFeatures.push(specialFeature3.valuesFeature.split(','))
+            totalSpecialFeatures++
+        }
+
+        let finalCombinations=[]
+        if(totalSpecialFeatures==1){
+            finalCombinations=finalSpecialFeatures[0].map(
+                function(sp){
+                    return `${specialFeature1.nameFeature}:${sp}`
+                }
+            )
+        }
+        if(totalSpecialFeatures==2){
+            finalSpecialFeatures[0].forEach(
+                function(sp1){
+                    finalSpecialFeatures[1].forEach(
+                        function(sp2){
+                            finalCombinations.push(
+                                `${specialFeature1.nameFeature}:${sp1} ${specialFeature2.nameFeature}:${sp2}`                                
+                            )
+                        }
+                    )
+                }
+            )
+        }
+        if(totalSpecialFeatures==3){
+            let initialCombination = []
+            finalSpecialFeatures[0].forEach(
+                function(sp1){
+                    finalSpecialFeatures[1].forEach(
+                        function(sp2){
+                            initialCombination.push(
+                                {
+                                    fe1:sp1,
+                                    fe2:sp2
+                                }
+                            )
+                        }
+                    )
+                }
+            )
+
+            initialCombination.forEach(
+                function(comb){
+                    finalSpecialFeatures[2].forEach(
+                        function(fe3){
+                            finalCombinations.push(
+                                `${specialFeature1.nameFeature}:${comb.fe1} ${specialFeature2.nameFeature}:${comb.fe2} ${specialFeature3.nameFeature}:${fe3}`
+                            )
+                        }
+                    )
+                }
+            )
+        }
+        console.log("combinations", finalCombinations)
+        setCombinations(finalCombinations)
     }
 
     const processInformationStepTwo = () => {
         setInfoMessage("")
         if (product.amount > 0 && ((product.dropshipping && product.dropshippingPrice > 0)
-            || (!product.dropshipping)) && product.category) {
-            setStep(step + 1)
-            setErrorMessage({})
-            let merchantId = getMerchantId()
-            const url = `${CORE_BASEURL}/branch/merchant/${merchantId}`
-            consumeServiceGet(callBackErrorGetBranches, callBackSuccessGetBranches, url)
+            || (!product.dropshipping)) && product.category &&
+            product.warranty && product.sku && dimensions.long > 0 && dimensions.width > 0
+            && dimensions.height > 0 && product.weight > 0) {
+            if (product.specialFeatures && product.variants.length == 0) {
+                setShowCustomFields(true)
+                console.log("adding custom features")
+            } else {
+                setShowCustomFields(false)
+                getBranches()
+            }
         } else {
             setErrorMessage({ 'Error': 'Falta uno o más campos obligatorios' })
         }
+    }
+
+    const getBranches = () => {        
+        setErrorMessage({})
+        let merchantId = getMerchantId()
+        const url = `${CORE_BASEURL}/branch/merchant/${merchantId}`
+        consumeServiceGet(callBackErrorGetBranches, callBackSuccessGetBranches, url)
     }
     const callBack = (error) => {
         if (error != null && typeof error === 'object') {
@@ -155,7 +306,7 @@ export default function CreateProduct(props) {
 
     const callBackCreateInventorySuccess = (inventory) => {
         setIsLoading(false)
-        document.getElementById("createProduct").reset()        
+        document.getElementById("createProduct").reset()
         setInfoMessage("Producto creado correctamente")
         setStep(1)
         setProductImage(emptyImage)
@@ -255,8 +406,10 @@ export default function CreateProduct(props) {
                         <Card className={classes[cardAnimaton]}>
 
                             <CardHeader className={classes.cardHeader}>
-                                <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{    color: "#9c27b0", textDecoration: "none",
-                              backgroundColor: "transparent", cursor:"pointer"}} onClick={()=>props.history.push('/product')} /> Crear producto nuevo</h3>
+                                <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{
+                                    color: "#9c27b0", textDecoration: "none",
+                                    backgroundColor: "transparent", cursor: "pointer"
+                                }} onClick={() => props.history.push('/product')} /> Crear producto nuevo</h3>
                             </CardHeader>
                             <CardBody>
                                 <form className={classes.form} validated="true" name="createProduct" id="createProduct">
@@ -265,133 +418,21 @@ export default function CreateProduct(props) {
                                         : <span></span>
                                     }
                                     {step === 1 ?
-                                        <GridItem xs={12} sm={12} md={12}>
-                                            <GridItem xs={12} sm={12} md={12}>
-
-
-                                                <img type="file" src={productImage} name="productImage" alt='Imagen' id="productImage" className={classes.imgProduct} />
-                                                <input onChange={fileSelected} accept="image/*" style={{ display: 'none' }} id="icon-button-file" type="file" />
-                                                <label className={classes.addImg} htmlFor="icon-button-file">
-                                                    <IconButton color="primary" aria-label="upload picture" component="span">
-                                                        <AddIcon />
-                                                    </IconButton>
-                                                </label>
-
-                                            </GridItem>
-                                            <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
-                                                <TextField onChange={handleChangeProduct} value={product.name} name="name" style={{ width: "98%", backgroundColor: "white" }} id="outlined-basic" label="Nombre producto" variant="outlined" required />
-                                            </GridItem>
-                                            <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
-                                                <TextField style={{ width: "100%", paddingBottom: "10px" }}
-                                                    id="description"
-                                                    onChange={handleChangeProduct} value={product.description} name="description"
-                                                    label="Descripción"
-                                                    multiline
-                                                    rows={4}
-                                                    placeholder="Características, beneficios y demás del producto"
-                                                    variant="outlined"
-                                                    inputProps={{ maxLength: 1000 }}
-                                                    required
-                                                />
-                                            </GridItem>
-
-                                        </GridItem>
+                                        <CreateProductStepOne handleChangeProduct={handleChangeProduct} fileSelected={fileSelected} product={product} productImage={productImage} />
                                         : <span></span>}
-                                    {step === 2 ?
-                                        <GridItem xs={12} sm={12} md={12}>
-
-                                            <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
-                                                <FormControlLabel
-                                                    control={
-                                                        <Checkbox
-                                                            onChange={handleChangeCheckBox} value={product.dropshipping} name="dropshipping"
-                                                            color="primary"
-                                                        />
-                                                    }
-                                                    label="¿Es producto dropshipping?"
-                                                />
-                                            </GridItem>
-                                            {product.dropshipping ?
-                                                <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
-                                                    <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
-                                                        <InputLabel htmlFor="valor">Precio a distribuidor</InputLabel>
-                                                        <OutlinedInput
-                                                            onChange={handleChangeProduct} value={product.dropshippingPrice} name="dropshippingPrice"
-                                                            id="dropshippingPrice"
-                                                            placeholder="Recuerda tener en cuenta nuestra comisión"
-                                                            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                                            labelWidth={60}
-                                                            required
-                                                            inputProps={{ min: 10000 }}
-                                                            type="number"
-                                                        />
-                                                    </FormControl>
-                                                </GridItem>
-                                                : <span></span>}
-
-                                            <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
-                                                <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
-                                                    <InputLabel htmlFor="valor">Precio a consumidor</InputLabel>
-                                                    <OutlinedInput
-                                                        id="amount"
-                                                        onChange={handleChangeProduct} value={product.amount} name="amount"
-                                                        placeholder="Recuerda tener en cuenta nuestra comisión"
-                                                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                                        labelWidth={60}
-                                                        required
-                                                        min="1000"
-                                                        inputProps={{ min: 10000 }}
-                                                        type="number"
-                                                    />
-                                                </FormControl>
-                                            </GridItem>
-                                            <GridItem xs={12} sm={12} md={12} >
-                                                <FormControl style={{ width: "100%", backgroundColor: "white" }} variant="outlined" className={classes.formControl}>
-                                                    <InputLabel htmlFor="outlined-age-native-simple">Categoría de producto</InputLabel>
-                                                    <Select
-                                                        native
-                                                        onChange={handleChangeProduct} value={product.category} name="category"
-                                                        label="Categoría producto"
-                                                        inputProps={{
-                                                            name: 'category',
-                                                            id: 'category'
-                                                        }}
-
-                                                    >
-
-                                                        <option aria-label="None" value="" />
-                                                        <option value="1">Mascotas</option>
-                                                        <option value="2">Tecnología</option>
-                                                        <option value="3">Hogar</option>
-                                                        <option value="4">Niños</option>
-                                                        <option value="5">Estilo de vida</option>
-                                                        <option value="6">Alimentos</option>
-                                                        <option value="7">Belleza</option>
-                                                        <option value="8">Otros</option>
-
-                                                    </Select>
-                                                </FormControl>
-                                            </GridItem>
-                                            <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
-                                                <FormControlLabel
-                                                    control={
-                                                        <Checkbox
-                                                            onChange={handleChangeCheckBox} value={product.specialFeatures} name="specialFeatures"
-                                                            color="primary"
-                                                        />
-                                                    }
-                                                    label="¿Este producto tiene características especiales (color, talla, etc)?"
-                                                />
-                                            </GridItem>
-                                        </GridItem>
+                                    {!showCustomFields && step === 2 ?
+                                        <CreateProductStepTwo handleChangeDimensions={handleChangeDimensions} dimensions={dimensions} handleChangeCheckBox={handleChangeCheckBox} product={product} handleChangeProduct={handleChangeProduct} />
                                         : <span></span>}
-                                    {step === 3 ?
+                                    {showCustomFields && step === 2 ?
+                                        <CustomField product={product} handleSpecialFeature1={handleSpecialFeature1} handleSpecialFeature2={handleSpecialFeature2} handleSpecialFeature3={handleSpecialFeature3} specialFeature1={specialFeature1} specialFeature2={specialFeature2} specialFeature3={specialFeature3} />
+                                        : <span></span>}
+                                    {!showCustomFields && step === 3 ?
                                         branch.map((row) => (
                                             <GridContainer>
                                                 <GridItem xs={12} sm={12} md={12}>
                                                     <h5>Ingresa el inventario para cada bodega</h5>
                                                 </GridItem>
-                                                <GridItem xs={6} sm={6} md={6} style={{ "text-align": "center", "padding-top": "10px" }}>
+                                                <GridItem xs={6} sm={6} md={6} style={{ "textAlign": "center", "paddingTop": "10px" }}>
                                                     <label style={{ "font-size": "1.5em", "font-weight": "bold" }}>{row.name}:</label>
                                                 </GridItem>
                                                 <GridItem xs={6} sm={6} md={6}>
@@ -399,6 +440,9 @@ export default function CreateProduct(props) {
                                                 </GridItem>
                                             </GridContainer>
                                         ))
+                                        : <span></span>}
+                                        {showCustomFields && step === 3 ?                                        
+                                            <InventoryPerBranch branch={branch} combinations={combinations} />                                        
                                         : <span></span>}
                                     {step > 1 ?
                                         <IconButton onClick={backStep} color="primary" aria-label="upload picture" component="span">
