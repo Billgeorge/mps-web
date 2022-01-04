@@ -10,7 +10,10 @@ import styles from "assets/jss/material-kit-react/views/CreateProduct";
 
 const useStyles = makeStyles(styles);
 export default function CreateProductStepOne(props) {
+    
     const classes = useStyles();
+
+    
     return (
         <GridItem xs={12} sm={12} md={12}>
             <GridItem xs={12} sm={12} md={12}>

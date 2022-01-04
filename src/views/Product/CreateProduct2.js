@@ -112,7 +112,7 @@ export default function CreateProductStepTwo(props) {
                     rows={4}
                     placeholder="¿cuánto tiempo de garantía?¿Condiciones?"
                     variant="outlined"
-                    inputProps={{ maxLength: 1000 }}
+                    inputProps={{ maxLength: 500 }}
                     required
                 />
             </GridItem>

@@ -24,12 +24,17 @@ import CreateProductStepTwo from './CreateProduct2'
 import CreateProductStepOne from "./CreateProduct1";
 import CustomField from "./CustomField";
 import InventoryPerBranch from "./InventoryPerBranch";
+import {
+
+    useLocation
+} from "react-router-dom";
 
 
 const useStyles = makeStyles(styles);
 export default function CreateProduct(props) {
 
     const classes = useStyles();
+    
     const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
 
     const [isLoading, setIsLoading] = React.useState(false);
@@ -50,6 +55,7 @@ export default function CreateProduct(props) {
     const [productImage, setProductImage] = React.useState(emptyImage);
     const [infoMessage, setInfoMessage] = React.useState("");
     const [inventories, setInventories] = React.useState([]);
+    const [complexInventory, setComplexInventory] = React.useState([]);
     const [showCustomFields, setShowCustomFields] = React.useState(false);
     const [combinations, setCombinations] = React.useState([]);
 
@@ -73,6 +79,8 @@ export default function CreateProduct(props) {
         variants: [],
         sku: ''
     });
+    const [storedProduct, setStoredProduct] = React.useState({});
+
     const [branch, setBranch] = React.useState(
         []
     );
@@ -84,6 +92,11 @@ export default function CreateProduct(props) {
             [name]: event.target.value,
         });
     };
+
+    const callBackInventories = (inventories) => {
+        console.log("inv", inventories)
+        setComplexInventory(inventories)
+    }
 
     const handleSpecialFeature1 = (event) => {
         const name = event.target.name;
@@ -129,7 +142,7 @@ export default function CreateProduct(props) {
     const callBackSuccessGetBranches = (branches) => {
         setBranch(branches)
         setStep(step + 1)
-    }    
+    }
 
     const callBackErrorGetBranches = (error) => {
         if (error === 404) {
@@ -146,17 +159,9 @@ export default function CreateProduct(props) {
             setErrorMessage({ 'Error': 'Tu imagén es muy pesada. No debe superar 1Mb' })
             return
         }
-        rederImage(file)
+        renderImage(file)
         setProductImage(file)
     };
-
-    const rederImage = (file) => {
-        var fr = new FileReader();
-        fr.onload = function () {
-            document.getElementById("productImage").src = fr.result;
-        }
-        fr.readAsDataURL(file);
-    }
 
     const processInformation = () => {
         if (step === 1) {
@@ -168,8 +173,12 @@ export default function CreateProduct(props) {
         if (step === 2 && showCustomFields) {
             processInformationCustomFields()
         }
-        if (step === 3) {
+        if (step === 3 && !showCustomFields) {
             processInformationStepThree()
+
+        }
+        if (step === 3 && showCustomFields) {
+            processStepThreeCustomFields()
 
         }
     }
@@ -188,53 +197,53 @@ export default function CreateProduct(props) {
         }
     }
 
-    const consolidateSpecialFeatures = () =>{
-        let totalSpecialFeatures=0
+    const consolidateSpecialFeatures = () => {
+        let totalSpecialFeatures = 0
         let finalSpecialFeatures = []
-        if(specialFeature1.nameFeature && specialFeature1.valuesFeature){
+        if (specialFeature1.nameFeature && specialFeature1.valuesFeature) {
             finalSpecialFeatures.push(specialFeature1.valuesFeature.split(','))
             totalSpecialFeatures++
         }
-        if(specialFeature2.nameFeature && specialFeature2.valuesFeature){
+        if (specialFeature2.nameFeature && specialFeature2.valuesFeature) {
             finalSpecialFeatures.push(specialFeature2.valuesFeature.split(','))
             totalSpecialFeatures++
         }
-        if(specialFeature3.nameFeature && specialFeature3.valuesFeature){
+        if (specialFeature3.nameFeature && specialFeature3.valuesFeature) {
             finalSpecialFeatures.push(specialFeature3.valuesFeature.split(','))
             totalSpecialFeatures++
         }
 
-        let finalCombinations=[]
-        if(totalSpecialFeatures==1){
-            finalCombinations=finalSpecialFeatures[0].map(
-                function(sp){
-                    return `${specialFeature1.nameFeature}:${sp}`
+        let finalCombinations = []
+        if (totalSpecialFeatures == 1) {
+            finalCombinations = finalSpecialFeatures[0].map(
+                function (sp) {
+                    return `'${specialFeature1.nameFeature}':'${sp}'`
                 }
             )
         }
-        if(totalSpecialFeatures==2){
+        if (totalSpecialFeatures == 2) {
             finalSpecialFeatures[0].forEach(
-                function(sp1){
+                function (sp1) {
                     finalSpecialFeatures[1].forEach(
-                        function(sp2){
+                        function (sp2) {
                             finalCombinations.push(
-                                `${specialFeature1.nameFeature}:${sp1} ${specialFeature2.nameFeature}:${sp2}`                                
+                                `'${specialFeature1.nameFeature}':'${sp1}','${specialFeature2.nameFeature}':'${sp2}'`
                             )
                         }
                     )
                 }
             )
         }
-        if(totalSpecialFeatures==3){
+        if (totalSpecialFeatures == 3) {
             let initialCombination = []
             finalSpecialFeatures[0].forEach(
-                function(sp1){
+                function (sp1) {
                     finalSpecialFeatures[1].forEach(
-                        function(sp2){
+                        function (sp2) {
                             initialCombination.push(
                                 {
-                                    fe1:sp1,
-                                    fe2:sp2
+                                    fe1: sp1,
+                                    fe2: sp2
                                 }
                             )
                         }
@@ -243,11 +252,11 @@ export default function CreateProduct(props) {
             )
 
             initialCombination.forEach(
-                function(comb){
+                function (comb) {
                     finalSpecialFeatures[2].forEach(
-                        function(fe3){
+                        function (fe3) {
                             finalCombinations.push(
-                                `${specialFeature1.nameFeature}:${comb.fe1} ${specialFeature2.nameFeature}:${comb.fe2} ${specialFeature3.nameFeature}:${fe3}`
+                                `'${specialFeature1.nameFeature}':'${comb.fe1}','${specialFeature2.nameFeature}':'${comb.fe2}','${specialFeature3.nameFeature}':'${fe3}'`
                             )
                         }
                     )
@@ -276,7 +285,7 @@ export default function CreateProduct(props) {
         }
     }
 
-    const getBranches = () => {        
+    const getBranches = () => {
         setErrorMessage({})
         let merchantId = getMerchantId()
         const url = `${CORE_BASEURL}/branch/merchant/${merchantId}`
@@ -296,12 +305,37 @@ export default function CreateProduct(props) {
 
     const callBackCreateProducSuccess = (product) => {
         console.log("product", product)
-        let createInventoryRequest = {
-            productId: product.id,
-            inventories: inventories
+        setStoredProduct(product)
+        let finalInventoryRequest = {}
+        if (showCustomFields) {
+            finalInventoryRequest = createInventoryRequest(product)
+        } else {
+            finalInventoryRequest = {
+                'requests': [{
+                    productId: product.id,
+                    inventories: inventories
+                }]
+            }
         }
-        consumeServicePost(createInventoryRequest, callBack, callBackCreateInventorySuccess, `${CORE_BASEURL}/inventory`)
 
+        consumeServicePost(finalInventoryRequest, callBack, callBackCreateInventorySuccess, `${CORE_BASEURL}/inventory`)
+
+    }
+
+    const createInventoryRequest = (product) => {
+        let attrs = new Set(complexInventory.map((element) => element.attr));
+        let finalInventoryRequest = []
+        attrs.forEach((attr) => {
+            finalInventoryRequest.push({
+                'productId': product.variants.filter((variant) =>
+                    variant.attributes.replace('{', '').replace('}', '') === attr
+                )[0].id,
+                'inventories': complexInventory.filter((inv) => inv.attr === attr)
+            })
+        });
+        return {
+            'requests': finalInventoryRequest
+        }
     }
 
     const callBackCreateInventorySuccess = (inventory) => {
@@ -310,6 +344,7 @@ export default function CreateProduct(props) {
         setInfoMessage("Producto creado correctamente")
         setStep(1)
         setProductImage(emptyImage)
+        setShowCustomFields(false)
         setProduct(
             {
                 name: '',
@@ -319,9 +354,139 @@ export default function CreateProduct(props) {
                 dropshippingPrice: 0,
                 specialFeatures: false,
                 category: 0,
-                inventory: 0
+                inventory: 0,
+                dimensions: [],
+                weight: 0,
+                warranty: '',
+                variants: [],
+                sku: ''
             }
         )
+        setDimensions({
+            long: 0,
+            width: 0,
+            height: 0
+        })
+        setCombinations([])
+        setInventories([])
+        setComplexInventory([])
+        setProductImage(emptyImage)
+        setSpecialFeature1(
+            {
+                nameFeature: '',
+                valuesFeature: ''
+            }
+        )
+        setSpecialFeature2(
+            {
+                nameFeature: '',
+                valuesFeature: ''
+            }
+        )
+        setSpecialFeature3(
+            {
+                nameFeature: '',
+                valuesFeature: ''
+            }
+        )
+        setStoredProduct({})
+        setBranch([])        
+    }
+
+
+    const processStepThreeCustomFields = () => {
+        if (storedProduct && storedProduct.id) {
+            callBackCreateProducSuccess()
+            return
+        }
+        setInfoMessage("")
+        setErrorMessage({})
+        if (isLoading) {
+            return
+        }
+        setErrorMessage({})
+        let inventoryItem = groupInventoriesPerAttr()
+        let requestForm = {
+            amount: product.amount,
+            name: product.name,
+            inventory: inventoryItem.total,
+            dropshipping: product.dropshipping,
+            description: product.description,
+            merchantId: getMerchantId(),
+            specialFeatures: product.specialFeatures,
+            dropshippingPrice: product.dropshippingPrice,
+            category: product.category,
+            sku: product.sku,
+            weight: product.weight,
+            warranty: product.warranty,
+            dimensions: [dimensions.long, dimensions.width, dimensions.height],
+            isMaster: true
+        }
+        const json = JSON.stringify(requestForm);
+        const blob = new Blob([json], {
+            type: 'application/json'
+        });
+        const data = new FormData();
+        data.append("data", blob);
+        data.append("image", productImage);
+        data.append("variants", JSON.stringify(inventoryItem.inventory));
+        setIsLoading(true)
+        consumeServicePost(data, callBack, callBackCreateProducSuccess, `${CORE_BASEURL}/product`)
+    }
+    /*
+    const groupInventoriesPerBranch = () => {
+        const inventoriesMap = new Map();
+        const finalInventories = []
+        complexInventory.map((row, index) => {
+            if (!inventoriesMap.has(row.branchId)) {
+                inventoriesMap.set(row.branchId, row.value)
+            } else {
+                const finalInventory = inventoriesMap.get(row.branchId) + row.value
+                inventoriesMap.set(row.branchId, finalInventory)
+            }
+        })
+
+        for (const [key, value] of inventoriesMap) {
+            finalInventories.push(
+                {
+                    'branchId': `{${key}}`,
+                    'quantity': value
+                }
+            )
+
+        }
+        console.log('keys branchId', finalInventories)
+        return finalInventories
+    } */
+
+    const groupInventoriesPerAttr = () => {
+        const inventoriesMap = new Map();
+        const finalInventories = []
+        complexInventory.map((row, index) => {
+            if (!inventoriesMap.has(row.attr)) {
+                inventoriesMap.set(row.attr, row.quantity)
+            } else {
+                const finalInventory = inventoriesMap.get(row.attr) + row.quantity
+                inventoriesMap.set(row.attr, finalInventory)
+            }
+        })
+
+        let totalInventory = 0
+        for (const [key, value] of inventoriesMap) {
+            totalInventory = totalInventory + value
+            finalInventories.push(
+                {
+                    'attributes': `{${key}}`,
+                    'quantity': value
+                }
+            )
+
+        }
+        console.log('keys', finalInventories)
+        return {
+            'inventory': finalInventories,
+            'total': totalInventory
+        }
     }
 
     const processInformationStepThree = () => {
@@ -333,34 +498,38 @@ export default function CreateProduct(props) {
         if (branch.length > 0) {
             setErrorMessage({})
             let inventory = calculateInventory()
-            if (inventory > 0) {
-                let requestForm = {
-                    amount: product.amount,
-                    name: product.name,
-                    inventory: inventory,
-                    dropshipping: product.dropshipping,
-                    description: product.description,
-                    merchantId: getMerchantId(),
-                    specialFeatures: product.specialFeatures,
-                    dropshippingPrice: product.dropshippingPrice,
-                    category: product.category
-                }
-                const json = JSON.stringify(requestForm);
-                const blob = new Blob([json], {
-                    type: 'application/json'
-                });
-                const data = new FormData();
-                data.append("data", blob);
-                data.append("image", productImage);
-                setIsLoading(true)
-                consumeServicePost(data, callBack, callBackCreateProducSuccess, `${CORE_BASEURL}/product`)
-            } else {
-                setErrorMessage({ 'Error': 'Debe poner inventario en al menos una bodega.' })
+
+            let requestForm = {
+                amount: product.amount,
+                name: product.name,
+                inventory: inventory,
+                dropshipping: product.dropshipping,
+                description: product.description,
+                merchantId: getMerchantId(),
+                specialFeatures: product.specialFeatures,
+                dropshippingPrice: product.dropshippingPrice,
+                category: product.category,
+                sku: product.sku,
+                weight: product.weight,
+                warranty: product.warranty,
+                dimensions: [dimensions.long, dimensions.width, dimensions.height],
+                isMaster: true
             }
+            const json = JSON.stringify(requestForm);
+            const blob = new Blob([json], {
+                type: 'application/json'
+            });
+            const data = new FormData();
+            data.append("data", blob);
+            data.append("image", productImage);
+            setIsLoading(true)
+            consumeServicePost(data, callBack, callBackCreateProducSuccess, `${CORE_BASEURL}/product`)
+
         } else {
             setErrorMessage({ 'Error': 'Falta uno o más campos obligatorios' })
         }
     }
+
     const calculateInventory = () => {
         let inventory = 0
         branch.forEach(
@@ -389,12 +558,25 @@ export default function CreateProduct(props) {
     }
     const backStep = () => {
         if (step > 1) {
-            setStep(step - 1)
-            setErrorMessage({})
+            if (step === 2 && showCustomFields) {
+                setShowCustomFields(false)
+            } else {
+                setStep(step - 1)
+                setErrorMessage({})
+            }
         }
         if ((step - 1) === 1) {
-            rederImage(productImage)
+            setStep(step - 1)
+            renderImage(productImage)
         }
+    }
+
+    const renderImage = (file) => {
+        var fr = new FileReader();
+        fr.onload = function () {
+            document.getElementById("productImage").src = fr.result;
+        }
+        fr.readAsDataURL(file);
     }
 
     return (
@@ -441,8 +623,8 @@ export default function CreateProduct(props) {
                                             </GridContainer>
                                         ))
                                         : <span></span>}
-                                        {showCustomFields && step === 3 ?                                        
-                                            <InventoryPerBranch branch={branch} combinations={combinations} />                                        
+                                    {showCustomFields && step === 3 ?
+                                        <InventoryPerBranch callBack={callBackInventories} branch={branch} combinations={combinations} />
                                         : <span></span>}
                                     {step > 1 ?
                                         <IconButton onClick={backStep} color="primary" aria-label="upload picture" component="span">
