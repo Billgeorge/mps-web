@@ -25,7 +25,7 @@ export default function CreateProductStepTwo(props) {
                 <FormControlLabel
                     control={
                         <Checkbox
-                            onChange={props.handleChangeCheckBox} value={props.product.dropshipping} name="dropshipping"
+                            onChange={props.handleChangeCheckBox} checked={props.product.dropshipping} name="dropshipping"
                             color="primary"
                         />
                     }
@@ -180,17 +180,19 @@ export default function CreateProductStepTwo(props) {
                     </FormControl>
                 </GridItem>
             </GridContainer>
-            <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            onChange={props.handleChangeCheckBox} value={props.product.specialFeatures} name="specialFeatures"
-                            color="primary"
-                        />
-                    }
-                    label="¿Este producto tiene características especiales (color, talla, etc)?"
-                />
-            </GridItem>
+            {props.isEdit ? <></> :
+                <GridItem style={{ marginTop: "10px" }} xs={12} sm={12} md={12}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={props.handleChangeCheckBox} value={props.product.specialFeatures} name="specialFeatures"
+                                color="primary"
+                            />
+                        }
+                        label="¿Este producto tiene características especiales (color, talla, etc)?"
+                    />
+                </GridItem>
+            }
         </GridItem>
     )
 }
