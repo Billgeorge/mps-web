@@ -230,6 +230,7 @@ export default function ProductBoard(props) {
                       <TableRow>
                         <TableCell></TableCell>
                         <TableCell align="center">Nombre</TableCell>
+                        <TableCell align="center">Sku</TableCell>
                         <TableCell align="center">Valor</TableCell>
                         <TableCell align="center">Inventario</TableCell>
                         <TableCell align="center">Asignar Inventario</TableCell>
@@ -254,6 +255,7 @@ export default function ProductBoard(props) {
                             </center>
                           </TableCell>
                           <TableCell align="center">{row.name}</TableCell>
+                          <TableCell align="center">{row.sku?row.sku:'Vacío'}</TableCell>
                           <TableCell align="center">{
                             formatter.format(row.amount)
                           }</TableCell>

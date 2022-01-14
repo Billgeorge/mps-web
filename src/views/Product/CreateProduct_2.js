@@ -433,31 +433,6 @@ export default function CreateProduct(props) {
         setIsLoading(true)
         consumeServicePost(data, callBack, callBackCreateProducSuccess, `${CORE_BASEURL}/product`)
     }
-    /*
-    const groupInventoriesPerBranch = () => {
-        const inventoriesMap = new Map();
-        const finalInventories = []
-        complexInventory.map((row, index) => {
-            if (!inventoriesMap.has(row.branchId)) {
-                inventoriesMap.set(row.branchId, row.value)
-            } else {
-                const finalInventory = inventoriesMap.get(row.branchId) + row.value
-                inventoriesMap.set(row.branchId, finalInventory)
-            }
-        })
-
-        for (const [key, value] of inventoriesMap) {
-            finalInventories.push(
-                {
-                    'branchId': `{${key}}`,
-                    'quantity': value
-                }
-            )
-
-        }
-        console.log('keys branchId', finalInventories)
-        return finalInventories
-    } */
 
     const groupInventoriesPerAttr = () => {
         const inventoriesMap = new Map();
