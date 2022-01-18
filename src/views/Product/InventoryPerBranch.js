@@ -12,27 +12,37 @@ import TabList from '@material-ui/lab/TabList'
 
 export default function InventoryPerBranch(props) {
 
-    const [value, setValue] = React.useState(props.branch[0].name);    
+    const [value, setValue] = React.useState(props.branch[0].name);
 
     const [renderFirsTime, setRenderFirstTime] = React.useState(false);
 
     const [inventories, setInventories] = React.useState([]);
 
-    
+
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    const newInventorie = (comb, branch, index,branchId) => {
+    const newInventorie = (comb, branch, index, branchId) => {
         if (!renderFirsTime) {
-            inventories.push({
-                quantity: 0,
-                attr: comb,
-                branch: branch,
-                branchId:branchId
-            })
-            if (index === props.combinations.length*props.branch.length - 1) {
+            if (comb.attr) {
+                inventories.push({
+                    quantity: 0,
+                    attr: comb.attr,
+                    productId: comb.productId,
+                    branch: branch,
+                    branchId: branchId
+                })
+            } else {
+                inventories.push({
+                    quantity: 0,
+                    attr: comb,
+                    branch: branch,
+                    branchId: branchId
+                })
+            }
+            if (index === props.combinations.length * props.branch.length - 1) {
                 setRenderFirstTime(true)
             }
             props.callBack(inventories)
@@ -40,25 +50,26 @@ export default function InventoryPerBranch(props) {
     }
 
     const handleChangeInventory = (event) => {
-       const index = event.target.name;
-       const localInventories = [...inventories]
-       localInventories[index].quantity = Number(event.target.value)
-       console.log("inventories changing",localInventories)
-       setInventories(localInventories)
-       props.callBack(localInventories)
+        const index = event.target.name;
+        const localInventories = [...inventories]
+        localInventories[index].quantity = Number(event.target.value)
+        console.log("inventories changing", localInventories)
+        setInventories(localInventories)
+        props.callBack(localInventories)
     };
 
-    const tabsComponent = (branchName,branchIndex,branchId) => {
-        let finalIndex=props.combinations.length*branchIndex
+    const tabsComponent = (branchName, branchIndex, branchId) => {
+        let finalIndex = props.combinations.length * branchIndex
         return <><h4>Ingresa el inventario para cada combinación</h4>
             {props.combinations.map((comb, index) => (
                 <GridContainer>
-                    {newInventorie(comb, branchName, finalIndex+index,branchId)}
+                    {newInventorie(comb, branchName, finalIndex + index, branchId)}
+
                     <GridItem xs={6} sm={6} md={6} style={{ "textAlign": "left", "paddingTop": "10px" }}>
-                        <label style={{ "fontSize": "1em" }}>{comb} </label>
+                        <label style={{ "fontSize": "1em" }}>{comb.attr ? comb.attr : comb} </label>
                     </GridItem>
                     <GridItem xs={6} sm={6} md={6}>
-                        <TextField onChange={handleChangeInventory} value={inventories[finalIndex+index].quantity} inputProps={{ name: finalIndex+index, attr: comb, id: `${comb}-${branchName}`, min: 0 }} type="number" style={{ width: "98%", backgroundColor: "white", "paddingTop": "10px", marginTop: "10%" }} id="outlined-basic" label="Inventario" variant="outlined" required />
+                        <TextField onChange={handleChangeInventory} value={inventories[finalIndex + index].quantity} inputProps={{ name: finalIndex + index, attr: comb, id: `${comb}-${branchName}`, min: 0 }} type="number" style={{ width: "98%", backgroundColor: "white", "paddingTop": "10px", marginTop: "10%" }} id="outlined-basic" label="Inventario" variant="outlined" required />
                     </GridItem>
                 </GridContainer>
             ))}</>
@@ -84,8 +95,8 @@ export default function InventoryPerBranch(props) {
                 </TabList>
             </Box>
 
-            {props.branch.map((row,index) => (
-                <TabPanel value={row.name} index={row.name}>{tabsComponent(row.name,index,row.id)}</TabPanel>
+            {props.branch.map((row, index) => (
+                <TabPanel value={row.name} index={row.name}>{tabsComponent(row.name, index, row.id)}</TabPanel>
             ))}
 
 

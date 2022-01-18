@@ -18,6 +18,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import { consumeServiceGet } from 'service/ConsumeService'
 import { getQueyParamFromUrl } from 'util/UrlUtil'
+import InventoryPerBranch from "./InventoryPerBranch";
 
 
 import styles from "assets/jss/material-kit-react/views/createPayment.js";
@@ -43,10 +44,41 @@ export default function EditInventoryProduct(props) {
         []
     );
 
+    const [product, setProduct] = React.useState({});
+
+    const [combinations, setCombinations] = React.useState([]);
+
     const [inventories, setInventories] = React.useState([]);
 
+    const [complexProductInventory, setComplexProductInventory] = React.useState([]);
+
+
     const callBackSuccessGetBranches = (branches) => {
+        getProductInfo()
         setBranch(branches)
+    }
+
+
+    const determineTypeOfProduct = (product) => {
+        const combinations = []
+        if (product.isMaster && product.variants && product.variants.length > 0) {
+            for (let subProduct of product.variants) {
+                combinations.push({
+                    attr: subProduct.attributes.replace('{', '').replace('}', ''),
+                    productId: subProduct.id
+                })
+            }
+        }
+        setCombinations(combinations)
+    }
+
+    const callBackSuccessProduct = (product) => {
+        determineTypeOfProduct(product)
+        setProduct(product)
+    }
+
+    const callBackInventories = (inventories) => {
+        setComplexProductInventory(inventories)
     }
 
     const callBack = (error) => {
@@ -77,32 +109,91 @@ export default function EditInventoryProduct(props) {
             return
         }
         if (branch.length > 0) {
-            setErrorMessage({})
-            let inventory = calculateInventory()
-            if (inventory > 0) {
-                let requestUpdate = {
-                    id: getQueyParamFromUrl('idp'),
-                    inventory: inventory
-                }
-                setIsLoading(true)
-                consumeServicePatch(requestUpdate, callBack, callBackCreateProducSuccess, `${CORE_BASEURL}/product/inventory`)
+            
+            let requestUpdate = {}
+            if (product.isMaster && product.variants && product.variants.length > 0) {
+                requestUpdate = buildRequestCompexProduct()
             } else {
-                setErrorMessage({ 'Error': 'Debe poner inventario en al menos una bodega.' })
+
+                requestUpdate = buildRequestSimpleProduct()
+                if (inventories.length < branch.length) {
+                    setErrorMessage({ 'Error': 'Debe llenar todos los inventarios por sucursal' })
+                    return
+                }
             }
+            setIsLoading(true)
+            consumeServicePatch(requestUpdate, callBack, callBackCreateProducSuccess, `${CORE_BASEURL}/product/inventory`)
+
         } else {
             setErrorMessage({ 'Error': 'Falta uno o más campos obligatorios' })
         }
     }
 
+    const buildRequestCompexProduct = () => {
+        const variantInventories = []
+        const totalInventory = complexProductInventory.reduce(
+            function (prev, curr, index, vec) {
+                return prev + curr.quantity
+            }, 0
+        )
+        for (let subProduct of product.variants) {
+            const totalPerProduct = complexProductInventory.filter(inv => inv.productId === subProduct.id).reduce(
+                function (prev, curr, index, vec) {
+                    return prev + curr.quantity
+                }, 0
+            )
+            variantInventories.push({
+                id: subProduct.id,
+                inventory: totalPerProduct
+            })
+        }
+
+        return {
+            masterInventory: {
+                id: product.id,
+                inventory: totalInventory
+            },
+            variantsInventory: variantInventories
+        }
+
+    }
+
+    const buildRequestSimpleProduct = () => {
+        let inventory = calculateInventory()
+
+        return {
+            masterInventory: {
+                id: getQueyParamFromUrl('idp'),
+                inventory: inventory
+            }
+        }
+
+    }
+
+
     const callBackCreateInventorySuccess = (inventory) => {
         setIsLoading(false)
-        document.getElementById("editProductInventory").reset()
+        if(!product.isMaster){
+            document.getElementById("editProductInventory").reset()
+        }        
         setSuccessMessage("Inventario actualizado correctamente")
     }
 
-    const callBackCreateProducSuccess = (product) => {
-        consumeServicePatch(inventories, callBack, callBackCreateInventorySuccess, `${CORE_BASEURL}/inventory`)
+    const callBackCreateProducSuccess = (productIn) => {
 
+        let inventoryRequest = []
+        if (product.isMaster && product.variants && product.variants.length > 0) {
+            inventoryRequest = complexProductInventory
+        } else {
+            inventoryRequest = inventories
+        }
+        consumeServicePatch(inventoryRequest, callBack, callBackCreateInventorySuccess, `${CORE_BASEURL}/inventory`)
+
+    }
+
+    const getProductInfo = () => {
+        const url = `${CORE_BASEURL}/product/public/${getQueyParamFromUrl('idp').slice(-6)}`
+        consumeServiceGet(callBackErrorGetBranches, callBackSuccessProduct, url)
     }
 
     const getBranches = () => {
@@ -118,10 +209,10 @@ export default function EditInventoryProduct(props) {
         branch.forEach(
             branch => {
                 inventory = inventory + Number(document.getElementById(branch.id).value)
-                if (document.getElementById(branch.id).value > 0) {
+                if (document.getElementById(branch.id).value) {
                     inventories.push({
                         branchId: branch.id,
-                        productId:getQueyParamFromUrl('idp'),
+                        productId: getQueyParamFromUrl('idp'),
                         quantity: document.getElementById(branch.id).value
                     })
                 }
@@ -150,29 +241,34 @@ export default function EditInventoryProduct(props) {
                         <Card className={classes[cardAnimaton]}>
                             <form className={classes.form} validated="true" name="editProduct" id="editProduct">
                                 <CardHeader className={classes.cardHeader}>
-                                    <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{    color: "#9c27b0", textDecoration: "none",
-                              backgroundColor: "transparent", cursor:"pointer"}} onClick={()=>props.history.push('/product')} /> Editar inventario de producto</h3>
+                                    <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{
+                                        color: "#9c27b0", textDecoration: "none",
+                                        backgroundColor: "transparent", cursor: "pointer"
+                                    }} onClick={() => props.history.push('/product')} /> Editar inventario de producto</h3>
                                 </CardHeader>
                                 <CardBody>
                                     {isLoading
                                         ? <center> <CircularProgress /></center>
                                         : <span></span>
+                                    }{
+                                        product.isMaster && product.variants && product.variants.length > 0 ?
+                                            <InventoryPerBranch callBack={callBackInventories} branch={branch} combinations={combinations} />
+                                            : <form className={classes.form} validated="true" name="editProductInventory" id="editProductInventory">
+                                                {branch.map((row) => (
+                                                    <GridContainer>
+                                                        <GridItem xs={12} sm={12} md={12}>
+                                                            <h5>Ingresa el inventario para cada bodega</h5>
+                                                        </GridItem>
+                                                        <GridItem xs={6} sm={6} md={6} style={{ "textAlign": "center", "paddingTop": "10px" }}>
+                                                            <label style={{ "fontSize": "1.5em", "fontWeight": "bold" }}>{row.name}:</label>
+                                                        </GridItem>
+                                                        <GridItem xs={6} sm={6} md={6}>
+                                                            <TextField inputProps={{ min: 0, id: row.id }} type="number" style={{ width: "98%", backgroundColor: "white" }} id="outlined-basic" label="Inventario" variant="outlined" required />
+                                                        </GridItem>
+                                                    </GridContainer>
+                                                ))}
+                                            </form>
                                     }
-                                    <form className={classes.form} validated="true" name="editProductInventory" id="editProductInventory">
-                                        {branch.map((row) => (
-                                            <GridContainer>
-                                                <GridItem xs={12} sm={12} md={12}>
-                                                    <h5>Ingresa el inventario para cada bodega</h5>
-                                                </GridItem>
-                                                <GridItem xs={6} sm={6} md={6} style={{ "text-align": "center", "padding-top": "10px" }}>
-                                                    <label style={{ "font-size": "1.5em", "font-weight": "bold" }}>{row.name}:</label>
-                                                </GridItem>
-                                                <GridItem xs={6} sm={6} md={6}>
-                                                    <TextField inputProps={{ min: 0, id: row.id }} type="number" style={{ width: "98%", backgroundColor: "white" }} id="outlined-basic" label="Inventario" variant="outlined" required />
-                                                </GridItem>
-                                            </GridContainer>
-                                        ))}
-                                    </form>
 
                                     {Object.keys(errorMessage).map((keyName, i) => (
                                         <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>
