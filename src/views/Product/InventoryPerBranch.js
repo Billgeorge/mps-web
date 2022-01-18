@@ -64,7 +64,6 @@ export default function InventoryPerBranch(props) {
             {props.combinations.map((comb, index) => (
                 <GridContainer>
                     {newInventorie(comb, branchName, finalIndex + index, branchId)}
-
                     <GridItem xs={6} sm={6} md={6} style={{ "textAlign": "left", "paddingTop": "10px" }}>
                         <label style={{ "fontSize": "1em" }}>{comb.attr ? comb.attr : comb} </label>
                     </GridItem>
