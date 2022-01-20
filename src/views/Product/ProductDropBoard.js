@@ -28,6 +28,7 @@ import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 import SplitButton from 'components/SplitButton/SplitButton';
 import Pagination from "@material-ui/lab/Pagination";
 import {categories} from 'constant/index'
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(styles);
 
@@ -206,7 +207,7 @@ export default function ProductDropBoard() {
                     <TableBody>
                       {products.content.map((row) => (
                         <TableRow>
-                          <TableCell align="center">{row.product.name}</TableCell>
+                          <TableCell align="center"><Link to={"productDetail?idp=" + row.product.id.slice(-6)+"&vw=true"}>{row.product.name}</Link></TableCell>
                           <TableCell align="center">{
                             formatter.format(row.product.dropshippingPrice)
                           }</TableCell>

@@ -9,6 +9,7 @@ import GridItem from "components/Grid/GridItem.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Button from "components/CustomButtons/Button.js";
+import { Link } from 'react-router-dom';
 
 import Alert from '@material-ui/lab/Alert';
 
@@ -254,13 +255,13 @@ export default function ProductBoard(props) {
                               />
                             </center>
                           </TableCell>
-                          <TableCell align="center">{row.name}</TableCell>
+                          <TableCell align="center"><Link to={"productDetail?idp=" + row.id.slice(-6)+"&vw=true"}>{row.name}</Link></TableCell>
                           <TableCell align="center">{row.sku?row.sku:'Vacío'}</TableCell>
                           <TableCell align="center">{
                             formatter.format(row.amount)
                           }</TableCell>
                           <TableCell align="center">{row.inventory}</TableCell>
-                          <TableCell align="right"><center><a href={"/create-inventory?idp=" + row.id}><Button color="primary">Asignar Inventario</Button></a></center></TableCell>
+                          <TableCell align="right"><center><Link to={"/create-inventory?idp=" + row.id}><Button color="primary">Asignar Inventario</Button></Link></center></TableCell>
                           <TableCell align="center">
                             <SplitButton options={[
                               { label: "Editar Inventario", action: "/edit-product-inventory?idp=" + row.id },
