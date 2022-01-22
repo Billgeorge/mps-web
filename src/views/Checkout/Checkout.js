@@ -1,6 +1,7 @@
 import React from "react";
 
 import { connect } from 'react-redux'
+import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/GridItem";
@@ -37,9 +38,9 @@ function Checkout(props) {
     const [isLoading, setIsLoading] = React.useState(false);
     const [states, SetStates] = React.useState([]);
     const [totalPrice, setTotalPrice] = React.useState(null);
-    const [counter, setCounter] = React.useState(0)
     const [customFields, setCustomFields] = React.useState([])
     const [customFieldsCols, setCustomFieldsCols] = React.useState(0)
+
 
     const [product, setProduct] = React.useState({
         productName: "",
@@ -52,38 +53,6 @@ function Checkout(props) {
         variants: []
 
     });
-    const [state, setstate] = React.useState({
-        isMaster: true,
-        variants: [{
-            "productId": "183c5704-b468-41bb-8490-e33f6931e24c",
-            "attributes": "{'color':'red', 'talla':'xs', 'procesador':'El mejor'}",
-            "quantity": 0
-        },
-        {
-            "productId": "795be164-30e4-42c0-86cc-be596cdeb6f6",
-            "attributes": "{'color':'blue', 'talla':'l'}",
-            "quantity": 2
-        }],
-
-    })
-
-    const llave = state.variants.map(({ attributes }) => {
-        const jsonTexto = attributes;
-        const replace = jsonTexto.replace(/'/g, '"')
-        const atributos = JSON.parse(replace);
-        return (Object.keys(atributos));
-
-    })
-    const key = llave[0]
-
-    const value = state.variants.map(({ attributes }) => {
-        const jsonTexto = attributes;
-        const replace = jsonTexto.replace(/'/g, '"')
-        const atributos = JSON.parse(replace);
-        return (Object.values(atributos));
-
-    })
-
 
 
     const [order, setOrder] = React.useState({
@@ -103,6 +72,8 @@ function Checkout(props) {
 
     const [errorMessage, setErrorMessage] = React.useState("");
     const [infoMessage, setInfoMessage] = React.useState("");
+    const [carItems, setCartItems] = React.useState([]);
+    const [carQuantity, setCarQuantity] = React.useState(1);
 
 
     const callBackErrorGetCities = () => {
@@ -122,12 +93,16 @@ function Checkout(props) {
         });
     };
 
-    const handleChangeQuantity = (quantity) => {
+    const handleChangeQuantity = (quantity, isInternal) => {
         setErrorMessage("")
-        setOrder({
-            ...order,
-            quantity: quantity
-        });
+        if (isInternal) {
+            setCarQuantity(quantity)
+        } else {
+            setOrder({
+                ...order,
+                quantity: quantity
+            });
+        }
         validateDiscount(quantity)
     };
 
@@ -144,7 +119,15 @@ function Checkout(props) {
 
     const createOrder = (paymentMethod) => {
         setErrorMessage("")
+        let products = null
         setPaymentMethod(paymentMethod)
+        if(product.isMaster && product.variants && product.variants.length>0){
+            if(carItems.length===0){
+                setErrorMessage("Debe agregar productos")
+                return
+            }
+            products = getProductList()            
+        }
 
         if (isLoading) {
             return
@@ -203,9 +186,46 @@ function Checkout(props) {
                 department: order.state
             },
             isDrop: true,
-            observations: order.observations
+            observations: order.observations,
+            orderItems:{items:products}
         }
         consumeServicePost(request, callBackErrorCreateOrder, callBackSuccess, url)
+    }
+
+    const getProductList = () =>{
+    let products = []
+        let carItemsJson = carItems.map(
+            (item) => {
+                return {
+                    ...item,
+                    attributes: JSON.parse("{"+item.attr+"}")
+                }
+            }
+        )
+        let variants = product.variants.map(
+            (item) => {
+                return {
+                    ...item,
+                    attributes: JSON.parse(item.attributes.replaceAll("'", '"'))
+                }
+            }
+        )
+
+        carItemsJson.forEach(
+            (item) =>{
+                let product = variants.find(variant => _.isEqual(item.attributes,variant.attributes))
+                products.push({
+                    quantity:item.quantity,
+                    productId:product.productId
+                })
+            }
+        )
+        
+        
+        console.log(carItemsJson)
+        console.log(variants)
+        console.log(products)
+        return products
     }
 
     const callBackErrorCreateOrder = () => {
@@ -292,7 +312,7 @@ function Checkout(props) {
         let totalCols = 12
         console.log("starting ", variants)
         let attributes = variants.map(function (variant) {
-            return JSON.parse(variant.attributes.replaceAll("'", '"'));
+            return JSON.parse(variant.attributes.replaceAll("'", '"'));            
         });
         console.log("attrs ", attributes)
         let finalKeys = []
@@ -311,7 +331,7 @@ function Checkout(props) {
             function (key) {
                 finalComponents.push({
                     'label': key,
-                    'options': groupBy(attributes, finalKeys[0])
+                    'options': groupBy(attributes, key)
                 })
             }
         )
@@ -325,11 +345,16 @@ function Checkout(props) {
         let options = []
         array.forEach(function (element) {
             let pair = Object.entries(element)
-            if (pair[0][0] == key) {
-                options = options.concat(pair[0][1])
-            }
+            pair.forEach(
+                (pr) => {
+                    if (pr[0] == key) {
+                        options = options.concat(pr[1])
+                    }
+                }
+            )
+
         })
-        return options
+        return [...new Set(options)]
     };
 
     const getCities = () => {
@@ -348,6 +373,74 @@ function Checkout(props) {
         currency: 'USD',
         minimumFractionDigits: 0
     })
+
+    const addCartItem = () => {
+        let localItems = carItems
+        let len = customFields.length
+        let label = order.quantity
+        let attr = ""
+        for (let i = 0; i < len; i++) {
+            if (attr) {
+                attr = `${attr}, "${document.getElementById(i).name}":"${document.getElementById(i).value}" `
+            } else {
+                attr = `"${document.getElementById(i).name}":"${document.getElementById(i).value}"`
+            }
+
+            label = `${label} ${document.getElementById(i).name}: ${document.getElementById(i).value}`
+        }
+        let finalPrice = product.amount * order.quantity
+        localItems = newOrExistingCartItem(localItems, attr, label, finalPrice)
+        updateQuantity(localItems)
+        setCartItems(localItems)
+        console.log(localItems)
+    }
+
+    const updateQuantity = (localItems) => {
+        const totalQuantity = localItems.reduce(
+            function (prev, curr, index, vec) {
+                return prev + curr.quantity
+            }, 0
+        )
+        handleChangeQuantity(totalQuantity,true)
+    }
+
+    const deleteItem = (attr) => {
+        let index = -1
+        for (var i = 0; i < carItems.length; i++) {
+            if (carItems[i].attr === attr) {
+                index = i
+            }
+        }
+        let localItems = carItems
+        localItems.splice(index, 1)
+        updateQuantity(localItems)
+        setCartItems(localItems)
+    }
+
+    const newOrExistingCartItem = (localItems, attr, newLabel, finalPrice) => {
+
+        let existingItem = false
+        for (var i = 0; i < localItems.length; i++) {
+            if (localItems[i].attr === attr) {
+                existingItem = true
+                localItems[i].label = newLabel
+                localItems[i].price = finalPrice
+                localItems[i].quantity = order.quantity
+            }
+        }
+        if (!existingItem) {
+            localItems.push(
+                {
+                    label: newLabel,
+                    attr: attr,
+                    price: finalPrice,
+                    quantity: order.quantity
+                }
+            )
+        }
+
+        return localItems
+    }
 
     React.useEffect(() => { getProductInformation() }, []);
 
@@ -377,67 +470,47 @@ function Checkout(props) {
                 <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
                     <div className={classes.productDescription}> {product.productDescription}</div>
                 </GridItem>
-                <GridContainer justify="center" >
+                <h3 className={classes.shopName}>Selecciona tus productos</h3>
+                <GridContainer justify="center">
+                    {
+                        customFields.map(function (cf, index) {
+                            return <>
+                                <GridItem style={{ textAlign: "center" }} xs={customFieldsCols} sm={customFieldsCols} md={customFieldsCols}>
+                                    <InputLabel htmlFor="outlined-age-native-simple">{cf.label}</InputLabel>
+                                    <Select
+                                        native
+                                        label={cf.label}
+                                        inputProps={{
+                                            name: cf.label,
+                                            id: index
+                                        }}
+                                    >
+                                        {cf.options.map(function (state) {
+                                            return <option value={state}>{state.toLowerCase().replace(/^./, (str) => {
+                                                return str.toUpperCase();
+                                            })}</option>;
+                                        })
+                                        }
+                                    </Select>
+                                </GridItem>
+                            </>
+                        })
 
-                    <GridItem xs={12} sm={12} md={12} >
-                        {(state.isMaster)
-                            ? (<>
-
-                                <h1 className={classes.title}>Selecciona tus opciones para continuar</h1>
-                                <div className={classes.containerVariants} >
-                                    {key.map(key => (
-                                        <>
-                                            <FormControl variant="outlined" className={classes.formControl}>
-                                                <InputLabel style={{ textTransform: 'capitalize' }} >{key}</InputLabel>
-                                                <Select
-                                                    native
-                                                    label={key}
-                                                >
-                                                    <option aria-label="None" value="" />
-
-                                                    {value.map(value => (
-                                                        <>
-                                                            <option>{value[0]}</option>
-                                                            <option>{value[1]}</option>
-                                                        </>
-                                                    ))
-                                                    }
-                                                </Select>
-                                            </FormControl>
-                                        </>
-                                    ))}
-
-                                    <Button color='primary'>Agregar</Button>
-                                </div>
-
-                                <div className={classes.containerItems}>
-                                    <h1 className={classes.title} style={{ padding: '10px', textAlign: 'center' }}>Lista De Productos</h1>
-
-                                    <div className={classes.conteinerItem}>
-                                        <div>
-                                            <span  >Color: Azul, </span>
-                                            <span >Talla: xs, </span>
-                                            <span >Cantidad: 2, </span>
-                                        </div>
-
-                                        <div>
-                                            <Button color="primary" size="sm" >Eliminar</Button>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </>)
-                            : (<> <GridItem xs={12} sm={12} md={12} style={{ padding: '20px', marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <h1 className={classes.detailText}> Cantidad </h1>
-                                <GroupedButtons callback={handleChangeQuantity} counter={1}></GroupedButtons> </GridItem></>)
-
-
-
-                        }
+                    }
+                </GridContainer>
+                <GridContainer justify="center" style={{ marginTop: "30px", marginBottom: "30px" }}>
+                    <GridItem justify="center" style={{ textAlign: 'center', marginTop: '4px' }} xs={6} sm={6} md={6} className={classes.detailText}> Cantidad </GridItem>
+                    <GridItem justify="center" style={{ margin: "0 auto" }} xs={6} sm={6} md={6}>
+                        <GroupedButtons callback={handleChangeQuantity} ></GroupedButtons>
                     </GridItem>
                 </GridContainer>
+                {customFields && customFields.length > 0 ?
+                    <GridItem xs={12} sm={12} md={12}>
+                        <Button onClick={addCartItem} className={classes.buttonText} color="success" size="sm">Agregar</Button>
+                    </GridItem>
+                    : <></>
+                }
+
 
             </GridItem>
             <GridItem xs={12} sm={12} md={6} className={classes.rightSide}>
@@ -533,10 +606,10 @@ function Checkout(props) {
                             <TextField
                                 id="observations"
                                 name="observations"
-                                label="Observaciones del pedido (color,talla)"
+                                label="Observaciones del pedido"
                                 multiline
                                 rows={4}
-                                placeholder="Si necesitas poner el color, la talla o cualquier característica del producto. Escríbelo acá."
+                                placeholder="Por favor usa este espacio para cualquier información adicional requerida"
                                 variant="outlined"
                                 inputProps={{ maxLength: 1000 }}
                                 onChange={handleChange} value={order.observations}
@@ -549,72 +622,32 @@ function Checkout(props) {
                 </GridContainer>
 
                 <br />
-                <h3 className={classes.shopName}>Selecciona tus productos</h3>
-                <GridContainer justify="center">
-                    {
-                        customFields.map(function (cf) {
-                            return <>
-                                <GridItem xs={customFieldsCols} sm={customFieldsCols} md={customFieldsCols}>
-                                    <InputLabel htmlFor="outlined-age-native-simple">{cf.label}</InputLabel>
-                                    <Select
-                                        native
-                                        label={cf.label}
-                                        inputProps={{
-                                            name: '',
-                                            id: 'outlined-age-native-simple',
-                                        }}
-                                    >
-                                        {cf.options.map(function (state) {
-                                            return <option value={state}>{state.toLowerCase().replace(/^./, (str) => {
-                                                return str.toUpperCase();
-                                            })}</option>;
-                                        })
-                                        }
-                                    </Select>
-                                </GridItem>
-                            </>
-                        })
-
-                    }
-                </GridContainer>
-                <GridContainer style={{ "marginTop": "10px" }} justify="center">
-                    <GridItem style={{ "marginTop": "8px" }} xs={6} sm={6} md={6}>
-                        <GroupedButtons callback={handleChangeQuantity} counter={1}></GroupedButtons>
-                    </GridItem>
-                    <GridItem xs={6} sm={6} md={6}>
-                        <Button className={classes.buttonText} color="success" size="sm">Agregar</Button>
-                    </GridItem>
-                </GridContainer>
-                <h3 className={classes.shopName}>Tu pedido</h3>
-                <GridContainer justify="center">
-
-                    <GridItem xs={4} sm={4} md={4}>
-                        <h4 className={classes.shopName}>2 Juguete de prueba para ver el listado</h4>
-                    </GridItem>
-                    <GridItem style={{ "display": "flex", "alignItems": "center" }} xs={4} sm={4} md={4}>
-                        <h4 className={classes.shopName}>$124.000</h4>
-                    </GridItem>
-                    <GridItem style={{ "display": "flex", "alignItems": "center" }} xs={4} sm={4} md={4}>
-                        <IconButton style={{ "color": "#01015a" }} aria-label="delete">
-                            <DeleteIcon />
-                        </IconButton>
-                    </GridItem>
-                    <GridItem xs={4} sm={4} md={4}>
-                        <h4 className={classes.shopName}>2 Juguete de prueba para ver el listado</h4>
-                    </GridItem>
-                    <GridItem style={{ "display": "flex", "alignItems": "center" }} xs={4} sm={4} md={4}>
-                        <h4 className={classes.shopName}>$124.000</h4>
-                    </GridItem>
-                    <GridItem style={{ "display": "flex", "alignItems": "center" }} xs={4} sm={4} md={4}>
-                        <IconButton style={{ "color": "#01015a" }} aria-label="delete">
-                            <DeleteIcon />
-                        </IconButton>
-                    </GridItem>
-
-                </GridContainer>
+                {(product.isMaster && product.variants && product.variants.length > 0) ? <>
+                    <h3 className={classes.shopName}>Tu pedido</h3>
+                    <GridContainer justify="center">
+                        {carItems.map(
+                            function (item) {
+                                return <>
+                                    <GridItem xs={4} sm={4} md={4}>
+                                        <h4 className={classes.shopName}>{item.label}</h4>
+                                    </GridItem>
+                                    <GridItem style={{ "display": "flex", "alignItems": "center" }} xs={4} sm={4} md={4}>
+                                        <h4 className={classes.shopName}>{formatter.format(item.price)}</h4>
+                                    </GridItem>
+                                    <GridItem style={{ "display": "flex", "alignItems": "center" }} xs={4} sm={4} md={4}>
+                                        <IconButton onClick={() => { deleteItem(item.attr) }} style={{ "color": "#01015a" }} aria-label="delete">
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </GridItem>
+                                </>
+                            }
+                        )}
+                    </GridContainer>
+                </> : <></>
+                }
 
                 <Button onClick={createOrderCOD} className={classes.buttonText} color="success" size="lg">
-                    Pagar {formatter.format(totalPrice ? totalPrice : product.amount * order.quantity)} con contraentrega
+                    Pagar {formatter.format(totalPrice ? totalPrice : product.amount * (carQuantity>1?carQuantity:order.quantity))} con contraentrega
                 </Button>
 
 
