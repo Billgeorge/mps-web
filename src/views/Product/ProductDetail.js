@@ -24,7 +24,7 @@ const useStyles = makeStyles(styles);
 export default function ProductDetail(props) {
     const [successMessage, setSuccessMessage] = React.useState(null);
 
-    const [errorMessage, setErrorMessage] = React.useState("");
+    const [errorMessage, setErrorMessage] = React.useState({});
 
     const [product, setProduct] = React.useState({
         id: "",
@@ -84,8 +84,16 @@ export default function ProductDetail(props) {
             productId: product.id
         }, callBackErrorAddingDrop, callBackSucess, `${CORE_BASEURL}/dropshippingsale`)
     }
-    const callBackErrorAddingDrop = () => {
-        setErrorMessage("Error añadiendo producto")
+
+    const callBackErrorAddingDrop = (error) => {
+        if (error != null && typeof error === 'object') {
+            setErrorMessage(error)
+        } else if (error != null) {
+            setErrorMessage({ 'Error': error })
+        }
+        else {
+            setErrorMessage({ 'Error': 'Ha ocurrido un error inesperado por favor contactar al administrador' })
+        }        
     }
 
     const classes = useStyles();
@@ -108,30 +116,30 @@ export default function ProductDetail(props) {
                             value={product.name || ""}
                         />
                         <div className={classes.totalPrice} > <span> $ {product.amount || ""} </span> </div><br />
-                        <img src={product.imageUrl} className={classes.imgProduct} />                        
+                        <img src={product.imageUrl} className={classes.imgProduct} />
                     </GridItem>
                     {product.variants && product.variants.length > 0 ?
                         <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
                             <GridContainer>
                                 <GridItem xs={6} sm={6} md={6} className={classes.gridItemCard} >
-                                    <div style={{textAlign:'center'}} className={classes.productDescription}> Atributos </div>                                    
+                                    <div style={{ textAlign: 'center' }} className={classes.productDescription}> Atributos </div>
                                 </GridItem>
                                 <GridItem xs={6} sm={6} md={6} className={classes.gridItemCard} >
-                                    <div style={{textAlign:'center'}} className={classes.productDescription}> Inventario </div>
+                                    <div style={{ textAlign: 'center' }} className={classes.productDescription}> Inventario </div>
                                 </GridItem>
                                 {
                                     product.variants.map(function (product) {
                                         return <>
                                             <GridItem xs={6} sm={6} md={6} className={classes.gridItemCard} >
-                                            <div className={classes.productDescription}> {product.attributes.replace('{', '').replace('}', '')} </div>
+                                                <div className={classes.productDescription}> {product.attributes.replace('{', '').replace('}', '')} </div>
                                             </GridItem>
                                             <GridItem xs={6} sm={6} md={6} className={classes.gridItemCard} >
-                                                <div style={{textAlign:'center'}} className={classes.productDescription}> {product.inventory} </div>
+                                                <div style={{ textAlign: 'center' }} className={classes.productDescription}> {product.inventory} </div>
                                             </GridItem>
                                         </>
                                     })
                                 }
-                            </GridContainer>                            
+                            </GridContainer>
                         </GridItem> : <></>}
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6} className={classes.rightSide}>
@@ -180,12 +188,15 @@ export default function ProductDetail(props) {
                             <h4 className={classes.productDescription} style={{ fontSize: "25px" }}> Peso(Lb): </h4>
                             <div className={classes.productDescription}> {product.weight || ""} </div>
                         </GridItem> : <></>}
-                    
-                    <br />{!getQueyParamFromUrl('vw')?
+
+                    <br />{!getQueyParamFromUrl('vw') ?
                         <Button onClick={addDropShipping} className={classes.buttonText} color="success" size="lg">
-                        Vincular Producto a mi Comercio
-                    </Button>
-                    :<></>}
+                            Vincular Producto a mi Comercio
+                        </Button>
+                        : <></>}
+                    {Object.keys(errorMessage).map((keyName, i) => (
+                        <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>
+                    ))}
                     {successMessage
                         ? <Alert severity="success">{successMessage}</Alert>
                         : <span></span>
