@@ -118,14 +118,25 @@ function Checkout(props) {
     }
 
     const createOrder = (paymentMethod) => {
+
         setErrorMessage("")
         let products = null
         setPaymentMethod(paymentMethod)
+        let totalOrderPrice = totalPrice ? totalPrice : product.amount * order.quantity
+        let finalQuantity= order.quantity
+
         if (product.isMaster && product.variants && product.variants.length > 0) {
+
             if (carItems.length === 0) {
                 setErrorMessage("Debe agregar productos")
                 return
             }
+            totalOrderPrice= carItems.reduce(
+                function (prev, curr, index, vec) {
+                    return prev + curr.price
+                }, 0
+            )
+            finalQuantity= carQuantity
             products = getProductList()
         }
 
@@ -169,12 +180,12 @@ function Checkout(props) {
         }
         setIsLoading(true)
         const url = `${CORE_BASEURL}/checkout/order`
-        let totalOrderPrice = totalPrice ? totalPrice : product.amount * order.quantity
+        
         props.setValue(totalOrderPrice)
         let request = {
             productId: getQueyParamFromUrl("idc"),
             paymentMethod: paymentMethod,
-            quantity: order.quantity,
+            quantity: finalQuantity,
             amount: totalOrderPrice,
             customer: {
                 name: order.name,
