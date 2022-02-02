@@ -73,7 +73,7 @@ function Checkout(props) {
     const [errorMessage, setErrorMessage] = React.useState("");
     const [infoMessage, setInfoMessage] = React.useState("");
     const [carItems, setCartItems] = React.useState([]);
-    const [carQuantity, setCarQuantity] = React.useState(1);
+    const [carQuantity, setCarQuantity] = React.useState(0);
 
 
     const callBackErrorGetCities = () => {
@@ -399,9 +399,9 @@ function Checkout(props) {
             label = `${label} ${document.getElementById(i).name}: ${document.getElementById(i).value}`
         }
         let finalPrice = product.amount * order.quantity
-        newOrExistingCartItem(attr, label, finalPrice)
-        updateQuantity(carItems)        
-        console.log(carItems)
+        let finalItems = newOrExistingCartItem(attr, label, finalPrice)
+        updateQuantity(finalItems)        
+        console.log(finalItems)
     }
 
     const updateQuantity = (localItems) => {
@@ -445,9 +445,16 @@ function Checkout(props) {
                 price: finalPrice,
                 quantity: order.quantity
             }])
+            localItems.push({
+                label: newLabel,
+                attr: attr,
+                price: finalPrice,
+                quantity: order.quantity
+            })
         }else{
             setCartItems(localItems)
         }
+        return localItems
         
     }
 
@@ -656,7 +663,7 @@ function Checkout(props) {
                 }
 
                 <Button onClick={createOrderCOD} className={classes.buttonText} color="success" size="lg">
-                    Pagar {formatter.format(totalPrice ? totalPrice : product.amount * (carQuantity > 1 ? carQuantity : order.quantity))} con contraentrega
+                    Pagar {formatter.format(totalPrice ? totalPrice : product.amount * (carQuantity > 0 ? carQuantity : order.quantity))} con contraentrega
                 </Button>
 
 
