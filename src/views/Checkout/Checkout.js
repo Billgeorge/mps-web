@@ -121,12 +121,12 @@ function Checkout(props) {
         setErrorMessage("")
         let products = null
         setPaymentMethod(paymentMethod)
-        if(product.isMaster && product.variants && product.variants.length>0){
-            if(carItems.length===0){
+        if (product.isMaster && product.variants && product.variants.length > 0) {
+            if (carItems.length === 0) {
                 setErrorMessage("Debe agregar productos")
                 return
             }
-            products = getProductList()            
+            products = getProductList()
         }
 
         if (isLoading) {
@@ -187,18 +187,18 @@ function Checkout(props) {
             },
             isDrop: true,
             observations: order.observations,
-            orderItems:{items:products}
+            orderItems: { items: products }
         }
         consumeServicePost(request, callBackErrorCreateOrder, callBackSuccess, url)
     }
 
-    const getProductList = () =>{
-    let products = []
+    const getProductList = () => {
+        let products = []
         let carItemsJson = carItems.map(
             (item) => {
                 return {
                     ...item,
-                    attributes: JSON.parse("{"+item.attr+"}")
+                    attributes: JSON.parse("{" + item.attr + "}")
                 }
             }
         )
@@ -212,16 +212,16 @@ function Checkout(props) {
         )
 
         carItemsJson.forEach(
-            (item) =>{
-                let product = variants.find(variant => _.isEqual(item.attributes,variant.attributes))
+            (item) => {
+                let product = variants.find(variant => _.isEqual(item.attributes, variant.attributes))
                 products.push({
-                    quantity:item.quantity,
-                    productId:product.productId
+                    quantity: item.quantity,
+                    productId: product.productId
                 })
             }
         )
-        
-        
+
+
         console.log(carItemsJson)
         console.log(variants)
         console.log(products)
@@ -312,7 +312,7 @@ function Checkout(props) {
         let totalCols = 12
         console.log("starting ", variants)
         let attributes = variants.map(function (variant) {
-            return JSON.parse(variant.attributes.replaceAll("'", '"'));            
+            return JSON.parse(variant.attributes.replaceAll("'", '"'));
         });
         console.log("attrs ", attributes)
         let finalKeys = []
@@ -375,7 +375,6 @@ function Checkout(props) {
     })
 
     const addCartItem = () => {
-        let localItems = carItems
         let len = customFields.length
         let label = order.quantity
         let attr = ""
@@ -389,10 +388,9 @@ function Checkout(props) {
             label = `${label} ${document.getElementById(i).name}: ${document.getElementById(i).value}`
         }
         let finalPrice = product.amount * order.quantity
-        localItems = newOrExistingCartItem(localItems, attr, label, finalPrice)
-        updateQuantity(localItems)
-        setCartItems(localItems)
-        console.log(localItems)
+        newOrExistingCartItem(attr, label, finalPrice)
+        updateQuantity(carItems)        
+        console.log(carItems)
     }
 
     const updateQuantity = (localItems) => {
@@ -401,7 +399,7 @@ function Checkout(props) {
                 return prev + curr.quantity
             }, 0
         )
-        handleChangeQuantity(totalQuantity,true)
+        handleChangeQuantity(totalQuantity, true)
     }
 
     const deleteItem = (attr) => {
@@ -417,9 +415,10 @@ function Checkout(props) {
         setCartItems(localItems)
     }
 
-    const newOrExistingCartItem = (localItems, attr, newLabel, finalPrice) => {
+    const newOrExistingCartItem = (attr, newLabel, finalPrice) => {
 
         let existingItem = false
+        const localItems= carItems
         for (var i = 0; i < localItems.length; i++) {
             if (localItems[i].attr === attr) {
                 existingItem = true
@@ -429,17 +428,16 @@ function Checkout(props) {
             }
         }
         if (!existingItem) {
-            localItems.push(
-                {
-                    label: newLabel,
-                    attr: attr,
-                    price: finalPrice,
-                    quantity: order.quantity
-                }
-            )
+            setCartItems([...carItems, {
+                label: newLabel,
+                attr: attr,
+                price: finalPrice,
+                quantity: order.quantity
+            }])
+        }else{
+            setCartItems(localItems)
         }
-
-        return localItems
+        
     }
 
     React.useEffect(() => { getProductInformation() }, []);
@@ -647,7 +645,7 @@ function Checkout(props) {
                 }
 
                 <Button onClick={createOrderCOD} className={classes.buttonText} color="success" size="lg">
-                    Pagar {formatter.format(totalPrice ? totalPrice : product.amount * (carQuantity>1?carQuantity:order.quantity))} con contraentrega
+                    Pagar {formatter.format(totalPrice ? totalPrice : product.amount * (carQuantity > 1 ? carQuantity : order.quantity))} con contraentrega
                 </Button>
 
 
