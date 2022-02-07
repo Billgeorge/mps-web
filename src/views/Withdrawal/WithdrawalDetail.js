@@ -39,7 +39,7 @@ const useStyles = makeStyles(styles);
       consumeServiceGet(callBack,callBackSuccess,url)      
     }
     
-    React.useEffect(() => getPaymentsForWithdrawal(), []);    
+    React.useEffect(() => getPaymentsForWithdrawal(), []);
 
     const callBackSuccess = (payments) =>{
         setPayments(payments)      

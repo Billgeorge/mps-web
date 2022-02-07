@@ -52,7 +52,7 @@ export default function CreateProduct(props) {
     let newCities = citiesResponse.filter(record => record.state == value)
     SetCities(newCities)
     setCity({
-      department: value,  
+      department: value,
       code: "",
     })
     setErrorMessage({})
@@ -64,22 +64,22 @@ export default function CreateProduct(props) {
   }
   const handleChange = (event) => {
     setErrorMessage({})
-    document.getElementById('daneCode').value=''
-    setDaneCode({ id: ''})
-    let value = event.target.value    
+    document.getElementById('daneCode').value = ''
+    setDaneCode({ id: '' })
+    let value = event.target.value
     setCity({
       ...city,
       code: value,
     })
-    if(value){
+    if (value) {
       let url = `${CORE_BASEURL}/dane/town/${value}`
       consumeServiceGet(callBack, callBackGetDaneSucess, url)
-    }else{
-      setErrorMessage({'Error':"Debes Seleccionar una Ciudad"})
+    } else {
+      setErrorMessage({ 'Error': "Debes Seleccionar una Ciudad" })
     }
 
   };
-  
+
   const callBack = (error) => {
     if (error != null && typeof error === 'object') {
       setErrorMessage(error)
@@ -98,7 +98,7 @@ export default function CreateProduct(props) {
   }, 700);
 
   const callBackErrorGetCities = () => {
-    setErrorMessage({'Error':"Error obteniendo ciudades"})
+    setErrorMessage({ 'Error': "Error obteniendo ciudades" })
   }
   const callBackSuccessGetCities = (cities) => {
     SetCities(cities)
@@ -130,20 +130,23 @@ export default function CreateProduct(props) {
   const changeMessageValidation = () => {
     getCities()
     document.createBranch.onsubmit = function (event) {
-      setErrorMessage({})      
-      setSuccessMessage("")
       event.preventDefault()
+      if (isLoading) {
+        return
+      }
+      setErrorMessage({})
+      setSuccessMessage("")      
       if (!document.getElementById('daneCode').value) {
         setErrorMessage({ 'Error': 'Debes seleccionar departamento y ciudad.' })
         return
       }
       const callBackSucess = (response) => {
-        setSuccessMessage("Sucursal creada satisfactoriamente.") 
-        document.getElementById("createBranch").reset(); 
+        setSuccessMessage("Sucursal creada satisfactoriamente.")
+        document.getElementById("createBranch").reset();
         setCity({
           department: '',
           code: ''
-        })        
+        })
         setIsLoading(false)
       }
       let branchData = {
@@ -164,7 +167,7 @@ export default function CreateProduct(props) {
       }
       setIsLoading(true)
       consumeServicePost(createRequest, callBack, callBackSucess, `${CORE_BASEURL}/branch`)
-      
+
 
     }
   }
@@ -182,8 +185,10 @@ export default function CreateProduct(props) {
             <Card className={classes[cardAnimaton]}>
               <form className={classes.form} validated="true" name="createBranch" id="createBranch">
                 <CardHeader className={classes.cardHeader}>
-                  <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{    color: "#9c27b0", textDecoration: "none",
-                              backgroundColor: "transparent", cursor:"pointer"}} onClick={()=>props.history.push('/branch')} /> Crear Sucursal nueva</h3>
+                  <h3 style={{ fontWeight: "600" }}><ArrowBackIcon style={{
+                    color: "#9c27b0", textDecoration: "none",
+                    backgroundColor: "transparent", cursor: "pointer"
+                  }} onClick={() => props.history.push('/branch')} /> Crear Sucursal nueva</h3>
                 </CardHeader>
                 <CardBody>
                   {isLoading

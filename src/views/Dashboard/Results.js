@@ -31,7 +31,7 @@ export default function Results() {
     const [errorMessage, setErrorMessage] = React.useState("");
 
     const [date, setMinDate] = React.useState("");
-    
+
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -129,7 +129,7 @@ export default function Results() {
 
     const changeMinDate = (event) => {
         console.log("change initial date", event.target.value)
-        document.getElementById('finalDate').value=null
+        document.getElementById('finalDate').value = null
         document.getElementById('finalDate').min = event.target.value
     }
 
@@ -141,14 +141,14 @@ export default function Results() {
                 <GridContainer className={classes.subContainer} justify="center" >
 
                     <GridItem xs={12} sm={12} md={12} className={classes.grid}>
-                        <h1 style={{ color: 'black' }}>Tus resultados</h1>
+                        <h2 style={{ color: 'black', marginBottom: '1.25rem' }} className={classes.title}>Tus resultados</h2>
                         <Grid container className={classes.box} spacing={3}>
                             <Grid item xs={12} sm={12} md={4} className={classes.grid} style={{ textAlign: 'center' }}>
                                 <TextField
                                     id="initialDate"
                                     label="Fecha Inicial"
                                     type="date"
-                                    onChange={changeMinDate}                                    
+                                    onChange={changeMinDate}
                                     className={classes.textField}
                                     InputLabelProps={{
                                         shrink: true,
@@ -159,13 +159,13 @@ export default function Results() {
                                 <TextField
                                     id="finalDate"
                                     label="Fecha Final"
-                                    type="date"                                    
+                                    type="date"
                                     className={classes.textField}
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
                                     inputProps={{
-                                        min: {date}
+                                        min: { date }
                                     }}
                                 />
                             </Grid>
@@ -179,11 +179,15 @@ export default function Results() {
                             : <span>	&nbsp;</span>
                         }
                     </GridItem>
-                    <GridItem xs={12} sm={12} md={12} className={classes.grid}>
-                        <div style={{ width: '100%', height: '500px', marginBottom: '0' }}>
-                            <Pie data={dataChart} options={options} />
-                        </div>
-                    </GridItem>
+                    {dataChart && JSON.stringify(dataChart) !== '{}'?
+                        <GridItem xs={12} sm={12} md={12} className={classes.grid}>
+                            <div style={{ width: '100%', height: '500px', marginBottom: '0' }}>
+                                <Pie data={dataChart} options={options} />
+                            </div>
+                        </GridItem>
+                        : <></>
+                    }
+
                     <GridItem xs={12} sm={12} md={12} className={classes.grid}>
                         <TableContainer component={Paper}>
                             <Table className={classes.table} aria-label="simple table">

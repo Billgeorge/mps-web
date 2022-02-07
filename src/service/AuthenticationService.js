@@ -38,15 +38,41 @@ export const getEmail = () => {
      }
  }
 
+ export const setBalanceMerchant = (balance) => {
+    if(localStorage.getItem('currentUser')){
+        console.log("Updating balance ",balance)
+       const item =  JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value)
+       item.balance = balance
+       setWithExpiry('currentUser',JSON.stringify(item),3600000)
+    }
+}
+
  export const getMerchantId = () => {
     if(localStorage.getItem('currentUser')){
         return JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value).merchantId
     }
  }
 
+ export const getBalanceMerchant = () => {
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0
+      })
+    if(localStorage.getItem('currentUser')){
+        return formatter.format(JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value).balance)
+    }
+ }
+
+ export const getRole = () => {
+    if(localStorage.getItem('currentUser')){
+        return JSON.parse(JSON.parse(localStorage.getItem('currentUser')).value).role
+    }
+ }
+
 export const  login = async (payload,callback, callBackError) =>{
     console.log("autenticando")
-    const response = await Axios.post(`${CORE_BASEURL}/auth/signin`, payload)
+    await Axios.post(`${CORE_BASEURL}/auth/signin`, payload)  
     .then(response =>{
         const signInRespose = response.data    
         if (response.status === 200) {
@@ -64,7 +90,7 @@ export const  login = async (payload,callback, callBackError) =>{
     })    
 };
 
-function setWithExpiry(key, value, ttl) {
+export function setWithExpiry(key, value, ttl) {
 	const now = new Date()
 
 	// `item` is an object which contains the original value

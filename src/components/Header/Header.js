@@ -31,7 +31,7 @@ export default function Header(props) {
         window.removeEventListener("scroll", headerColorChange);
       }
     };
-  });
+  }, []);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
