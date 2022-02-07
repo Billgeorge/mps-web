@@ -11,3 +11,10 @@ export const setValue =(value) => (
         payload:value
     }   
 )
+
+export const setUpdateMerchant =(value) => (
+    {
+        type: 'update-merchant',
+        payload:value
+    }   
+)

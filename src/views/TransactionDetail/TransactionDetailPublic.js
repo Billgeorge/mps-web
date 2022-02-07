@@ -66,10 +66,10 @@ const useStyles = makeStyles(styles);
         document.disputeForm.onsubmit = function(event){
           console.log(event.submitter.outerText)
           event.preventDefault()
-          if(event.submitter.outerText == "CREAR DISPUTA"){
+          if(event.submitter.outerText === "CREAR DISPUTA"){
             console.log("Creando disputa")
           updatePaymentState(5)
-          }else if(event.submitter.outerText == "NO HA LLEGADO"){
+          }else if(event.submitter.outerText === "NO HA LLEGADO"){
             console.log("Postergando cierre")
             delayPayment()
           }else{
@@ -129,9 +129,6 @@ const useStyles = makeStyles(styles);
           style={{
               backgroundColor:"#2097F3",
               paddingTop:"20px"
-            /*backgroundImage: "url(" + image + ")",
-            backgroundSize: "cover",
-            backgroundPosition: "top center"*/
           }}
         >
         <div className={classes.container}>
@@ -194,18 +191,18 @@ const useStyles = makeStyles(styles);
                           </FormControl>
                         </GridItem>
                         <GridItem xs={4} sm={3} md={3}>
-                          <Button size="small" value="dispute" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
+                          <Button value="dispute" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
                             Crear disputa
                           </Button>
                         </GridItem>
                         <GridItem xs={4} sm={3} md={3}>
-                          <Button size="small"  value ="receive" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
+                          <Button  value ="receive" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
                             Ya Recibí
                           </Button>
                         </GridItem>
                         <GridItem xs={4} sm={3} md={3}>
                         {aboutToClose == true                          
-                         ? <Button size="small"  value ="receive" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
+                         ? <Button  value ="receive" variant="contained" style={{padding:"20px"}} color="primary" type = "submit" size="large">
                             No Ha llegado
                           </Button>
                           :<span></span>}

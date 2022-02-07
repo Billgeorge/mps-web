@@ -40,9 +40,13 @@ import CreateInventory from 'views/inventory/CreateInventory';
 import BranchBoard from 'views/Branch/BranchBoard';
 import PrivateInventoryBoard from 'views/inventory/PrivateInventory';
 import EditPrivateInventory from 'views/inventory/EditPrivateInventory';
+import ChargeAccount from 'views/ProfilePage/ChargeAccount';
 import EditInventoryProduct from 'views/Product/EditInventoryProduct';
 import CreatePromotion from 'views/Promotion/CreatePromotion';
 import Results from 'views/Dashboard/Results'
+import WarrantyOrder from 'views/Warranty/WarrantyOrder';
+import OnlineOrder from 'views/order/OnlineOrder';
+import { Promotions } from 'views/Promotion/Promotions';
 
 
 var hist = createBrowserHistory();
@@ -86,8 +90,12 @@ return (
                 <ProtectRoute path='/withdrawal-detail' component={WithdrawalDetail} />
                 <ProtectRoute path="/search-product" component={SearchProduct} />
                 <ProtectRoute path="/edit-product" component={EditProduct} />
-                <ProtectRoute path="/create-branch" component={CreateBranch} />   
+                <ProtectRoute path="/create-branch" component={CreateBranch} />
+                <ProtectRoute path="/charge" component={ChargeAccount} />   
                 <ProtectRoute path="/create-promotion" component={CreatePromotion} />
+                <ProtectRoute path="/promotions" component={Promotions} />
+                <ProtectRoute path="/warranty" component={WarrantyOrder} />
+                <ProtectRoute path="/online-order" component={OnlineOrder} />
                 <Route path="/detail" component={TransactionDetailPublic} />
                 <Route path="/customer" component={EditCustomer} />
                 <Route path='/methods' component={PaymentForm} />

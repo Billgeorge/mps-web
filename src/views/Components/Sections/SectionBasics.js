@@ -56,7 +56,7 @@ export default function SectionBasics() {
       });
     }
     return function cleanup() {};
-  });
+  }, []);
   const handleToggle = value => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];

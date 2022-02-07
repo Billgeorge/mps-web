@@ -186,7 +186,7 @@ export default function DashboardDropSeller(props) {
         <GridContainer className={classes.subContainer} justify="center" >
           | <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
-              <Grid item xs={12} sm={12} md={6} >
+              <Grid item xs={12} sm={12} md={6} style={{textTransform: 'capitalize'}} >
                 Hola {getMerchantName()}, Bienvenido a MiPagoSeguro.
               </Grid>
             </Grid>
@@ -264,9 +264,14 @@ export default function DashboardDropSeller(props) {
               <Grid item ><span>Número de órdenes:</span> <br /><span className={classes.valueText}>{products.totalOrderByStatus}</span></Grid>
             </Grid>
           </GridItem>
+          <Grid item xs={12} sm={12} md={4} className={classes.grid}>
+            <Button  onClick={()=>props.history.push("/online-order")} color="primary">
+              Crear orden online
+            </Button>
+          </Grid>
           <GridItem xs={12} sm={12} md={12} className={classes.grid}>
-            <Grid container className={classes.box} spacing={3}>
-              <Grid item xs={12}><h2>Últimas Ordenes</h2></Grid>
+            <Grid container className={classes.box} spacing={1}>
+              <Grid item xs={12}><h2 style={{fontWeight: "500"}} className={classes.title}>Últimas Ordenes</h2></Grid>
               {confirmSuccessMessage != ""
             ?
             <Alert severity="success">{confirmSuccessMessage}</Alert>

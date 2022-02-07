@@ -28,18 +28,19 @@ const checkoutStyle = {
     },
     rightSide:{
         backgroundColor:"#fff",
-        marginTop: "10%"
+        marginTop: "2%"
     },
     detailText:{      
-        fontSize: "20px",
+        fontSize: "1.5rem",
         fontWeight: "500",
-        textAlign:"center",
         color: "rgba(26,26,26,.6)",
-        paddingTop:"5px"
+        margin: '0',
     },
     totalPrice:{
         fontSize: "36px",
-        fontWeight: "600"
+        fontWeight: "600", 
+        lineHeight: "1",
+        
     },
     gridItemCard: {
         marginBottom: '20px',
@@ -85,7 +86,88 @@ const checkoutStyle = {
         fontSize:"1.1em",
         textTransform:"none",
         width:"98%"
-    }
+    },
+    containerVariants:{
+       display: 'flex',
+       flexFlow: 'row wrap',
+       alignItems: 'center',
+       gap: '10px',
+       marginTop: '1rem',
+    },
+    containerItems:{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px',
+        marginTop: '1rem',
+        border: '1px solid gray',
+        borderRadius: '20px',
+        overflow: 'hidden',
+        minHeight: '200px'
+    },
+    conteinerItem:{
+        display: 'flex',
+        gap: '10px',
+        borderStyle: 'dashed none',
+        borderWidth: '1.5px',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#fff'
+    },
+       counter:{
+        display: 'absolute',
+        backgroundColor: 'green',
+        color: 'white',
+        borderRadius: '50%',
+        width: '100px',
+        height: '100px',
+        top: '0'
+
+},
+    containerCards:{
+        
+        width: '30%',
+        border: '1px solid black',
+        borderRadius: '20px',
+        overflow: 'hidden',
+        margin: '0',
+        padding: '0'
+        
+    },
+    containerCard:{
+        
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      
+
+    },
+    formControl:{
+        width: "25%", 
+        backgroundColor: "white"
+    },   
+    title:{
+        margin: '0',
+        fontSize: '1.5rem', 
+        borderBottom: '1px solid #111',
+    },
+    button:{
+        width: '90%',
+        fontSize: '10px',
+        color: '#fff',
+        backgroundColor: 'green'
+    },
+
+    '@media(max-width: 600px)':{    
+        formControl:{
+          width: '80%',
+          margin: '0 auto'
+        },
+        title: {
+            fontSize: '1.2rem',
+            fontWeight: "400",
+        }
+    
+        },
 }
 
 export default checkoutStyle;

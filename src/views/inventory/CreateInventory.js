@@ -64,6 +64,9 @@ export default function CreateInventory(props) {
       }
     const createInventory = () => {
         setSuccessMessage("")
+        if (isLoading) {
+            return
+        }
         setErrorMessage({})
         if (document.getElementById("quantity").value > 0 && document.getElementById("email").value) {            
             setIsLoading(true)            

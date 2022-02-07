@@ -1,14 +1,19 @@
 import { container } from "assets/jss/material-kit-react.js";
+import promotionStyle from "./Promotions";
+
 
 const signupPageStyle = {
   container: {
     ...container,
-    zIndex: "2",
-    position: "relative",
-    paddingTop: "20vh",
+    paddingTop: "15vh",
+    marginBottom: "2rem",
+    width: "90%",
+    margin: '0 auto',
     paddingLeft: "5vh",
-    color: "#FFFFFF",
-    paddingBottom: "200px"
+    color: "#000",
+  },
+  arrow: {
+    ...promotionStyle.arrow,
   },
   cardHidden: {
     opacity: "0",
@@ -118,7 +123,8 @@ const signupPageStyle = {
   },
   '@media(max-width: 600px)':{    
     container:{
-      paddingLeft:"10vh"
+      paddingLeft:"15vh",
+      width:"100%",
     }
   },
   addImg:{    

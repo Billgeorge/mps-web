@@ -1,46 +1,42 @@
 import Axios from "axios";
-import {isAuthenticated,getCurrentAppToken} from 'service/AuthenticationService'
+import { isAuthenticated, getCurrentAppToken } from 'service/AuthenticationService'
 
-const consumeServicePost = async (payload,callBack,callBackSuccess,url) => {
+const consumeServicePost = async (payload, callBack, callBackSuccess, url) => {
 
-    //React.setActionState({ sending: true, error: null, });
+    console.log('Enviando ...')
+    putTokenHeader()
+    await Axios.post(url, payload)
+    .then((response)=>{
+        console.log("Respuesta usuario", response);
+        callBackSuccess(response.data)
+    })
+    .catch(
+        function (error) {
+            console.log("error", error.response)
+            if (error.response) {
+                if (400 === error.response.status) {
+                    callBack(error.response.data)
+                } else if (403 === error.response.status) {
+                    window.location.href = '/login';
+                } else if (404 === error.response.status) {
+                    callBack(404)
+                } else {
+                    callBack(error.response.data)
+                }
+            } else {
+                callBack("Error inesperado")
+            }
+        }
+    )
+}
+
+export const consumeServicePut = async (payload, callBack, callBackSuccess, url) => {
     try {
         console.log('Enviando ...')
         putTokenHeader()
-        const responseU = await Axios.post(url, payload);
-        
+        const responseU = await Axios.put(url, payload);
 
         console.log("Respuesta usuario", responseU);
-        
-
-        if (responseU.status === 200) {
-            callBackSuccess(responseU.data)
-        } else {
-            callBack(responseU.body)
-        }
-
-    } catch (error) {
-        if(error.response){
-            if(400 === error.response.status){
-                callBack(error.response.data)
-            } else if(403 === error.response.status){
-                window.location.href = '/login';
-            }else{
-                callBack(error.response.data)
-            }
-        }else{
-            callBack("Error inesperado")
-        }        
-    }
-}
-
-export const consumeServicePut = async (payload,callBack,callBackSuccess,url) => {
-    try {        
-        console.log('Enviando ...')
-        putTokenHeader()
-        const responseU = await Axios.put(url, payload);        
-
-        console.log("Respuesta usuario", responseU);        
 
         if (responseU.status === 200) {
             callBackSuccess(responseU.data)
@@ -49,67 +45,65 @@ export const consumeServicePut = async (payload,callBack,callBackSuccess,url) =>
         }
 
     } catch (error) {
-        if(error.response){
-            if(400 === error.response.status){
+        if (error.response) {
+            if (400 === error.response.status) {
                 callBack(error.response.data)
-            } else if(403 === error.response.status){
+            } else if (403 === error.response.status) {
                 window.location.href = '/login';
-            }else{
+            } else {
                 callBack(null)
             }
-        }else{
+        } else {
             callBack(null)
-        }        
+        }
     }
 }
 
-export const consumeServiceGet = async (callBack,callBackSuccess,url) => {
+export const consumeServiceGet = async (callBack, callBackSuccess, url) => {
 
     try {
         console.log('Enviando ...')
         putTokenHeader()
         const responseU = await Axios.get(url);
-        
 
-        console.log("Respuesta usuario",responseU);
-        
+
+        console.log("Respuesta usuario", responseU);
+
 
         if (responseU.status === 200) {
             callBackSuccess(responseU.data)
         } else {
-            console.log("error",responseU.body)
+            console.log("error", responseU.body)
             callBack(null)
         }
 
     } catch (error) {
-        if(error.response){
-            if(400 === error.response.status){
+        if (error.response) {
+            if (400 === error.response.status) {
                 callBack(error.response.data)
-            } if(403 === error.response.status){
+            } if (403 === error.response.status) {
                 window.location.href = '/login';
-            } if(404 === error.response.status){
+            } if (404 === error.response.status) {
                 callBack(404)
-            } else{
+            } else {
                 callBack(null)
             }
-        }else{
+        } else {
             callBack(null)
-        }        
+        }
     }
 }
 
-export const consumeServicePatch = async (payload,callBack,callBackSuccess,url) => {
-
-    //React.setActionState({ sending: true, error: null, });
+export const consumeServicePatch = async (payload, callBack, callBackSuccess, url) => {
 
     try {
         console.log('Enviando ...')
         putTokenHeader()
-        const responseU = await Axios.patch(url,payload);
-        
+        const responseU = await Axios.patch(url, payload);
+
 
         console.log("Respuesta usuario", responseU);
-        
+
 
         if (responseU.status === 200) {
             callBackSuccess(responseU.data)
@@ -119,22 +113,22 @@ export const consumeServicePatch = async (payload,callBack,callBackSuccess,url) 
         }
 
     } catch (error) {
-        if(error.response){
-            if(400 === error.response.status){
+        if (error.response) {
+            if (400 === error.response.status) {
                 callBack(error.response.data)
-            } if(403 === error.response.status){
+            } if (403 === error.response.status) {
                 window.location.href = '/login';
-            }else{
+            } else {
                 callBack(error.response.data)
             }
-        }else{
+        } else {
             callBack(null)
-        }        
+        }
     }
 }
 
 const putTokenHeader = () => {
-    if(isAuthenticated()){
+    if (isAuthenticated()) {
         Axios.defaults.headers.common['Authorization'] = `Bearer ${getCurrentAppToken()}`;
     }
 }

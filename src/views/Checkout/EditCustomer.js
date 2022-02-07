@@ -59,7 +59,10 @@ export default function EditCustomer(props) {
     };
 
     const confirmOrder = () => {
-        setErrorMessage("")         
+        setErrorMessage("")
+        if (isLoading) {
+            return
+        }        
         
         if(!customer.name){
             setErrorMessage("Nombre es obligatorio")

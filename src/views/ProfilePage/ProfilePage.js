@@ -2,7 +2,7 @@ import React from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
 // core components
@@ -53,12 +53,6 @@ const useStyles = makeStyles(styles);
 
 export default function ProfilePage(props) {
   const classes = useStyles();
-  const { ...rest } = props;
-  const imageClasses = classNames(
-    classes.imgRaised,
-    classes.imgRoundedCircle,
-    classes.imgFluid
-  );
   const [profile, setProfile] = React.useState({});
   const [bankingInformation, setBankingInformation] = React.useState({});
 
@@ -90,7 +84,7 @@ export default function ProfilePage(props) {
 
   const callBack = (msg) => {
     setProfile({})
-    if (msg == 404) {
+    if (msg === 404) {
       setErrorMessage("No existe tu perfil")
     } else {
       setErrorMessage("Error Cargando perfil")
@@ -99,7 +93,7 @@ export default function ProfilePage(props) {
 
   const callBackBankInfo = (msg) => {
     setBankingInformation({})
-    if (msg == 404) {
+    if (msg === 404) {
       setErrorMessage("No Tienes información bancaría registrada")
     } else {
       setErrorMessage("Error Cargando información bancaría")
@@ -112,10 +106,10 @@ export default function ProfilePage(props) {
     setProfile(profile)
   }
   const callBackSuccessGetBanking = (bankingInfo) => {
-    document.getElementById("bankInfoId").value=bankingInfo.id
+    document.getElementById("bankInfoId").value = bankingInfo.id
     setBankingInformation(bankingInfo)
   }
-  
+
 
   const editEnable = (event) => {
     let htmlInputs = document.forms["profileForm"].getElementsByTagName("input");
@@ -129,7 +123,6 @@ export default function ProfilePage(props) {
     document.getElementById("bankAccount").removeAttribute('readOnly');
     setIsEditEnabled(true)
   }
-  const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
 
   React.useEffect(() => {
     getInformationProfile();
@@ -174,11 +167,11 @@ export default function ProfilePage(props) {
       const callBack = (error) => {
         let errorObjects = "Error Modificando Información de perfil"
         if (error !== null) {
-          if(typeof error === 'object'){
-            errorObjects=JSON.stringify(error)
-          }else{
+          if (typeof error === 'object') {
+            errorObjects = JSON.stringify(error)
+          } else {
             errorObjects = error
-          }          
+          }
         }
         setErrorMessage(errorObjects)
         setIsLoading(false)
@@ -191,8 +184,10 @@ export default function ProfilePage(props) {
       }
 
       event.preventDefault()
+      if (isLoading) {
+        return
+      }
       setErrorMessage("")
-      const form = event.currentTarget;
       setIsLoading(true)
       let profileToSend = {
         id: getMerchantId(),
@@ -209,11 +204,11 @@ export default function ProfilePage(props) {
       const callBack = (error) => {
         let errorObjects = "Error Modificando Información bancaría"
         if (error !== null) {
-          if(typeof error === 'object'){
-            errorObjects=JSON.stringify(error)
-          }else{
+          if (typeof error === 'object') {
+            errorObjects = JSON.stringify(error)
+          } else {
             errorObjects = error
-          }   
+          }
         }
         setErrorMessage(errorObjects)
         setIsLoading(false)
@@ -221,20 +216,22 @@ export default function ProfilePage(props) {
       const callBackSucessBank = (bankingInfo) => {
         document.getElementById("bankingInfoForm").reset();
         setIsLoading(false)
-        document.getElementById("bankInfoId").value=bankingInfo.id
+        document.getElementById("bankInfoId").value = bankingInfo.id
         setIsModificationDoneBank(true)
         setIsEditEnabled(false)
       }
 
       event.preventDefault()
-      if(document.getElementById('bankAccount').value=='0' || document.getElementById('accountType').value=='0' || 
-      document.getElementById('documentType').value=='0'){
+      if (document.getElementById('bankAccount').value == '0' || document.getElementById('accountType').value == '0' ||
+        document.getElementById('documentType').value == '0') {
         let errorObjects = "Todos los campos son obligatorios"
         setErrorMessage(errorObjects)
         return
       }
+      if (isLoading) {
+        return
+      }
       setErrorMessage("")
-      const form = event.currentTarget;
       setIsLoading(true)
       let bankInfoToSend = {
         id: document.getElementById("bankInfoId").value,
@@ -304,7 +301,7 @@ export default function ProfilePage(props) {
                         <GridContainer justify="center" className={classes.formContainer}>
                           <form name="profileForm" id="profileForm">
                             <GridContainer justify="center">
-                              {profile.nit == "" || profile.nit == null
+                              {profile.nit === "" || profile.nit === null
                                 ? <Alert severity="warning">Es indispensable que completes tu información de perfil con el siguiente formulario. </Alert>
                                 : <span></span>
                               }
@@ -364,7 +361,7 @@ export default function ProfilePage(props) {
                                   }}
                                 />
                               </GridItem>
-                              {errorMessage != ""
+                              {errorMessage !== ""
                                 ?
                                 <GridItem xs={12} sm={12} md={12}><Alert severity="error">{errorMessage}</Alert></GridItem>
                                 : <span>	&nbsp;</span>
@@ -382,7 +379,7 @@ export default function ProfilePage(props) {
                           </form>
                           <form name="bankingInfoForm" id="bankingInfoForm">
                             <GridContainer justify="center">
-                              {bankingInformation.accountNumber == "" || bankingInformation.accountNumber == null
+                              {bankingInformation.accountNumber === "" || bankingInformation.accountNumber === null
                                 ? <Alert severity="warning">Es indispensable que completes tu información bancaría con el siguiente formulario. </Alert>
                                 : <span></span>
                               }
@@ -423,8 +420,8 @@ export default function ProfilePage(props) {
                                     onChange={handleChangeBank}
                                     inputProps={{
                                       name: 'accountType',
-                                      id: 'accountType'                                      
-                                    }}                                  
+                                      id: 'accountType'
+                                    }}
                                   >
                                     <option value={0}>Selecciona tipo de cuenta</option>
                                     <option value={1}>Cuenta de ahorros</option>
@@ -522,10 +519,10 @@ export default function ProfilePage(props) {
                                     )
                                   }}
                                 />
-                                <input type="hidden" name="bankInfoId" id="bankInfoId"/>
-                                
+                                <input type="hidden" name="bankInfoId" id="bankInfoId" />
+
                               </GridItem>
-                              {errorMessage != ""
+                              {errorMessage !== ""
                                 ?
                                 <GridItem xs={12} sm={12} md={12}><Alert severity="error">{errorMessage}</Alert></GridItem>
                                 : <span>	&nbsp;</span>
@@ -560,7 +557,7 @@ export default function ProfilePage(props) {
                             ? <GridItem xs={12} sm={12} md={12}><CircularProgress /></GridItem>
                             : <span></span>
                           }
-                          {errorMessageIntegration != ""
+                          {errorMessageIntegration !== ""
                             ?
                             <GridItem xs={12} sm={12} md={12}><Alert severity="error">{errorMessageIntegration}</Alert></GridItem>
                             : <span>	&nbsp;</span>

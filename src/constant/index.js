@@ -1,12 +1,12 @@
-
-
-export const CORE_BASEURL = process.env.REACT_APP_CORE_BASEURL
+// export const CORE_BASEURL = process.env.REACT_APP_CORE_BASEURL  //'http://localhost:8084'
+// export const PULL_BASEURL = process.env.REACT_APP_PULL_BASEURL // 'http://localhost:8084'
+export const CORE_BASEURL =process.env.REACT_APP_CORE_BASEURL
 export const PULL_BASEURL = process.env.REACT_APP_PULL_BASEURL
 
 export const getPaymentState = (idState) => {
-    switch(idState){
+    switch (idState) {
         case 1:
-            return "Creado"        
+            return "Creado"
         case 2:
             return "Acordado"
         case 3:
@@ -25,9 +25,9 @@ export const getPaymentState = (idState) => {
 }
 
 export const getBankNumber = (bank) => {
-    switch(bank){
+    switch (bank) {
         case "BANCO_AV_VILLAS":
-            return 1        
+            return 1
         case "BANCO_BBVA_COLOMBIA":
             return 2
         case "BANCO_CAJA_SOCIAL":
@@ -50,9 +50,9 @@ export const getBankNumber = (bank) => {
 }
 
 export const getAccountType = (bank) => {
-    switch(bank){
+    switch (bank) {
         case "AHORROS":
-            return 1        
+            return 1
         case "CORRIENTE":
             return 2
         default:
@@ -61,9 +61,9 @@ export const getAccountType = (bank) => {
 }
 
 export const getPaymentIdState = (state) => {
-    switch(state){
-        case "Creado" :
-            return  1      
+    switch (state) {
+        case "Creado":
+            return 1
         case "Acordado":
             return 2
         case "Pagado":
@@ -79,9 +79,9 @@ export const getPaymentIdState = (state) => {
     }
 }
 export const getOrderIdState = (state) => {
-    switch(state){
-        case "Fallado" :
-            return  1      
+    switch (state) {
+        case "Fallado":
+            return 1
         case "En Despacho":
             return 2
         case "En Entrega":
@@ -103,9 +103,9 @@ export const getOrderIdState = (state) => {
     }
 }
 export const getOrderState = (idState) => {
-    switch(idState){
+    switch (idState) {
         case 1:
-            return "Fallido"        
+            return "Fallido"
         case 2:
             return "En Despacho"
         case 3:
@@ -124,6 +124,37 @@ export const getOrderState = (idState) => {
             return "Novedad"
         case 10:
             return "Por confirmar"
-            
+
     }
 }
+
+export const categories = [
+    {
+        category: 1,
+        name: "Mascotas"
+    },
+    {
+        category: 2,
+        name: "Tecnología"
+    },
+    {
+        category: 3,
+        name: "Hogar"
+    },
+    {
+        category: 4,
+        name: "Niños"
+    },
+    {
+        category: 5,
+        name: "Estilo de vida"
+    },
+    {
+        category: 7,
+        name: "Ropa y calzado"
+    },
+    {
+        category: 6,
+        name: "Otros"
+    }
+]
