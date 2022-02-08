@@ -323,9 +323,11 @@ export default function CreateProduct(props) {
     }
 
     const createInventoryRequest = (product) => {
+        console.log("creating request for inventory",complexInventory)
         let attrs = new Set(complexInventory.map((element) => element.attr));
         let finalInventoryRequest = []
         attrs.forEach((attr) => {
+            console.log("attr",attr)
             finalInventoryRequest.push({
                 'productId': product.variants.filter((variant) =>
                     variant.attributes.replace('{', '').replace('}', '') === attr
@@ -333,6 +335,7 @@ export default function CreateProduct(props) {
                 'inventories': complexInventory.filter((inv) => inv.attr === attr)
             })
         });
+        console.log("request created",finalInventoryRequest)
         return {
             'requests': finalInventoryRequest
         }
