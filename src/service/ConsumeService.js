@@ -24,6 +24,7 @@ const consumeServicePost = async (payload, callBack, callBackSuccess, url) => {
                     callBack(error.response.data)
                 }
             } else {
+                console.log("error", error)
                 callBack("Error inesperado")
             }
         }
