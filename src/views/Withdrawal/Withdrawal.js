@@ -32,9 +32,7 @@ const useStyles = makeStyles(styles);
 
 export default function WithDrawal(props) {
 
-  const [withdrawal, setWithdrawal] = React.useState([]);
-  const [isEnabled, setIsEnabled] = React.useState(false);
-  const [amount, setAmount] = React.useState([]);
+  const [withdrawal, setWithdrawal] = React.useState([]);  
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
   const [mustChange, setMustChange] = React.useState(false);
@@ -43,14 +41,13 @@ export default function WithDrawal(props) {
     const merchantId = getMerchantId()
     console.log('getting withdrawals ')
     let url = `${CORE_BASEURL}/withdrawal/merchant/${merchantId}`
-    consumeServiceGet(callBack, callBackSuccess, url)
-    consumeServiceGet(callBack, callBackSuccessAmount, `${CORE_BASEURL}/payment/merchant/closed/${merchantId}`)
+    consumeServiceGet(callBack, callBackSuccess, url)        
   }
 
   React.useEffect(() => getWithdrawalsForMerchant(), [mustChange]);
 
   const callBackSuccess = (withdrawals) => {
-    setWithdrawal(withdrawals)
+    setWithdrawal(withdrawals)    
   }
 
   const callBackSuccessCreate = (withdrawals) => {
@@ -58,19 +55,8 @@ export default function WithDrawal(props) {
     setSuccessMessage("Tu solicitud de retiro fue creada. En 2 días hábiles tus fondos serán transferidos a tu cuenta bancaria.")
   }
 
-  const callBackSuccessAmount = (amount) => {
-    setAmount(amount)
-    if (amount != null && amount > 6000) {
-      setIsEnabled(true)
-    }
-  }
-
   const requestWithdrawal = () => {
-    const merchantId = getMerchantId()
-    consumeServicePost({
-      idMerchant: merchantId,
-      amount: amount
-    }, callBackPost, callBackSuccessCreate,
+    consumeServicePost({}, callBackPost, callBackSuccessCreate,
       CORE_BASEURL + "/withdrawal")
   }
 
@@ -90,7 +76,7 @@ export default function WithDrawal(props) {
   }
   const callBackPost = (error) => {
     if (error != null && typeof error === 'object') {
-      setErrorMessage('Ha ocurrido un error inesperado por favor contactar al administrador')
+      setErrorMessage(JSON.stringify(error))
     } else if (error != null && typeof error === 'String') {
       setErrorMessage(error)
     }
@@ -111,9 +97,8 @@ export default function WithDrawal(props) {
           | <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
               <Grid item xs={12} sm={12} md={12} >
-                El siguiente valor representa el valor de las transacciones cerradas (para los pagos recibidos por nuestro servicio de custodia) que puedes retirar, recuerda cada retiro tiene un costo de $6000:
-                <br /> <br /> <center><span className={classes.valueText}>{formatter.format(amount)}</span></center>
-                <br /> <br /> <center><Button color="primary" disabled={!isEnabled} onClick={requestWithdrawal}> Solicitar retiro</Button></center>
+                Utiliza el siguiente botón para solicitar retiro del saldo de tu cuenta de Mipagoseguro. Recuerda cada retiro tiene un costo de $6000:                
+                <br /> <br /> <center><Button color="primary" onClick={requestWithdrawal}>Solicitar retiro</Button></center>
               </Grid>
             </Grid>
           </GridItem>
@@ -161,8 +146,6 @@ export default function WithDrawal(props) {
       </div>
       <Footer />
     </div>
-
-
 
   );
 }
