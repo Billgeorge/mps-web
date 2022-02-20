@@ -3,12 +3,15 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Grid from '@material-ui/core/Grid';
 import styles from "assets/jss/material-kit-react/views/DashBoard.js";
+import { setUpdateMerchant } from 'actions/actions'
+import { connect } from 'react-redux'
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
 import Button from "components/CustomButtons/Button.js";
 
 import Alert from '@material-ui/lab/Alert';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -30,11 +33,12 @@ const useStyles = makeStyles(styles);
 
 
 
-export default function WithDrawal(props) {
+function WithDrawal(props) {
 
   const [withdrawal, setWithdrawal] = React.useState([]);  
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
   const [mustChange, setMustChange] = React.useState(false);
 
   const getWithdrawalsForMerchant = (filter, value) => {
@@ -51,11 +55,18 @@ export default function WithDrawal(props) {
   }
 
   const callBackSuccessCreate = (withdrawals) => {
+    setIsLoading(false)
+    setUpdateMerchant(!props.updateMerchant)
     setMustChange(!mustChange)
     setSuccessMessage("Tu solicitud de retiro fue creada. En 2 días hábiles tus fondos serán transferidos a tu cuenta bancaria.")
   }
 
   const requestWithdrawal = () => {
+    if (isLoading) {
+      return
+    }
+    setErrorMessage("")
+    setIsLoading(true)
     consumeServicePost({}, callBackPost, callBackSuccessCreate,
       CORE_BASEURL + "/withdrawal")
   }
@@ -75,6 +86,7 @@ export default function WithDrawal(props) {
     }
   }
   const callBackPost = (error) => {
+    setIsLoading(false)
     if (error != null && typeof error === 'object') {
       setErrorMessage(JSON.stringify(error))
     } else if (error != null && typeof error === 'String') {
@@ -97,11 +109,25 @@ export default function WithDrawal(props) {
           | <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
               <Grid item xs={12} sm={12} md={12} >
-                Utiliza el siguiente botón para solicitar retiro del saldo de tu cuenta de Mipagoseguro. Recuerda cada retiro tiene un costo de $6000:                
+                Utiliza el siguiente botón para solicitar retiro del saldo de tu cuenta de Mipagoseguro. Recuerda cada retiro tiene un costo de $6000:
+                {isLoading
+                    ? <><br/><center> <CircularProgress /></center></>
+                    : <span></span>
+                  }                
                 <br /> <br /> <center><Button color="primary" onClick={requestWithdrawal}>Solicitar retiro</Button></center>
-              </Grid>
+              </Grid>              
             </Grid>
           </GridItem>
+          {errorMessage != ""
+            ?
+            <Alert severity="error">{errorMessage}</Alert>
+            : <span>	&nbsp;</span>
+          }
+          {successMessage != ""
+            ?
+            <Alert severity="success">{successMessage}</Alert>
+            : <span>	&nbsp;</span>
+          }
 
           <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
@@ -131,17 +157,7 @@ export default function WithDrawal(props) {
                 </TableContainer>
               </Grid>
             </Grid>
-          </GridItem>
-          {errorMessage != ""
-            ?
-            <Alert severity="error">{errorMessage}</Alert>
-            : <span>	&nbsp;</span>
-          }
-          {successMessage != ""
-            ?
-            <Alert severity="success">{successMessage}</Alert>
-            : <span>	&nbsp;</span>
-          }
+          </GridItem>          
         </GridContainer>
       </div>
       <Footer />
@@ -149,3 +165,15 @@ export default function WithDrawal(props) {
 
   );
 }
+  
+const mapDispatchToProps = {
+  setUpdateMerchant
+}
+
+const mapStateToProps = (state) => {
+  return {
+      updateMerchant: state.fbReducer.updateMerchant
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WithDrawal);
