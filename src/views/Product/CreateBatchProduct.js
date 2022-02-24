@@ -38,7 +38,7 @@ export default function CreateBatchProduct(props) {
         setErrorMessage({})
         let file = event.target.files[0]
         const extension = file.name.split('.').pop()
-        if (extension !== "xlsx" && extension !== "cvs") {
+        if (extension !== "txt") {
             setErrorMessage({ 'Error': 'Tu archivo debe ser xlsx o clv' })
             return
         }
