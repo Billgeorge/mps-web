@@ -22,6 +22,7 @@ import CreatePayment from "views/CreatePayment/CreatePayment";
 import checkout from "views/Checkout/Checkout";
 import EditCustomer from "views/Checkout/EditCustomer";
 import CreateProduct2 from "views/Product/CreateProduct_2";
+import CreateProductBatch from "views/Product/CreateBatchProduct";
 import AgreePayment from "views/CreatePayment/AgreePayment";
 import ProductBoard from "views/Product/ProductBoard";
 import ProductDropBoard from "views/Product/ProductDropBoard";
@@ -82,6 +83,7 @@ function App() {
               <ProtectRoute path='/create-payment' component={CreatePayment} />
               <ProtectRoute path='/branch' component={BranchBoard} />
               <ProtectRoute path='/create-product' component={CreateProduct2} />
+              <ProtectRoute path='/create-product-batch' component={CreateProductBatch} />
               <ProtectRoute path='/transaction-detail' component={TransactionDetail} />
               <ProtectRoute path='/dashboard' component={DashBoard} />
               <ProtectRoute path='/dashboard-dropprovider' component={DashBoardProvider} />

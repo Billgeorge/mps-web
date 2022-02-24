@@ -24,10 +24,6 @@ import CreateProductStepTwo from './CreateProduct2'
 import CreateProductStepOne from "./CreateProduct1";
 import CustomField from "./CustomField";
 import InventoryPerBranch from "./InventoryPerBranch";
-import {
-
-    useLocation
-} from "react-router-dom";
 
 
 const useStyles = makeStyles(styles);
