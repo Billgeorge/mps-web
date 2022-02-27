@@ -39,7 +39,7 @@ export default function CreateBatchProduct(props) {
         let file = event.target.files[0]
         const extension = file.name.split('.').pop()
         if (extension !== "txt") {
-            setErrorMessage({ 'Error': 'Tu archivo debe ser xlsx o clv' })
+            setErrorMessage({ 'Error': 'Tu archivo debe ser txt' })
             return
         }
         if (file && file.size > 1048576) {
@@ -65,7 +65,7 @@ export default function CreateBatchProduct(props) {
     }
 
     const callBackCreateProducSuccess = () => {
-        setInfoMessage("La creación de tus productos esta en proceso. A tu correo recibirás el resultado de la creación")
+        setInfoMessage("La creación de tus productos esta en proceso. A tu correo llegará el resultado de la creación")
         setIsLoading(false)
     }
 
@@ -102,12 +102,12 @@ export default function CreateBatchProduct(props) {
                                     : <span></span>
                                 }
                                 <GridItem xs={12} sm={12} md={12} style={{ textAlign: "left" }}>
-                                    <h5>Descarga el archivo de muestra <a>Clic acá</a>, organiza la información de acuerdo al formato del archivo y con el siguiente botón selecciona el archivo listo con la información de tus productos:</h5>
+                                    <h5>Aprende como generar el archivo con el formato correcto usando este vídeo <a>Clic acá</a>. Selecciona el archivo con la información de tus productos:</h5>
                                 </GridItem>
                                 <GridItem xs={12} sm={12} md={12} style={{ textAlign: "center" }}>
 
                                     <label htmlFor="contained-button-file">
-                                        <Input onChange={fileSelected} accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="contained-button-file" type="file" />
+                                        <Input onChange={fileSelected} accept="text/plain" id="contained-button-file" type="file" />
                                         <IconButton className={classes.addFile} color="primary" aria-label="upload file" component="span">
                                             <AttachFile />
                                         </IconButton>

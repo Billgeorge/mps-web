@@ -173,7 +173,7 @@ export default function ProductDropBoard() {
               <GridItem xs={12} sm={12} md={12} className={classes.grid}>
                 <Grid container className={classes.box} spacing={3}>
                   <Grid item xs={12} sm={12} md={12} >
-                    A continuación ves los productos dropshiṕping que vinculaste:
+                    A continuación ves los productos que vinculaste para vender:
                   </Grid>
                 </Grid>
               </GridItem>
