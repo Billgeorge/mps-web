@@ -39,7 +39,7 @@ export default function CreateBatchProduct(props) {
         let file = event.target.files[0]
         const extension = file.name.split('.').pop()
         if (extension !== "txt" && extension !== "tsv" ) {
-            setErrorMessage({ 'Error': 'Tu archivo debe ser txt' })
+            setErrorMessage({ 'Error': 'Tu archivo debe ser txt o tsv' })
             return
         }
         if (file && file.size > 1048576) {
