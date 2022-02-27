@@ -107,7 +107,7 @@ export default function CreateBatchProduct(props) {
                                 <GridItem xs={12} sm={12} md={12} style={{ textAlign: "center" }}>
 
                                     <label htmlFor="contained-button-file">
-                                        <Input onChange={fileSelected} accept="text/plain" id="contained-button-file" type="file" />
+                                        <Input onChange={fileSelected} accept="text/plain, .tsv" id="contained-button-file" type="file" />
                                         <IconButton className={classes.addFile} color="primary" aria-label="upload file" component="span">
                                             <AttachFile />
                                         </IconButton>
