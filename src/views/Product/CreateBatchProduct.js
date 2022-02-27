@@ -36,6 +36,7 @@ export default function CreateBatchProduct(props) {
 
     const fileSelected = (event) => {
         setErrorMessage({})
+        setInfoMessage("")
         let file = event.target.files[0]
         const extension = file.name.split('.').pop()
         if (extension !== "txt" && extension !== "tsv" ) {
