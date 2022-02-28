@@ -154,14 +154,6 @@ const useStyles = makeStyles(styles);
                 <Grid container xs={12} sm={12} md={6} justify="center" alignItems="center"> 
                     
                     <Grid item  xs={4}>
-                    <a>
-                    <div className={classes.boxItem} style={{margin:"10px"}}>
-                      <a href="/create-payment">
-                        <img src={Link} className={classes.imgLink} />
-                        <span className={classes.textButton}>Crear enlace de pago</span>
-                      </a>
-                    </div>
-                    </a>
                     </Grid>
                     
                 </Grid>                   

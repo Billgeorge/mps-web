@@ -31,7 +31,7 @@ import Pagination from "@material-ui/lab/Pagination";
 
 import { useHistory } from "react-router-dom";
 import SearchBar from "material-ui-search-bar";
-import {categories} from 'constant/index'
+import { categories } from 'constant/index'
 
 const useStyles = makeStyles(styles);
 
@@ -66,6 +66,10 @@ export default function ProductBoard(props) {
 
   const createProduct = () => {
     history.push("create-product")
+  }
+
+  const createProductTxt = () => {
+    history.push("create-product-batch")
   }
 
   const deleteProducts = () => {
@@ -206,7 +210,11 @@ export default function ProductBoard(props) {
                   }
                 </Select>
               </GridItem>
-              <Grid item xs={12}><Button style={{ marginLeft: "10px" }} color="primary" onClick={createProduct}> Crear Producto</Button><Button style={{ marginLeft: "10px" }} color="primary" disabled={!isEnabled} onClick={deleteProducts} > Eliminar seleccionados</Button></Grid>
+              <Grid item xs={12}>
+                <Button style={{ marginLeft: "10px" }} color="primary" onClick={createProductTxt}> Crear productos desde archivo</Button>
+                <Button style={{ marginLeft: "10px" }} color="primary" onClick={createProduct}> Crear producto</Button>
+                <Button style={{ marginLeft: "10px" }} color="primary" disabled={!isEnabled} onClick={deleteProducts} > Eliminar seleccionados</Button>
+              </Grid>
               <Grid item xs={12}>
                 {successMessage != ""
                   ?
@@ -255,8 +263,8 @@ export default function ProductBoard(props) {
                               />
                             </center>
                           </TableCell>
-                          <TableCell align="center"><Link to={"productDetail?idp=" + row.id.slice(-6)+"&vw=true"}>{row.name}</Link></TableCell>
-                          <TableCell align="center">{row.sku?row.sku:'Vacío'}</TableCell>
+                          <TableCell align="center"><Link to={"productDetail?idp=" + row.id.slice(-6) + "&vw=true"}>{row.name}</Link></TableCell>
+                          <TableCell align="center">{row.sku ? row.sku : 'Vacío'}</TableCell>
                           <TableCell align="center">{
                             formatter.format(row.amount)
                           }</TableCell>
