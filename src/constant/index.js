@@ -1,5 +1,7 @@
-export const CORE_BASEURL = process.env.REACT_APP_CORE_BASEURL //'http://localhost:8084'
-export const PULL_BASEURL = process.env.REACT_APP_PULL_BASEURL// 'http://localhost:8084'
+// export const CORE_BASEURL = process.env.REACT_APP_CORE_BASEURL  //'http://localhost:8084'
+// export const PULL_BASEURL = process.env.REACT_APP_PULL_BASEURL // 'http://localhost:8084'
+export const CORE_BASEURL =process.env.REACT_APP_CORE_BASEURL
+export const PULL_BASEURL = process.env.REACT_APP_PULL_BASEURL
 
 export const getPaymentState = (idState) => {
     switch (idState) {
@@ -42,6 +44,8 @@ export const getBankNumber = (bank) => {
             return 8
         case "SCOTIABANK_COLPATRIA":
             return 9
+        case "NEQUI":
+            return 10
         default:
             return 0
     }
@@ -53,6 +57,8 @@ export const getAccountType = (bank) => {
             return 1
         case "CORRIENTE":
             return 2
+        case "BILLETERA":
+            return 3
         default:
             return 0
     }
