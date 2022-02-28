@@ -407,6 +407,7 @@ export default function ProfilePage(props) {
                                     <option value={7}>BANCO ITAU</option>
                                     <option value={8}>BANCOLOMBIA</option>
                                     <option value={9}>SCOTIABANK COLPATRIA</option>
+                                    <option value={10}>NEQUI</option>
                                   </Select>
                                 </FormControl>
                               </GridItem>
@@ -426,6 +427,7 @@ export default function ProfilePage(props) {
                                     <option value={0}>Selecciona tipo de cuenta</option>
                                     <option value={1}>Cuenta de ahorros</option>
                                     <option value={2}>Cuenta corriente</option>
+                                    <option value={3}>Billetera</option>
                                   </Select>
                                 </FormControl>
                               </GridItem>

@@ -38,6 +38,13 @@ const createProductPageStyle = {
     position: "absolute",
     top: "87%",
     right: "12%"
+  },
+  addFile:{
+    width: "100px",
+    height: "100px",
+    border: "blue !important",
+    borderStyle: "dashed !important",
+    borderRadius: "10px !important"
   }
 }
 

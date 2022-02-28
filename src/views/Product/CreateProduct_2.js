@@ -24,10 +24,6 @@ import CreateProductStepTwo from './CreateProduct2'
 import CreateProductStepOne from "./CreateProduct1";
 import CustomField from "./CustomField";
 import InventoryPerBranch from "./InventoryPerBranch";
-import {
-
-    useLocation
-} from "react-router-dom";
 
 
 const useStyles = makeStyles(styles);
@@ -155,6 +151,11 @@ export default function CreateProduct(props) {
     const fileSelected = (event) => {
         setErrorMessage({})
         let file = event.target.files[0]
+        const extension = file.name.split('.').pop()
+        if(extension !== "jpg" && extension !== "png" && extension !== "jpeg" && extension !== "tiff"){
+            setErrorMessage({ 'Error': 'Tu imagén debe ser jpeg, jpg, png o tiff' })
+            return
+        }
         if (file && file.size > 1048576) {
             setErrorMessage({ 'Error': 'Tu imagén es muy pesada. No debe superar 1Mb' })
             return
