@@ -85,7 +85,7 @@ function ChargeAccount(props) {
                 <CardHeader className={classes.cardHeader}>
                 <div style={{display: 'flex', flexDirection: 'row-reverse', marginTop: '2rem', alignItems: 'center',justifyContent: 'space-evenly'}}>
                     <h3 style={{ fontWeight: "600"}}>
-                    Crear Promoción</h3>
+                    Recargar Cuenta</h3>
                     <ArrowBackIcon className={classes.arrow}  onClick={()=>props.history.push(`/dashboard`)} />
                 </div>
                 </CardHeader>
