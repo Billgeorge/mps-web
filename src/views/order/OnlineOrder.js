@@ -140,7 +140,7 @@ function OnlineOrder(props) {
     const callBackSuccessGetCities = (cities) => {
         SetCities(cities)
         SetCitiesResponse(cities)
-        let states = []
+        let states = new Set()
         cities.forEach(record => {
 
             let actualState = record.state
@@ -151,11 +151,11 @@ function OnlineOrder(props) {
                 }
             })
             if (!exist) {
-                states.push(actualState)
+                states.add(actualState)
             }
 
         })
-        SetStates(states)
+        SetStates(Array.from(states))
     }
 
     const callBackErrorGetCities = () => {
