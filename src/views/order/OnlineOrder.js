@@ -143,7 +143,7 @@ function OnlineOrder(props) {
         let states = new Set()
         cities.forEach(record => {
 
-            let actualState = record.state
+            let actualState = record.state.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
             let exist = false
             states.forEach(state => {
                 if (state === actualState) {
@@ -172,7 +172,7 @@ function OnlineOrder(props) {
 
     const handleChangeState = (event) => {
         let value = event.target.value
-        let newCities = citiesResponse.filter(record => record.state === value)
+        let newCities = citiesResponse.filter(record => record.state.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() === value)
         setOnlineOrder({
             ...onlineOrder,
             city: "",
@@ -262,7 +262,7 @@ function OnlineOrder(props) {
                                                         return 0;
                                                     }
                                                 ).map(function (state) {
-                                                    return <option value={state}>{state.toLowerCase().replace(/^./, (str) => {
+                                                    return <option value={state}>{state.replace(/^./, (str) => {
                                                         return str.toUpperCase();
                                                     })}</option>;
                                                 })
