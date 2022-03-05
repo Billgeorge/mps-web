@@ -251,8 +251,20 @@ function OnlineOrder(props) {
                                             <option aria-label="None" value="" />
                                             <option value="value">ciudad</option>
                                             {
-                                                states.map(function (state) {
-                                                    return <option value={state}>{state}</option>;
+                                                states.sort(
+                                                    function (a, b) {
+                                                        if (a < b) {
+                                                            return -1;
+                                                        }
+                                                        if (b < a) {
+                                                            return 1;
+                                                        }
+                                                        return 0;
+                                                    }
+                                                ).map(function (state) {
+                                                    return <option value={state}>{state.toLowerCase().replace(/^./, (str) => {
+                                                        return str.toUpperCase();
+                                                    })}</option>;
                                                 })
                                             }
                                         </Select>
@@ -274,8 +286,20 @@ function OnlineOrder(props) {
                                             <option aria-label="None" value="" />
                                             <option value="value">ciudad</option>
                                             {
-                                                cities.map(function (item) {
-                                                    return <option value={item.code}>{item.city}</option>;
+                                                cities.sort(
+                                                    function (a, b) {
+                                                        if (a.city < b.city) {
+                                                            return -1;
+                                                        }
+                                                        if (b.city < a.city) {
+                                                            return 1;
+                                                        }
+                                                        return 0;
+                                                    }
+                                                ).map(function (item) {
+                                                    return <option value={item.code}>{item.city.toLowerCase().replace(/^./, (str) => {
+                                                        return str.toUpperCase();
+                                                    })}</option>;
                                                 })
                                             }
                                         </Select>
