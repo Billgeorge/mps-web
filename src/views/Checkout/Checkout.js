@@ -40,6 +40,7 @@ function Checkout(props) {
     const [totalPrice, setTotalPrice] = React.useState(null);
     const [customFields, setCustomFields] = React.useState([])
     const [customFieldsCols, setCustomFieldsCols] = React.useState(0)
+    const [existCOD, setExistCOD] = React.useState(true);
 
 
     const [product, setProduct] = React.useState({
@@ -123,7 +124,7 @@ function Checkout(props) {
         let products = null
         setPaymentMethod(paymentMethod)
         let totalOrderPrice = totalPrice ? totalPrice : product.amount * order.quantity
-        let finalQuantity= order.quantity
+        let finalQuantity = order.quantity
 
         if (product.isMaster && product.variants && product.variants.length > 0) {
 
@@ -131,12 +132,12 @@ function Checkout(props) {
                 setErrorMessage("Debe agregar productos")
                 return
             }
-            totalOrderPrice= carItems.reduce(
+            totalOrderPrice = carItems.reduce(
                 function (prev, curr, index, vec) {
                     return prev + curr.price
                 }, 0
             )
-            finalQuantity= carQuantity
+            finalQuantity = carQuantity
             products = getProductList()
         }
 
@@ -180,7 +181,7 @@ function Checkout(props) {
         }
         setIsLoading(true)
         const url = `${CORE_BASEURL}/checkout/order`
-        
+
         props.setValue(totalOrderPrice)
         let request = {
             productId: getQueyParamFromUrl("idc"),
@@ -249,7 +250,12 @@ function Checkout(props) {
     }
 
     const callBackSuccess = (order) => {
-        history.push("/thanks-page")
+        if (order.paymentMethod == "COD") {
+            history.push("/thanks-page?cod=true")
+        } else {
+            const url = `${PULL_BASEURL}/cashin/redirect`
+            consumeServicePost({ id: order }, callBackErrorCreateOrder, callBackSuccessGetPaymentInformation, url)
+        }
     }
 
     const callBackSuccessGetPaymentInformation = (paymentInformation) => {
@@ -279,7 +285,15 @@ function Checkout(props) {
     }
 
     const handleChangeCity = (event) => {
-        setInfoMessage("")
+        let value = event.target.value
+        let selectedCity = citiesResponse.filter(record => record.code == value)
+        if (selectedCity[0].againstDelivery === 'INACTIVE') {
+            setExistCOD(false)
+            setInfoMessage("Aunque no hay contraentrega en tu destino. Puedes pagar con nuestro servicio de custodía de pagos y el dinero no será entregado al vendedor hasta que recibas tu pedido. Usar el botón: Pagar Online con custodía digital.")
+        } else {
+            setInfoMessage("")
+            setExistCOD(true)
+        }
         const name = event.target.name;
         setOrder({
             ...order,
@@ -400,7 +414,7 @@ function Checkout(props) {
         }
         let finalPrice = product.amount * order.quantity
         let finalItems = newOrExistingCartItem(attr, label, finalPrice)
-        updateQuantity(finalItems)        
+        updateQuantity(finalItems)
         console.log(finalItems)
     }
 
@@ -429,7 +443,7 @@ function Checkout(props) {
     const newOrExistingCartItem = (attr, newLabel, finalPrice) => {
 
         let existingItem = false
-        const localItems= carItems
+        const localItems = carItems
         for (var i = 0; i < localItems.length; i++) {
             if (localItems[i].attr === attr) {
                 existingItem = true
@@ -451,11 +465,11 @@ function Checkout(props) {
                 price: finalPrice,
                 quantity: order.quantity
             })
-        }else{
+        } else {
             setCartItems(localItems)
         }
         return localItems
-        
+
     }
 
     React.useEffect(() => { getProductInformation() }, []);
@@ -486,59 +500,16 @@ function Checkout(props) {
                 <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
                     <div className={classes.productDescription}> {product.productDescription}</div>
                 </GridItem>
-                <h3 className={classes.shopName}>Selecciona tus productos</h3>
-                <GridContainer justify="center">
-                    {
-                        customFields.map(function (cf, index) {
-                            return <>
-                                <GridItem style={{ textAlign: "center" }} xs={customFieldsCols} sm={customFieldsCols} md={customFieldsCols}>
-                                    <InputLabel htmlFor="outlined-age-native-simple">{cf.label}</InputLabel>
-                                    <Select
-                                        native
-                                        label={cf.label}
-                                        inputProps={{
-                                            name: cf.label,
-                                            id: index
-                                        }}
-                                    >
-                                        {cf.options.map(function (state) {
-                                            return <option value={state}>{state.toLowerCase().replace(/^./, (str) => {
-                                                return str.toUpperCase();
-                                            })}</option>;
-                                        })
-                                        }
-                                    </Select>
-                                </GridItem>
-                            </>
-                        })
-
-                    }
-                </GridContainer>
-                <GridContainer justify="center" style={{ marginTop: "30px", marginBottom: "30px" }}>
-                    <GridItem justify="center" style={{ textAlign: 'center', marginTop: '4px' }} xs={6} sm={6} md={6} className={classes.detailText}> Cantidad </GridItem>
-                    <GridItem justify="center" style={{ margin: "0 auto" }} xs={6} sm={6} md={6}>
-                        <GroupedButtons callback={handleChangeQuantity} ></GroupedButtons>
-                    </GridItem>
-                </GridContainer>
-                {customFields && customFields.length > 0 ?
-                    <GridItem xs={12} sm={12} md={12}>
-                        <Button onClick={addCartItem} className={classes.buttonText} color="success" size="sm">Agregar</Button>
-                    </GridItem>
-                    : <></>
+                {product.warranty && product.warranty !== "" ?
+                    <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
+                        <div className={classes.productDescription}> {product.warranty}</div>
+                    </GridItem> : <></>
                 }
-
 
             </GridItem>
             <GridItem xs={12} sm={12} md={6} className={classes.rightSide}>
                 <h3 className={classes.shopName}>Información de entrega</h3>
-                {errorMessage != ""
-                    ? <GridItem xs={12} sm={12} md={12} ><Alert severity="error">{errorMessage}</Alert></GridItem> : <span></span>
-                }
                 <br />
-                {isLoading
-                    ? <GridItem xs={12} sm={12} md={12}><center><CircularProgress /></center></GridItem>
-                    : <span></span>
-                }
                 <GridContainer justify="center">
                     <GridItem xs={12} sm={12} md={12}>
                         <TextField onChange={handleChange} value={order.name} name="name" style={{ width: "98%", backgroundColor: "white" }} id="outlined-basic" label="Nombre completo" variant="outlined" required />
@@ -563,7 +534,17 @@ function Checkout(props) {
 
                                 <option aria-label="None" value="" />
                                 {
-                                    states.map(function (state) {
+                                    states.sort(
+                                        function (a, b) {
+                                            if (a < b) {
+                                                return -1;
+                                            }
+                                            if (b < a) {
+                                                return 1;
+                                            }
+                                            return 0;
+                                        }
+                                    ).map(function (state) {
                                         return <option value={state}>{state.toLowerCase().replace(/^./, (str) => {
                                             return str.toUpperCase();
                                         })}</option>;
@@ -635,8 +616,58 @@ function Checkout(props) {
                     {infoMessage != ""
                         ? <GridItem xs={12} sm={12} md={12} ><Alert severity="success">{infoMessage}</Alert></GridItem> : <span></span>
                     }
+                    {errorMessage != ""
+                        ? <GridItem xs={12} sm={12} md={12} ><Alert severity="error">{errorMessage}</Alert></GridItem> : <span></span>
+                    }
+                    {isLoading
+                        ? <GridItem xs={12} sm={12} md={12}><center><CircularProgress /></center></GridItem>
+                        : <span></span>
+                    }
                 </GridContainer>
 
+                <br />
+                {customFields && customFields.length > 0 ?
+                    <GridContainer justify="center">
+                        <h3 className={classes.shopName}>Selecciona tus productos</h3>
+                        {
+                            customFields.map(function (cf, index) {
+                                return <>
+                                    <GridItem style={{ textAlign: "center" }} xs={customFieldsCols} sm={customFieldsCols} md={customFieldsCols}>
+                                        <InputLabel htmlFor="outlined-age-native-simple">{cf.label}</InputLabel>
+                                        <Select
+                                            native
+                                            label={cf.label}
+                                            inputProps={{
+                                                name: cf.label,
+                                                id: index
+                                            }}
+                                        >
+                                            {cf.options.map(function (state) {
+                                                return <option value={state}>{state.toLowerCase().replace(/^./, (str) => {
+                                                    return str.toUpperCase();
+                                                })}</option>;
+                                            })
+                                            }
+                                        </Select>
+                                    </GridItem>
+                                </>
+                            })
+
+                        }
+                    </GridContainer> : <></>
+                }
+                <GridContainer justify="center" style={{ marginTop: "30px", marginBottom: "30px" }}>
+                    <GridItem justify="center" style={{ textAlign: 'center', marginTop: '4px' }} xs={6} sm={6} md={6} className={classes.detailText}> Cantidad </GridItem>
+                    <GridItem justify="center" style={{ margin: "0 auto" }} xs={6} sm={6} md={6}>
+                        <GroupedButtons callback={handleChangeQuantity} ></GroupedButtons>
+                    </GridItem>
+                </GridContainer>
+                {customFields && customFields.length > 0 ?
+                    <GridItem xs={12} sm={12} md={12}>
+                        <Button onClick={addCartItem} className={classes.buttonText} color="success" size="sm">Agregar</Button>
+                    </GridItem>
+                    : <></>
+                }
                 <br />
                 {(product.isMaster && product.variants && product.variants.length > 0) ? <>
                     <h3 className={classes.shopName}>Tu pedido</h3>
@@ -661,10 +692,18 @@ function Checkout(props) {
                     </GridContainer>
                 </> : <></>
                 }
-
-                <Button onClick={createOrderCOD} className={classes.buttonText} color="success" size="lg">
-                    Pagar {formatter.format(totalPrice ? totalPrice : product.amount * (carQuantity > 0 ? carQuantity : order.quantity))} con contraentrega
+                <br /> <br />
+                <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
+                    <span>Al realizar la compra estás aceptando nuestros <a href="https://www.mipagoseguro.co/terminos-y-condiciones/" target="_blank">términos y condiciones</a></span>
+                </GridItem>
+                <Button onClick={createOrderMPS} style={{ fontSize: "1.07em", fontWeight: "900", backgroundColor: "#3636c3" }} className={classes.buttonText} color="success" size="lg">
+                    Pagar Online {formatter.format(totalPrice ? totalPrice : product.amount * (carQuantity > 0 ? carQuantity : order.quantity))} con custodía digital
                 </Button>
+                <br />
+                {existCOD ?
+                    <Button onClick={createOrderCOD} className={classes.buttonText} color="success" size="lg">
+                        Pagar {formatter.format(totalPrice ? totalPrice : product.amount * (carQuantity > 0 ? carQuantity : order.quantity))} con contraentrega
+                    </Button> : <></>}
 
 
             </GridItem>
