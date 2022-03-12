@@ -48,6 +48,8 @@ import Results from 'views/Dashboard/Results'
 import WarrantyOrder from 'views/Warranty/WarrantyOrder';
 import OnlineOrder from 'views/order/OnlineOrder';
 import { Promotions } from 'views/Promotion/Promotions';
+import SellersOfProvider from 'views/SellersProvider/SellersOfProvider';
+import PublicProducts from 'views/public/PublicProducts';
 
 
 var hist = createBrowserHistory();
@@ -98,6 +100,7 @@ function App() {
               <ProtectRoute path="/promotions" component={Promotions} />
               <ProtectRoute path="/warranty" component={WarrantyOrder} />
               <ProtectRoute path="/online-order" component={OnlineOrder} />
+              <ProtectRoute path="/sellers" component={SellersOfProvider} />
               <Route path="/detail" component={TransactionDetailPublic} />
               <Route path="/customer" component={EditCustomer} />
               <Route path='/methods' component={PaymentForm} />
@@ -108,6 +111,7 @@ function App() {
               <Route path="/login" component={LoginPage} />
               <Route path="/thanks-page" component={ThanksPage} />
               <Route path="/checkout" component={checkout} />
+              <Route path="/public-products" component={PublicProducts} />
               <ProtectRoute path="/result" component={Results} />
 
             </Switch>
