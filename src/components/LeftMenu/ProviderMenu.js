@@ -12,6 +12,7 @@ import ReceiptIcon from '@material-ui/icons/Receipt';
 import EditIcon from '@material-ui/icons/Edit';
 import HomeWork from '@material-ui/icons/HomeWork';
 import AssistantIcon from '@material-ui/icons/Assistant';
+import Group from '@material-ui/icons/GroupWork';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 
 
@@ -46,6 +47,12 @@ export default function ProviderMenu(props) {
                 <ListItem button key="private-inventory">
                     <ListItemIcon><AssistantIcon style={{ color: '#2097F3' }} /></ListItemIcon>
                     <ListItemText style={{ color: '#2097F3' }} primary="Inventarios exclusivos" />
+                </ListItem>
+            </Link>
+            <Link to="/sellers" >
+                <ListItem button key="sellers">
+                    <ListItemIcon><Group style={{ color: '#2097F3' }} /></ListItemIcon>
+                    <ListItemText style={{ color: '#2097F3' }} primary="Tus vendedores" />
                 </ListItem>
             </Link>
             <Link to="/withdrawal" >
