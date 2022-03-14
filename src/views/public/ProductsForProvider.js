@@ -176,7 +176,7 @@ export default function ProductsForProvider(props) {
                                     color={'blue'}
                                     tabs={[
                                         {
-                                            tabButton: "Perfil",
+                                            tabButton: "Productos",
                                             tabIcon: Person,
                                             tabContent: (
                                                 <GridContainer>
