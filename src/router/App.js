@@ -50,6 +50,7 @@ import OnlineOrder from 'views/order/OnlineOrder';
 import { Promotions } from 'views/Promotion/Promotions';
 import SellersOfProvider from 'views/SellersProvider/SellersOfProvider';
 import PublicProducts from 'views/public/PublicProducts';
+import ProductsForProvider from 'views/public/ProductsForProvider';
 
 
 var hist = createBrowserHistory();
@@ -112,6 +113,7 @@ function App() {
               <Route path="/thanks-page" component={ThanksPage} />
               <Route path="/checkout" component={checkout} />
               <Route path="/public-products" component={PublicProducts} />
+              <Route path="/proveedor" component={ProductsForProvider} />
               <ProtectRoute path="/result" component={Results} />
 
             </Switch>

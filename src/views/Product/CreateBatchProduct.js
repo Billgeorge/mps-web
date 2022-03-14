@@ -39,8 +39,8 @@ export default function CreateBatchProduct(props) {
         setInfoMessage("")
         let file = event.target.files[0]
         const extension = file.name.split('.').pop()
-        if (extension !== "txt" && extension !== "tsv" ) {
-            setErrorMessage({ 'Error': 'Tu archivo debe ser txt o tsv' })
+        if (extension !== "xlsx" ) {
+            setErrorMessage({ 'Error': 'Tu archivo debe ser xlsx' })
             return
         }
         if (file && file.size > 1048576) {
@@ -108,7 +108,7 @@ export default function CreateBatchProduct(props) {
                                 <GridItem xs={12} sm={12} md={12} style={{ textAlign: "center" }}>
 
                                     <label htmlFor="contained-button-file">
-                                        <Input onChange={fileSelected} accept="text/plain, .tsv" id="contained-button-file" type="file" />
+                                        <Input onChange={fileSelected} accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="contained-button-file" type="file" />
                                         <IconButton className={classes.addFile} color="primary" aria-label="upload file" component="span">
                                             <AttachFile />
                                         </IconButton>
