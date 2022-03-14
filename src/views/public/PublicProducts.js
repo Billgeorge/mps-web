@@ -82,6 +82,12 @@ export default function PublicProducts(props) {
         setOpen(false);
     };
 
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0
+    })
+
     React.useEffect(() => {
         loadDropProducts("", 0, 0)
     }, []);
@@ -209,13 +215,15 @@ export default function PublicProducts(props) {
                                         />
                                         <CardContent>
                                             <Typography variant="body2" color="textSecondary" component="p">
-                                                {row.description.substring(0, 20)} ...
+                                                {row.description.substring(0, 20)} ...<br />
+                                                precio distribuidor: {formatter.format(row.dropshippingPrice)}<br />
+                                                precio sugerido de venta: {formatter.format(row.finalPrice)}
                                             </Typography>
                                         </CardContent>
                                         <CardActions disableSpacing style={{ textAlign: "center" }}>
                                             <Button onClick={handleClickOpen} style={{ left: "20%" }} color="primary" >
-                                                    Ver producto
-                                            </Button>                                            
+                                                Ver producto
+                                            </Button>
                                         </CardActions>
                                     </Card>
                                 </GridItem>
@@ -254,7 +262,7 @@ export default function PublicProducts(props) {
                 </DialogContent>
                 <DialogActions style={{ margin: "0 auto" }}>
                     <Button color="primary" component={Link} to="/registro?rol=seller">Registrarme</Button>
-                    <Button onClick={handleClose}>Seguir viendo</Button>                    
+                    <Button onClick={handleClose}>Seguir viendo</Button>
                 </DialogActions>
             </Dialog>
         </div>
