@@ -171,110 +171,99 @@ export default function ProductsForProvider(props) {
                         </GridContainer>
                         <GridContainer justify="center" style={{ marginLeft: '0', marginRight: '0' }}>
                             <GridItem xs={12} sm={12} md={8} className={classes.navWrapper}>
-                                <NavPills
-                                    alignCenter
-                                    color={'blue'}
-                                    tabs={[
-                                        {
-                                            tabButton: "Productos",
-                                            tabIcon: Person,
-                                            tabContent: (
-                                                <GridContainer>
-                                                    <GridItem xs={12} sm={12} md={12} >
-                                                        <h2 style={{ color: "#000" }} className={jssclasses.title} >Productos disponibles</h2>
-                                                        <GridContainer>
-                                                            <GridItem xs={12} sm={12} md={6} className={classes.grid}>
-                                                                <SearchBar
-                                                                    value={searchText}
-                                                                    placeholder="Qué buscas?"
-                                                                    onChange={(newValue) => setSearchText(newValue)}
-                                                                    onCancelSearch={() => { setSearchText(''); loadDropProducts("", category, 0) }}
-                                                                    onRequestSearch={(event) => { setCurrentPage(0); loadDropProducts(searchText, category, 0) }}
-                                                                />
-                                                            </GridItem>
-                                                            <GridItem xs={12} sm={12} md={6} style={{ marginTop: '15px' }} className={classes.grid}>
-                                                                <Select native
-                                                                    value={category}
-                                                                    onChange={handleChangeCategory}
-                                                                    label="Categoría"
-                                                                    inputProps={{
-                                                                        name: 'category',
-                                                                        id: 'category',
-                                                                    }}
-                                                                >
-                                                                    <option value={0}>Categorías</option>
-                                                                    {
+                                <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                        <h2 style={{ color: "#000" }} className={jssclasses.title} >Productos disponibles</h2>
+                                        <GridContainer>
+                                            <GridItem xs={12} sm={12} md={6} className={classes.grid}>
+                                                <SearchBar
+                                                    value={searchText}
+                                                    placeholder="Qué buscas?"
+                                                    onChange={(newValue) => setSearchText(newValue)}
+                                                    onCancelSearch={() => { setSearchText(''); loadDropProducts("", category, 0) }}
+                                                    onRequestSearch={(event) => { setCurrentPage(0); loadDropProducts(searchText, category, 0) }}
+                                                />
+                                            </GridItem>
+                                            <GridItem xs={12} sm={12} md={6} style={{ marginTop: '15px' }} className={classes.grid}>
+                                                <Select native
+                                                    value={category}
+                                                    onChange={handleChangeCategory}
+                                                    label="Categoría"
+                                                    inputProps={{
+                                                        name: 'category',
+                                                        id: 'category',
+                                                    }}
+                                                >
+                                                    <option value={0}>Categorías</option>
+                                                    {
 
-                                                                        categories.map(function (category) {
-                                                                            return <option value={category.category}>{category.name}</option>;
-                                                                        })
+                                                        categories.map(function (category) {
+                                                            return <option value={category.category}>{category.name}</option>;
+                                                        })
 
-                                                                    }
-                                                                </Select>
-                                                            </GridItem>
+                                                    }
+                                                </Select>
+                                            </GridItem>
 
-                                                            <GridItem style={{ marginTop: '15px' }} xs={12} sm={12} md={12} >
-                                                                <Pagination
-                                                                    count={totalPages}
-                                                                    size="large"
-                                                                    page={currentPage + 1}
-                                                                    variant="outlined"
-                                                                    shape="rounded"
-                                                                    onChange={handleChange}
-                                                                />
-                                                            </GridItem>
-                                                            {isLoading
-                                                                ? <center> <CircularProgress /></center>
-                                                                : <span></span>
-                                                            }
-                                                            {products.map((row) => (
-                                                                <GridItem style={{ paddingBottom: '5vh' }} xs={12} sm={6} md={4} >
-                                                                    <Card className={classes.root}>
-                                                                        <CardHeader
-                                                                            title={row.name ? row.name.substring(0, 16) : 'Sin nombre'}
-                                                                        />
-                                                                        <CardMedia
-                                                                            className={classes.media}
-                                                                            image={row.imageUrlMin}
-                                                                            title={row.name ? row.name : 'Sin nombre'}
-                                                                        />
-                                                                        <CardContent>
-                                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                                {row.description.substring(0, 20)} ...<br />
-                                                                                precio distribuidor: {formatter.format(row.dropshippingPrice)}<br />
-                                                                                precio sugerido de venta: {formatter.format(row.finalPrice)}
-                                                                            </Typography>
-                                                                        </CardContent>
-                                                                        <CardActions disableSpacing style={{ textAlign: "center" }}>
-                                                                            <Button onClick={handleClickOpen} style={{ left: "20%" }} color="primary" >
-                                                                                Ver producto
-                                                                            </Button>
-                                                                        </CardActions>
-                                                                    </Card>
-                                                                </GridItem>
-                                                            ))}
-                                                            {errorMessage != ""
-                                                                ?
-                                                                <Alert severity="error">{errorMessage}</Alert>
-                                                                : <span>	&nbsp;</span>
-                                                            }
-                                                            <GridItem xs={12} sm={12} md={12} >
-                                                                <Pagination
-                                                                    count={totalPages}
-                                                                    size="large"
-                                                                    page={currentPage + 1}
-                                                                    variant="outlined"
-                                                                    shape="rounded"
-                                                                    onChange={handleChange}
-                                                                />
-                                                            </GridItem>
-                                                        </GridContainer>
-                                                    </GridItem>
-                                                </GridContainer>
-                                            )
-                                        }
-                                    ]}
-                                />
+                                            <GridItem style={{ marginTop: '15px' }} xs={12} sm={12} md={12} >
+                                                <Pagination
+                                                    count={totalPages}
+                                                    size="large"
+                                                    page={currentPage + 1}
+                                                    variant="outlined"
+                                                    shape="rounded"
+                                                    onChange={handleChange}
+                                                />
+                                            </GridItem>
+                                            {isLoading
+                                                ? <center> <CircularProgress /></center>
+                                                : <span></span>
+                                            }
+                                            {products.map((row) => (
+                                                <GridItem style={{ paddingBottom: '5vh' }} xs={12} sm={6} md={4} >
+                                                    <Card className={classes.root}>
+                                                        <CardHeader
+                                                            title={row.name ? row.name.substring(0, 16) : 'Sin nombre'}
+                                                        />
+                                                        <CardMedia
+                                                            className={classes.media}
+                                                            image={row.imageUrlMin}
+                                                            title={row.name ? row.name : 'Sin nombre'}
+                                                            style={{height:'135px'}}
+                                                        />
+                                                        <CardContent>
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                {row.description.substring(0, 20)} ...<br />
+                                                                precio distribuidor: {formatter.format(row.dropshippingPrice)}<br />
+                                                                precio sugerido de venta: {formatter.format(row.finalPrice)}
+                                                            </Typography>
+                                                        </CardContent>
+                                                        <CardActions disableSpacing style={{ textAlign: "center" }}>
+                                                            <Button onClick={handleClickOpen} style={{ left: "20%" }} color="primary" >
+                                                                Ver producto
+                                                            </Button>
+                                                        </CardActions>
+                                                    </Card>
+                                                </GridItem>
+                                            ))}
+                                            {errorMessage != ""
+                                                ?
+                                                <Alert severity="error">{errorMessage}</Alert>
+                                                : <span>	&nbsp;</span>
+                                            }
+                                            <GridItem xs={12} sm={12} md={12} >
+                                                <Pagination
+                                                    count={totalPages}
+                                                    size="large"
+                                                    page={currentPage + 1}
+                                                    variant="outlined"
+                                                    shape="rounded"
+                                                    onChange={handleChange}
+                                                />
+                                            </GridItem>
+                                        </GridContainer>
+                                    </GridItem>
+                                </GridContainer>
                             </GridItem>
                         </GridContainer>
                     </div>

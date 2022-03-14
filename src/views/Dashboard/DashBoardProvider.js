@@ -173,6 +173,12 @@ export default function DashBoard(props) {
     getOrdersForProvider('changePage', page - 1)
   };
 
+  const copyUrl = () => {
+    var getUrl = window.location;
+    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+    navigator.clipboard.writeText(baseUrl + "proveedor?nombre=" + getMerchantName());
+  }
+
   const classes = useStyles();
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -193,6 +199,7 @@ export default function DashBoard(props) {
               <Grid item xs={12} sm={12} md={6} >
                 Hola {getMerchantName()}, Bienvenido a MiPagoSeguro.
               </Grid>
+              <Grid item xs={12} sm={12} md={6}><Button color="success" onClick={() => copyUrl()}>Copiar enlace de tienda</Button></Grid>
               <br />
               <Grid item xs={12} sm={12} md={12}>Filtrar Transacciones:</Grid>
               <Grid item xs={12} sm={12} md={6} style={{ textAlign: "center" }}>
