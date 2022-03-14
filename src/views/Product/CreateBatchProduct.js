@@ -103,7 +103,7 @@ export default function CreateBatchProduct(props) {
                                     : <span></span>
                                 }
                                 <GridItem xs={12} sm={12} md={12} style={{ textAlign: "left" }}>
-                                    <h5>Aprende como generar el archivo con el formato correcto usando este vídeo <a  href="https://youtu.be/mTGdHWaL6uc" target="_blank">Clic acá</a>. Selecciona el archivo con la información de tus productos:</h5>
+                                    <h5>Aprende como generar el archivo con el formato correcto usando este vídeo <a  href="https://youtu.be/ptoXmNYG7ME" target="_blank">Clic acá</a>. Selecciona el archivo con la información de tus productos:</h5>
                                 </GridItem>
                                 <GridItem xs={12} sm={12} md={12} style={{ textAlign: "center" }}>
 
