@@ -60,6 +60,36 @@ export const consumeServicePut = async (payload, callBack, callBackSuccess, url)
     }
 }
 
+export const consumeServiceGetFile = async (callBack, url) => {
+
+    try {
+        console.log('Enviando ...')
+        putTokenHeader()
+        const responseU = await Axios({
+            url: url,
+            method: 'GET',
+            responseType: 'blob'
+          }).then((response) => {
+            FileDownload(response.data, 'products.xlsx');
+        })
+
+    } catch (error) {
+        if (error.response) {
+            if (400 === error.response.status) {
+                callBack(error.response.data)
+            } if (403 === error.response.status) {
+                window.location.href = '/login';
+            } if (404 === error.response.status) {
+                callBack(404)
+            } else {
+                callBack(null)
+            }
+        } else {
+            callBack(null)
+        }
+    }
+}
+const FileDownload = require('js-file-download');
 export const consumeServiceGet = async (callBack, callBackSuccess, url) => {
 
     try {

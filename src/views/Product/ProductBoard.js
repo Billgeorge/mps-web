@@ -22,7 +22,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Footer from "components/Footer/Footer.js";
 
-import { consumeServiceGet } from 'service/ConsumeService'
+import { consumeServiceGetFile, consumeServiceGet } from 'service/ConsumeService'
 import consumeServicePost from 'service/ConsumeService'
 import { CORE_BASEURL } from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
@@ -70,6 +70,10 @@ export default function ProductBoard(props) {
 
   const createProductTxt = () => {
     history.push("create-product-batch")
+  }
+
+  const updateProductTxt = () => {
+    history.push("update-product-batch")
   }
 
   const deleteProducts = () => {
@@ -123,6 +127,10 @@ export default function ProductBoard(props) {
     minimumFractionDigits: 2
   })
 
+  const callBackDownload = (msg) => {
+    setErrorMessage("Error descargando archivo")
+  }
+
   const callBack = (msg) => {
     setIsLoading(false)
     setProductsl({
@@ -147,6 +155,11 @@ export default function ProductBoard(props) {
 
   const classes = useStyles();
   const { ...rest } = props;
+
+  const downloadProductFile = () => {
+    const url = CORE_BASEURL + "/product/batch"
+    consumeServiceGetFile(callBackDownload, url)
+  }
 
   const searchProductByFilter = (searchText, category, currentPage) => {
     if (isLoading) {
@@ -290,6 +303,15 @@ export default function ProductBoard(props) {
                   shape="rounded"
                   onChange={handleChange}
                 />
+                <br />
+                <Grid item xs={12} className={classes.grid}>
+                  <Button style={{ marginLeft: "10px" }} onClick={downloadProductFile} color="primary">
+                    Descargar productos
+                  </Button>
+                  <Button style={{ marginLeft: "10px" }} color="primary" onClick={updateProductTxt}>
+                    Actualizar productos desde archivo
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
           </GridItem>
