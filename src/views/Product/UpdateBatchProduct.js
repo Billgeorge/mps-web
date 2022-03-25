@@ -103,7 +103,7 @@ export default function UpdateBatchProduct(props) {
                                     : <span></span>
                                 }
                                 <GridItem xs={12} sm={12} md={12} style={{ textAlign: "left" }}>
-                                    <h5>Aprende como editar mutiples productos al tiempo usando un archivo <a  href="https://youtu.be/ptoXmNYG7ME" target="_blank">Clic acá</a>. Selecciona el archivo con la información de tus productos:</h5>
+                                    <h5>Aprende como editar mutiples productos al tiempo usando un archivo <a  href="https://youtu.be/ZOPUyAATVaM" target="_blank">Clic acá</a>. Selecciona el archivo con la información de tus productos:</h5>
                                 </GridItem>
                                 <GridItem xs={12} sm={12} md={12} style={{ textAlign: "center" }}>
 
