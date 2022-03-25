@@ -203,7 +203,7 @@ export default function PublicProducts(props) {
                                 : <span></span>
                             }
                             {products.map((row) => (
-                                <GridItem style={{ paddingBottom: '5vh' }} xs={12} sm={6} md={4} >
+                                <GridItem key={row.id} style={{ paddingBottom: '5vh' }} xs={12} sm={6} md={4} >
                                     <Card className={classes.root}>
                                         <CardHeader
                                             title={row.name ? row.name.substring(0, 16) : 'Sin nombre'}
