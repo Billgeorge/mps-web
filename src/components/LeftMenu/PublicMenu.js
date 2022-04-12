@@ -17,7 +17,7 @@ export default function PublicMenu(props) {
     const useStyles = makeStyles(styles(theme));
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const brandComponent = <div><img src={Logo} alt='Mi pago seguro' style={{ width: "50px" }} /><Button className={classes.title}>mipagoseguro</Button></div>;
+    const brandComponent = <div><img src={Logo} alt='EIKOOS venta por catálogo' style={{ width: "50px" }} /><Button className={classes.title}>EIKOOS</Button></div>;
 
 
     return (

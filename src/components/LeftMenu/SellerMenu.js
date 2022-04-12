@@ -31,47 +31,35 @@ export default function SellerMenu(props) {
             <Link to="/dashboard-dropseller" >
                 <ListItem button className={classes.menuItem}>
 
-                    <ListItemIcon ><ReceiptIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#2097F3' }} primary="Tus ordenes" />
+                    <ListItemIcon ><ReceiptIcon style={{ color: '#44169E' }} /></ListItemIcon>
+                    <ListItemText style={{ color: '#44169E' }} primary="Tus ordenes" />
 
                 </ListItem>
             </Link>
             <Link to="/result" >
                 <ListItem button className={classes.menuItem}>
-                    <ListItemIcon ><PieChartIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#2097F3' }} primary="Resumen" />
+                    <ListItemIcon ><PieChartIcon style={{ color: '#44169E' }} /></ListItemIcon>
+                    <ListItemText style={{ color: '#44169E' }} primary="Resumen" />
                 </ListItem>
             </Link>
             <Link to="/dashboard" >
                 <ListItem button className={classes.menuItem}>
-                    <ListItemIcon ><PaymentIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#2097F3' }} primary="Pagos" />
+                    <ListItemIcon ><PaymentIcon style={{ color: '#44169E' }} /></ListItemIcon>
+                    <ListItemText style={{ color: '#44169E' }} primary="Pagos" />
                 </ListItem>
             </Link>
             <Link to="/product-drop" >
                 <ListItem button className={classes.menuItem}>
-                    <ListItemIcon ><LocalConvenienceStoreIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#2097F3' }} primary="Tus productos" />
+                    <ListItemIcon ><LocalConvenienceStoreIcon style={{ color: '#44169E' }} /></ListItemIcon>
+                    <ListItemText style={{ color: '#44169E' }} primary="Tus productos" />
                 </ListItem>
             </Link>
             <Link to="/search-product" >
                 <ListItem button className={classes.menuItem}>
-                    <ListItemIcon ><ImageSearchIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#2097F3' }} primary="Buscar producto" />
+                    <ListItemIcon ><ImageSearchIcon style={{ color: '#44169E' }} /></ListItemIcon>
+                    <ListItemText style={{ color: '#44169E' }} primary="Buscar producto" />
                 </ListItem>
-            </Link>
-            <Link to="/private-product" >
-                <ListItem button className={classes.menuItem}>
-                    <ListItemIcon ><StarsIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#2097F3' }} primary="Productos privados" />
-                </ListItem>
-            </Link>
-            <Link to="/withdrawal" >
-                <ListItem button key="withdrawal">
-                    <ListItemIcon><AccountBalanceIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#2097F3' }} primary="Retiros" />
-                </ListItem>
-            </Link>
+            </Link>            
         </List>
 
     );

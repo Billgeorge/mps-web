@@ -694,7 +694,7 @@ function Checkout(props) {
                 }
                 <br /> <br />
                 <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
-                    <span>Al realizar la compra estás aceptando nuestros <a href="https://www.mipagoseguro.co/terminos-y-condiciones/" target="_blank">términos y condiciones</a></span>
+                    <span>Al realizar la compra estás aceptando nuestros <a href="https://www.eikoos.com/terminos-y-condiciones/" target="_blank">términos y condiciones</a></span>
                 </GridItem>
                 <Button onClick={createOrderMPS} style={{ fontSize: "1.07em", fontWeight: "900", backgroundColor: "#3636c3" }} className={classes.buttonText} color="success" size="lg">
                     Pagar Online {formatter.format(totalPrice ? totalPrice : product.amount * (carQuantity > 0 ? carQuantity : order.quantity))} con custodía digital

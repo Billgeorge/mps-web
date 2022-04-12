@@ -25,7 +25,7 @@ import Alert from '@material-ui/lab/Alert';
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
-import image from "assets/img/bg7.jpg";
+import image from "assets/img/bg.jpg";
 
 const useStyles = makeStyles(styles);
 
@@ -89,7 +89,7 @@ export default function LoginPage(props) {
       <Header
         absolute
         color="transparent"
-        brand="mipagoseguro"
+        brand="EIKOOS"
         rightLinks={<HeaderLinks />}
         {...rest}
       />

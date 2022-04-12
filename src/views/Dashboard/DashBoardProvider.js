@@ -197,7 +197,7 @@ export default function DashBoard(props) {
             <br />
             <Grid container className={classes.box} spacing={3}>
               <Grid item xs={12} sm={12} md={6} >
-                Hola {getMerchantName()}, Bienvenido a MiPagoSeguro.
+                Hola {getMerchantName()}, Bienvenido a EIKOOS.
               </Grid>
               <Grid item xs={12} sm={12} md={6}><Button color="success" onClick={() => copyUrl()}>Copiar enlace de tienda</Button></Grid>
               <br />

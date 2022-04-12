@@ -28,6 +28,7 @@ import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
 import { Smartphone } from "@material-ui/icons";
 import consumeServicePost from '../../service/ConsumeService'
+import image from "assets/img/bg.jpg";
 
 const useStyles = makeStyles(styles);
 
@@ -101,17 +102,16 @@ export default function RegisterLanding(props) {
       <Header
         absolute
         color="transparent"
-        brand="mipagoseguro"
+        brand="EIKOOS"
         rightLinks={<HeaderLinks />}
         {...rest}
       />
       <div
         className={classes.pageHeader}
-        style={{
-          backgroundColor: "#03a9f4"
-          /*backgroundImage: "url(" + image + ")",
+        style={{          
+          backgroundImage: "url(" + image + ")",
           backgroundSize: "cover",
-          backgroundPosition: "top center"*/
+          backgroundPosition: "top center"
         }}
       >
         <div className={classes.container}>
@@ -180,12 +180,12 @@ export default function RegisterLanding(props) {
                       <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>
                     ))}
                     {isMerchantCreated
-                      ? <Alert severity="success">¡Bienvenido a MiPagoSeguro!, Revisa tu correo y crea tu contraseña lo antes posible. </Alert>
+                      ? <Alert severity="success">¡Bienvenido a EIKOOS!, Revisa tu correo y crea tu contraseña lo antes posible. </Alert>
                       : <span></span>
                     }
                     <br />
                     <GridItem md={12}>
-                      <span>Al registrarte estas aceptando los <a href="https://www.mipagoseguro.co/terminos-y-condiciones/" target="_blank">términos y condiciones</a></span>
+                      <span>Al registrarte estas aceptando los <a href="https://www.eikoos.com/terminos-y-condiciones/" target="_blank">términos y condiciones</a></span>
                     </GridItem>
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>

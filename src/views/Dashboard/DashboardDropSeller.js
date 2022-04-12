@@ -187,7 +187,7 @@ export default function DashboardDropSeller(props) {
           | <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
               <Grid item xs={12} sm={12} md={6} style={{textTransform: 'capitalize'}} >
-                Hola {getMerchantName()}, Bienvenido a MiPagoSeguro.
+                Hola {getMerchantName()}, Bienvenido a EIKOOS.
               </Grid>
             </Grid>
           </GridItem>

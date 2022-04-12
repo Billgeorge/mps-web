@@ -5,7 +5,7 @@ const leftMenu = (theme) => ({
         display: 'flex',
     },
     appBar: {
-        backgroundColor: '#2097F3',
+        backgroundColor: '#44169E',
         zIndex: theme.zIndex.drawer + 1,
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
