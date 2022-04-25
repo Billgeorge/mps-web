@@ -54,8 +54,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function CatalogueProducts(props) {
     const classes = useStyles();
     const [errorMessage, setErrorMessage] = React.useState("");
-    const [searchText, setSearchText] = React.useState("");
-    const [category, setCategory] = React.useState(-1);
+    const [searchText, setSearchText] = React.useState(props.filters.searchText);
+    const [category, setCategory] = React.useState(props.filters.category);
     const [currentPage, setCurrentPage] = React.useState(0);
     const [totalPages, setTotalPages] = React.useState(props.catalogueContent.totalPages);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -87,6 +87,10 @@ export default function CatalogueProducts(props) {
         setCategory(value)
         setCurrentPage(0)
         loadDropProducts(searchText, value, 0, true)
+        props.setFilters({
+            ...props.filters,
+            category: value
+        })
     }
 
     const loadDropProducts = (localSearchText, localCategory, localCurrentPage, isInternal) => {
@@ -96,6 +100,10 @@ export default function CatalogueProducts(props) {
         if (isLoading) {
             return
         }
+        props.setFilters({
+            ...props.filters,
+            searchText: localSearchText
+        })
         const id = getQueyParamFromUrl("id")
         if (!id) {
             setErrorMessage("Debe ingresar el id de la tienda")
@@ -144,7 +152,7 @@ export default function CatalogueProducts(props) {
             ...props.catalogueContent,
             products: products.products,
             totalPages: products.totalPages,
-            sellerName: products.sellerName
+            sellerName: products.sellerName        
         })
     }
 
@@ -172,7 +180,7 @@ export default function CatalogueProducts(props) {
                                 id: 'category',
                             }}
                         >
-                            <option value={0}>Categorías</option>
+                            <option value={0}>Todas las categorías</option>
                             {
 
                                 categories.map(function (category) {

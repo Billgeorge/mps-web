@@ -21,6 +21,12 @@ export default function Catalogue(props) {
     const [catalogueContent, setCatalogueContent] = React.useState({
         products: []
     });
+
+    const [filters, setFilters] = React.useState({
+        searchText: "",
+        category:-1
+    });
+
     const [orderProducts, setOrderProducts] = React.useState([]);
 
     const viewProduct = (product) => {
@@ -52,14 +58,11 @@ export default function Catalogue(props) {
                     </GridItem>
                     <br />
                     {view === "catalogue" ?
-                        <CatalogueProducts viewProduct={viewProduct} catalogueContent={catalogueContent} setCatalogueContent={setCatalogueContent} />
+                        <CatalogueProducts filters={filters} setFilters={setFilters} viewProduct={viewProduct} catalogueContent={catalogueContent} setCatalogueContent={setCatalogueContent} />
                         : <></>}
                     {view === "product" ?
                         <CatalogueProductDetail viewCart={viewCart} viewCatalogue={viewCatalogue} setOrderProducts={setOrderProducts} product={currentProduct} />
-                        : <></>}
-                    {view === "summaryOrder" ?
-                        <CatalogueProducts />
-                        : <></>}
+                        : <></>}                  
                     {view === "cart" ?
                         <CatalogueCart setOrderProducts={setOrderProducts} viewCatalogue={viewCatalogue} orderProducts={orderProducts} />
                         : <></>}

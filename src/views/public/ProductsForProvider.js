@@ -9,7 +9,6 @@ import Button from "components/CustomButtons/Button.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
-import NavPills from "components/NavPills/NavPills.js";
 import Parallax from "components/Parallax/Parallax.js";
 import Avatar from '@material-ui/core/Avatar';
 
