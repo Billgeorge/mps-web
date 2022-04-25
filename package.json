@@ -1,6 +1,6 @@
 {
   "name": "material-kit-react",
-  "version": "1.10.20.13",
+  "version": "1.10.20.15",
   "description": "Material Kit React. Coded by Creative Tim",
   "private": true,
   "main": "src/index.js",
@@ -16,6 +16,7 @@
     "classnames": "2.2.6",
     "file-saver": "^2.0.5",
     "history": "4.10.1",
+    "js-file-download": "^0.4.12",
     "lodash": "^4.17.21",
     "material-ui-search-bar": "^1.0.0",
     "moment": "2.26.0",

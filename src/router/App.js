@@ -51,6 +51,7 @@ import { Promotions } from 'views/Promotion/Promotions';
 import SellersOfProvider from 'views/SellersProvider/SellersOfProvider';
 import PublicProducts from 'views/public/PublicProducts';
 import ProductsForProvider from 'views/public/ProductsForProvider';
+import UpdateBatchProduct from 'views/Product/UpdateBatchProduct';
 
 
 var hist = createBrowserHistory();
@@ -87,6 +88,7 @@ function App() {
               <ProtectRoute path='/branch' component={BranchBoard} />
               <ProtectRoute path='/create-product' component={CreateProduct2} />
               <ProtectRoute path='/create-product-batch' component={CreateProductBatch} />
+              <ProtectRoute path='/update-product-batch' component={UpdateBatchProduct} />
               <ProtectRoute path='/transaction-detail' component={TransactionDetail} />
               <ProtectRoute path='/dashboard' component={DashBoard} />
               <ProtectRoute path='/dashboard-dropprovider' component={DashBoardProvider} />
