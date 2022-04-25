@@ -6,13 +6,13 @@ const thankPageStyle = {
    root:{
         position: "relative",
         height: "100vh",
-        color: "#2097F3",
+        color: "#44169E",
         paddingTop: "5%",
         backgroundImage: `url(${Background})`,
         backgroundSize: 'cover'       
     },
     button:{
-        color:"#2097F3",
+        color:"#44169E",
         marginLeft:"5px",
         marginTop:"20px"
     },

@@ -53,13 +53,13 @@ export default function Footer(props) {
           &copy; {1900 + new Date().getYear()} , hecho con{" "}
           <Favorite className={classes.icon} /> por{" "}
           <a
-            href="https://www.mipagoseguro.co"
+            href="https://www.eikoos.com"
             className={aClasses}
             target="_blank"
           >
-            mipagoseguro
+            Eikoos
           </a>{" "}
-          por un mundo más seguro.
+          por un mundo con más oportunidades.
         </div>
       </div>
     </footer>

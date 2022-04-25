@@ -120,14 +120,14 @@ const useStyles = makeStyles(styles);
         <Header
           absolute
           color="transparent"
-          brand="mipagoseguro"
+          brand="EIKOOS"
           rightLinks={<HeaderLinks />}
           {...rest}
         />
         <div
           className={classes.pageHeader}
           style={{
-              backgroundColor:"#2097F3",
+              backgroundColor:"#44169E",
               paddingTop:"20px"
           }}
         >

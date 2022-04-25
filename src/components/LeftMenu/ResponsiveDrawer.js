@@ -123,13 +123,13 @@ function ResponsiveDrawer(props) {
   };
 
 
-  const brandComponent = <div><img src={Logo} alt='Mi pago seguro' style={{ width: "50px" }} /><Button className={classes.title}>mipagoseguro</Button></div>;
+  const brandComponent = <div><img src={Logo} alt='EIKOOS' style={{ width: "50px" }} /><Button className={classes.title}>EIKOOS</Button></div>;
 
   const drawer = (
     <div>
       <div className={classes.toolbar}>
         <IconButton onClick={handleDrawerClose}>
-          {theme.direction === 'rtl' ? <ChevronRightIcon style={{ color: '#2097F3' }} /> : <ChevronLeftIcon style={{ color: '#2097F3' }} />}
+          {theme.direction === 'rtl' ? <ChevronRightIcon style={{ color: '#44169E' }} /> : <ChevronLeftIcon style={{ color: '#44169E' }} />}
         </IconButton>
       </div>
       <Divider />
@@ -137,18 +137,18 @@ function ResponsiveDrawer(props) {
         { !userRole  ?
           <>
             <ListItem button onClick={handleClickSell} key="seller">
-              <ListItemIcon><SellIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-              <ListItemText style={{ color: '#2097F3' }} primary="Vendedor" />
-              {openSellerMenu ? <IconExpandLess style={{ color: '#2097F3' }} /> : <IconExpandMore style={{ color: '#2097F3' }} />}
+              <ListItemIcon><SellIcon style={{ color: '#44169E' }} /></ListItemIcon>
+              <ListItemText style={{ color: '#44169E' }} primary="Vendedor" />
+              {openSellerMenu ? <IconExpandLess style={{ color: '#44169E' }} /> : <IconExpandMore style={{ color: '#44169E' }} />}
             </ListItem>
             <Collapse in={openSellerMenu} timeout="auto" unmountOnExit>
               <Divider />
               <SellerMenu />
             </Collapse>
             <ListItem button onClick={handleClickProv} key="provider">
-              <ListItemIcon><GroupIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-              <ListItemText style={{ color: '#2097F3' }} primary="Proveedor" />
-              {openProviderMenu ? <IconExpandLess style={{ color: '#2097F3' }} /> : <IconExpandMore style={{ color: '#2097F3' }} />}
+              <ListItemIcon><GroupIcon style={{ color: '#44169E' }} /></ListItemIcon>
+              <ListItemText style={{ color: '#44169E' }} primary="Proveedor" />
+              {openProviderMenu ? <IconExpandLess style={{ color: '#44169E' }} /> : <IconExpandMore style={{ color: '#44169E' }} />}
             </ListItem>
             <Collapse in={openProviderMenu} timeout="auto" unmountOnExit>
               <Divider />
@@ -165,11 +165,11 @@ function ResponsiveDrawer(props) {
             className={classes.navLink}
             onClick={handleClickProfile}
           >
-            <IconButton aria-label="Perfil"><Avatar style={{ backgroundColor: "rgb(29 143 210)" }} aria-label="recipe">
+            <IconButton aria-label="Perfil"><Avatar style={{ backgroundColor: "#44169E" }} aria-label="recipe">
               {getFirstLetters(getMerchantName())}
             </Avatar>
             </IconButton>
-            <ListItemText style={{ color: '#2097F3' }} primary={getMerchantName()} />
+            <ListItemText style={{ color: '#44169E' }} primary={getMerchantName()} />
           </Button>
           <StyledMenu
             id="customized-menu"
@@ -209,8 +209,8 @@ function ResponsiveDrawer(props) {
           }
 
           {open
-          ?<ListItemText style={{ color: '#2097F3', textAlign: 'center' }} primary={`Tu saldo: ${balance}`} />
-          :<ListItemText style={{ color: '#2097F3', textAlign: 'center' }} primary={`${balance}`} /> }
+          ?<ListItemText style={{ color: '#44169E', textAlign: 'center' }} primary={`Tu saldo: ${balance}`} />
+          :<ListItemText style={{ color: '#44169E', textAlign: 'center' }} primary={`${balance}`} /> }
         </ListItem>
       </List>
     </div>
@@ -284,10 +284,10 @@ function ResponsiveDrawer(props) {
       >
         {drawer}
         {open
-        ? <Fab onClick={() => history.push('/charge')} style={{ background: '#2097F3', color: 'white' }} variant="extended">
+        ? <Fab onClick={() => history.push('/charge')} style={{ background: '#44169E', color: 'white' }} variant="extended">
         Recargar
       </Fab>
-        :<MonetizationOnOutlinedIcon color="white" onClick={() => history.push('/charge')} style={{cursor: 'pointer',background: '#2097F3', margin: '0 auto', width: '100%', height: '30px', color: 'white' }} />}
+        :<MonetizationOnOutlinedIcon color="white" onClick={() => history.push('/charge')} style={{cursor: 'pointer',background: '#44169E', margin: '0 auto', width: '100%', height: '30px', color: 'white' }} />}
         
       </Drawer>
     </div>

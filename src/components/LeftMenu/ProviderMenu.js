@@ -27,38 +27,26 @@ export default function ProviderMenu(props) {
 
             <Link to="/dashboard-dropprovider" >
                 <ListItem button className={classes.menuItem}>
-                    <ListItemIcon ><ReceiptIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#2097F3' }} primary="Tus ordenes" />
+                    <ListItemIcon ><ReceiptIcon style={{ color: '#44169E' }} /></ListItemIcon>
+                    <ListItemText style={{ color: '#44169E' }} primary="Tus ordenes" />
                 </ListItem>
             </Link>
             <Link to="/product" >
                 <ListItem button className={classes.menuItem}>
-                    <ListItemIcon ><EditIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#2097F3' }} primary="Tus productos" />
+                    <ListItemIcon ><EditIcon style={{ color: '#44169E' }} /></ListItemIcon>
+                    <ListItemText style={{ color: '#44169E' }} primary="Tus productos" />
                 </ListItem>
             </Link>
             <Link to="/branch" >
                 <ListItem button key="branch">
-                    <ListItemIcon><HomeWork style={{ color: '#2097F3' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#2097F3' }} primary="Bodegas" />
+                    <ListItemIcon><HomeWork style={{ color: '#44169E' }} /></ListItemIcon>
+                    <ListItemText style={{ color: '#44169E' }} primary="Bodegas" />
                 </ListItem>
-            </Link>
-            <Link to="/private-inventory" >
-                <ListItem button key="private-inventory">
-                    <ListItemIcon><AssistantIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#2097F3' }} primary="Inventarios exclusivos" />
-                </ListItem>
-            </Link>
-            <Link to="/sellers" >
-                <ListItem button key="sellers">
-                    <ListItemIcon><Group style={{ color: '#2097F3' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#2097F3' }} primary="Tus vendedores" />
-                </ListItem>
-            </Link>
+            </Link>           
             <Link to="/withdrawal" >
                 <ListItem button key="withdrawal">
-                    <ListItemIcon><AccountBalanceIcon style={{ color: '#2097F3' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#2097F3' }} primary="Retiros" />
+                    <ListItemIcon><AccountBalanceIcon style={{ color: '#44169E' }} /></ListItemIcon>
+                    <ListItemText style={{ color: '#44169E' }} primary="Retiros" />
                 </ListItem>
             </Link>
         </List>

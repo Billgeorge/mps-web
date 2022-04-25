@@ -156,10 +156,10 @@ export default function CreateProduct(props) {
             setErrorMessage({ 'Error': 'Tu imagén debe ser jpeg, jpg, png o tiff' })
             return
         }
-        if (file && file.size > 1048576) {
+        /*if (file && file.size > 1048576) {
             setErrorMessage({ 'Error': 'Tu imagén es muy pesada. No debe superar 1Mb' })
             return
-        }
+        }*/
         renderImage(file)
         setProductImage(file)
     };
