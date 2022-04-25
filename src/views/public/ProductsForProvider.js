@@ -3,9 +3,6 @@ import React from "react";
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-// @material-ui/icons
-import Person from "@material-ui/icons/Category";
-// core components
 
 import Footer from "components/Footer/Footer.js";
 import Button from "components/CustomButtons/Button.js";

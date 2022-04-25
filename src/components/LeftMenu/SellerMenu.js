@@ -35,13 +35,7 @@ export default function SellerMenu(props) {
                     <ListItemText style={{ color: '#44169E' }} primary="Tus ordenes" />
 
                 </ListItem>
-            </Link>
-            <Link to="/result" >
-                <ListItem button className={classes.menuItem}>
-                    <ListItemIcon ><PieChartIcon style={{ color: '#44169E' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#44169E' }} primary="Resumen" />
-                </ListItem>
-            </Link>
+            </Link>           
             <Link to="/dashboard" >
                 <ListItem button className={classes.menuItem}>
                     <ListItemIcon ><PaymentIcon style={{ color: '#44169E' }} /></ListItemIcon>
@@ -58,6 +52,12 @@ export default function SellerMenu(props) {
                 <ListItem button className={classes.menuItem}>
                     <ListItemIcon ><ImageSearchIcon style={{ color: '#44169E' }} /></ListItemIcon>
                     <ListItemText style={{ color: '#44169E' }} primary="Buscar producto" />
+                </ListItem>
+            </Link>
+            <Link to="/withdrawal" >
+                <ListItem button key="withdrawal">
+                    <ListItemIcon><AccountBalanceIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+                    <ListItemText style={{ color: '#2097F3' }} primary="Retiros" />
                 </ListItem>
             </Link>            
         </List>

@@ -109,7 +109,7 @@ function WithDrawal(props) {
           | <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
               <Grid item xs={12} sm={12} md={12} >
-                Utiliza el siguiente botón para solicitar retiro del saldo de tu cuenta de EIKOOS. Recuerda cada retiro tiene un costo de $6000:
+                Utiliza el siguiente botón para solicitar retiro del saldo de tu cuenta de EIKOOS. Tu retiro no tiene ningún costo:
                 {isLoading
                     ? <><br/><center> <CircularProgress /></center></>
                     : <span></span>

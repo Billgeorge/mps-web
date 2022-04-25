@@ -42,19 +42,7 @@ export default function ProviderMenu(props) {
                     <ListItemIcon><HomeWork style={{ color: '#44169E' }} /></ListItemIcon>
                     <ListItemText style={{ color: '#44169E' }} primary="Bodegas" />
                 </ListItem>
-            </Link>
-            <Link to="/private-inventory" >
-                <ListItem button key="private-inventory">
-                    <ListItemIcon><AssistantIcon style={{ color: '#44169E' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#44169E' }} primary="Inventarios exclusivos" />
-                </ListItem>
-            </Link>
-            <Link to="/sellers" >
-                <ListItem button key="sellers">
-                    <ListItemIcon><Group style={{ color: '#44169E' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#44169E' }} primary="Tus vendedores" />
-                </ListItem>
-            </Link>
+            </Link>           
             <Link to="/withdrawal" >
                 <ListItem button key="withdrawal">
                     <ListItemIcon><AccountBalanceIcon style={{ color: '#44169E' }} /></ListItemIcon>

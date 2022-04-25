@@ -20,7 +20,7 @@ import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { login } from '../../service/AuthenticationService'
+import { login,getRole } from '../../service/AuthenticationService'
 import Alert from '@material-ui/lab/Alert';
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
@@ -52,8 +52,12 @@ export default function LoginPage(props) {
       }
       setErrorMessage("")
       const callBackSucess = () => {
-        history.push("/dashboard")
-        setIsLoading(false);
+        let role = getRole()
+        if(role==="seller" || role==="seller-last"){
+          history.push("/dashboard-dropseller")
+          return
+        }
+        history.push("/dashboard-dropprovider")        
       }
       const callBackError = (message) => {
         setErrorMessage(message)

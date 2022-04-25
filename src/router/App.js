@@ -52,6 +52,7 @@ import SellersOfProvider from 'views/SellersProvider/SellersOfProvider';
 import PublicProducts from 'views/public/PublicProducts';
 import ProductsForProvider from 'views/public/ProductsForProvider';
 import UpdateBatchProduct from 'views/Product/UpdateBatchProduct';
+import Catalogue from 'views/public/Catalogue/Catalogue';
 
 
 var hist = createBrowserHistory();
@@ -116,6 +117,7 @@ function App() {
               <Route path="/checkout" component={checkout} />
               <Route path="/public-products" component={PublicProducts} />
               <Route path="/proveedor" component={ProductsForProvider} />
+              <Route path="/catalogo" component={Catalogue} />
               <ProtectRoute path="/result" component={Results} />
 
             </Switch>
