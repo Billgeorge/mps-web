@@ -24,7 +24,7 @@ export default function Catalogue(props) {
 
     const [filters, setFilters] = React.useState({
         searchText: "",
-        category:-1
+        category: -1
     });
 
     const [orderProducts, setOrderProducts] = React.useState([]);
@@ -44,30 +44,28 @@ export default function Catalogue(props) {
     };
 
     return (
-        <div>
+
+        <GridContainer className={jssclasses.container} >
             <PublicMenu />
-            <div className={jssclasses.container}>
+            <h2 style={{ color: "#000" }} className={jssclasses.title} >Catálogo vendedor: {catalogueContent.sellerName}</h2>
+            <GridContainer>
 
-                <h2 style={{ color: "#000" }} className={jssclasses.title} >Catálogo vendedor: {catalogueContent.sellerName}</h2>
-                <GridContainer>
-
-                    <GridItem xs={12} sm={12} md={12} style={{ textAlign: "left" }} >
-                        <Button onClick={viewCart} style={{backgroundColor:"#3f51b5"}} variant="outlined" startIcon={<ShoppingCart />}>
-                            Ver pedido
-                        </Button>
-                    </GridItem>
-                    <br />
-                    {view === "catalogue" ?
-                        <CatalogueProducts filters={filters} setFilters={setFilters} viewProduct={viewProduct} catalogueContent={catalogueContent} setCatalogueContent={setCatalogueContent} />
-                        : <></>}
-                    {view === "product" ?
-                        <CatalogueProductDetail viewCart={viewCart} viewCatalogue={viewCatalogue} setOrderProducts={setOrderProducts} product={currentProduct} />
-                        : <></>}                  
-                    {view === "cart" ?
-                        <CatalogueCart setOrderProducts={setOrderProducts} viewCatalogue={viewCatalogue} orderProducts={orderProducts} />
-                        : <></>}
-                </GridContainer>
-            </div>
-        </div>
+                <GridItem xs={12} sm={12} md={12} style={{ textAlign: "left" }} >
+                    <Button onClick={viewCart} style={{ backgroundColor: "#3f51b5" }} variant="outlined" startIcon={<ShoppingCart />}>
+                        Ver pedido
+                    </Button>
+                </GridItem>
+                <br />
+                {view === "catalogue" ?
+                    <CatalogueProducts filters={filters} setFilters={setFilters} viewProduct={viewProduct} catalogueContent={catalogueContent} setCatalogueContent={setCatalogueContent} />
+                    : <></>}
+                {view === "product" ?
+                    <CatalogueProductDetail viewCart={viewCart} viewCatalogue={viewCatalogue} setOrderProducts={setOrderProducts} product={currentProduct} />
+                    : <></>}
+                {view === "cart" ?
+                    <CatalogueCart setOrderProducts={setOrderProducts} viewCatalogue={viewCatalogue} orderProducts={orderProducts} />
+                    : <></>}
+            </GridContainer>
+        </GridContainer>
     )
 }
