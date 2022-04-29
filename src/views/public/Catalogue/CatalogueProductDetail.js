@@ -11,6 +11,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import _ from "lodash";
 import Alert from '@material-ui/lab/Alert';
+import Carousel from "components/Carousel/Carousel";
 
 
 const useStyles = makeStyles(styles);
@@ -30,11 +31,11 @@ export default function CatalogueProductDetail(props) {
     };
 
     const addOrderProduct = () => {
-        if (product.variants && product.variants.length>0) {
+        if (product.variants && product.variants.length > 0) {
             addCartItem()
             return
         }
-        props.setOrderProducts(oldArray => [...oldArray, { quantity: carQuantity, id: props.product.id, name: props.product.name, price: props.product.price, idToDelete:Math.floor(Math.random() * 100 ) }]);
+        props.setOrderProducts(oldArray => [...oldArray, { quantity: carQuantity, id: props.product.id, name: props.product.name, price: props.product.price, idToDelete: Math.floor(Math.random() * 100) }]);
         props.viewCart()
     }
 
@@ -129,7 +130,7 @@ export default function CatalogueProductDetail(props) {
             }
         )
         if (productToAdd) {
-            props.setOrderProducts(oldArray => [...oldArray, { quantity: carQuantity, id: productToAdd.id, name: newLabel, price: productToAdd.price,idToDelete:Math.floor(Math.random() * 100 ) }]);
+            props.setOrderProducts(oldArray => [...oldArray, { quantity: carQuantity, id: productToAdd.id, name: newLabel, price: productToAdd.price, idToDelete: Math.floor(Math.random() * 100) }]);
             props.viewCart()
         } else {
             setErrorMessage("El producto no tiene inventario.")
@@ -139,12 +140,10 @@ export default function CatalogueProductDetail(props) {
 
     return (
         <GridContainer className={classes.container} >
-            <GridItem className={classes.sideSection} xs={12} sm={12} md={6} style={{ backgroundColor: "rgb(204 204 204 / 22%)" }}>
+            <GridItem className={classes.sideSection} xs={12} sm={12} md={8} style={{ backgroundColor: "rgb(204 204 204 / 22%)", padding:0, paddingTop:'5px' }}>
 
-                <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
-                    <h3 className={classes.shopName}>{product.name}</h3>
-                    <div className={classes.totalPrice}><span>{formatter.format(product.price)}</span></div><br />
-                    <img src={product.imgUrls[0]} alt={product.name} className={classes.imgProduct} />
+                <GridItem xs={12} sm={12} md={12} style={{padding:'0'}} className={classes.gridItemCard} >
+                    <Carousel imgs={product.imgUrls} />
                 </GridItem>
 
                 {product.warranty && product.warranty !== "" ?
@@ -154,9 +153,10 @@ export default function CatalogueProductDetail(props) {
                     </> : <></>
                 }
             </GridItem>
-            <GridItem xs={12} sm={12} md={6} className={classes.rightSide}>
+            <GridItem xs={12} sm={12} md={4} className={classes.rightSide}>
                 <br />
-
+                <h1 style={{fontSize:'22px', fontWeight:'600', textTransform: 'capitalize'}}>{product.name}</h1>
+                <div className={classes.totalPrice}><span>{formatter.format(product.price)}</span></div><br />
                 <GridItem xs={12} sm={12} md={12} className={classes.detailText}> Descripción </GridItem>
                 <GridItem xs={12} sm={12} md={12} className={classes.productDescription}> {product.description}</GridItem>
 

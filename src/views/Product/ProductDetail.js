@@ -10,6 +10,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js";
 import Footer from "components/Footer/Footer.js";
 import Alert from '@material-ui/lab/Alert';
+import Carousel from "components/Carousel/Carousel";
 
 import { consumeServiceGet } from 'service/ConsumeService'
 import { getQueyParamFromUrl } from 'util/UrlUtil'
@@ -25,6 +26,7 @@ export default function ProductDetail(props) {
     const [successMessage, setSuccessMessage] = React.useState(null);
 
     const [errorMessage, setErrorMessage] = React.useState({});
+    const [imageReady, setImageReady] = React.useState(false);
 
     const [product, setProduct] = React.useState({
         id: "",
@@ -34,7 +36,7 @@ export default function ProductDetail(props) {
         merchantId: "",
         amount: "",
         dropshippingPrice: 0,
-        imageUrl: ""
+        imageUrl: []
 
     })
     const [merchant, setMerchant] = React.useState({
@@ -53,8 +55,11 @@ export default function ProductDetail(props) {
             }
 
         }
-        const callBackGetProductSucess = (response) => {
-            setProduct(response)
+        const callBackGetProductSucess = (response) => {            
+            let product = response
+            product.imageUrl = response.imageUrl.split(',')
+            setProduct(product)
+            setImageReady(true)
         }
 
         let idp = getQueyParamFromUrl('idp')
@@ -106,7 +111,11 @@ export default function ProductDetail(props) {
                             value={product.name || ""}
                         />
                         <div className={classes.totalPrice} > <span> $ {product.amount || ""} </span> </div><br />
-                        <img src={product.imageUrl} className={classes.imgProduct} />
+                        { imageReady?
+                            <Carousel imgs={product.imageUrl} />
+                            :<></>
+                        }
+                                 
                     </GridItem>
                     {product.variants && product.variants.length > 0 ?
                         <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
