@@ -11,7 +11,7 @@ import Carousel from "components/Carousel/Carousel";
 
 const useStyles = makeStyles(styles);
 export default function CreateProductStepOne(props) {
-    
+
     const classes = useStyles();
 
     const [imgs, setImgs] = React.useState(props.imgs);
@@ -36,17 +36,15 @@ export default function CreateProductStepOne(props) {
             props.setErrorMessage({ 'Error': 'Tu imagén es muy pesada. No debe superar 1Mb' })
             return
         }
-        //renderImage(file)
-        setToImgs(file,file1,file2)        
-        //setProductImage(file)
+        setToImgs(file, file1, file2)
     };
 
     const verifyImageExtension = (extension) => {
         return (extension !== "jpg" && extension !== "png" && extension !== "jpeg" && extension !== "tiff")
     }
 
-    const setToImgs = (file,file1, file2) => {
-        if(!file || !file1 || !file2){
+    const setToImgs = (file, file1, file2) => {
+        if (!file || !file1 || !file2) {
             return
         }
         let finalFile
@@ -54,7 +52,7 @@ export default function CreateProductStepOne(props) {
         let finalFile2
         var fr = new FileReader();
         var fr1 = new FileReader();
-        var fr2 = new FileReader();        
+        var fr2 = new FileReader();
         fr.onload = function () {
             finalFile = fr.result;
             fr1.readAsDataURL(file1);
@@ -66,21 +64,27 @@ export default function CreateProductStepOne(props) {
         fr2.onload = function () {
             finalFile2 = fr2.result;
             setImgs([])
-            setImgs([finalFile,finalFile1,finalFile2])            
-            props.setImgs([finalFile,finalFile1,finalFile2])
-            props.setproductPhotos([file,file1,file2])
+            props.setImgs([])
+            setImgs([finalFile, finalFile1, finalFile2])            
+            props.setImgs([finalFile, finalFile1, finalFile2])
+            props.setproductPhotos([file, file1, file2])
+            if(props.isEdit){
+                props.setIsEdit(false)
+            }
         }
-        fr.readAsDataURL(file);        
+        fr.readAsDataURL(file);
     }
-    
+
     return (
-        <GridItem xs={12} sm={12} md={12}>            
-            <GridItem xs={12} sm={12} md={12}>                
+        <GridItem xs={12} sm={12} md={12}>
+            {console.log('props',props)}
+            {console.log('imgs',imgs)}
+            <GridItem xs={12} sm={12} md={12}>
                 {
-                    imgs.length>0? <Carousel imgs={imgs}/>
-                    : <img type="file" src={props.productImage} name="productImage" alt='Imagen' id="productImage" className={classes.imgProduct} />
+                    imgs.length > 0 || props.imgs.length>0 ? <Carousel imgs={imgs.length > 0 ? imgs : props.imgs} />
+                        : <img type="file" src={props.productImage} name="productImage" alt='Imagen' id="productImage" className={classes.imgProduct} />
                 }
-                <input onChange={(e)=>fileSelected(e)} accept="image/*" style={{ display: 'none' }} id="icon-button-file" type="file" multiple/>
+                <input onChange={(e) => fileSelected(e)} accept="image/*" style={{ display: 'none' }} id="icon-button-file" type="file" multiple />
                 <label className={classes.addImg} htmlFor="icon-button-file">
                     <IconButton color="primary" aria-label="upload picture" component="span">
                         <AddIcon />
