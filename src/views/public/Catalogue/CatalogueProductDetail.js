@@ -113,7 +113,7 @@ export default function CatalogueProductDetail(props) {
 
             label = `${label} ${document.getElementById(i).name}: ${document.getElementById(i).value}`
         }
-        let finalItems = addVariantProductToOrder(attr, label)
+        let finalItems = addVariantProductToOrder(attr, `${product.name} ${label}`)
         console.log(finalItems)
     }
 
@@ -140,7 +140,7 @@ export default function CatalogueProductDetail(props) {
 
     return (
         <GridContainer className={classes.container} >
-            <GridItem className={classes.sideSection} xs={12} sm={12} md={8} style={{ backgroundColor: "rgb(204 204 204 / 22%)", padding:0, paddingTop:'5px' }}>
+            <GridItem className={classes.sideSection} xs={12} sm={12} md={8} style={{ backgroundColor: "#fff", padding:0, paddingTop:'5px' }}>
 
                 <GridItem xs={12} sm={12} md={12} style={{padding:'0'}} className={classes.gridItemCard} >
                     <Carousel imgs={product.imgUrls} />

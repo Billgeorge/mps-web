@@ -54,7 +54,7 @@ export default function LoginPage(props) {
       const callBackSucess = () => {
         let role = getRole()
         if(role==="seller" || role==="seller-last"){
-          history.push("/dashboard-dropseller")
+          history.push("/orders-seller")
           return
         }
         history.push("/dashboard-dropprovider")        

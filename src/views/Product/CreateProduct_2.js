@@ -540,17 +540,8 @@ export default function CreateProduct(props) {
             }
         }
         if ((step - 1) === 1) {
-            setStep(step - 1)
-            //renderImage(productImage)
+            setStep(step - 1)            
         }
-    }
-
-    const renderImage = (file) => {
-        var fr = new FileReader();
-        fr.onload = function () {
-            document.getElementById("productImage").src = fr.result;
-        }
-        fr.readAsDataURL(file);
     }
 
     return (

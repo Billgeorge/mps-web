@@ -53,6 +53,8 @@ import PublicProducts from 'views/public/PublicProducts';
 import ProductsForProvider from 'views/public/ProductsForProvider';
 import UpdateBatchProduct from 'views/Product/UpdateBatchProduct';
 import Catalogue from 'views/public/Catalogue/Catalogue';
+import DashboardSeller from 'views/Dashboard/DashBoardSeller';
+import OrderDetailCatalogue from 'views/order/OrderDetailCatalogue';
 
 
 var hist = createBrowserHistory();
@@ -75,8 +77,7 @@ function App() {
           <Router history={hist}>            
             <Switch>
               <ProtectRoute path="/productDetail" component={ProductDetail} />
-              <ProtectRoute path="/edit-product-inventory" component={EditInventoryProduct} />
-              <ProtectRoute path="/order-detail" component={OrderDetail} />
+              <ProtectRoute path="/edit-product-inventory" component={EditInventoryProduct} />              
               <ProtectRoute path="/product-drop" component={ProductDropBoard} />
               <ProtectRoute path="/edit-checkout" component={EditCheckout} />
               <ProtectRoute path="/private-product" component={PrivateProducts} />
@@ -104,6 +105,8 @@ function App() {
               <ProtectRoute path="/promotions" component={Promotions} />
               <ProtectRoute path="/warranty" component={WarrantyOrder} />
               <ProtectRoute path="/online-order" component={OnlineOrder} />
+              <ProtectRoute path="/orders-seller" component={DashboardSeller} />
+              <ProtectRoute path="/order-detail" component={OrderDetailCatalogue} />
               <ProtectRoute path="/sellers" component={SellersOfProvider} />
               <Route path="/detail" component={TransactionDetailPublic} />
               <Route path="/customer" component={EditCustomer} />

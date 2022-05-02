@@ -9,11 +9,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from 'react-router-dom';
 
 import ReceiptIcon from '@material-ui/icons/Receipt';
-import PieChartIcon from '@material-ui/icons/PieChart';
 import PaymentIcon from '@material-ui/icons/Payment';
 import LocalConvenienceStoreIcon from '@material-ui/icons/LocalConvenienceStore';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
-import StarsIcon from '@material-ui/icons/Stars';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 
 
@@ -28,7 +26,7 @@ export default function SellerMenu(props) {
 
         <List component="div" style={{ paddingLeft: props.paddingLeft ? props.paddingLeft : '15px' }}>
 
-            <Link to="/dashboard-dropseller" >
+            <Link to="/orders-seller" >
                 <ListItem button className={classes.menuItem}>
 
                     <ListItemIcon ><ReceiptIcon style={{ color: '#44169E' }} /></ListItemIcon>
