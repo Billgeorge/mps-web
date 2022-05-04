@@ -80,8 +80,10 @@ export default function RegisterLanding(props) {
   };
 
   const getCities = () => {
-    const url = `${CORE_BASEURL}/logistic/cities`
-    consumeServiceGet(callBackErrorGetCities, callBackSuccessGetCities, url)
+    if(getQueyParamFromUrl("rol") === "seller"){
+      const url = `${CORE_BASEURL}/logistic/cities`
+      consumeServiceGet(callBackErrorGetCities, callBackSuccessGetCities, url)
+    }
   }
 
   const callBackErrorGetCities = () => {
@@ -114,7 +116,8 @@ export default function RegisterLanding(props) {
     getCities()
     document.registerForm.onsubmit = function (event) {
       event.preventDefault()
-      if (!document.getElementById("department").value || !document.getElementById("city").value) {
+      if (getQueyParamFromUrl("rol") === "seller" && 
+      (!document.getElementById("department").value || !document.getElementById("city").value)) {
         setErrorMessage({ 'Error': 'Debe seleccionar ciudad y departamento' })
         return
       }
@@ -134,8 +137,10 @@ export default function RegisterLanding(props) {
         document.getElementById("registerForm").reset();
         setIsLoading(false)
         setIsMerchantCreated(true)
-        document.getElementById("department").value = ""
-        document.getElementById("city").value = ""
+        if(document.getElementById("department") && document.getElementById("city")){
+          document.getElementById("department").value = ""
+          document.getElementById("city").value = ""
+        }
         setCity({})
         if (getQueyParamFromUrl("rol") === "seller") {
           const url = `${PULL_BASEURL}/cashin/redirect`
@@ -159,10 +164,10 @@ export default function RegisterLanding(props) {
         email: document.getElementById("email").value,
         role: role,
         contactNumber: document.getElementById("contactNumber").value,
-        referer_email: document.getElementById("emailFriend").value ? document.getElementById("emailFriend").value : null,
-        city: document.getElementById("city").value,
-        department: document.getElementById("department").value,
-        address: document.getElementById("address").value
+        referer_email: document.getElementById("emailFriend") ? document.getElementById("emailFriend").value : null,
+        city: document.getElementById("city")?document.getElementById("city").value : null,
+        department: document.getElementById("department")?document.getElementById("department").value : null,
+        address: document.getElementById("address")?document.getElementById("address").value : null
       }, callBack, callBackSucess,
         CORE_BASEURL + "/merchant/landing")
     }
@@ -258,104 +263,110 @@ export default function RegisterLanding(props) {
                         )
                       }}
                     />
-                    <FormControl style={{ paddingTop: "30px", width: "100%", backgroundColor: "white" }} variant="outlined" className={classes.form}>
-                      <InputLabel htmlFor="separtment">Departamento</InputLabel>
-                      <Select
-                        native
-                        value={city.department}
-                        onChange={handleChangeState}
-                        label="Departamento"
-                        inputProps={{
-                          name: 'state',
-                          id: 'department',
-                        }}
-                      >
-                        <option aria-label="None" value="" />
-                        {
-                          states.sort(
-                            function (a, b) {
-                              if (a < b) {
-                                return -1;
+                    {
+                      getQueyParamFromUrl("rol") === 'seller' ?
+                        <>
+                          <FormControl style={{ paddingTop: "30px", width: "100%", backgroundColor: "white" }} variant="outlined" className={classes.form}>
+                            <InputLabel htmlFor="separtment">Departamento</InputLabel>
+                            <Select
+                              native
+                              value={city.department}
+                              onChange={handleChangeState}
+                              label="Departamento"
+                              inputProps={{
+                                name: 'state',
+                                id: 'department',
+                              }}
+                            >
+                              <option aria-label="None" value="" />
+                              {
+                                states.sort(
+                                  function (a, b) {
+                                    if (a < b) {
+                                      return -1;
+                                    }
+                                    if (b < a) {
+                                      return 1;
+                                    }
+                                    return 0;
+                                  }
+                                ).map(function (state) {
+                                  return <option value={state}>{state.replace(/^./, (str) => {
+                                    return str.toUpperCase();
+                                  })}</option>;
+                                })
                               }
-                              if (b < a) {
-                                return 1;
-                              }
-                              return 0;
-                            }
-                          ).map(function (state) {
-                            return <option value={state}>{state.replace(/^./, (str) => {
-                              return str.toUpperCase();
-                            })}</option>;
-                          })
-                        }
-                      </Select>
-                    </FormControl>
+                            </Select>
+                          </FormControl>
 
-                    <FormControl style={{ paddingTop: "30px", width: "100%", backgroundColor: "white" }} variant="outlined" className={classes.form}>
-                      <InputLabel htmlFor="city">Ciudad</InputLabel>
-                      <Select
-                        native
-                        value={city.code}
-                        onChange={handleChange}
-                        label="Ciudad"
-                        inputProps={{
-                          name: 'city',
-                          id: 'city',
-                        }}
-                      >
-                        <option aria-label="None" value="" />
-                        {
-                          cities.sort(
-                            function (a, b) {
-                              if (a.city < b.city) {
-                                return -1;
+                          <FormControl style={{ paddingTop: "30px", width: "100%", backgroundColor: "white" }} variant="outlined" className={classes.form}>
+                            <InputLabel htmlFor="city">Ciudad</InputLabel>
+                            <Select
+                              native
+                              value={city.code}
+                              onChange={handleChange}
+                              label="Ciudad"
+                              inputProps={{
+                                name: 'city',
+                                id: 'city',
+                              }}
+                            >
+                              <option aria-label="None" value="" />
+                              {
+                                cities.sort(
+                                  function (a, b) {
+                                    if (a.city < b.city) {
+                                      return -1;
+                                    }
+                                    if (b.city < a.city) {
+                                      return 1;
+                                    }
+                                    return 0;
+                                  }
+                                ).map(function (item) {
+                                  return <option value={item.code}>{item.city.toLowerCase().replace(/^./, (str) => {
+                                    return str.toUpperCase();
+                                  })}</option>;
+                                })
                               }
-                              if (b.city < a.city) {
-                                return 1;
-                              }
-                              return 0;
-                            }
-                          ).map(function (item) {
-                            return <option value={item.code}>{item.city.toLowerCase().replace(/^./, (str) => {
-                              return str.toUpperCase();
-                            })}</option>;
-                          })
-                        }
-                      </Select>
-                    </FormControl>
+                            </Select>
+                          </FormControl>
 
-                    <CustomInput
-                      labelText="Tu dirección..."
-                      id="address"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        type: "text",
-                        required: true,
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Home className={classes.inputIconsColor} />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
+                          <CustomInput
+                            labelText="Tu dirección..."
+                            id="address"
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                            inputProps={{
+                              type: "text",
+                              required: true,
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <Home className={classes.inputIconsColor} />
+                                </InputAdornment>
+                              )
+                            }}
+                          />
 
-                    <CustomInput
-                      labelText="Correo de quien te refiere..."
-                      id="emailFriend"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        type: "email",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <AlternateEmail className={classes.inputIconsColor} />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
+                          <CustomInput
+                            labelText="Correo de quien te refiere..."
+                            id="emailFriend"
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                            inputProps={{
+                              type: "email",
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <AlternateEmail className={classes.inputIconsColor} />
+                                </InputAdornment>
+                              )
+                            }}
+                          />
+                        </>
+                        : <></>
+                    }
 
                     {Object.keys(errorMessage).map((keyName, i) => (
                       <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>
