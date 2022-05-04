@@ -16,7 +16,6 @@ import LoginPage from "views/LoginPage/LoginPage.js";
 import RegisterLanding from "views/RegisterPage/RegisterLanding";
 import CreatePassword from "views/RegisterPage/CreatePassword";
 import TransactionDetail from "views/TransactionDetail/TransactionDetail";
-import OrderDetail from "views/order/OrderDetail";
 import TransactionDetailPublic from "views/TransactionDetail/TransactionDetailPublic";
 import CreatePayment from "views/CreatePayment/CreatePayment";
 import checkout from "views/Checkout/Checkout";
