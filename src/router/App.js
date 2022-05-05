@@ -54,6 +54,7 @@ import UpdateBatchProduct from 'views/Product/UpdateBatchProduct';
 import Catalogue from 'views/public/Catalogue/Catalogue';
 import DashboardSeller from 'views/Dashboard/DashBoardSeller';
 import OrderDetailCatalogue from 'views/order/OrderDetailCatalogue';
+import ThankPageToSeller from 'views/thanks/ThankPageToSeller';
 
 
 var hist = createBrowserHistory();
@@ -115,7 +116,8 @@ function App() {
               <Route path='/agree-payment' component={AgreePayment} />
               <Route path="/registro" component={RegisterLanding} />
               <Route path="/login" component={LoginPage} />
-              <Route path="/thanks-page" component={ThanksPage} />
+              <Route path="/thanks-page" component={ThankPageToSeller} />
+              <Route path="/thanks-page-customer" component={ThanksPage} />
               <Route path="/checkout" component={checkout} />
               <Route path="/public-products" component={PublicProducts} />
               <Route path="/proveedor" component={ProductsForProvider} />

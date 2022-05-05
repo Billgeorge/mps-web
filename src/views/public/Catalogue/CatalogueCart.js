@@ -75,7 +75,7 @@ export default function CatalogueCart(props) {
 
     const callBackSuccess = (order) => {
         setIsLoading(false)
-        history.push("/thanks-page")
+        history.push("/thanks-page-customer")
     }
 
     const deleteItem = (id) => {
