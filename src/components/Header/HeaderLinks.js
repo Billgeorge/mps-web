@@ -48,11 +48,28 @@ export default function HeaderLinks(props) {
         >
           <Button
             color="transparent"
-            href="https://www.facebook.com/Mipagoseguro-100633465045107/?ref=py_c"
+            href="https://www.facebook.com/Eikoos-115362337829289/"
             target="_blank"
             className={classes.navLink}
           >
             <i className={classes.socialIcons + " fab fa-facebook"} />
+          </Button>
+        </Tooltip>
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <Tooltip
+          id="instagram-facebook"
+          title="Siguenos en Youtube"
+          placement={window.innerWidth > 959 ? "top" : "left"}
+          classes={{ tooltip: classes.tooltip }}
+        >
+          <Button
+            color="transparent"
+            href="https://www.youtube.com/channel/UCgh3eyS3GlkGmZC1221v5AQ"
+            target="_blank"
+            className={classes.navLink}
+          >
+            <i className={classes.socialIcons + " fab fa-youtube"} />
           </Button>
         </Tooltip>
       </ListItem>
@@ -65,7 +82,7 @@ export default function HeaderLinks(props) {
         >
           <Button
             color="transparent"
-            href="https://www.instagram.com/mipagoseguro.col/?hl=es-la"
+            href="https://www.instagram.com/eikoos.latam/?hl=es-la"
             target="_blank"
             className={classes.navLink}
           >

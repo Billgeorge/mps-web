@@ -220,14 +220,14 @@ function AgreePayment(props) {
       <Header
         absolute
         color="transparent"
-        brand="mipagoseguro"
+        brand="EIKOOS"
         rightLinks={<HeaderLinks />}
         {...rest}
       />
       <div
         className={classes.pageHeader}
         style={{
-          backgroundColor: "#2097F3"
+          backgroundColor: "#44169E"
           /*backgroundImage: "url(" + image + ")",
           backgroundSize: "cover",
           backgroundPosition: "top center"*/
@@ -240,7 +240,7 @@ function AgreePayment(props) {
 
                 <form className={classes.form} validated="true" name="agreeForm" id="agreeForm">
                   <CardHeader className={classes.cardHeader}>
-                    <h3 style={{ fontWeight: "600", fontSize: "2.5em", fontFamily: 'Dosis, sans-serif' }}>Bienvenido a mipagoseguro </h3> <EmojiEmotionsIcon style={{ fontSize: '2.5em', color: "#2097F3" }} />
+                    <h3 style={{ fontWeight: "600", fontSize: "2.5em", fontFamily: 'Dosis, sans-serif' }}>Bienvenido a EIKOOS </h3> <EmojiEmotionsIcon style={{ fontSize: '2.5em', color: "#44169E" }} />
                     <h5 style={{ fontWeight: "600" }}>Con nuestro servicio tu dinero esta a salvo</h5>
                   </CardHeader>
                   <CardBody>
@@ -357,7 +357,7 @@ function AgreePayment(props) {
                       <Alert severity="error">{keyName} : {errorMessage[keyName]}</Alert>
                     ))}
                     <GridItem md={12}>
-                      <span>Al realizar el pago estas aceptando los <a href="https://www.mipagoseguro.co/terminos-y-condiciones/" target="_blank">términos y condiciones</a></span>
+                      <span>Al realizar el pago estas aceptando los <a href="https://www.eikoos.com/terminos-y-condiciones/" target="_blank">términos y condiciones</a></span>
                     </GridItem>
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>

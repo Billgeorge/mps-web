@@ -10,6 +10,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js";
 import Footer from "components/Footer/Footer.js";
 import Alert from '@material-ui/lab/Alert';
+import Carousel from "components/Carousel/Carousel";
 
 import { consumeServiceGet } from 'service/ConsumeService'
 import { getQueyParamFromUrl } from 'util/UrlUtil'
@@ -25,6 +26,7 @@ export default function ProductDetail(props) {
     const [successMessage, setSuccessMessage] = React.useState(null);
 
     const [errorMessage, setErrorMessage] = React.useState({});
+    const [imageReady, setImageReady] = React.useState(false);
 
     const [product, setProduct] = React.useState({
         id: "",
@@ -34,7 +36,7 @@ export default function ProductDetail(props) {
         merchantId: "",
         amount: "",
         dropshippingPrice: 0,
-        imageUrl: ""
+        imageUrl: []
 
     })
     const [merchant, setMerchant] = React.useState({
@@ -53,18 +55,11 @@ export default function ProductDetail(props) {
             }
 
         }
-
-        const callBackGetProductSucess = (response) => {
-            setProduct(response)
-            let idm = response.merchantId
-            console.log("merchantId: ", idm)
-            let url1 = `${CORE_BASEURL}/merchant/visible/${idm}`
-            consumeServiceGet(callBack, callBackGetMerchantSucess, url1)
-
-        }
-
-        const callBackGetMerchantSucess = (response) => {
-            setMerchant(response)
+        const callBackGetProductSucess = (response) => {            
+            let product = response
+            product.imageUrl = response.imageUrl.split(',')
+            setProduct(product)
+            setImageReady(true)
         }
 
         let idp = getQueyParamFromUrl('idp')
@@ -116,7 +111,11 @@ export default function ProductDetail(props) {
                             value={product.name || ""}
                         />
                         <div className={classes.totalPrice} > <span> $ {product.amount || ""} </span> </div><br />
-                        <img src={product.imageUrl} className={classes.imgProduct} />
+                        { imageReady?
+                            <Carousel imgs={product.imageUrl} />
+                            :<></>
+                        }
+                                 
                     </GridItem>
                     {product.variants && product.variants.length > 0 ?
                         <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
@@ -151,15 +150,7 @@ export default function ProductDetail(props) {
                     <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
                         <h4 className={classes.productDescription} style={{ fontSize: "25px" }}> Precio Distribuidor: </h4>
                         <div className={classes.productDescription}> ${product.dropshippingPrice} </div>
-                    </GridItem>
-                    <GridItem justify="center" xs={12} sm={12} md={12} className={classes.gridItemCard}>
-                        <h4 className={classes.productDescription} style={{ fontSize: "25px" }}> Nombre Proveedor:  </h4>
-                        <div className={classes.productDescription}> {merchant.name || ""} </div>
-                    </GridItem>
-                    <GridItem justify="center" xs={12} sm={12} md={12} className={classes.gridItemCard}>
-                        <h4 className={classes.productDescription} style={{ fontSize: "25px" }}> Número de Contacto Proveedor:  </h4>
-                        <div className={classes.productDescription}> {merchant.contactNumber || ""} </div>
-                    </GridItem>
+                    </GridItem>                    
                     <GridItem justify="center" xs={12} sm={12} md={12} className={classes.gridItemCard}>
                         <h4 className={classes.productDescription} style={{ fontSize: "25px" }}> Cantidad Disponible: </h4>
                         <div className={classes.productDescription}> {product.inventory || 0} </div>
@@ -178,17 +169,6 @@ export default function ProductDetail(props) {
                             <h4 className={classes.productDescription} style={{ fontSize: "25px" }}> Sku: </h4>
                             <div className={classes.productDescription}> {product.sku || ""} </div>
                         </GridItem> : <></>}
-                    {product.dimensions && product.dimensions.length > 0 ?
-                        <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
-                            <h4 className={classes.productDescription} style={{ fontSize: "25px" }}> Largo, ancho, alto: </h4>
-                            <div className={classes.productDescription}> {`${product.dimensions[0]},${product.dimensions[1]},${product.dimensions[2]}` || ""} </div>
-                        </GridItem> : <></>}
-                    {product.weight ?
-                        <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
-                            <h4 className={classes.productDescription} style={{ fontSize: "25px" }}> Peso(Lb): </h4>
-                            <div className={classes.productDescription}> {product.weight || ""} </div>
-                        </GridItem> : <></>}
-
                     <br />{!getQueyParamFromUrl('vw') ?
                         <Button onClick={addDropShipping} className={classes.buttonText} color="success" size="lg">
                             Vincular Producto a mi Comercio

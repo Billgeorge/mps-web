@@ -30,7 +30,7 @@ const useStyles = makeStyles(styles);
 export default function CreateProduct(props) {
 
     const classes = useStyles();
-    
+
     const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
 
     const [isLoading, setIsLoading] = React.useState(false);
@@ -49,12 +49,13 @@ export default function CreateProduct(props) {
     const [step, setStep] = React.useState(1);
     const [errorMessage, setErrorMessage] = React.useState("");
     const [productImage, setProductImage] = React.useState(emptyImage);
+    const [productPhotos, setproductPhotos] = React.useState([]);
     const [infoMessage, setInfoMessage] = React.useState("");
     const [inventories, setInventories] = React.useState([]);
     const [complexInventory, setComplexInventory] = React.useState([]);
     const [showCustomFields, setShowCustomFields] = React.useState(false);
     const [combinations, setCombinations] = React.useState([]);
-
+    const [imgs, setImgs] = React.useState([]);
     const [dimensions, setDimensions] = React.useState({
         long: 0,
         width: 0,
@@ -147,22 +148,6 @@ export default function CreateProduct(props) {
             setErrorMessage({ "Error": "Error cargando sucursales" })
         }
     }
-
-    const fileSelected = (event) => {
-        setErrorMessage({})
-        let file = event.target.files[0]
-        const extension = file.name.split('.').pop()
-        if(extension !== "jpg" && extension !== "png" && extension !== "jpeg" && extension !== "tiff"){
-            setErrorMessage({ 'Error': 'Tu imagén debe ser jpeg, jpg, png o tiff' })
-            return
-        }
-        if (file && file.size > 1048576) {
-            setErrorMessage({ 'Error': 'Tu imagén es muy pesada. No debe superar 1Mb' })
-            return
-        }
-        renderImage(file)
-        setProductImage(file)
-    };
 
     const processInformation = () => {
         if (step === 1) {
@@ -324,11 +309,11 @@ export default function CreateProduct(props) {
     }
 
     const createInventoryRequest = (product) => {
-        console.log("creating request for inventory",complexInventory)
+        console.log("creating request for inventory", complexInventory)
         let attrs = new Set(complexInventory.map((element) => element.attr));
         let finalInventoryRequest = []
         attrs.forEach((attr) => {
-            console.log("attr",attr)
+            console.log("attr", attr)
             finalInventoryRequest.push({
                 'productId': product.variants.filter((variant) =>
                     variant.attributes.replace('{', '').replace('}', '') === attr
@@ -336,7 +321,7 @@ export default function CreateProduct(props) {
                 'inventories': complexInventory.filter((inv) => inv.attr === attr)
             })
         });
-        console.log("request created",finalInventoryRequest)
+        console.log("request created", finalInventoryRequest)
         return {
             'requests': finalInventoryRequest
         }
@@ -345,8 +330,10 @@ export default function CreateProduct(props) {
     const callBackCreateInventorySuccess = (inventory) => {
         setIsLoading(false)
         document.getElementById("createProduct").reset()
+        setImgs([])
+        setproductPhotos([])
         setInfoMessage("Producto creado correctamente")
-        setStep(1)
+        setStep(1)       
         setProductImage(emptyImage)
         setShowCustomFields(false)
         setProduct(
@@ -394,7 +381,7 @@ export default function CreateProduct(props) {
             }
         )
         setStoredProduct({})
-        setBranch([])        
+        setBranch([])
     }
 
 
@@ -432,7 +419,11 @@ export default function CreateProduct(props) {
         });
         const data = new FormData();
         data.append("data", blob);
-        data.append("image", productImage);
+        productPhotos.forEach(
+            (pphoto)=>{
+                data.append("image", pphoto);
+            }
+        )   
         data.append("variants", JSON.stringify(inventoryItem.inventory));
         setIsLoading(true)
         consumeServicePost(data, callBack, callBackCreateProducSuccess, `${CORE_BASEURL}/product`)
@@ -500,7 +491,11 @@ export default function CreateProduct(props) {
             });
             const data = new FormData();
             data.append("data", blob);
-            data.append("image", productImage);
+            productPhotos.forEach(
+                (pphoto)=>{
+                    data.append("image", pphoto);
+                }
+            )            
             setIsLoading(true)
             consumeServicePost(data, callBack, callBackCreateProducSuccess, `${CORE_BASEURL}/product`)
 
@@ -528,7 +523,7 @@ export default function CreateProduct(props) {
 
     const processInformationStepOne = () => {
         setInfoMessage("")
-        if (product.name && product.description && productImage !== emptyImage) {
+        if (product.name && product.description && imgs.length==3) {
             setStep(step + 1)
             setErrorMessage({})
         } else {
@@ -545,17 +540,8 @@ export default function CreateProduct(props) {
             }
         }
         if ((step - 1) === 1) {
-            setStep(step - 1)
-            renderImage(productImage)
+            setStep(step - 1)            
         }
-    }
-
-    const renderImage = (file) => {
-        var fr = new FileReader();
-        fr.onload = function () {
-            document.getElementById("productImage").src = fr.result;
-        }
-        fr.readAsDataURL(file);
     }
 
     return (
@@ -579,7 +565,7 @@ export default function CreateProduct(props) {
                                         : <span></span>
                                     }
                                     {step === 1 ?
-                                        <CreateProductStepOne handleChangeProduct={handleChangeProduct} fileSelected={fileSelected} product={product} productImage={productImage} />
+                                        <CreateProductStepOne setproductPhotos={setproductPhotos} imgs={imgs} setImgs={setImgs} handleChangeProduct={handleChangeProduct} setErrorMessage={setErrorMessage} product={product} productImage={productImage} />
                                         : <span></span>}
                                     {!showCustomFields && step === 2 ?
                                         <CreateProductStepTwo handleChangeDimensions={handleChangeDimensions} dimensions={dimensions} handleChangeCheckBox={handleChangeCheckBox} product={product} handleChangeProduct={handleChangeProduct} />

@@ -187,7 +187,7 @@ export default function DashboardDropSeller(props) {
           | <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
               <Grid item xs={12} sm={12} md={6} style={{textTransform: 'capitalize'}} >
-                Hola {getMerchantName()}, Bienvenido a MiPagoSeguro.
+                Hola {getMerchantName()}, Bienvenido a EIKOOS.
               </Grid>
             </Grid>
           </GridItem>
@@ -282,42 +282,20 @@ export default function DashboardDropSeller(props) {
                   <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                       <TableRow>
-                        <TableCell>Acción</TableCell>
-                        <TableCell>Producto </TableCell>
                         <TableCell align="right">Nombre Cliente </TableCell>
                         <TableCell align="right">Celular Cliente </TableCell>
                         <TableCell align="right">Precio de venta</TableCell>
                         <TableCell align="center">Precio de compra</TableCell>
-                        <TableCell align="center">Precio de flete</TableCell>
-                        <TableCell align="center">Utilidad por venta</TableCell>
-                        <TableCell align="right">Estado</TableCell>
-                        <TableCell align="right">Guía</TableCell>
                         <TableCell align="right">Fecha de creación</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {products.orders.map((row) => (
-                        <TableRow key={row.orderId}>
-                          <TableCell component="th" scope="row">
-                            {row.orderState===10?
-                              <SplitButton options={[
-                                { label: "Editar Pedido", action: "/customer?id=" + row.orderId },
-                                { label: "Confirmar",callBack:confirmOrder,id:row.orderId }
-                              ]} ></SplitButton>
-                              :<span></span>
-                            }
-                          </TableCell>
-                          <TableCell component="th" scope="row">
-                            <a target="_blank" href={`/order-detail/${row.orderId}`} style={{ cursor: "pointer" }}>{row.productName}</a>
-                          </TableCell>
-                          <TableCell align="right">{row.customerName}</TableCell>
+                        <TableRow key={row.orderId}>                          
+                          <TableCell align="right"><a target="_blank" href={`/order-detail/${row.orderId}`} style={{ cursor: "pointer" }}>{row.customerName}</a></TableCell>
                           <TableCell align="right">{row.customerPhone}</TableCell>
                           <TableCell align="right">{formatter.format(row.sellPrice)}</TableCell>
                           <TableCell align="right">{formatter.format(row.buyPrice)}</TableCell>
-                          <TableCell align="right">{formatter.format(row.freightPrice)}</TableCell>
-                          <TableCell align="right">{formatter.format(row.profitSale)}</TableCell>
-                          <TableCell align="right">{getOrderState(row.orderState)}</TableCell>
-                          <TableCell align="right">{row.guideNumber}</TableCell>
                           <TableCell align="right">{
                             getLegibleDate(row.creationDate)
                           }</TableCell>

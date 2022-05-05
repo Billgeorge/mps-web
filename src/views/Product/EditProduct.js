@@ -40,6 +40,8 @@ export default function EditProduct(props) {
   const [successMessage, setSuccessMessage] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [productImage, setProductImage] = React.useState(emptyImage);
+  const [productPhotos, setproductPhotos] = React.useState([]);
+  const [imgs, setImgs] = React.useState([]);  
   const [dimensions, setDimensions] = React.useState({
     long: 0,
     width: 0,
@@ -73,24 +75,6 @@ export default function EditProduct(props) {
   setTimeout(function () {
     setCardAnimation("");
   }, 700);
-  const fileSelected = (event) => {
-    setErrorMessage({})
-    let file = event.target.files[0]
-    if (file && file.size > 1048576) {
-      setErrorMessage({ 'Error': 'Tu imagén es muy pesada. No debe superar 1Mb' })
-      return
-    }
-    rederImage(file)
-    setProductImage(file)
-  };
-
-  const rederImage = (file) => {
-    var fr = new FileReader();
-    fr.onload = function () {
-      document.getElementById("productImage").src = fr.result;
-    }
-    fr.readAsDataURL(file);
-  }
 
   const processInformation = () => {
     if (step === 1) {
@@ -148,13 +132,24 @@ export default function EditProduct(props) {
       warranty: editForm.warranty,
       dimensions: [dimensions.long, dimensions.width, dimensions.height]
     }
-    const data = new FormData();
+    const data = new FormData();    
+    if(productPhotos.length==3){
+      data.append("image1", productPhotos[0]);
+      data.append("image2", productPhotos[1]);
+      data.append("image3", productPhotos[2]);
+      productForm = {
+        ...productForm,
+        imageUrl:['','','']
+      }
+    }else{
+      data.append("image1", productImage);
+    }
     const json = JSON.stringify(productForm);
     const blob = new Blob([json], {
       type: 'application/json'
     });
     data.append("data", blob);
-    data.append("image", productImage);
+    
     consumeServicePatch(data, callBack, callBackSucess, `${CORE_BASEURL}/product`)
 
   }
@@ -167,14 +162,15 @@ export default function EditProduct(props) {
     }
     setIsLoading(false)
   }
-  const callBackGetSucess = (response) => {
+  const callBackGetSucess = (response) => {        
     setIsLoading(false)
     setEditForm(response)
+    setImgs(response.imageUrl.split(','))        
     setDimensions({
       long: response.dimensions[0],
       width: response.dimensions[1],
       height: response.dimensions[0]
-    })
+    })    
   }
 
   const handleChangeDimensions = (event) => {
@@ -216,7 +212,7 @@ export default function EditProduct(props) {
                     : <span></span>
                   }
                   {step === 1 ?
-                    <CreateProductStepOne handleChangeProduct={handleChange} fileSelected={fileSelected} product={editForm} productImage={editForm.imageUrl} /> :
+                    <CreateProductStepOne setproductPhotos={setproductPhotos} imgs={imgs} setImgs={setImgs} handleChangeProduct={handleChange} setErrorMessage={setErrorMessage} product={editForm} productImage={editForm.imageUrl} /> :
                     <CreateProductStepTwo isEdit={true} handleChangeDimensions={handleChangeDimensions} dimensions={dimensions} handleChangeCheckBox={handleChangeCheckBox} product={editForm} handleChangeProduct={handleChange} />}
 
                   {step > 1 ?

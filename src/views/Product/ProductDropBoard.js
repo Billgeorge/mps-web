@@ -57,12 +57,6 @@ export default function ProductDropBoard() {
     }
   }
 
-  const copyUrl = (id) => {
-    var getUrl = window.location;
-    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
-    navigator.clipboard.writeText(baseUrl + "checkout?idc=" + id);
-  }
-
   const handleChangeCategory = (event) => {
     let value = event.target.value
     setCategory(value)
@@ -140,7 +134,7 @@ export default function ProductDropBoard() {
         <GridContainer className={classes.subContainer} justify="center" >
           <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
-              <Grid item xs={12}><h2 className={classes.title}>Tus Productos Dropshipping</h2></Grid>
+              <Grid item xs={12}><h2 className={classes.title}>Los productos de tu catálogo</h2></Grid>
               <GridItem xs={12} sm={12} md={6} className={classes.grid}>
                 <SearchBar
                   value={searchText}
@@ -199,29 +193,20 @@ export default function ProductDropBoard() {
                         <TableCell align="center">Nombre</TableCell>
                         <TableCell align="center">Precio de compra</TableCell>
                         <TableCell align="center">Precio de venta</TableCell>
-                        <TableCell align="center">Inventario</TableCell>
-                        <TableCell align="center">Url checkout</TableCell>
-                        <TableCell align="center">Acciones</TableCell>
+                        <TableCell align="center">Inventario</TableCell>                        
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {products.content.map((row) => (
                         <TableRow>
-                          <TableCell align="center"><Link to={"productDetail?idp=" + row.product.id.slice(-6)+"&vw=true"}>{row.product.name}</Link></TableCell>
+                          <TableCell align="center"><Link to={"productDetail?idp=" + row.productId.slice(-6)+"&vw=true"}>{row.name}</Link></TableCell>
                           <TableCell align="center">{
-                            formatter.format(row.product.dropshippingPrice)
+                            formatter.format(row.distributionPrice)
                           }</TableCell>
                           <TableCell align="center">{
-                            formatter.format(row.amount)
+                            formatter.format(row.consumerPrice)
                           }</TableCell>
-                          <TableCell align="center">{row.product.inventory}</TableCell>
-                          <TableCell align="right"><center><Button onClick={() => copyUrl(row.id)} color="primary">Copiar Enlace</Button></center></TableCell>
-                          <TableCell align="center">
-                            <SplitButton options={[
-                              { label: "Editar", action: "/edit-checkout?idp=" + row.id },
-                              { label: "Ver Promociones", action: "/promotions?idc=" + row.id }
-                            ]} ></SplitButton>
-                          </TableCell>
+                          <TableCell align="center">{row.inventory}</TableCell>                          
                         </TableRow>
                       ))}
                     </TableBody>

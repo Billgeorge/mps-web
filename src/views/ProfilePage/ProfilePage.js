@@ -552,7 +552,7 @@ export default function ProfilePage(props) {
                         <GridItem xs={12} sm={12} md={12}>
                           <div className={classes.description} style={{ color: 'black' }}>
                             <p>
-                              Utiliza el siguiente botón para recibir al correo la información de integración. Esto te será útil si deseas usar Mipagoseguro con el plugin de woocommerce o mediante API.
+                              Utiliza el siguiente botón para recibir al correo la información de integración. Esto te será útil si deseas usar EIKOOS con el plugin de woocommerce o mediante API.
                             </p>
                           </div>
                           {isLoadingSend
