@@ -20,12 +20,12 @@ import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { login } from '../../service/AuthenticationService'
+import { login,getRole } from '../../service/AuthenticationService'
 import Alert from '@material-ui/lab/Alert';
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
-import image from "assets/img/bg7.jpg";
+import image from "assets/img/bg.jpg";
 
 const useStyles = makeStyles(styles);
 
@@ -52,8 +52,12 @@ export default function LoginPage(props) {
       }
       setErrorMessage("")
       const callBackSucess = () => {
-        history.push("/dashboard")
-        setIsLoading(false);
+        let role = getRole()
+        if(role==="seller" || role==="seller-last"){
+          history.push("/orders-seller")
+          return
+        }
+        history.push("/dashboard-dropprovider")        
       }
       const callBackError = (message) => {
         setErrorMessage(message)
@@ -89,7 +93,7 @@ export default function LoginPage(props) {
       <Header
         absolute
         color="transparent"
-        brand="mipagoseguro"
+        brand="EIKOOS"
         rightLinks={<HeaderLinks />}
         {...rest}
       />

@@ -16,7 +16,6 @@ import LoginPage from "views/LoginPage/LoginPage.js";
 import RegisterLanding from "views/RegisterPage/RegisterLanding";
 import CreatePassword from "views/RegisterPage/CreatePassword";
 import TransactionDetail from "views/TransactionDetail/TransactionDetail";
-import OrderDetail from "views/order/OrderDetail";
 import TransactionDetailPublic from "views/TransactionDetail/TransactionDetailPublic";
 import CreatePayment from "views/CreatePayment/CreatePayment";
 import checkout from "views/Checkout/Checkout";
@@ -52,6 +51,10 @@ import SellersOfProvider from 'views/SellersProvider/SellersOfProvider';
 import PublicProducts from 'views/public/PublicProducts';
 import ProductsForProvider from 'views/public/ProductsForProvider';
 import UpdateBatchProduct from 'views/Product/UpdateBatchProduct';
+import Catalogue from 'views/public/Catalogue/Catalogue';
+import DashboardSeller from 'views/Dashboard/DashBoardSeller';
+import OrderDetailCatalogue from 'views/order/OrderDetailCatalogue';
+import ThankPageToSeller from 'views/thanks/ThankPageToSeller';
 
 
 var hist = createBrowserHistory();
@@ -74,8 +77,7 @@ function App() {
           <Router history={hist}>            
             <Switch>
               <ProtectRoute path="/productDetail" component={ProductDetail} />
-              <ProtectRoute path="/edit-product-inventory" component={EditInventoryProduct} />
-              <ProtectRoute path="/order-detail" component={OrderDetail} />
+              <ProtectRoute path="/edit-product-inventory" component={EditInventoryProduct} />              
               <ProtectRoute path="/product-drop" component={ProductDropBoard} />
               <ProtectRoute path="/edit-checkout" component={EditCheckout} />
               <ProtectRoute path="/private-product" component={PrivateProducts} />
@@ -103,6 +105,8 @@ function App() {
               <ProtectRoute path="/promotions" component={Promotions} />
               <ProtectRoute path="/warranty" component={WarrantyOrder} />
               <ProtectRoute path="/online-order" component={OnlineOrder} />
+              <ProtectRoute path="/orders-seller" component={DashboardSeller} />
+              <ProtectRoute path="/order-detail" component={OrderDetailCatalogue} />
               <ProtectRoute path="/sellers" component={SellersOfProvider} />
               <Route path="/detail" component={TransactionDetailPublic} />
               <Route path="/customer" component={EditCustomer} />
@@ -112,10 +116,12 @@ function App() {
               <Route path='/agree-payment' component={AgreePayment} />
               <Route path="/registro" component={RegisterLanding} />
               <Route path="/login" component={LoginPage} />
-              <Route path="/thanks-page" component={ThanksPage} />
+              <Route path="/thanks-page" component={ThankPageToSeller} />
+              <Route path="/thanks-page-customer" component={ThanksPage} />
               <Route path="/checkout" component={checkout} />
               <Route path="/public-products" component={PublicProducts} />
               <Route path="/proveedor" component={ProductsForProvider} />
+              <Route path="/catalogo" component={Catalogue} />
               <ProtectRoute path="/result" component={Results} />
 
             </Switch>

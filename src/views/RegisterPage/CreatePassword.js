@@ -115,7 +115,7 @@ export default function RegisterPage(props) {
       <Header
         absolute
         color="transparent"
-        brand="mipagoseguro"
+        brand="EIKOOS"
         rightLinks={<HeaderLinks />}
         {...rest}
       />
