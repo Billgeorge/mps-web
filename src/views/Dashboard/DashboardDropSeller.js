@@ -6,7 +6,6 @@ import styles from "assets/jss/material-kit-react/views/DashBoard.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import IconButton from '@material-ui/core/IconButton';
-import SplitButton from 'components/SplitButton/SplitButton';
 
 import Alert from '@material-ui/lab/Alert';
 import NavigateNextSharpIcon from '@material-ui/icons/NavigateNextSharp';

@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Alert from '@material-ui/lab/Alert';
 import NavigateNextSharpIcon from '@material-ui/icons/NavigateNextSharp';
 import NavigateBeforeSharpIcon from '@material-ui/icons/NavigateBeforeSharp';
+import Button from "components/CustomButtons/Button.js";
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -100,6 +101,12 @@ export default function DashboardSeller(props) {
         consumeServiceGet(callBack, callBackSuccess, url)
     }
 
+    const copyUrl = () => {
+        var getUrl = window.location;
+        var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+        navigator.clipboard.writeText(baseUrl + "catalogo?id=" + getMerchantId());
+      }
+
     const classes = useStyles();
 
 
@@ -109,13 +116,19 @@ export default function DashboardSeller(props) {
 
             <div className={classes.container}>
                 <GridContainer className={classes.subContainer} justify="center" >
-                    | <GridItem xs={12} sm={12} md={12} className={classes.grid}>
+                    <GridItem xs={12} sm={12} md={6} className={classes.grid}>
                         <Grid container className={classes.box} spacing={3}>
                             <Grid item xs={12} sm={12} md={6} style={{ textTransform: 'capitalize' }} >
                                 Hola {getMerchantName()}, Bienvenido a EIKOOS.
                             </Grid>
                         </Grid>
                     </GridItem>
+                    <GridItem xs={12} sm={12} md={6} className={classes.grid}>
+                        <Grid container className={classes.box} spacing={3}>
+                            <Button color="success" onClick={() => copyUrl()}>Copiar enlace de catálogo</Button>
+                        </Grid>
+                    </GridItem>
+
                     <GridItem xs={12} sm={12} md={4} className={classes.grid}>
                         <Grid container className={classes.box} spacing={3}>
                             <Grid item ><span>Total monto órdenes :</span> <br /><span className={classes.valueText}>{formatter.format(orderConsolidate.totalAmountSold)}</span></Grid>
