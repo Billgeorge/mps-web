@@ -213,7 +213,7 @@ export default function CatalogueProducts(props) {
                                 />
                                 <CardMedia
                                     className={classes.media}
-                                    image={row.imgUrlMin.split(',')[0]}
+                                    image={row.imgUrlMin}
                                     title={row.name ? row.name : 'Sin nombre'}
                                 />
                                 <CardContent>

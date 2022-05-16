@@ -109,9 +109,8 @@ export default function ReferralsTree(props) {
     ]
     */
 
-    React.useEffect(() => { console.log("use efect execute"); fetchingReferralsForUser() }, []);
-    React.useEffect(() => {
-        console.log("use efect execute per render");
+    React.useEffect(() => { fetchingReferralsForUser() }, []);
+    React.useEffect(() => {        
         setTimeout(function () {
             attachHandleClick()
         }, 500);
@@ -171,7 +170,7 @@ export default function ReferralsTree(props) {
     }
 
     const generateDinamicAnchors = (acc) => {
-        console.log("anchor exec index", acc)
+        
         let jsonAcc = {}
         acc.forEach(
             function (anchorIndex) {
@@ -181,7 +180,7 @@ export default function ReferralsTree(props) {
                 }
             }
         )
-        console.log("anchor json", jsonAcc)
+        
         setDinamicAnchor(
             {
                 ...dinamicAnchor,
@@ -227,8 +226,7 @@ export default function ReferralsTree(props) {
                 for (var i = 0, len = clave.length; i < len; i += 1) {
                     lastNode = lastNode[clave.charAt(i)].referrals
                 }
-                if (document.getElementById(`button${clave}`) && lastNode && lastNode.length > 0) {
-                    console.log("attaching clic", clave)
+                if (document.getElementById(`button${clave}`) && lastNode && lastNode.length > 0) {                    
                     document.getElementById(`button${clave}`).onclick = handleClick
                 }
                 openAcc = {
