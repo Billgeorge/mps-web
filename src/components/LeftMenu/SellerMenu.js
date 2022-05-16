@@ -13,6 +13,7 @@ import PaymentIcon from '@material-ui/icons/Payment';
 import LocalConvenienceStoreIcon from '@material-ui/icons/LocalConvenienceStore';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import PeopleIcon from '@material-ui/icons/People';
 
 
 
@@ -57,7 +58,13 @@ export default function SellerMenu(props) {
                     <ListItemIcon><AccountBalanceIcon style={{ color: '#2097F3' }} /></ListItemIcon>
                     <ListItemText style={{ color: '#2097F3' }} primary="Retiros" />
                 </ListItem>
-            </Link>            
+            </Link> 
+            <Link to="/referral" >
+                <ListItem button key="referral">
+                    <ListItemIcon><PeopleIcon style={{ color: '#2097F3' }} /></ListItemIcon>
+                    <ListItemText style={{ color: '#2097F3' }} primary="Referidos" />
+                </ListItem>
+            </Link>              
         </List>
 
     );
