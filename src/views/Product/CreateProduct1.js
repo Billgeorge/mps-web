@@ -18,8 +18,8 @@ export default function CreateProductStepOne(props) {
 
     const fileSelected = (event) => {
         props.setErrorMessage({})
-        if (3 !== event.target.files.length) {
-            props.setErrorMessage({ 'Error': 'Debes seleccionar 3 imágenes para poder crear el producto.' })
+        if (0 === event.target.files.length) {
+            props.setErrorMessage({ 'Error': 'Debes seleccionar al menos una foto.' })
             return
         }
         let file = event.target.files[0]
