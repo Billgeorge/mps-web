@@ -523,7 +523,7 @@ export default function CreateProduct(props) {
 
     const processInformationStepOne = () => {
         setInfoMessage("")
-        if (product.name && product.description && imgs.length==3) {
+        if (product.name && product.description && imgs.length>0) {
             setStep(step + 1)
             setErrorMessage({})
         } else {

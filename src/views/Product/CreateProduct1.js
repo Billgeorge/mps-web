@@ -18,21 +18,36 @@ export default function CreateProductStepOne(props) {
 
     const fileSelected = (event) => {
         props.setErrorMessage({})
-        if (3 !== event.target.files.length) {
-            props.setErrorMessage({ 'Error': 'Debes seleccionar 3 imágenes para poder crear el producto.' })
+        if (0 === event.target.files.length) {
+            props.setErrorMessage({ 'Error': 'Debes seleccionar al menos una foto.' })
             return
         }
+        let file1
+        let file2
         let file = event.target.files[0]
-        let file1 = event.target.files[1]
-        let file2 = event.target.files[2]
         const extension = file.name.split('.').pop()
-        const extension1 = file1.name.split('.').pop()
-        const extension2 = file2.name.split('.').pop()
-        if (verifyImageExtension(extension) || verifyImageExtension(extension1) || verifyImageExtension(extension2)) {
+        if (event.target.files[1]) {
+            file1 = event.target.files[1]
+            const extension1 = file1.name.split('.').pop()
+            if (verifyImageExtension(extension1) || (file1 && file1.size > 1048576)) {
+                props.setErrorMessage({ 'Error': 'Tu foto debe pesar menos de 1 Mb y ser de formato jpeg, jpg, png o tiff' })
+                return
+            }
+        }
+        if (event.target.files[2]) {
+            file2 = event.target.files[2]
+            const extension2 = file2.name.split('.').pop()
+            if (verifyImageExtension(extension2) || (file2 && file2.size > 1048576)) {
+                props.setErrorMessage({ 'Error': 'Tu foto debe pesar menos de 1 Mb y ser de formato jpeg, jpg, png o tiff' })
+                return
+            }
+        }
+
+        if (verifyImageExtension(extension)) {
             props.setErrorMessage({ 'Error': 'Tu imagén debe ser jpeg, jpg, png o tiff' })
             return
         }
-        if ((file && file.size > 1048576) || (file1 && file1.size > 1048576) || (file2 && file2.size > 1048576)) {
+        if ((file && file.size > 1048576)) {
             props.setErrorMessage({ 'Error': 'Tu imagén es muy pesada. No debe superar 1Mb' })
             return
         }
@@ -44,7 +59,7 @@ export default function CreateProductStepOne(props) {
     }
 
     const setToImgs = (file, file1, file2) => {
-        if (!file || !file1 || !file2) {
+        if (!file && !file1 && !file2) {
             return
         }
         let finalFile
@@ -55,33 +70,60 @@ export default function CreateProductStepOne(props) {
         var fr2 = new FileReader();
         fr.onload = function () {
             finalFile = fr.result;
-            fr1.readAsDataURL(file1);
+            if (file1) {
+                fr1.readAsDataURL(file1);
+            }
+            if (file2 && !file1) {
+                fr2.readAsDataURL(file2);
+            }
+            if (!file1 && !file2) {
+                setFinalImgs(finalFile, null, null, file)
+            }
         }
         fr1.onload = function () {
             finalFile1 = fr1.result;
-            fr2.readAsDataURL(file2);
+
+            if (file2) {
+                fr2.readAsDataURL(file2);
+            } else {
+                setFinalImgs(finalFile, null, finalFile1, file, file1)
+            }
         }
         fr2.onload = function () {
             finalFile2 = fr2.result;
-            setImgs([])
-            props.setImgs([])
-            setImgs([finalFile, finalFile1, finalFile2])            
-            props.setImgs([finalFile, finalFile1, finalFile2])
-            props.setproductPhotos([file, file1, file2])
-            if(props.isEdit){
-                props.setIsEdit(false)
-            }
+            setFinalImgs(finalFile, finalFile2, finalFile1, file, file1, file2)
         }
         fr.readAsDataURL(file);
     }
 
+    const setFinalImgs = (finalFile, finalFile2, finalFile1, file, file1, file2) => {
+        let arrayImage = []
+        let images = []
+        images.push(file)
+        arrayImage.push(finalFile)
+        if (finalFile2) {
+            arrayImage.push(finalFile2)
+            images.push(file2)
+        }
+        if (finalFile1) {
+            arrayImage.push(finalFile1)
+            images.push(file1)
+        }
+        setImgs([])
+        props.setImgs([])
+        setImgs(arrayImage)
+        props.setImgs(arrayImage)
+        props.setproductPhotos(images)
+        if (props.isEdit) {
+            props.setIsEdit(false)
+        }
+    }
+
     return (
         <GridItem xs={12} sm={12} md={12}>
-            {console.log('props',props)}
-            {console.log('imgs',imgs)}
             <GridItem xs={12} sm={12} md={12}>
                 {
-                    imgs.length > 0 || props.imgs.length>0 ? <Carousel imgs={imgs.length > 0 ? imgs : props.imgs} />
+                    imgs.length > 0 || props.imgs.length > 0 ? <Carousel imgs={imgs.length > 0 ? imgs : props.imgs} />
                         : <img type="file" src={props.productImage} name="productImage" alt='Imagen' id="productImage" className={classes.imgProduct} />
                 }
                 <input onChange={(e) => fileSelected(e)} accept="image/*" style={{ display: 'none' }} id="icon-button-file" type="file" multiple />

@@ -12,8 +12,9 @@ const consumeServicePost = async (payload, callBack, callBackSuccess, url) => {
     })
     .catch(
         function (error) {
-            console.log("error", error.response)
+            console.log("catch error", error)
             if (error.response) {
+                console.log("error", error.response)
                 if (400 === error.response.status) {
                     callBack(error.response.data)
                 } else if (403 === error.response.status) {
@@ -23,8 +24,7 @@ const consumeServicePost = async (payload, callBack, callBackSuccess, url) => {
                 } else {
                     callBack(error.response.data)
                 }
-            } else {
-                console.log("error", error)
+            } else {                
                 callBack("Error inesperado")
             }
         }

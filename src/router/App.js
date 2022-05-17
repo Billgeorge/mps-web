@@ -55,6 +55,7 @@ import Catalogue from 'views/public/Catalogue/Catalogue';
 import DashboardSeller from 'views/Dashboard/DashBoardSeller';
 import OrderDetailCatalogue from 'views/order/OrderDetailCatalogue';
 import ThankPageToSeller from 'views/thanks/ThankPageToSeller';
+import ReferralsTree from 'views/Referrals/ReferralsTree';
 
 
 var hist = createBrowserHistory();
@@ -86,6 +87,7 @@ function App() {
               <ProtectRoute path="/create-inventory" component={CreateInventory} />
               <ProtectRoute path='/product' component={ProductBoard} />
               <ProtectRoute path='/profile' component={ProfilePage} />
+              <ProtectRoute path='/referral' component={ReferralsTree} />
               <ProtectRoute path='/create-payment' component={CreatePayment} />
               <ProtectRoute path='/branch' component={BranchBoard} />
               <ProtectRoute path='/create-product' component={CreateProduct2} />

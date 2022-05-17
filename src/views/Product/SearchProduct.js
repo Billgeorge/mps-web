@@ -202,7 +202,7 @@ export default function SearchProduct(props) {
                                         />
                                         <CardMedia
                                             className={classes.media}
-                                            image={row.imageUrlMin.split(',')[0]}
+                                            image={row.imageUrlMin}
                                             title={row.name ? row.name : 'Sin nombre'}
                                         />
                                         <CardContent>
