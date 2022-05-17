@@ -73,46 +73,50 @@ export default function CreateProductStepOne(props) {
             if (file1) {
                 fr1.readAsDataURL(file1);
             }
-            if(file2 && !file1){
+            if (file2 && !file1) {
                 fr2.readAsDataURL(file2);
             }
-            if(!file1 && !file2){
-                setFinalImgs(finalFile,null,null)
+            if (!file1 && !file2) {
+                setFinalImgs(finalFile, null, null, file)
             }
         }
         fr1.onload = function () {
             finalFile1 = fr1.result;
-            
+
             if (file2) {
                 fr2.readAsDataURL(file2);
-            }else{
-                setFinalImgs(finalFile,null,finalFile1)
+            } else {
+                setFinalImgs(finalFile, null, finalFile1, file, file1)
             }
         }
         fr2.onload = function () {
             finalFile2 = fr2.result;
-            setFinalImgs(finalFile,finalFile2,finalFile1)            
+            setFinalImgs(finalFile, finalFile2, finalFile1, file, file1, file2)
         }
         fr.readAsDataURL(file);
     }
 
-    const setFinalImgs = (finalFile,finalFile2,finalFile1)=>{
+    const setFinalImgs = (finalFile, finalFile2, finalFile1, file, file1, file2) => {
         let arrayImage = []
-            arrayImage.push(finalFile)
-            if (finalFile2) {                
-                arrayImage.push(finalFile2)
-            }
-            if(finalFile1){
-                arrayImage.push(finalFile1)
-            }
-            setImgs([])
-            props.setImgs([])
-            setImgs(arrayImage)
-            props.setImgs(arrayImage)
-            props.setproductPhotos(arrayImage)
-            if (props.isEdit) {
-                props.setIsEdit(false)
-            }
+        let images = []
+        images.push(file)
+        arrayImage.push(finalFile)
+        if (finalFile2) {
+            arrayImage.push(finalFile2)
+            images.push(file2)
+        }
+        if (finalFile1) {
+            arrayImage.push(finalFile1)
+            images.push(file1)
+        }
+        setImgs([])
+        props.setImgs([])
+        setImgs(arrayImage)
+        props.setImgs(arrayImage)
+        props.setproductPhotos(images)
+        if (props.isEdit) {
+            props.setIsEdit(false)
+        }
     }
 
     return (
