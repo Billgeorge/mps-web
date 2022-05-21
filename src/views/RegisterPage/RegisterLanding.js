@@ -80,7 +80,7 @@ export default function RegisterLanding(props) {
   };
 
   const getCities = () => {
-    if(getQueyParamFromUrl("rol") === "seller"){
+    if (getQueyParamFromUrl("rol") === "seller") {
       const url = `${CORE_BASEURL}/logistic/cities`
       consumeServiceGet(callBackErrorGetCities, callBackSuccessGetCities, url)
     }
@@ -116,8 +116,8 @@ export default function RegisterLanding(props) {
     getCities()
     document.registerForm.onsubmit = function (event) {
       event.preventDefault()
-      if (getQueyParamFromUrl("rol") === "seller" && 
-      (!document.getElementById("department").value || !document.getElementById("city").value)) {
+      if (getQueyParamFromUrl("rol") === "seller" &&
+        (!document.getElementById("department").value || !document.getElementById("city").value)) {
         setErrorMessage({ 'Error': 'Debe seleccionar ciudad y departamento' })
         return
       }
@@ -137,7 +137,7 @@ export default function RegisterLanding(props) {
         document.getElementById("registerForm").reset();
         setIsLoading(false)
         setIsMerchantCreated(true)
-        if(document.getElementById("department") && document.getElementById("city")){
+        if (document.getElementById("department") && document.getElementById("city")) {
           document.getElementById("department").value = ""
           document.getElementById("city").value = ""
         }
@@ -154,20 +154,32 @@ export default function RegisterLanding(props) {
       if (isLoading) {
         return
       }
-      setIsLoading(true)
+
       console.log("creating merchant")
       setErrorMessage({})
       const form = event.currentTarget;
       const role = getQueyParamFromUrl("rol")
+      let referrer = ""
+      if (getQueyParamFromUrl("ir")) {
+        referrer = getQueyParamFromUrl("ir")
+      } else {
+        referrer = document.getElementById("emailFriend") && document.getElementById("emailFriend").value
+      }
+
+      if (!referrer) {
+        setErrorMessage({ 'Error': 'El referido es obligatorio' })
+        return
+      }
+      setIsLoading(true)
       consumeServicePost({
         name: document.getElementById("merchantName").value,
         email: document.getElementById("email").value,
         role: role,
         contactNumber: document.getElementById("contactNumber").value,
-        referer_email: document.getElementById("emailFriend") ? document.getElementById("emailFriend").value : null,
-        city: document.getElementById("city")?document.getElementById("city").value : null,
-        department: document.getElementById("department")?document.getElementById("department").value : null,
-        address: document.getElementById("address")?document.getElementById("address").value : null
+        referer_email: referrer,
+        city: document.getElementById("city") ? document.getElementById("city").value : null,
+        department: document.getElementById("department") ? document.getElementById("department").value : null,
+        address: document.getElementById("address") ? document.getElementById("address").value : null
       }, callBack, callBackSucess,
         CORE_BASEURL + "/merchant/landing")
     }
@@ -348,22 +360,24 @@ export default function RegisterLanding(props) {
                               )
                             }}
                           />
-
-                          <CustomInput
-                            labelText="Correo de quien te refiere..."
-                            id="emailFriend"
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              type: "email",
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  <AlternateEmail className={classes.inputIconsColor} />
-                                </InputAdornment>
-                              )
-                            }}
-                          />
+                          {
+                            getQueyParamFromUrl("ir") ? <></> :
+                              <CustomInput
+                                labelText="Correo de quien te refiere..."
+                                id="emailFriend"
+                                formControlProps={{
+                                  fullWidth: true
+                                }}
+                                inputProps={{
+                                  type: "email",
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <AlternateEmail className={classes.inputIconsColor} />
+                                    </InputAdornment>
+                                  )
+                                }}
+                              />
+                          }
                         </>
                         : <></>
                     }
