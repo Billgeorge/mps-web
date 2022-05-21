@@ -19,8 +19,9 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Link } from 'react-router-dom';
 
-import { login,getRole } from '../../service/AuthenticationService'
+import { login, getRole } from '../../service/AuthenticationService'
 import Alert from '@material-ui/lab/Alert';
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
@@ -36,6 +37,7 @@ export default function LoginPage(props) {
   }, 700);
 
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [paymentUrl, setPaymentUrl] = React.useState("");
 
   const history = useHistory();
 
@@ -53,14 +55,24 @@ export default function LoginPage(props) {
       setErrorMessage("")
       const callBackSucess = () => {
         let role = getRole()
-        if(role==="seller" || role==="seller-last"){
+        if (role === "seller" || role === "seller-last") {
           history.push("/orders-seller")
           return
         }
-        history.push("/dashboard-dropprovider")        
+        history.push("/dashboard-dropprovider")
       }
       const callBackError = (message) => {
-        setErrorMessage(message)
+        if (typeof message === "string") {
+          const split  = message.split("https")
+          if(split.length>1){
+            setErrorMessage(split[0])
+            setPaymentUrl(`https${split[1]}`)
+          }else{
+            setErrorMessage(message)
+          }
+        } else {
+          setErrorMessage(message)
+        }
         setIsLoading(false);
       }
       const form = event.currentTarget;
@@ -162,6 +174,13 @@ export default function LoginPage(props) {
                       ?
                       <Alert severity="error">{errorMessage}</Alert>
                       : <span>	&nbsp;</span>
+                    }{paymentUrl ?
+                      <a href={paymentUrl}>
+                        <Button color="success">
+                          Pagar membresía
+                        </Button>
+                      </a>
+                      : <></>
                     }
                     <br /><br />
                     <span>¿Olvidaste tu contraseña? <a href="/recovery-pass" style={{ cursor: 'pointer' }}>Recupera tu contraseña</a></span>

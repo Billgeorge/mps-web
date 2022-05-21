@@ -41,7 +41,7 @@ export default function EditProduct(props) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [productImage, setProductImage] = React.useState(emptyImage);
   const [productPhotos, setproductPhotos] = React.useState([]);
-  const [imgs, setImgs] = React.useState([]);  
+  const [imgs, setImgs] = React.useState([]);
   const [dimensions, setDimensions] = React.useState({
     long: 0,
     width: 0,
@@ -132,24 +132,30 @@ export default function EditProduct(props) {
       warranty: editForm.warranty,
       dimensions: [dimensions.long, dimensions.width, dimensions.height]
     }
-    const data = new FormData();    
-    if(productPhotos.length==3){
-      data.append("image1", productPhotos[0]);
-      data.append("image2", productPhotos[1]);
-      data.append("image3", productPhotos[2]);
-      productForm = {
-        ...productForm,
-        imageUrl:['','','']
+    const data = new FormData();
+
+    for (const [index, ph] of productPhotos.entries()) {
+      if (index > 2) {
+        break
       }
-    }else{
-      data.append("image1", productImage);
+      if (index === 0) {
+        data.append("image1", ph);
+      }
+      if (index === 1) {
+        data.append("image2", ph);
+      }
+      if (index === 2) {
+        data.append("image3", ph);
+      }
     }
+
+
     const json = JSON.stringify(productForm);
     const blob = new Blob([json], {
       type: 'application/json'
     });
     data.append("data", blob);
-    
+
     consumeServicePatch(data, callBack, callBackSucess, `${CORE_BASEURL}/product`)
 
   }
@@ -162,15 +168,15 @@ export default function EditProduct(props) {
     }
     setIsLoading(false)
   }
-  const callBackGetSucess = (response) => {        
+  const callBackGetSucess = (response) => {
     setIsLoading(false)
     setEditForm(response)
-    setImgs(response.imageUrl.split(','))        
+    setImgs(response.imageUrl.split(','))
     setDimensions({
       long: response.dimensions[0],
       width: response.dimensions[1],
       height: response.dimensions[0]
-    })    
+    })
   }
 
   const handleChangeDimensions = (event) => {

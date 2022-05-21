@@ -101,11 +101,12 @@ export default function DashboardSeller(props) {
         consumeServiceGet(callBack, callBackSuccess, url)
     }
 
-    const copyUrl = () => {
+    const copyUrl = (path) => {
         var getUrl = window.location;
         var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
-        navigator.clipboard.writeText(baseUrl + "catalogo?id=" + getMerchantId());
-      }
+        navigator.clipboard.writeText(baseUrl + path + getMerchantId());
+    }
+    
 
     const classes = useStyles();
 
@@ -123,9 +124,14 @@ export default function DashboardSeller(props) {
                             </Grid>
                         </Grid>
                     </GridItem>
-                    <GridItem xs={12} sm={12} md={6} className={classes.grid}>
+                    <GridItem xs={12} sm={12} md={3} className={classes.grid}>
                         <Grid container className={classes.box} spacing={3}>
-                            <Button color="success" onClick={() => copyUrl()}>Copiar enlace de catálogo</Button>
+                            <Button color="success" onClick={() => copyUrl("catalogo?id=")}>Copiar enlace de catálogo</Button>
+                        </Grid>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={3} className={classes.grid}>
+                        <Grid container className={classes.box} spacing={3}>
+                            <Button color="success" onClick={() => copyUrl("registro?rol=seller&ir=")}>Copiar enlace de referido</Button>
                         </Grid>
                     </GridItem>
 
