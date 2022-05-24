@@ -84,10 +84,18 @@ export default function CreateProduct(props) {
 
     const handleChangeProduct = (event) => {
         const name = event.target.name;
-        setProduct({
-            ...product,
-            [name]: event.target.value,
-        });
+        if(name === 'weight'){
+            setProduct({
+                ...product,
+                [name]: parseInt(event.target.value).toString(),
+            });
+        }else{
+            setProduct({
+                ...product,
+                [name]: event.target.value,
+            });
+        }
+        
     };
 
     const callBackInventories = (inventories) => {
@@ -123,7 +131,7 @@ export default function CreateProduct(props) {
         const name = event.target.name;
         setDimensions({
             ...dimensions,
-            [name]: event.target.value,
+            [name]: parseInt(event.target.value).toString(),
         });
     };
 
@@ -280,7 +288,7 @@ export default function CreateProduct(props) {
     const callBack = (error) => {
         if (error != null && typeof error === 'object') {
             setErrorMessage(error)
-        } else if (error != null && typeof error === 'String') {
+        } else if (error != null && typeof error === 'string') {
             setErrorMessage({ 'Error': error })
         }
         else {

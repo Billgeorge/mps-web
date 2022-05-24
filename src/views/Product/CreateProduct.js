@@ -82,7 +82,7 @@ export default function CreateProduct(props) {
       const callBack = (error) => {
         if (error != null && typeof error === 'object') {
           setErrorMessage(error)
-        } else if (error != null && typeof error === 'String') {
+        } else if (error != null && typeof error === 'string') {
           setErrorMessage({ 'Error': error })
         }
         else {

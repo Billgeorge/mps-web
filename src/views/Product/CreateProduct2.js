@@ -17,7 +17,8 @@ import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(styles);
 export default function CreateProductStepTwo(props) {
-    const classes = useStyles();
+    const classes = useStyles();    
+
     return (
         <GridItem xs={12} sm={12} md={12}>
 
@@ -39,7 +40,6 @@ export default function CreateProductStepTwo(props) {
                         <OutlinedInput
                             onChange={props.handleChangeProduct} value={props.product.dropshippingPrice} name="dropshippingPrice"
                             id="dropshippingPrice"
-                            placeholder="Recuerda tener en cuenta nuestra comisión"
                             startAdornment={<InputAdornment position="start">$</InputAdornment>}
                             labelWidth={60}
                             required
@@ -56,7 +56,6 @@ export default function CreateProductStepTwo(props) {
                     <OutlinedInput
                         id="amount"
                         onChange={props.handleChangeProduct} value={props.product.amount} name="amount"
-                        placeholder="Recuerda tener en cuenta nuestra comisión"
                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
                         labelWidth={60}
                         required
@@ -127,8 +126,9 @@ export default function CreateProductStepTwo(props) {
                             labelWidth={65}
                             required
                             min="1"
+                            step="1"
                             inputProps={{ min: 1 }}
-                            type="number"
+                            type="number"                            
                         />
                     </FormControl>
                 </GridItem>
@@ -143,7 +143,7 @@ export default function CreateProductStepTwo(props) {
                             required
                             min="1"
                             inputProps={{ min: 1 }}
-                            type="number"
+                            type="number"                            
                         />
                     </FormControl>
                 </GridItem>
@@ -160,7 +160,7 @@ export default function CreateProductStepTwo(props) {
                             required
                             min="1"
                             inputProps={{ min: 1 }}
-                            type="number"
+                            type="number"                            
                         />
                     </FormControl>
                 </GridItem>
@@ -175,7 +175,7 @@ export default function CreateProductStepTwo(props) {
                             required
                             min="1"
                             inputProps={{ min: 1 }}
-                            type="number"
+                            type="number"                            
                         />
                     </FormControl>
                 </GridItem>
