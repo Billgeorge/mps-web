@@ -89,7 +89,7 @@ function WithDrawal(props) {
     setIsLoading(false)
     if (error != null && typeof error === 'object') {
       setErrorMessage(JSON.stringify(error))
-    } else if (error != null && typeof error === 'String') {
+    } else if (error != null && typeof error === 'string') {
       setErrorMessage(error)
     }
     else {

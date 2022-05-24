@@ -65,10 +65,17 @@ export default function EditProduct(props) {
 
   const handleChange = (event) => {
     const name = event.target.name;
-    setEditForm({
-      ...editForm,
-      [name]: event.target.value,
-    });
+    if (name === 'weight') {
+      setEditForm({
+        ...editForm,
+        [name]: parseInt(event.target.value).toString(),
+      });
+    } else {
+      setEditForm({
+        ...editForm,
+        [name]: event.target.value,
+      });
+    }
   };
 
   let idp = getQueyParamFromUrl('idp')
@@ -161,13 +168,17 @@ export default function EditProduct(props) {
   }
 
   const callBack = (error) => {
-    if (error != null) {
+    if (error != null && typeof error === 'object') {
       setErrorMessage(error)
-    } else {
+    } else if (error != null && typeof error === 'string') {
+      setErrorMessage({ 'Error': error })
+    }
+    else {
       setErrorMessage({ 'Error': 'Ha ocurrido un error inesperado por favor contactar al administrador' })
     }
     setIsLoading(false)
   }
+
   const callBackGetSucess = (response) => {
     setIsLoading(false)
     setEditForm(response)
@@ -183,7 +194,7 @@ export default function EditProduct(props) {
     const name = event.target.name;
     setDimensions({
       ...dimensions,
-      [name]: event.target.value,
+      [name]: parseInt(event.target.value).toString(),
     });
   };
 

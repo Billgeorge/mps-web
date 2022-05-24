@@ -142,10 +142,10 @@ export default function CreateProductStepOne(props) {
                     onChange={props.handleChangeProduct} value={props.product.description} name="description"
                     label="Descripción"
                     multiline
-                    rows={4}
+                    rows={6}
                     placeholder="Características, beneficios y demás del producto"
                     variant="outlined"
-                    inputProps={{ maxLength: 1000 }}
+                    inputProps={{ maxLength: 2000 }}
                     required
                 />
             </GridItem>
