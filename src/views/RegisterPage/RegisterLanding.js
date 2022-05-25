@@ -166,7 +166,7 @@ export default function RegisterLanding(props) {
         referrer = document.getElementById("emailFriend") && document.getElementById("emailFriend").value
       }
 
-      if (!referrer) {
+      if (role==='seller' && !referrer) {
         setErrorMessage({ 'Error': 'El referido es obligatorio' })
         return
       }
