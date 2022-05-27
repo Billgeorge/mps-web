@@ -166,11 +166,11 @@ export default function CreateProductStepTwo(props) {
                 </GridItem>
                 <GridItem style={{ marginTop: "10px" }} xs={6} sm={6} md={6}>
                     <FormControl style={{ width: "100%", paddingBottom: "10px" }}>
-                        <InputLabel htmlFor="valor">Peso</InputLabel>
+                        <InputLabel htmlFor="valor">Peso(Gramos)</InputLabel>
                         <OutlinedInput
                             id="weight"
                             onChange={props.handleChangeProduct} value={props.product.weight} name="weight"
-                            endAdornment={<InputAdornment position="end">lb</InputAdornment>}
+                            endAdornment={<InputAdornment position="end">Gr</InputAdornment>}
                             labelWidth={60}
                             required
                             min="1"
