@@ -157,12 +157,12 @@ export default function ProductDetail(props) {
                     </GridItem>
                     <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
                         <h4 className={classes.productDescription} style={{ fontSize: "25px" }}> Descripción: </h4>
-                        <div className={classes.productDescription}> {product.description || ""} </div>
+                        <div style={{ whiteSpace: 'pre-wrap', fontSize: '1em'}} className={classes.productDescription}> {product.description || ""} </div>
                     </GridItem>
                     {product.warranty ?
                         <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >
                             <h4 className={classes.productDescription} style={{ fontSize: "25px" }}> Garantía: </h4>
-                            <div className={classes.productDescription}> {product.warranty || ""} </div>
+                            <div style={{ whiteSpace: 'pre-wrap', fontSize: '1em'}} className={classes.productDescription}> {product.warranty || ""} </div>
                         </GridItem> : <></>}
                     {product.sku ?
                         <GridItem xs={12} sm={12} md={12} className={classes.gridItemCard} >

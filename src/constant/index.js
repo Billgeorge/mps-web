@@ -45,6 +45,8 @@ export const getBankNumber = (bank) => {
             return 9
         case "NEQUI":
             return 10
+        case "DAVIPLATA":
+            return 11
         default:
             return 0
     }
@@ -163,6 +165,10 @@ export const categories = [
     {
         category: 9,
         name: "Productos de belleza"
+    },
+    {
+        category: 10,
+        name: "Perfumería"
     },
     {
         category: 6,
