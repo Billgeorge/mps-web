@@ -140,25 +140,16 @@ export default function CatalogueProductDetail(props) {
 
     return (
         <GridContainer className={classes.container} >
-            <GridItem className={classes.sideSection} xs={12} sm={12} md={8} style={{ backgroundColor: "#fff", padding:0, paddingTop:'5px' }}>
+            <GridItem className={classes.sideSection} xs={12} sm={12} md={8} style={{ backgroundColor: "#fff", padding: 0, paddingTop: '5px' }}>
 
-                <GridItem xs={12} sm={12} md={12} style={{padding:'0'}} className={classes.gridItemCard} >
+                <GridItem xs={12} sm={12} md={12} style={{ padding: '0' }} className={classes.gridItemCard} >
                     <Carousel imgs={product.imgUrls} />
                 </GridItem>
-
-                {product.warranty && product.warranty !== "" ?
-                    <>
-                        <GridItem xs={12} sm={12} md={12} className={classes.detailText}>Garantía</GridItem>
-                        <GridItem xs={12} sm={12} md={12} className={classes.productDescription}> {product.warranty}</GridItem>
-                    </> : <></>
-                }
             </GridItem>
             <GridItem xs={12} sm={12} md={4} className={classes.rightSide}>
                 <br />
-                <h1 style={{fontSize:'22px', fontWeight:'600', textTransform: 'capitalize'}}>{product.name}</h1>
+                <h1 style={{ fontSize: '22px', fontWeight: '600', textTransform: 'capitalize' }}>{product.name}</h1>
                 <div className={classes.totalPrice}><span>{formatter.format(product.price)}</span></div><br />
-                <GridItem xs={12} sm={12} md={12} className={classes.detailText}> Descripción </GridItem>
-                <GridItem xs={12} sm={12} md={12} className={classes.productDescription}> {product.description}</GridItem>
 
                 <br />
                 {customFields && customFields.length > 0 ?
@@ -218,6 +209,15 @@ export default function CatalogueProductDetail(props) {
 
 
             </GridItem>
+            <GridItem xs={12} sm={12} md={12} className={classes.detailText}> Descripción </GridItem>
+            <GridItem xs={12} sm={12} md={12} style={{ whiteSpace: 'pre-wrap', fontSize: '1em',marginBottom:'10px' }} className={classes.productDescription}> {product.description}</GridItem>
+            <br/><br/>
+            {product.warranty && product.warranty !== "" ?
+                <>
+                    <GridItem xs={12} sm={12} md={12} className={classes.detailText}>Garantía</GridItem>
+                    <GridItem xs={12} sm={12} md={12} style={{ whiteSpace: 'pre-wrap', fontSize: '1em' }} className={classes.productDescription}> {product.warranty}</GridItem>
+                </> : <></>
+            }
         </GridContainer>
     )
 

@@ -408,6 +408,7 @@ export default function ProfilePage(props) {
                                     <option value={8}>BANCOLOMBIA</option>
                                     <option value={9}>SCOTIABANK COLPATRIA</option>
                                     <option value={10}>NEQUI</option>
+                                    <option value={11}>DAVIPLATA</option>
                                   </Select>
                                 </FormControl>
                               </GridItem>
