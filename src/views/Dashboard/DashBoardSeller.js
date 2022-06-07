@@ -22,9 +22,11 @@ import Paper from '@material-ui/core/Paper';
 import Footer from "components/Footer/Footer.js";
 import { getMerchantId, getMerchantName } from 'service/AuthenticationService';
 import { getLegibleDate } from 'util/DateUtil'
+import { useHistory } from "react-router-dom";
 
-import { consumeServiceGet } from 'service/ConsumeService'
-import { CORE_BASEURL, getOrderState } from 'constant/index'
+import { consumeServiceGet, consumeServicePatch } from 'service/ConsumeService'
+import consumeServicePost from 'service/ConsumeService'
+import { CORE_BASEURL,PULL_BASEURL } from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 
 
@@ -42,8 +44,13 @@ export default function DashboardSeller(props) {
         actualPage: 0,
         totalPages: 0
     });
+    const history = useHistory();
     const [errorMessage, setErrorMessage] = React.useState("");
     const [confirmSuccessMessage, setConfirmSuccessMessage] = React.useState("");
+    const [isChecked, setIsCHecked] = React.useState(false);
+    const [idsToDelete, setIdsToDelete] = React.useState([]);
+    const [isEnabled, setIsEnabled] = React.useState(false);
+    const [successMessage, setSuccessMessage] = React.useState("");
 
 
     const [page, setPage] = React.useState(0);
@@ -66,11 +73,68 @@ export default function DashboardSeller(props) {
         setPage(orderConsolidate.actualPage)
     }
 
+    const callBackSuccessDelete = () => {
+        setSuccessMessage("Orden eliminada")
+    }
+
+    const deleteProducts = () => {
+        let url = `${CORE_BASEURL}/catalogue/order/disable/items`
+        consumeServicePatch(idsToDelete, callBackDelete, callBackSuccessDelete, url)
+    }
+
+    const createCutPayment = () => {
+        let url = `${CORE_BASEURL}/catalogue/order/cut/payment`
+        consumeServicePost(null, callBackCreatePayment, callBackSuccessCreatePayment, url)
+    }
+
+    const callBackSuccessCreatePayment = (order) => {
+        const url = `${PULL_BASEURL}/cashin/redirect`
+        consumeServicePost({ id: order }, callBackErrorCreatePayment, callBackSuccessGetPaymentInformation, url)
+    }
+
+    const callBackSuccessGetPaymentInformation = (paymentInformation) => {
+        history.push("/methods?id=" + paymentInformation.id)
+    }
+
+    const callBackErrorCreatePayment = () => {        
+        setErrorMessage("Error creando pago")
+    }
+
+    const validatedChecked = (event) => {
+
+        let cont = idsToDelete.length
+        if (event.target.checked) {
+            if (idsToDelete.indexOf(event.target.value) === -1) {
+                cont++
+                idsToDelete.push(event.target.value)
+            }
+        } else {
+            if (idsToDelete.indexOf(event.target.value) !== -1) {
+                cont--
+                idsToDelete.splice(idsToDelete.indexOf(event.target.value), 1)
+            }
+        }
+        if (cont > 0) {
+            setIsEnabled(true)
+        } else {
+            setIsEnabled(false)
+        }
+        console.log("array", idsToDelete)
+    }
+
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 0
     })
+
+    const callBackDelete = () => {
+        setErrorMessage("Error borrando orden")
+    }
+
+    const callBackCreatePayment = () => {
+        setErrorMessage("Error creando pago")
+    }
 
     const callBack = (msg) => {
         setOrderConsolidate({
@@ -106,7 +170,7 @@ export default function DashboardSeller(props) {
         var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
         navigator.clipboard.writeText(baseUrl + path + getMerchantId());
     }
-    
+
 
     const classes = useStyles();
 
@@ -150,9 +214,18 @@ export default function DashboardSeller(props) {
                             <Grid item ><span>Número de órdenes:</span> <br /><span className={classes.valueText}>{orderConsolidate.totalOrders}</span></Grid>
                         </Grid>
                     </GridItem>
+                    <Grid item xs={12}>
+                        <Button style={{ marginLeft: "10px" }} color="primary" onClick={createCutPayment}> Pagar pedidos del corte</Button>
+                        <Button style={{ marginLeft: "10px" }} color="primary" disabled={!isEnabled} onClick={deleteProducts} > Eliminar seleccionados</Button>
+                    </Grid>
                     <GridItem xs={12} sm={12} md={12} className={classes.grid}>
+                        {successMessage != ""
+                            ?
+                            <Alert severity="success">{successMessage}</Alert>
+                            : <span>	&nbsp;</span>
+                        }
                         <Grid container className={classes.box} spacing={1}>
-                            <Grid item xs={12}><h2 style={{ fontWeight: "500" }} className={classes.title}>Pedidos del mes </h2></Grid>
+                            <Grid item xs={12}><h2 style={{ fontWeight: "500" }} className={classes.title}>Pedidos del corte </h2></Grid>
                             {confirmSuccessMessage != ""
                                 ?
                                 <Alert severity="success">{confirmSuccessMessage}</Alert>
@@ -163,6 +236,7 @@ export default function DashboardSeller(props) {
                                     <Table className={classes.table} aria-label="simple table">
                                         <TableHead>
                                             <TableRow>
+                                                <TableCell></TableCell>
                                                 <TableCell align="right">Nombre Cliente </TableCell>
                                                 <TableCell align="right">Monto de venta</TableCell>
                                                 <TableCell align="center">Precio de compra</TableCell>
@@ -172,7 +246,20 @@ export default function DashboardSeller(props) {
                                         </TableHead>
                                         <TableBody>
                                             {orderConsolidate.orderItems.map((row) => (
-                                                <TableRow key={row.orderId}>
+                                                <TableRow key={row.id}>
+                                                    <TableCell align="center">
+                                                        <center>
+                                                            <input
+                                                                type="checkbox"
+                                                                className="productCheck"
+                                                                id={row.id}
+                                                                value={row.id}
+                                                                defaultChecked={isChecked}
+                                                                color="primary"
+                                                                onChange={validatedChecked}
+                                                            />
+                                                        </center>
+                                                    </TableCell>
                                                     <TableCell align="right"><a target="_blank" href={`/order-detail/${row.id}`} style={{ cursor: "pointer" }}>{row.customerName}</a></TableCell>
                                                     <TableCell align="right">{formatter.format(row.finalPrice)}</TableCell>
                                                     <TableCell align="right">{formatter.format(row.costPrice)}</TableCell>
