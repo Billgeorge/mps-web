@@ -84,7 +84,7 @@ export default function DashboardSeller(props) {
 
     const createCutPayment = () => {
         let url = `${CORE_BASEURL}/catalogue/order/cut/payment`
-        consumeServicePost(null, callBackCreatePayment, callBackSuccessCreatePayment, url)
+        consumeServicePost(null, callBackErrorCreatePayment, callBackSuccessCreatePayment, url)
     }
 
     const callBackSuccessCreatePayment = (order) => {
@@ -137,10 +137,6 @@ export default function DashboardSeller(props) {
 
     const callBackDelete = () => {
         setErrorMessage("Error borrando orden")
-    }
-
-    const callBackCreatePayment = () => {
-        setErrorMessage("Error creando pago")
     }
 
     const callBack = (msg) => {
