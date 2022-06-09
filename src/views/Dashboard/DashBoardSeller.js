@@ -26,7 +26,7 @@ import { useHistory } from "react-router-dom";
 
 import { consumeServiceGet, consumeServicePatch } from 'service/ConsumeService'
 import consumeServicePost from 'service/ConsumeService'
-import { CORE_BASEURL,PULL_BASEURL } from 'constant/index'
+import { CORE_BASEURL, PULL_BASEURL } from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 
 
@@ -96,8 +96,15 @@ export default function DashboardSeller(props) {
         history.push("/methods?id=" + paymentInformation.id)
     }
 
-    const callBackErrorCreatePayment = () => {        
-        setErrorMessage("Error creando pago")
+    const callBackErrorCreatePayment = (error) => {
+        if (error != null && typeof error === 'object') {
+            setErrorMessage(error.errorMessage)
+        } else if (error != null) {
+            setErrorMessage(error)
+        }
+        else {
+            setErrorMessage("Error creando pago")
+        }        
     }
 
     const validatedChecked = (event) => {
