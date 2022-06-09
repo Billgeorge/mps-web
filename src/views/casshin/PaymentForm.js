@@ -120,7 +120,7 @@ export default function PaymentForm(props) {
                         </CardContent>
                     </CardActionArea>
                     <CardActions>
-                    <a name="PSE" className="button" style={{display: 'block', margin: '0 auto', height: '50px', width: 'auto', background: 'blue', color: '#ffffff', textAlign: 'center', fontWeight: 'bold', fontSize: '100%', lineHeight: '30px', fontFamily: 'Arial', borderRadius: '10px', textDecoration: 'none', padding:'10px'}}>Pagar con PSE</a>                 
+                    <a name="PSE" className="button" style={{display: 'block', cursor:'pointer', margin: '0 auto', height: '50px', width: 'auto', background: 'blue', color: '#ffffff', textAlign: 'center', fontWeight: 'bold', fontSize: '100%', lineHeight: '30px', fontFamily: 'Arial', borderRadius: '10px', textDecoration: 'none', padding:'10px'}}>Pagar con PSE</a>                 
                     </CardActions>
                 </Card>
                 </GridItem>    
