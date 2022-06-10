@@ -9,7 +9,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from 'react-router-dom';
 
 import ReceiptIcon from '@material-ui/icons/Receipt';
-import PaymentIcon from '@material-ui/icons/Payment';
 import LocalConvenienceStoreIcon from '@material-ui/icons/LocalConvenienceStore';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
@@ -34,13 +33,7 @@ export default function SellerMenu(props) {
                     <ListItemText style={{ color: '#44169E' }} primary="Tus ordenes" />
 
                 </ListItem>
-            </Link>           
-            <Link to="/dashboard" >
-                <ListItem button className={classes.menuItem}>
-                    <ListItemIcon ><PaymentIcon style={{ color: '#44169E' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#44169E' }} primary="Pagos" />
-                </ListItem>
-            </Link>
+            </Link>                       
             <Link to="/product-drop" >
                 <ListItem button className={classes.menuItem}>
                     <ListItemIcon ><LocalConvenienceStoreIcon style={{ color: '#44169E' }} /></ListItemIcon>
