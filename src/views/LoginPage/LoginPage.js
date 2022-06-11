@@ -55,7 +55,7 @@ export default function LoginPage(props) {
       setErrorMessage("")
       const callBackSucess = () => {
         let role = getRole()
-        if (role === "seller" || role === "seller-last") {
+        if (role === "seller" || role === "influencer_seller") {
           history.push("/orders-seller")
           return
         }
