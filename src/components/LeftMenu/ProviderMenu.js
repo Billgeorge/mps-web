@@ -11,8 +11,6 @@ import { Link } from 'react-router-dom';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import EditIcon from '@material-ui/icons/Edit';
 import HomeWork from '@material-ui/icons/HomeWork';
-import AssistantIcon from '@material-ui/icons/Assistant';
-import Group from '@material-ui/icons/GroupWork';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 
 
@@ -28,7 +26,7 @@ export default function ProviderMenu(props) {
             <Link to="/dashboard-dropprovider" >
                 <ListItem button className={classes.menuItem}>
                     <ListItemIcon ><ReceiptIcon style={{ color: '#44169E' }} /></ListItemIcon>
-                    <ListItemText style={{ color: '#44169E' }} primary="Tus ordenes" />
+                    <ListItemText style={{ color: '#44169E' }} primary="Ordenes de corte" />
                 </ListItem>
             </Link>
             <Link to="/product" >

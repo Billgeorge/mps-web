@@ -217,6 +217,11 @@ export default function DashboardSeller(props) {
                             <Grid item ><span>Número de órdenes:</span> <br /><span className={classes.valueText}>{orderConsolidate.totalOrders}</span></Grid>
                         </Grid>
                     </GridItem>
+                    <GridItem xs={12} sm={12} md={4} className={classes.grid}>
+                        <Grid container className={classes.box} spacing={3}>
+                            <Grid item ><span>Total a pagar :</span> <br /><span className={classes.valueText}>{formatter.format(orderConsolidate.totalToPay)}</span></Grid>
+                        </Grid>
+                    </GridItem>
                     <Grid item xs={12}>
                         <Button style={{ marginLeft: "10px" }} color="primary" onClick={createCutPayment}> Pagar pedidos del corte</Button>
                         <Button style={{ marginLeft: "10px" }} color="primary" disabled={!isEnabled} onClick={deleteProducts} > Eliminar seleccionados</Button>
