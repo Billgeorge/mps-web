@@ -17,6 +17,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Footer from "components/Footer/Footer.js";
 import { getMerchantId, getMerchantName } from 'service/AuthenticationService';
+import { downloadPDF } from 'util/FileUtil';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -27,7 +28,7 @@ import { useHistory } from "react-router-dom";
 import { getLegibleDate } from 'util/DateUtil'
 
 import { consumeServiceGet } from 'service/ConsumeService'
-import { CORE_BASEURL, getOrderState } from 'constant/index'
+import { CORE_BASEURL, getOrderState, LOGISTIC_SERVICE_URL } from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
 import IconButton from '@material-ui/core/IconButton';
 
@@ -66,13 +67,12 @@ export default function DashBoard(props) {
     setOrderState(event.target.value);
   };
 
-  const getMultipleOrdersString = (event) => {
-    let multipleOrders = ''
-    return multipleOrders
-  };
-
   const callBackSuccess = (ordersProvider) => {
     setOrders(ordersProvider)
+  }
+
+  const callBackSuccessGetLabel = (data) => {
+    downloadPDF(data,'rotulo')
   }
 
   const formatter = new Intl.NumberFormat('en-US', {
@@ -93,6 +93,16 @@ export default function DashBoard(props) {
     } else {
       setErrorMessage("Error Cargando ordenes")
     }
+  }
+
+  const callBackGetLabel = (error) => {
+      console.log('error',error)
+      setErrorMessage('Error descargando rotulo')
+  }
+
+  const getLabel = () => {
+    const url = `${LOGISTIC_SERVICE_URL}inter-label/${getMerchantId()}`
+    consumeServiceGet(callBackGetLabel, callBackSuccessGetLabel, url)
   }
 
   const filterTransactions = () => {
@@ -182,8 +192,8 @@ export default function DashBoard(props) {
           </GridItem>
           
           <Grid item xs={12} sm={12} md={4} className={classes.grid}>
-            <Button component="a" href={CORE_BASEURL + "/label/public/order/" + getMerchantId()} color="primary">
-              Descargar rótulos pendientes
+            <Button color="primary" onClick={getLabel}>
+              Descargar rótulo del corte
             </Button>
           </Grid>
           <GridItem xs={12} sm={12} md={12} className={classes.grid}>
