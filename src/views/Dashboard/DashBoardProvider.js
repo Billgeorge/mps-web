@@ -72,7 +72,7 @@ export default function DashBoard(props) {
   }
 
   const callBackSuccessGetLabel = (data) => {
-    downloadPDF(data,'rotulo')
+    downloadPDF(data.pdf,'rotulo')
   }
 
   const formatter = new Intl.NumberFormat('en-US', {
@@ -96,8 +96,14 @@ export default function DashBoard(props) {
   }
 
   const callBackGetLabel = (error) => {
-      console.log('error',error)
+    if (error != null && typeof error === 'object') {
+      setErrorMessage(error.message)
+    } else if (error != null && typeof error === 'string') {
+      setErrorMessage(error)
+    }
+    else {
       setErrorMessage('Error descargando rotulo')
+    }
   }
 
   const getLabel = () => {
