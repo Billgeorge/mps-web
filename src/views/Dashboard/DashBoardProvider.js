@@ -72,7 +72,7 @@ export default function DashBoard(props) {
   }
 
   const callBackSuccessGetLabel = (data) => {
-    downloadPDF(data.pdf,'rotulo')
+    downloadPDF(data.pdf.replaceAll('"',''),'rotulo')    
   }
 
   const formatter = new Intl.NumberFormat('en-US', {

@@ -1,6 +1,6 @@
 export const CORE_BASEURL = process.env.REACT_APP_CORE_BASEURL  //'http://localhost:8084'
 export const PULL_BASEURL = process.env.REACT_APP_PULL_BASEURL // 'http://localhost:8084'
-export const LOGISTIC_SERVICE_URL = ' https://233cvk2400.execute-api.us-east-1.amazonaws.com/dev/'
+export const LOGISTIC_SERVICE_URL = process.env.REACT_APP_LAMBDA_BASEURL //'http://localhost:4000/dev/'
 
 export const getPaymentState = (idState) => {
     switch (idState) {
