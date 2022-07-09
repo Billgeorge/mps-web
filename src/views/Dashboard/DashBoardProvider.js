@@ -107,7 +107,7 @@ export default function DashBoard(props) {
   }
 
   const getLabel = () => {
-    const url = `${LOGISTIC_SERVICE_URL}inter-label/${getMerchantId()}`
+    const url = `${LOGISTIC_SERVICE_URL}label/${getMerchantId()}`
     consumeServiceGet(callBackGetLabel, callBackSuccessGetLabel, url)
   }
 
