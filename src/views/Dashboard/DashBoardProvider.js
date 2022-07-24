@@ -17,6 +17,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Footer from "components/Footer/Footer.js";
 import { getMerchantId, getMerchantName } from 'service/AuthenticationService';
+import { downloadPDF } from 'util/FileUtil';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -27,9 +28,8 @@ import { useHistory } from "react-router-dom";
 import { getLegibleDate } from 'util/DateUtil'
 
 import { consumeServiceGet } from 'service/ConsumeService'
-import { CORE_BASEURL, getOrderState } from 'constant/index'
+import { CORE_BASEURL, getOrderState, LOGISTIC_SERVICE_URL } from 'constant/index'
 import ResponsiveDrawe from "components/LeftMenu/ResponsiveDrawer.js"
-import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 
 import NavigateNextSharpIcon from '@material-ui/icons/NavigateNextSharp';
@@ -47,117 +47,88 @@ export default function DashBoard(props) {
   const history = useHistory();
 
   const [ordersProvider, setOrders] = React.useState({
-    orders: [],
-    totalOrderAmountByStatus: 0,
-    totalProfitSaleByStatus: 0,
-    totalOrderByStatus: 0
+    orderItems: [],
+    totalAmountSold: 0,
+    totalOrders: 0,
+    totalPages: 1
 
   });
   const [errorMessage, setErrorMessage] = React.useState("");
 
   React.useEffect(() => getOrdersForProvider(), []);
 
-  const [duration, setDuration] = React.useState(100);
-
   const [page, setPage] = React.useState(1);
 
   const [orderState, setOrderState] = React.useState(0);
 
-  const [selected, setSelected] = React.useState([]);
-
-  const handleChangeDuration = (event) => {
-    setErrorMessage("")
-    setDuration(event.target.value);
-  };
 
   const handleChangeOrderState = (event) => {
     setErrorMessage("")
     setOrderState(event.target.value);
   };
 
-  const getMultipleOrdersString = (event) => {
-    let multipleOrders = ''
-    selected.forEach(orderId => {
-      multipleOrders = multipleOrders + orderId + ','
-    })
-    return multipleOrders
-  };
-
-  const handleChange = (event) => {
-    setErrorMessage("")
-    const name = event.target.name;
-    setFilter({
-      ...filter,
-      [name]: event.target.value,
-    });
-  };
-
   const callBackSuccess = (ordersProvider) => {
     setOrders(ordersProvider)
+  }
+
+  const callBackSuccessGetLabel = (data) => {
+    downloadPDF(data.pdf.replaceAll('"',''),'rotulo')    
   }
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 2
-  })
-
-  const [filter, setFilter] = React.useState({
-    guideNumber: null
-  });
+  })  
 
   const callBack = (msg) => {
     setOrders({
-      orders: [],
-      totalOrderAmountByStatus: 0,
-      totalProfitSaleByStatus: 0,
-      totalOrderByStatus: 0
+      orderItems: [],
+    totalAmountSold: 0,
+    totalOrders: 0,
+    totalPages: 1
     })
     if (msg === 404) {
-      setErrorMessage("No hay transacciones para mostrar")
+      setErrorMessage("No hay ordenes para mostrar")
     } else {
-      setErrorMessage("Error Cargando Transacciones")
+      setErrorMessage("Error Cargando ordenes")
     }
   }
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
+  const callBackGetLabel = (error) => {
+    if (error != null && typeof error === 'object') {
+      setErrorMessage(error.message)
+    } else if (error != null && typeof error === 'string') {
+      setErrorMessage(error)
     }
+    else {
+      setErrorMessage('Error descargando rotulo')
+    }
+  }
 
-    setSelected(newSelected);
-  };
+  const getLabel = () => {
+    const url = `${LOGISTIC_SERVICE_URL}label/${getMerchantId()}`
+    consumeServiceGet(callBackGetLabel, callBackSuccessGetLabel, url)
+  }
 
   const filterTransactions = () => {
     setErrorMessage("")
-    getOrdersForProvider("numbers", "")
+    getOrdersForProvider()
   }
 
   const getOrdersForProvider = (filter, value) => {
-    const merchantId = getMerchantId()
-    let url = `${CORE_BASEURL}/order/provider?merchantId=${merchantId}&durationInDays=${duration}`
-    if (document.getElementById("guideNumber").value) {
-      url = `${url}&guideNumber=${document.getElementById("guideNumber").value}`
-    }
-    if (orderState > 0) {
-      url = `${url}&orderState=${orderState}`
-    }
+    
+    let url = `${CORE_BASEURL}/catalogue/order/provider`
 
     if (filter === 'changePage') {
-      url = `${url}&pageNumber=${value}`
+      url = `${url}?pageNumber=${value}`
+    }else {
+      url = `${url}?pageNumber=0`
     }
+
+    if (orderState > 0) {
+      url = `${url}&state=${orderState}`
+    }  
 
     consumeServiceGet(callBack, callBackSuccess, url)
   }
@@ -173,17 +144,7 @@ export default function DashBoard(props) {
     getOrdersForProvider('changePage', page - 1)
   };
 
-  const copyUrl = () => {
-    var getUrl = window.location;
-    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
-    navigator.clipboard.writeText(baseUrl + "proveedor?nombre=" + getMerchantName());
-  }
-
   const classes = useStyles();
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
-  const { ...rest } = props;
 
   return (
     <div>
@@ -215,116 +176,65 @@ export default function DashBoard(props) {
                       <em>Ninguno</em>
                     </MenuItem>
                     <MenuItem value={1}>Fallido</MenuItem>
-                    <MenuItem value={2}>En despacho</MenuItem>
-                    <MenuItem value={3}>En entrega</MenuItem>
-                    <MenuItem value={4}>Pago pendiente</MenuItem>
-                    <MenuItem value={5}>Transferido</MenuItem>
-                    <MenuItem value={6}>Entregado</MenuItem>
-                    <MenuItem value={7}>Devolucion</MenuItem>
-                    <MenuItem value={8}>Cancelado</MenuItem>
-                    <MenuItem value={9}>Novedad</MenuItem>
-                    <MenuItem value={10}>Por confirmar</MenuItem>
+                    <MenuItem value={2}>Creado</MenuItem>
+                    <MenuItem value={3}>Pagado</MenuItem>
                   </Select>
                 </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={12} md={6} style={{ textAlign: "center" }} >
-                <FormControl variant="outlined" style={{ width: "180px" }}>
-                  <InputLabel id="demo-simple-select-outlined-label">Tiempo</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={duration}
-                    onChange={handleChangeDuration}
-                    label="Tiempo"
-                  >
-                    <MenuItem value={0}>
-                      <em>Ninguno</em>
-                    </MenuItem>
-                    <MenuItem value={1}>1 día</MenuItem>
-                    <MenuItem value={2}>2 días</MenuItem>
-                    <MenuItem value={7}>1 semana</MenuItem>
-                    <MenuItem value={30}>1 mes</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={12} md={6} style={{ textAlign: "center" }}>
-                <TextField onChange={handleChange} value={filter.guideNumber} inputProps={{ min: 0, id: 'guideNumber', name: 'guideNumber' }} type="number" style={{ width: "180px", backgroundColor: "white" }} id="outlined-basic" label="Número de guía" variant="outlined" required />
-              </Grid>
+              </Grid>             
 
               <Grid item xs={12} sm={12} md={6} style={{ textAlign: "center" }} ><Button color="primary" onClick={filterTransactions}> Filtrar</Button></Grid>
             
             </Grid>
           </GridItem>
-          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
+          <GridItem xs={12} sm={12} md={6} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
-              <Grid item ><span>Ganancia de ordenes {orderState != 0 && orderState != -1 ? getOrderState(orderState) + 's' : ''}: </span> <br /><span className={classes.valueText}>{formatter.format(ordersProvider.totalProfitSaleByStatus)}</span></Grid>
+              <Grid item ><span>Total ventas {orderState != 0 && orderState != -1 ? getOrderState(orderState) + 's' : ''}: </span> <br /><span className={classes.valueText}>{formatter.format(ordersProvider.totalAmountSold)}</span></Grid>
             </Grid>
           </GridItem>
-          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
+          <GridItem xs={12} sm={12} md={6} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
-              <Grid item ><span> Número de ordenes {orderState != 0 && orderState != -1 ? getOrderState(orderState) + 's' : ''}: </span> <br /><span className={classes.valueText}>{ordersProvider.totalOrderByStatus}</span></Grid>
+              <Grid item ><span> Número de ordenes {orderState != 0 && orderState != -1 ? getOrderState(orderState) + 's' : ''}: </span> <br /><span className={classes.valueText}>{ordersProvider.totalOrders}</span></Grid>
             </Grid>
           </GridItem>
-          <GridItem xs={12} sm={12} md={4} className={classes.grid}>
-            <Grid container className={classes.box} spacing={3}>
-              <Grid item >
-                <span>Dinero de ordenes {orderState != 0 && orderState != -1 ? getOrderState(orderState) + 's' : ''}:</span> <br /><span className={classes.valueText}>{formatter.format(ordersProvider.totalOrderAmountByStatus)}</span>
-              </Grid>
-            </Grid>
-          </GridItem>
+          
           <Grid item xs={12} sm={12} md={4} className={classes.grid}>
-            <Button  onClick={()=>history.push("/warranty")} color="primary">
-              Crear orden de garantía
+            <Button color="primary" onClick={getLabel}>
+              Descargar rótulo del corte
             </Button>
           </Grid>
-          <Grid item xs={12} sm={12} md={4} className={classes.grid}>
-            <Button component="a" href={CORE_BASEURL + "/label/public/order/" + getMerchantId()} color="primary">
-              Descargar rótulos pendientes
-            </Button>
-          </Grid>
-          {selected.length > 0 ?
-            <Grid item xs={12} sm={12} md={4} className={classes.grid}>
-              <Button component="a" href={CORE_BASEURL + "/label/public/multiple/order/" + getMultipleOrdersString()} color="primary">
-                Descargar rótulos seleccionados
-              </Button>
-            </Grid>
-            : <span></span>
-          }
           <GridItem xs={12} sm={12} md={12} className={classes.grid}>
             <Grid container className={classes.box} spacing={3}>
-              <Grid item xs={12}><h2>Ordenes</h2></Grid>
+              <Grid item xs={12}><h2>Ordenes del corte</h2></Grid>
               <Grid item xs={12} >
                 <TableContainer component={Paper}>
                   <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                       <TableRow>
                         <TableCell align="right">Nombre del Producto </TableCell>
-                        <TableCell align="right">Nombre del cliente</TableCell>
-                        <TableCell align="right">Precio de venta</TableCell>
+                        <TableCell align="right">Sku del producto</TableCell>
+                        <TableCell align="right">Atributos</TableCell>
                         <TableCell align="right">Estado</TableCell>
-                        <TableCell align="right">Guía</TableCell>
-                        <TableCell align="right">Rotulado</TableCell>
+                        <TableCell align="right">Cantidad</TableCell>
+                        <TableCell align="right">Precio de venta</TableCell>
                         <TableCell align="right">Fecha de creación</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {ordersProvider.orders.map((row) => {
-                        const isItemSelected = isSelected(row.orderId);
+                      {ordersProvider.orderItems.map((row) => {
+                        
                         return (
 
-                          <TableRow
-                            onClick={(event) => handleClick(event, row.orderId)}
-                            role="checkbox"
-                            aria-checked={isItemSelected}
-                            key={row.orderId}
-                            selected={isItemSelected}
+                          <TableRow      
+                            key={row.id}                            
                           >
-                            <TableCell align="right"><a target="_blank" href={`/order-detail/${row.orderId}`} style={{ cursor: "pointer" }}>{row.productName}</a></TableCell>
-                            <TableCell align="right">{row.customerName}</TableCell>
-                            <TableCell align="right">{formatter.format(row.sellPrice)}</TableCell>
-                            <TableCell align="right">{getOrderState(row.orderState)}</TableCell>
-                            <TableCell align="center">{row.guideNumber ? row.guideNumber : "Guía vacía"}</TableCell>
-                            <TableCell align="center">{row.isLabeled ? "Si" : "No"}</TableCell>
+                            
+                            <TableCell align="right">{row.productName}</TableCell>
+                            <TableCell align="right">{row.sku}</TableCell>
+                            <TableCell align="center">{row.attributes ? row.attributes : "Sin atributos"}</TableCell>
+                            <TableCell align="right">{getOrderState(row.state)}</TableCell>
+                            <TableCell align="right">{row.quantity}</TableCell>
+                            <TableCell align="right">{formatter.format(row.sellPrice)}</TableCell>                                       
+                            
                             <TableCell align="right">{
                               getLegibleDate(row.creationDate)
                             }</TableCell>
@@ -335,7 +245,7 @@ export default function DashBoard(props) {
                   </Table>
                 </TableContainer>
                 <div style={{ textAlign: 'right' }}>
-                  <p style={{ float: 'left' }}>Página: {page}. Total registros: {ordersProvider.totalRecords ? ordersProvider.totalRecords : 15}</p>
+                  <p style={{ float: 'left' }}>Página: {page}. Total registros: {ordersProvider.totalOrders ? ordersProvider.totalOrders : 25}</p>
                   {
                     page > 1 ? <IconButton onClick={handleBeforePage} aria-label="anterior">
                       <NavigateBeforeSharpIcon />

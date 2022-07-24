@@ -1,24 +1,20 @@
 export const CORE_BASEURL = process.env.REACT_APP_CORE_BASEURL  //'http://localhost:8084'
 export const PULL_BASEURL = process.env.REACT_APP_PULL_BASEURL // 'http://localhost:8084'
-
+export const LOGISTIC_SERVICE_URL = process.env.REACT_APP_LAMBDA_BASEURL //'http://localhost:4000/dev/'
 
 export const getPaymentState = (idState) => {
     switch (idState) {
         case 1:
-            return "Creado"
+            return "Falido"
         case 2:
-            return "Acordado"
+            return "Creado"
         case 3:
             return "Pagado"
         case 4:
             return "Despachado"
         case 5:
-            return "En Disputa"
-        case 6:
-            return "Cerrado"
-        case 7:
             return "Recibido"
-        case 8:
+        case 6:
             return "Transferido"
     }
 }
@@ -110,26 +106,17 @@ export const getOrderIdState = (state) => {
 export const getOrderState = (idState) => {
     switch (idState) {
         case 1:
-            return "Fallido"
+            return "Falido"
         case 2:
-            return "En Despacho"
+            return "Creado"
         case 3:
-            return "En Entrega"
+            return "Pagado"
         case 4:
-            return "Pendiente"
+            return "Despachado"
         case 5:
-            return "Transferido"
+            return "Recibido"
         case 6:
-            return "Entregado"
-        case 7:
-            return "Devolucion"
-        case 8:
-            return "Cancelado"
-        case 9:
-            return "Novedad"
-        case 10:
-            return "Por confirmar"
-
+            return "Transferido"
     }
 }
 
