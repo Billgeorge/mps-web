@@ -56,6 +56,7 @@ import DashboardSeller from 'views/Dashboard/DashBoardSeller';
 import OrderDetailCatalogue from 'views/order/OrderDetailCatalogue';
 import ThankPageToSeller from 'views/thanks/ThankPageToSeller';
 import ReferralsTree from 'views/Referrals/ReferralsTree';
+import MembershipPlans from 'views/casshin/MembershipPlans';
 
 
 var hist = createBrowserHistory();
@@ -124,6 +125,7 @@ function App() {
               <Route path="/public-products" component={PublicProducts} />
               <Route path="/proveedor" component={ProductsForProvider} />
               <Route path="/catalogo" component={Catalogue} />
+              <Route path="/plan" component={MembershipPlans} />
               <ProtectRoute path="/result" component={Results} />
 
             </Switch>
