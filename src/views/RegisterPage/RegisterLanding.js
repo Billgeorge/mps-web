@@ -10,7 +10,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Email from "@material-ui/icons/Email";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
-import { CORE_BASEURL, PULL_BASEURL } from '../../constant/index'
+import { CORE_BASEURL } from '../../constant/index'
 import FormControl from "@material-ui/core/FormControl";
 
 

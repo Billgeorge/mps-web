@@ -13,9 +13,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import { consumeServiceGet } from 'service/ConsumeService'
 import consumeServicePost from '../../service/ConsumeService'
-import {getQueyParamFromUrl} from 'util/UrlUtil'
+import { getQueyParamFromUrl } from 'util/UrlUtil'
 import { useHistory } from "react-router-dom";
-import { CORE_BASEURL } from 'constant/index'
+import { CORE_BASEURL,PULL_BASEURL } from 'constant/index'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles({
@@ -56,16 +56,33 @@ export default function MembershipPlans(props) {
 
     const createPayment = (amount) => {
         let id = getQueyParamFromUrl('id')
-        if(id){
-        const url = `${CORE_BASEURL}/cataloguepayment/inscription`
-        consumeServicePost({amount:amount,merchantId:getQueyParamFromUrl('id')},callBackErrorGetPlans, callBackSuccessCreatePaymentInformation, url)
-        }else{
+        if (id) {
+            const url = `${CORE_BASEURL}/cataloguepayment/inscription`
+            consumeServicePost({ amount: amount, merchantId: getQueyParamFromUrl('id') }, callBackErrorGetPlans, callBackSuccessCreatePaymentInformation, url)
+        } else {
             setErrorMessage("No hay id de referencia")
         }
     }
 
     const callBackSuccessCreatePaymentInformation = (paymentInformationId) => {
-        history.push("/methods?id=" + paymentInformationId)
+        const url = `${PULL_BASEURL}/cashin/redirect`
+        consumeServicePost({ id: paymentInformationId }, callBack, callbackSuccessMerchantCreation, url)
+    }
+
+    const callBack = (error) => {
+        if (error != null && typeof error === 'object') {
+            setErrorMessage(error)
+        } else if (error != null && typeof error === 'string') {
+            setErrorMessage({ 'Error': error })
+        }
+        else {
+            setErrorMessage({ 'Error': 'Ha ocurrido un error inesperado por favor contactar al administrador' })
+        }
+        setIsLoading(false)
+    }
+
+    const callbackSuccessMerchantCreation = (paymentInformation) => {
+        history.push("/methods?id=" + paymentInformation.id)
     }
 
     const callBackErrorGetPlans = (msg) => {
@@ -112,9 +129,9 @@ export default function MembershipPlans(props) {
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>
-                                    <Button onClick={()=>{createPayment(plan.price)}} color="primary" size="lg" >
+                                    <Button onClick={() => { createPayment(plan.price) }} color="primary" size="lg" >
                                         Pagar con PSE
-                                    </Button>                                    
+                                    </Button>
                                 </CardActions>
                             </Card>;
                         })}
