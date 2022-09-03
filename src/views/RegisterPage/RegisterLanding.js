@@ -143,14 +143,10 @@ export default function RegisterLanding(props) {
         }
         setCity({})
         if (getQueyParamFromUrl("rol") === "seller") {
-          const url = `${PULL_BASEURL}/cashin/redirect`
-          consumeServicePost({ id: response }, callBack, callbackSuccessMerchantCreation, url)
+          history.push("/plan?id=" + response.id)
         }
       }
-
-      const callbackSuccessMerchantCreation = (paymentInformation) => {
-        history.push("/methods?id=" + paymentInformation.id)
-      }
+      
       if (isLoading) {
         return
       }

@@ -6,11 +6,15 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import Button from "components/CustomButtons/Button.js";
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import { consumeServiceGet } from 'service/ConsumeService'
+import consumeServicePost from '../../service/ConsumeService'
+import {getQueyParamFromUrl} from 'util/UrlUtil'
+import { useHistory } from "react-router-dom";
 import { CORE_BASEURL } from 'constant/index'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -19,7 +23,7 @@ const useStyles = makeStyles({
         margin: '20px'
     },
     gridItemCard: {
-        marginBottom: '20px'        
+        marginBottom: '20px'
     },
     media: {
         height: 140,
@@ -31,6 +35,7 @@ export default function MembershipPlans(props) {
 
 
     const classes = useStyles();
+    const history = useHistory();
     const [errorMessage, setErrorMessage] = React.useState("");
     const [plans, setPlans] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -39,7 +44,7 @@ export default function MembershipPlans(props) {
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 2
-      })
+    })
     React.useEffect(() =>
         getPlans()
         , []);
@@ -49,11 +54,25 @@ export default function MembershipPlans(props) {
         consumeServiceGet(callBackErrorGetPlans, callBackSuccessGetPlans, url)
     }
 
+    const createPayment = (amount) => {
+        let id = getQueyParamFromUrl('id')
+        if(id){
+        const url = `${CORE_BASEURL}/cataloguepayment/inscription`
+        consumeServicePost({amount:amount,merchantId:getQueyParamFromUrl('id')},callBackErrorGetPlans, callBackSuccessCreatePaymentInformation, url)
+        }else{
+            setErrorMessage("No hay id de referencia")
+        }
+    }
+
+    const callBackSuccessCreatePaymentInformation = (paymentInformationId) => {
+        history.push("/methods?id=" + paymentInformationId)
+    }
+
     const callBackErrorGetPlans = (msg) => {
         if (msg === 404) {
             setErrorMessage("No hay transacciones para mostrar")
         } else {
-            setErrorMessage("Error Cargando Transacciones")
+            setErrorMessage("Error Procesando solicitud")
         }
     }
 
@@ -72,7 +91,7 @@ export default function MembershipPlans(props) {
                 <GridItem xs={12} sm={12} md={3} className={classes.gridItemCard}>
                     {
                         plans.map(function (plan) {
-                            return <Card style={{marginTop:'20px'}}>
+                            return <Card style={{ marginTop: '20px' }}>
                                 <CardActionArea>
                                     <CardMedia
                                         component="img"
@@ -93,7 +112,9 @@ export default function MembershipPlans(props) {
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>
-                                    <a name={plan.membershipName} className="button" style={{ display: 'block', cursor: 'pointer', margin: '0 auto', height: '50px', width: 'auto', background: 'blue', color: '#ffffff', textAlign: 'center', fontWeight: 'bold', fontSize: '100%', lineHeight: '30px', fontFamily: 'Arial', borderRadius: '10px', textDecoration: 'none', padding: '10px' }}>Pagar con PSE</a>
+                                    <Button onClick={()=>{createPayment(plan.price)}} color="primary" size="lg" >
+                                        Pagar con PSE
+                                    </Button>                                    
                                 </CardActions>
                             </Card>;
                         })}
